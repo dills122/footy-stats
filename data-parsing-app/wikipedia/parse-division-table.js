@@ -23,14 +23,37 @@ function normalizeHeader(txt) {
     return t; // unknown, keep raw (won't be mapped)
 }
 
+/**
+ * Note flag helpers
+ */
 function wasRelegated(note) {
-    return String(note).toLowerCase().includes('relegation')
+    const n = String(note || '').toLowerCase();
+    if (!n) return false;
+
+    if (n.includes('relegat')) return true;
+    if (n.includes('demoted to the')) return true;
+
+    // Explicit cases that mean NOT relegated
+    if (n.includes('re-elected')) return false;
+    if (n.includes('reprived from re-election') || n.includes('reprieved from re-election')) return false;
+
+    return false;
 }
 
 function wasPromoted(note) {
-
-    return String(note).toLowerCase().includes('promotion')
+    return String(note || '').toLowerCase().includes('promot');
 }
+
+function isExpansionTeam(note) {
+    const n = String(note || '').toLowerCase();
+    return (
+        n.includes('expansion') ||
+        n.includes('new club') ||
+        n.includes('admitted') ||
+        n.includes('joined league')
+    );
+}
+
 
 /**
  * Extract clean text from a cell: strips references/footnotes.
@@ -46,23 +69,45 @@ function mapDivisionToSlug(division) {
         case 'first':
             return '#First_Division';
         case 'second':
-            return '#Second_Division'
+            return '#Second_Division';
         default:
-            return ''
+            return '';
     }
 }
 
+function fallbackHeadersForEarlyYears($) {
+    const possibleHeaders = ['#Final_league_table', '#League_table'];
+
+    for (const slug of possibleHeaders) {
+        const header = $(slug);
+        if (header.length) {
+            return header;
+        }
+    }
+
+    // Nothing found
+    return null;
+}
+
 /**
- * Parse a First Division league table from a Football League Wikipedia page.
- * Returns an array of rows with mapped stats.
+ * Parse a league division table from a Football League Wikipedia page.
  */
 export function parseDivisionTable(html, division) {
     const $ = cheerio.load(html);
 
     const headerSlug = mapDivisionToSlug(division);
 
+    //fallback check, if no header found with that, check if league table or final league table League_table,
+
     // Step 1: Find the header
-    const header = $(headerSlug);
+    let header = $(headerSlug);
+    if (!header.length) {
+        header = fallbackHeadersForEarlyYears($);
+        if (!header) {
+            console.warn('⚠️ No known league table header found for this season');
+            return []; //exit early
+        }
+    }
 
     // Step 2: From that header, traverse forward to the first .wikitable
     const table = header.closest('div').nextAll('.wikitable').first();
@@ -87,16 +132,13 @@ export function parseDivisionTable(html, division) {
     table.find('tr').slice(1).each((_, tr) => {
         const $tr = $(tr);
 
-        // Skip sub-headers or separators that contain more TH than TD (besides team TH)
+        // Skip sub-headers or separators
         const dataCells = $tr.find('td, th[scope="row"]');
         if (dataCells.length === 0) return;
 
-        // Build an array aligned to headers by position:
-        // The table typically uses: td(pos), th[scope=row](team), td(...stats)
-        // So order of nodes in `dataCells` should match header order.
+        // Collect texts
         const texts = [];
         dataCells.each((_, c) => {
-            // For team, prefer the link text (avoids "(R)" etc).
             if ($(c).is('th[scope="row"]')) {
                 const teamLink = $(c).find('a').first().text().trim();
                 texts.push(teamLink || cellText($, c));
@@ -105,15 +147,13 @@ export function parseDivisionTable(html, division) {
             }
         });
 
-        // If the row appears to be a secondary header (e.g., repeats column names), skip it
-        const isProbablyHeader = texts.every(t => Number.isNaN(parseInt(t, 10))) && texts.some(t => /team|club|pld|pts/i.test(t));
+        const isProbablyHeader = texts.every(t => Number.isNaN(parseInt(t, 10))) &&
+            texts.some(t => /team|club|pld|pts/i.test(t));
         if (isProbablyHeader) return;
 
         const get = (field) => {
             const i = idxOf(field);
             if (i === -1) return undefined;
-            // If this row is missing a trailing cell because of a previous rowspan,
-            // fall back to carry text for notes.
             return texts[i];
         };
 
@@ -137,20 +177,25 @@ export function parseDivisionTable(html, division) {
             points: num(get('points')),
             notes: null,
             wasRelegated: null,
-            wasPromoted: null
+            wasPromoted: null,
+            isExpansionTeam: null,
+            wasReElected: null,
+            wasReprieved: null
         };
 
-        // Handle notes with potential rowspan carryover
-        const notesIdx = idxOf('notes');
+        // Handle notes
+        let notesIdx = idxOf('notes');
+        if (notesIdx === -1 && headerMap.length > 0) {
+            // fallback: assume last column
+            notesIdx = headerMap.length - 1;
+        }
+
         if (notesIdx !== -1) {
-            // Determine if this row actually contains the notes cell
             const rawNotesCell = $tr.find('td, th').get(notesIdx);
             if (rawNotesCell) {
-                // Has a real cell here
                 const text = cellText($, rawNotesCell) || null;
                 row.notes = text?.length ? text : null;
 
-                // Setup carryover if rowspan > 1
                 const rs = parseInt($(rawNotesCell).attr('rowspan') || '1', 10);
                 if (!Number.isNaN(rs) && rs > 1) {
                     notesCarry = { text: row.notes, remaining: rs - 1 };
@@ -158,22 +203,20 @@ export function parseDivisionTable(html, division) {
                     notesCarry = { text: null, remaining: 0 };
                 }
             } else if (notesCarry.remaining > 0) {
-                // No cell here due to previous rowspan: carry it
                 row.notes = notesCarry.text;
                 notesCarry.remaining -= 1;
             }
         }
 
-        /**
-         * TODO add additional step here to parse notes and add info to row
-         * wasRelegated, wasPromoted, newExpansionTeam
-        **/
-        row.wasPromoted = wasPromoted(row.notes)
-        row.wasRelegated = wasRelegated(row.notes)
+        // Derive booleans from notes
+        row.wasPromoted = wasPromoted(row.notes);
+        row.wasRelegated = wasRelegated(row.notes);
+        row.isExpansionTeam = isExpansionTeam(row.notes);
 
+        // Extra explicit flags for clarity
+        row.wasReElected = String(row.notes || '').toLowerCase().includes('re-elected');
+        row.wasReprieved = /repriv(?:ed|ed) from re-election/.test(String(row.notes || '').toLowerCase());
 
-
-        // Only accept rows that have a team name and a position
         if (row.team && row.pos != null) {
             results.push(row);
         }
