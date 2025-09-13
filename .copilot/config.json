@@ -1,0 +1,22 @@
+{
+  "ignore": [
+    "dist/**",
+    "node_modules/**",
+    "junk/**"
+  ],
+  "include": [
+    "src/**"
+  ],
+  "context": {
+    "framework": "Angular 20",
+    "ui": "Angular Material",
+    "stateManagement": "NgRx",
+    "packageManager": "pnpm"
+  },
+  "hints": [
+    "Use Angular Reactive Forms with FormBuilder.",
+    "Prefer Angular Material components for UI.",
+    "State should be stored and mutated through NgRx and Signals with SignalStore.",
+    "Use Jest for testing."
+  ]
+}

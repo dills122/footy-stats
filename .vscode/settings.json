@@ -1,0 +1,21 @@
+{
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "markdown": true,
+    "plaintext": false
+  },
+  "github.copilot.chat.scope": "workspace",
+  "github.copilot.chat.includeFiles": [
+    "angular.json",
+    "tsconfig.json",
+    "src/**/*.ts",
+    "src/**/*.html",
+    "src/**/*.scss"
+  ],
+  "github.copilot.chat.ignoreFiles": [
+    "dist/**",
+    "node_modules/**",
+    "junk/**"
+  ]
+}

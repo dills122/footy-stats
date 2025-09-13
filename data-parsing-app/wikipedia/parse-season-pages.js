@@ -109,7 +109,7 @@ function constructTier1SeasonResults(tier1SeasonTable, tier2SeasonTable, year, s
         process.exit(0);
     });
     //TODO need to look into new ones starting in 2004-05_Football_League
-    const data = await buildPromotionRelegation(1888, 2025);
+    const data = await buildPromotionRelegation(1888, 2000);
 
     saveResults(data);
     console.log(`\n📂 Final league tables written to ${outputFile}`);
