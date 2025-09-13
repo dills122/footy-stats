@@ -106,5 +106,7 @@ export const LeagueStore = signalStore(
 
       return results;
     },
+
+    //TODO need new method to be able to pull full table entires by season
   }))
 );
