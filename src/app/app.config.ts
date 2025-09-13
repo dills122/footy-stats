@@ -1,18 +1,17 @@
+import { provideHttpClient } from '@angular/common/http';
 import {
-	type ApplicationConfig,
-	provideBrowserGlobalErrorListeners,
-	provideZoneChangeDetection,
-} from "@angular/core";
-import { provideRouter } from "@angular/router";
-
-import { routes } from "./app.routes";
-import { provideStore } from '@ngrx/store';
+  type ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-	providers: [
+  providers: [
+    provideHttpClient(),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideStore()
-],
+  ],
 };
