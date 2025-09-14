@@ -1,16 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-export interface LeagueTeam {
-  team: string;
-  played: number;
-  won: number;
-  draw: number;
-  lost: number;
-  goalsFor: number;
-  goalsAgainst: number;
-  points: number;
-  goalDifference: number;
-}
+import type { LeagueTableView } from '@app/types';
 
 @Component({
   selector: 'app-league-table',
@@ -18,14 +8,14 @@ export interface LeagueTeam {
   imports: [MatTableModule],
 })
 export class LeagueTableComponent {
-  @Input() leagueTable: LeagueTeam[] = [];
+  @Input() leagueTable: LeagueTableView[] = [];
 
   displayedColumns: string[] = [
     'position',
-    'team',
+    'teamName',
     'played',
     'won',
-    'draw',
+    'drawn',
     'lost',
     'goalsFor',
     'goalsAgainst',
@@ -33,9 +23,10 @@ export class LeagueTableComponent {
     'points',
   ];
 
-  get sortedTable(): LeagueTeam[] {
+  get sortedTable(): LeagueTableView[] {
     return [...this.leagueTable].sort(
-      (a, b) => b.points - a.points || b.goalDifference - a.goalDifference
+      (a, b) =>
+        b.points - a.points || (b.goalDifference ?? 0) - (a.goalDifference ?? 0)
     );
   }
 }

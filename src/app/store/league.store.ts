@@ -33,6 +33,14 @@ export const LeagueStore = signalStore(
                 teamsMap[row.team] = teamId;
               }
 
+              // Calculate goalDifference if not provided
+              const goalDifference =
+                row.goalDifference ??
+                (typeof row.goalsFor === 'number' &&
+                typeof row.goalsAgainst === 'number'
+                  ? row.goalsFor - row.goalsAgainst
+                  : null);
+
               tables.push({
                 season: year,
                 tier: tierName,
@@ -44,7 +52,7 @@ export const LeagueStore = signalStore(
                 lost: row.lost,
                 goalsFor: row.goalsFor,
                 goalsAgainst: row.goalsAgainst,
-                goalDifference: row.goalDifference,
+                goalDifference,
                 goalAverage: row.goalAverage,
                 points: row.points,
                 notes: row.notes,
@@ -84,6 +92,31 @@ export const LeagueStore = signalStore(
           (row) =>
             (!season || row.season === season) && (!tier || row.tier === tier)
         );
+    },
+
+    //Get all seasons & tiers so season/tier selectors can be populated
+    getSeasonTiers(): { season: number; tiers: string[] }[] {
+      const map: Record<number, Set<string>> = {};
+
+      store.tables().forEach((entry) => {
+        if (!map[entry.season]) {
+          map[entry.season] = new Set();
+        }
+        map[entry.season].add(entry.tier);
+      });
+
+      return Object.entries(map).map(([season, tiersSet]) => ({
+        season: +season,
+        tiers: Array.from(tiersSet).sort(),
+      }));
+    },
+
+    getTeamById(id: number): Team | undefined {
+      return store.teams()[id];
+    },
+
+    getTeamNameById(id: number): string {
+      return store.teams()[id]?.name ?? 'Unknown';
     },
 
     searchTeam(

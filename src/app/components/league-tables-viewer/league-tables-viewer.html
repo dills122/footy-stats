@@ -6,6 +6,7 @@
         League Table Viewer
       </mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
       <div
         class="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 py-4"
@@ -20,25 +21,25 @@
             [(value)]="selectedYear"
             (selectionChange)="onYearChange($event.value)"
           >
-            @for (item of years; track item) {
-            <mat-option [value]="item">{{ item }}</mat-option>
+            @for (year of years; track year) {
+            <mat-option [value]="year">{{ year }}</mat-option>
             } @empty {
-            <mat-option [value]="-1">No Values Currently</mat-option>
+            <mat-option disabled>No Seasons Available</mat-option>
             }
           </mat-select>
         </mat-form-field>
 
         <!-- League Selector -->
-        @if(leaguesForYear.length > 0) {
+        @if (leaguesForYear.length > 0) {
         <mat-form-field class="flex-1 min-w-[180px]">
           <mat-label>Select League</mat-label>
           <span matPrefix>
             <mat-icon class="mr-2">sports_soccer</mat-icon>
           </span>
           <mat-select [(value)]="selectedLeague">
-            <mat-option *ngFor="let l of leaguesForYear" [value]="l"
-              >{{ l }}</mat-option
-            >
+            @for (league of leaguesForYear; track league) {
+            <mat-option [value]="league">{{ league }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
         }
@@ -46,8 +47,8 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Show Table if selection is complete -->
-  @if (currentTable) {
+  <!-- Show Table if both selectors chosen -->
+  @if (currentTable && selectedLeague) {
   <div class="mt-8 w-full max-w-3xl">
     <app-league-table [leagueTable]="currentTable"></app-league-table>
   </div>

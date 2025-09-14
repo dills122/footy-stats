@@ -2,16 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { LeagueTablesViewerComponent } from './components/league-tables-viewer/league-tables-viewer';
-import { StoreTestComponent } from './components/test.component';
 import { DataLoaderService } from './store/services/hydrate-store-json';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    MatSlideToggleModule,
-    LeagueTablesViewerComponent,
-    StoreTestComponent,
-  ],
+  imports: [MatSlideToggleModule, LeagueTablesViewerComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
