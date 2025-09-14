@@ -32,6 +32,12 @@ importers:
       '@angular/router':
         specifier: ^20.1.0
         version: 20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1)))(rxjs@7.8.2)
+      '@ngrx/signals':
+        specifier: ^20.0.1
+        version: 20.0.1(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
+      '@ngrx/store':
+        specifier: ^20.0.1
+        version: 20.0.1(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -65,7 +71,7 @@ importers:
         version: 30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3))
       jest-preset-angular:
         specifier: ^15.0.0
-        version: 15.0.0(@angular/compiler-cli@20.1.2(@angular/compiler@20.1.2)(typescript@5.8.3))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser-dynamic@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@20.1.2)(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))))(@babel/core@7.27.7)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.27.7))(jest-environment-jsdom@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(jsdom@26.1.0)(typescript@5.8.3)
+        version: 15.0.0(@angular/compiler-cli@20.1.2(@angular/compiler@20.1.2)(typescript@5.8.3))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser-dynamic@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@20.1.2)(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))))(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(jest-environment-jsdom@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(jsdom@26.1.0)(typescript@5.8.3)
       lefthook:
         specifier: ^1.12.2
         version: 1.12.2
@@ -77,10 +83,13 @@ importers:
         version: 4.1.11
       ts-jest:
         specifier: ^29.4.0
-        version: 29.4.0(@babel/core@7.27.7)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.27.7))(esbuild@0.25.5)(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3)
+        version: 29.4.0(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(esbuild@0.25.5)(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3)
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.1.0)(typescript@5.8.3)
+      type-fest:
+        specifier: ^5.0.0
+        version: 5.0.0
       typescript:
         specifier: ~5.8.2
         version: 5.8.3
@@ -1168,6 +1177,21 @@ packages:
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
+
+  '@ngrx/signals@20.0.1':
+    resolution: {integrity: sha512-7YYPH4nTkmLEgibJnwi527toEm3tsnlCzp5AzT9osS8JxN9cHxkG6iQ7fzhw9N4bTt+8wyUZb7PF0YLFYD2RHA==}
+    peerDependencies:
+      '@angular/core': ^20.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
+
+  '@ngrx/store@20.0.1':
+    resolution: {integrity: sha512-SWIHKe9lBoNf4rOklaWbCRAz8ie1Duf1iL4SMe6BipqhdUfJ/pEbcz3xMQUIlv1CciHhRgMJFTzFrDxamYHknQ==}
+    peerDependencies:
+      '@angular/core': ^20.0.0
+      rxjs: ^6.5.3 || ^7.5.0
 
   '@npmcli/agent@3.0.0':
     resolution: {integrity: sha512-S79NdEgDQd/NGCay6TCoVzXSj74skRZIKJcpJjC5lOq34SZzyI6MqtiiWoiVWoVrTcGjNeC4ipbh1VIHlpfF5Q==}
@@ -3738,6 +3762,10 @@ packages:
     resolution: {integrity: sha512-MeQTA1r0litLUf0Rp/iisCaL8761lKAZHaimlbGK4j0HysC4PLfqygQj9srcs0m2RdtDYnF8UuYyKpbjHYp7Jw==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
+  tagged-tag@1.0.0:
+    resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
+    engines: {node: '>=20'}
+
   tailwindcss@4.1.11:
     resolution: {integrity: sha512-2E9TBm6MDD/xKYe+dvJZAmg3yxIEDNRc0jwlNyDg/4Fil2QcSLjFKGVff0lAf1jjeaArlG/M75Ey/EYr/OJtBA==}
 
@@ -3854,6 +3882,10 @@ packages:
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
+
+  type-fest@5.0.0:
+    resolution: {integrity: sha512-GeJop7+u7BYlQ6yQCAY1nBQiRSHR+6OdCEtd8Bwp9a3NK3+fWAVjOaPKJDteB9f6cIJ0wt4IfnScjLG450EpXA==}
+    engines: {node: '>=20'}
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -4522,77 +4554,35 @@ snapshots:
     dependencies:
       '@babel/types': 7.28.1
 
-  '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-import-attributes@7.27.1(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-import-attributes@7.27.1(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.28.0)':
     dependencies:
@@ -4604,88 +4594,40 @@ snapshots:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
 
-  '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
-
   '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.28.0)':
     dependencies:
       '@babel/core': 7.28.0
       '@babel/helper-plugin-utils': 7.27.1
-
-  '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.27.7)':
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/helper-plugin-utils': 7.27.1
-    optional: true
 
   '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.28.0)':
     dependencies:
@@ -5370,6 +5312,19 @@ snapshots:
       '@tybys/wasm-util': 0.10.0
     optional: true
 
+  '@ngrx/signals@20.0.1(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1)
+      tslib: 2.8.1
+    optionalDependencies:
+      rxjs: 7.8.2
+
+  '@ngrx/store@20.0.1(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/core': 20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+
   '@npmcli/agent@3.0.0':
     dependencies:
       agent-base: 7.1.4
@@ -5918,20 +5873,6 @@ snapshots:
 
   async@3.2.6: {}
 
-  babel-jest@30.0.5(@babel/core@7.27.7):
-    dependencies:
-      '@babel/core': 7.27.7
-      '@jest/transform': 30.0.5
-      '@types/babel__core': 7.20.5
-      babel-plugin-istanbul: 7.0.0
-      babel-preset-jest: 30.0.1(@babel/core@7.27.7)
-      chalk: 4.1.2
-      graceful-fs: 4.2.11
-      slash: 3.0.0
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
-
   babel-jest@30.0.5(@babel/core@7.28.0):
     dependencies:
       '@babel/core': 7.28.0
@@ -5961,26 +5902,6 @@ snapshots:
       '@babel/types': 7.28.1
       '@types/babel__core': 7.20.5
 
-  babel-preset-current-node-syntax@1.1.0(@babel/core@7.27.7):
-    dependencies:
-      '@babel/core': 7.27.7
-      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.27.7)
-      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.27.7)
-      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.27.7)
-      '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.27.7)
-      '@babel/plugin-syntax-import-attributes': 7.27.1(@babel/core@7.27.7)
-      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.27.7)
-      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.27.7)
-      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.27.7)
-      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.27.7)
-      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.27.7)
-      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.27.7)
-      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.27.7)
-      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.27.7)
-      '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.27.7)
-      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.27.7)
-    optional: true
-
   babel-preset-current-node-syntax@1.1.0(@babel/core@7.28.0):
     dependencies:
       '@babel/core': 7.28.0
@@ -5999,13 +5920,6 @@ snapshots:
       '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.28.0)
       '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.28.0)
       '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.28.0)
-
-  babel-preset-jest@30.0.1(@babel/core@7.27.7):
-    dependencies:
-      '@babel/core': 7.27.7
-      babel-plugin-jest-hoist: 30.0.1
-      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.27.7)
-    optional: true
 
   babel-preset-jest@30.0.1(@babel/core@7.28.0):
     dependencies:
@@ -7072,7 +6986,7 @@ snapshots:
     optionalDependencies:
       jest-resolve: 30.0.5
 
-  jest-preset-angular@15.0.0(@angular/compiler-cli@20.1.2(@angular/compiler@20.1.2)(typescript@5.8.3))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser-dynamic@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@20.1.2)(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))))(@babel/core@7.27.7)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.27.7))(jest-environment-jsdom@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(jsdom@26.1.0)(typescript@5.8.3):
+  jest-preset-angular@15.0.0(@angular/compiler-cli@20.1.2(@angular/compiler@20.1.2)(typescript@5.8.3))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser-dynamic@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/compiler@20.1.2)(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.1.2(@angular/common@20.1.2(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1))))(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(jest-environment-jsdom@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(jsdom@26.1.0)(typescript@5.8.3):
     dependencies:
       '@angular/compiler-cli': 20.1.2(@angular/compiler@20.1.2)(typescript@5.8.3)
       '@angular/core': 20.1.2(@angular/compiler@20.1.2)(rxjs@7.8.2)(zone.js@0.15.1)
@@ -7085,7 +6999,7 @@ snapshots:
       jest-util: 30.0.5
       jsdom: 26.1.0
       pretty-format: 30.0.5
-      ts-jest: 29.4.0(@babel/core@7.27.7)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.27.7))(esbuild@0.25.5)(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3)
+      ts-jest: 29.4.0(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(esbuild@0.25.5)(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3)
       typescript: 5.8.3
     optionalDependencies:
       esbuild: 0.25.5
@@ -8319,6 +8233,8 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.2.9
 
+  tagged-tag@1.0.0: {}
+
   tailwindcss@4.1.11: {}
 
   tapable@2.2.2: {}
@@ -8381,7 +8297,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  ts-jest@29.4.0(@babel/core@7.27.7)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.27.7))(esbuild@0.25.5)(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3):
+  ts-jest@29.4.0(@babel/core@7.28.0)(@jest/transform@30.0.5)(@jest/types@30.0.5)(babel-jest@30.0.5(@babel/core@7.28.0))(esbuild@0.25.5)(jest-util@30.0.5)(jest@30.0.5(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.8.3)))(typescript@5.8.3):
     dependencies:
       bs-logger: 0.2.6
       ejs: 3.1.10
@@ -8395,10 +8311,10 @@ snapshots:
       typescript: 5.8.3
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@babel/core': 7.27.7
+      '@babel/core': 7.28.0
       '@jest/transform': 30.0.5
       '@jest/types': 30.0.5
-      babel-jest: 30.0.5(@babel/core@7.27.7)
+      babel-jest: 30.0.5(@babel/core@7.28.0)
       esbuild: 0.25.5
       jest-util: 30.0.5
 
@@ -8435,6 +8351,10 @@ snapshots:
   type-fest@0.21.3: {}
 
   type-fest@4.41.0: {}
+
+  type-fest@5.0.0:
+    dependencies:
+      tagged-tag: 1.0.0
 
   type-is@1.6.18:
     dependencies:

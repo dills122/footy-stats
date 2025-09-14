@@ -1,0 +1,15 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
+import { LeagueStore } from '../league.store';
+
+@Injectable({ providedIn: 'root' })
+export class DataLoaderService {
+  private http = inject(HttpClient);
+  private store = inject(LeagueStore);
+
+  async loadData() {
+    const data: any = await lastValueFrom(this.http.get('assets/seasons.json'));
+    this.store.hydrate(data);
+  }
+}
