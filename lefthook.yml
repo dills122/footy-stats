@@ -1,11 +1,18 @@
 pre-commit:
   commands:
-    check:
-      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: npx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+    lint-format:
+      # Only check relevant Angular/TS files
+      glob: '*.{ts,tsx,js,jsx,json,jsonc,css,scss,html}'
+      run: |
+        # Lint staged files with ESLint
+        npx eslint {staged_files} --fix
+
+        # Format staged files with Prettier
+        npx prettier --write {staged_files}
       stage_fixed: true
+
 pre-push:
   commands:
-    check:
-      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: npx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {push_files}
+    lint:
+      glob: '*.{ts,tsx,js,jsx,json,jsonc,css,scss,html}'
+      run: npx eslint {push_files}
