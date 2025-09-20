@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import type { LeagueState, LeagueTableEntry, Team } from './league.models';
 

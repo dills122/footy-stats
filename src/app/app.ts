@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { LeagueTablesViewerComponent } from './components/league-tables-viewer/league-tables-viewer';
@@ -10,7 +10,7 @@ import { DataLoaderService } from './store/services/hydrate-store-json';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('angular-mat-tailwind-starter');
   private dataLoader = inject(DataLoaderService);
 

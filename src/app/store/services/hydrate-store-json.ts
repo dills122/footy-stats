@@ -9,7 +9,7 @@ export class DataLoaderService {
   private store = inject(LeagueStore);
 
   async loadData() {
-    const data: any = await lastValueFrom(this.http.get('assets/seasons.json'));
+    const data: unknown = await lastValueFrom(this.http.get('assets/seasons.json'));
     this.store.hydrate(data);
   }
 }
