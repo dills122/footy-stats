@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import type { LeagueState, LeagueTableEntry, Team } from './league.models';
 
@@ -20,51 +21,46 @@ export const LeagueStore = signalStore(
         const year = +yearStr;
         seasons.push(year);
 
-        Object.entries(seasonData as any).forEach(
-          ([tierName, tierValue]: [string, any]) => {
-            const tableRows: any[] = Array.isArray(tierValue)
-              ? tierValue
-              : tierValue.table;
+        Object.entries(seasonData as any).forEach(([tierName, tierValue]: [string, any]) => {
+          const tableRows: any[] = Array.isArray(tierValue) ? tierValue : tierValue.table;
 
-            tableRows.forEach((row) => {
-              let teamId = teamsMap[row.team];
-              if (!teamId) {
-                teamId = nextTeamId++;
-                teamsMap[row.team] = teamId;
-              }
+          tableRows.forEach((row) => {
+            let teamId = teamsMap[row.team];
+            if (!teamId) {
+              teamId = nextTeamId++;
+              teamsMap[row.team] = teamId;
+            }
 
-              // Calculate goalDifference if not provided
-              const goalDifference =
-                row.goalDifference ??
-                (typeof row.goalsFor === 'number' &&
-                typeof row.goalsAgainst === 'number'
-                  ? row.goalsFor - row.goalsAgainst
-                  : null);
+            // Calculate goalDifference if not provided
+            const goalDifference =
+              row.goalDifference ??
+              (typeof row.goalsFor === 'number' && typeof row.goalsAgainst === 'number'
+                ? row.goalsFor - row.goalsAgainst
+                : null);
 
-              tables.push({
-                season: year,
-                tier: tierName,
-                teamId,
-                pos: row.pos,
-                played: row.played,
-                won: row.won,
-                drawn: row.drawn,
-                lost: row.lost,
-                goalsFor: row.goalsFor,
-                goalsAgainst: row.goalsAgainst,
-                goalDifference,
-                goalAverage: row.goalAverage,
-                points: row.points,
-                notes: row.notes,
-                wasRelegated: row.wasRelegated,
-                wasPromoted: row.wasPromoted,
-                isExpansionTeam: row.isExpansionTeam,
-                wasReElected: row.wasReElected,
-                wasReprieved: row.wasReprieved,
-              });
+            tables.push({
+              season: year,
+              tier: tierName,
+              teamId,
+              pos: row.pos,
+              played: row.played,
+              won: row.won,
+              drawn: row.drawn,
+              lost: row.lost,
+              goalsFor: row.goalsFor,
+              goalsAgainst: row.goalsAgainst,
+              goalDifference,
+              goalAverage: row.goalAverage,
+              points: row.points,
+              notes: row.notes,
+              wasRelegated: row.wasRelegated,
+              wasPromoted: row.wasPromoted,
+              isExpansionTeam: row.isExpansionTeam,
+              wasReElected: row.wasReElected,
+              wasReprieved: row.wasReprieved,
             });
-          }
-        );
+          });
+        });
       });
 
       // Build teams object
@@ -88,10 +84,7 @@ export const LeagueStore = signalStore(
     getTables(season?: number, tier?: string): LeagueTableEntry[] {
       return store
         .tables()
-        .filter(
-          (row) =>
-            (!season || row.season === season) && (!tier || row.tier === tier)
-        );
+        .filter((row) => (!season || row.season === season) && (!tier || row.tier === tier));
     },
 
     //Get all seasons & tiers so season/tier selectors can be populated

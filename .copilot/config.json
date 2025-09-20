@@ -1,12 +1,6 @@
 {
-  "ignore": [
-    "dist/**",
-    "node_modules/**",
-    "junk/**"
-  ],
-  "include": [
-    "src/**"
-  ],
+  "ignore": ["dist/**", "node_modules/**", "junk/**"],
+  "include": ["src/**"],
   "context": {
     "framework": "Angular 20",
     "ui": "Angular Material",
