@@ -700,9 +700,7 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Stoke"
-        ],
+        "relegated": ["Stoke"],
         "promoted": []
       },
       "tier2": [
@@ -1674,9 +1672,7 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Darwen"
-        ],
+        "relegated": ["Darwen"],
         "promoted": []
       },
       "tier2": [
@@ -5914,14 +5910,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bolton Wanderers",
-          "The Wednesday"
-        ],
-        "promoted": [
-          "Manchester City",
-          "Glossop North End"
-        ]
+        "relegated": ["Bolton Wanderers", "The Wednesday"],
+        "promoted": ["Manchester City", "Glossop North End"]
       },
       "tier2": [
         {
@@ -6615,14 +6605,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Burnley",
-          "Glossop"
-        ],
-        "promoted": [
-          "The Wednesday",
-          "Bolton Wanderers"
-        ]
+        "relegated": ["Burnley", "Glossop"],
+        "promoted": ["The Wednesday", "Bolton Wanderers"]
       },
       "tier2": [
         {
@@ -7316,14 +7300,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Preston North End",
-          "West Bromwich Albion"
-        ],
-        "promoted": [
-          "Grimsby Town",
-          "Small Heath"
-        ]
+        "relegated": ["Preston North End", "West Bromwich Albion"],
+        "promoted": ["Grimsby Town", "Small Heath"]
       },
       "tier2": [
         {
@@ -8017,14 +7995,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Small Heath",
-          "Manchester City"
-        ],
-        "promoted": [
-          "West Bromwich Albion",
-          "Middlesbrough"
-        ]
+        "relegated": ["Small Heath", "Manchester City"],
+        "promoted": ["West Bromwich Albion", "Middlesbrough"]
       },
       "tier2": [
         {
@@ -8718,14 +8690,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Grimsby Town",
-          "Bolton Wanderers"
-        ],
-        "promoted": [
-          "Manchester City",
-          "Small Heath"
-        ]
+        "relegated": ["Grimsby Town", "Bolton Wanderers"],
+        "promoted": ["Manchester City", "Small Heath"]
       },
       "tier2": [
         {
@@ -9419,14 +9385,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Liverpool",
-          "West Bromwich Albion"
-        ],
-        "promoted": [
-          "Preston North End",
-          "Woolwich Arsenal"
-        ]
+        "relegated": ["Liverpool", "West Bromwich Albion"],
+        "promoted": ["Preston North End", "Woolwich Arsenal"]
       },
       "tier2": [
         {
@@ -10121,10 +10081,7 @@
           }
         ],
         "relegated": [],
-        "promoted": [
-          "Liverpool",
-          "Bolton Wanderers"
-        ]
+        "promoted": ["Liverpool", "Bolton Wanderers"]
       },
       "tier2": [
         {
@@ -10856,14 +10813,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Nottingham Forest",
-          "Wolverhampton Wanderers"
-        ],
-        "promoted": [
-          "Bristol City",
-          "Manchester United"
-        ]
+        "relegated": ["Nottingham Forest", "Wolverhampton Wanderers"],
+        "promoted": ["Bristol City", "Manchester United"]
       },
       "tier2": [
         {
@@ -11633,14 +11584,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Derby County",
-          "Stoke"
-        ],
-        "promoted": [
-          "Nottingham Forest",
-          "Chelsea"
-        ]
+        "relegated": ["Derby County", "Stoke"],
+        "promoted": ["Nottingham Forest", "Chelsea"]
       },
       "tier2": [
         {
@@ -12410,14 +12355,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bolton Wanderers",
-          "Birmingham"
-        ],
-        "promoted": [
-          "Bradford City",
-          "Leicester Fosse"
-        ]
+        "relegated": ["Bolton Wanderers", "Birmingham"],
+        "promoted": ["Bradford City", "Leicester Fosse"]
       },
       "tier2": [
         {
@@ -13187,14 +13126,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "Leicester Fosse"
-        ],
-        "promoted": [
-          "Bolton Wanderers",
-          "Tottenham Hotspur"
-        ]
+        "relegated": ["Manchester City", "Leicester Fosse"],
+        "promoted": ["Bolton Wanderers", "Tottenham Hotspur"]
       },
       "tier2": [
         {
@@ -13964,14 +13897,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Chelsea",
-          "Bolton Wanderers"
-        ],
-        "promoted": [
-          "Manchester City",
-          "Oldham Athletic"
-        ]
+        "relegated": ["Chelsea", "Bolton Wanderers"],
+        "promoted": ["Manchester City", "Oldham Athletic"]
       },
       "tier2": [
         {
@@ -14741,14 +14668,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bristol City",
-          "Nottingham Forest"
-        ],
-        "promoted": [
-          "West Bromwich Albion",
-          "Bolton Wanderers"
-        ]
+        "relegated": ["Bristol City", "Nottingham Forest"],
+        "promoted": ["West Bromwich Albion", "Bolton Wanderers"]
       },
       "tier2": [
         {
@@ -15518,14 +15439,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Preston North End",
-          "Bury"
-        ],
-        "promoted": [
-          "Derby County",
-          "Chelsea"
-        ]
+        "relegated": ["Preston North End", "Bury"],
+        "promoted": ["Derby County", "Chelsea"]
       },
       "tier2": [
         {
@@ -16295,14 +16210,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Notts County",
-          "Woolwich Arsenal"
-        ],
-        "promoted": [
-          "Preston North End",
-          "Burnley"
-        ]
+        "relegated": ["Notts County", "Woolwich Arsenal"],
+        "promoted": ["Preston North End", "Burnley"]
       },
       "tier2": [
         {
@@ -17072,14 +16981,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Preston North End",
-          "Derby County"
-        ],
-        "promoted": [
-          "Notts County",
-          "Bradford (Park Avenue)"
-        ]
+        "relegated": ["Preston North End", "Derby County"],
+        "promoted": ["Notts County", "Bradford (Park Avenue)"]
       },
       "tier2": [
         {
@@ -17849,14 +17752,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Tottenham Hotspur"
-        ],
-        "promoted": [
-          "Derby County",
-          "Preston North End",
-          "Arsenal"
-        ]
+        "relegated": ["Tottenham Hotspur"],
+        "promoted": ["Derby County", "Preston North End", "Arsenal"]
       },
       "tier2": [
         {
@@ -18700,14 +18597,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Notts County",
-          "The Wednesday"
-        ],
-        "promoted": [
-          "Tottenham Hotspur",
-          "Huddersfield Town"
-        ]
+        "relegated": ["Notts County", "The Wednesday"],
+        "promoted": ["Tottenham Hotspur", "Huddersfield Town"]
       },
       "tier2": [
         {
@@ -19553,14 +19444,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Derby County",
-          "Bradford (Park Avenue)"
-        ],
-        "promoted": [
-          "Birmingham",
-          "Cardiff City"
-        ]
+        "relegated": ["Derby County", "Bradford (Park Avenue)"],
+        "promoted": ["Birmingham", "Cardiff City"]
       },
       "tier2": [
         {
@@ -20406,14 +20291,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bradford City",
-          "Manchester United"
-        ],
-        "promoted": [
-          "Nottingham Forest",
-          "Stoke"
-        ]
+        "relegated": ["Bradford City", "Manchester United"],
+        "promoted": ["Nottingham Forest", "Stoke"]
       },
       "tier2": [
         {
@@ -21259,14 +21138,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Stoke",
-          "Oldham Athletic"
-        ],
-        "promoted": [
-          "Notts County",
-          "West Ham United"
-        ]
+        "relegated": ["Stoke", "Oldham Athletic"],
+        "promoted": ["Notts County", "West Ham United"]
       },
       "tier2": [
         {
@@ -22112,14 +21985,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Chelsea",
-          "Middlesbrough"
-        ],
-        "promoted": [
-          "Leeds United",
-          "Bury"
-        ]
+        "relegated": ["Chelsea", "Middlesbrough"],
+        "promoted": ["Leeds United", "Bury"]
       },
       "tier2": [
         {
@@ -22965,14 +22832,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Preston North End",
-          "Nottingham Forest"
-        ],
-        "promoted": [
-          "Leicester City",
-          "Manchester United"
-        ]
+        "relegated": ["Preston North End", "Nottingham Forest"],
+        "promoted": ["Leicester City", "Manchester United"]
       },
       "tier2": [
         {
@@ -23818,14 +23679,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "Notts County"
-        ],
-        "promoted": [
-          "The Wednesday",
-          "Derby County"
-        ]
+        "relegated": ["Manchester City", "Notts County"],
+        "promoted": ["The Wednesday", "Derby County"]
       },
       "tier2": [
         {
@@ -24671,14 +24526,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leeds United",
-          "West Bromwich Albion"
-        ],
-        "promoted": [
-          "Middlesbrough",
-          "Portsmouth"
-        ]
+        "relegated": ["Leeds United", "West Bromwich Albion"],
+        "promoted": ["Middlesbrough", "Portsmouth"]
       },
       "tier2": [
         {
@@ -25524,14 +25373,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Tottenham Hotspur",
-          "Middlesbrough"
-        ],
-        "promoted": [
-          "Manchester City",
-          "Leeds United"
-        ]
+        "relegated": ["Tottenham Hotspur", "Middlesbrough"],
+        "promoted": ["Manchester City", "Leeds United"]
       },
       "tier2": [
         {
@@ -26377,14 +26220,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bury",
-          "Cardiff City"
-        ],
-        "promoted": [
-          "Middlesbrough",
-          "Grimsby Town"
-        ]
+        "relegated": ["Bury", "Cardiff City"],
+        "promoted": ["Middlesbrough", "Grimsby Town"]
       },
       "tier2": [
         {
@@ -27230,14 +27067,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Burnley",
-          "Everton"
-        ],
-        "promoted": [
-          "Blackpool",
-          "Chelsea"
-        ]
+        "relegated": ["Burnley", "Everton"],
+        "promoted": ["Blackpool", "Chelsea"]
       },
       "tier2": [
         {
@@ -28083,14 +27914,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leeds United",
-          "Manchester United"
-        ],
-        "promoted": [
-          "Everton",
-          "West Bromwich Albion"
-        ]
+        "relegated": ["Leeds United", "Manchester United"],
+        "promoted": ["Everton", "West Bromwich Albion"]
       },
       "tier2": [
         {
@@ -28936,14 +28761,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Grimsby Town",
-          "West Ham United"
-        ],
-        "promoted": [
-          "Wolverhampton Wanderers",
-          "Leeds United"
-        ]
+        "relegated": ["Grimsby Town", "West Ham United"],
+        "promoted": ["Wolverhampton Wanderers", "Leeds United"]
       },
       "tier2": [
         {
@@ -29789,14 +29608,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bolton Wanderers",
-          "Blackpool"
-        ],
-        "promoted": [
-          "Stoke City",
-          "Tottenham Hotspur"
-        ]
+        "relegated": ["Bolton Wanderers", "Blackpool"],
+        "promoted": ["Stoke City", "Tottenham Hotspur"]
       },
       "tier2": [
         {
@@ -30642,14 +30455,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Newcastle United",
-          "Sheffield United"
-        ],
-        "promoted": [
-          "Grimsby Town",
-          "Preston North End"
-        ]
+        "relegated": ["Newcastle United", "Sheffield United"],
+        "promoted": ["Grimsby Town", "Preston North End"]
       },
       "tier2": [
         {
@@ -31495,14 +31302,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leicester City",
-          "Tottenham Hotspur"
-        ],
-        "promoted": [
-          "Brentford",
-          "Bolton Wanderers"
-        ]
+        "relegated": ["Leicester City", "Tottenham Hotspur"],
+        "promoted": ["Brentford", "Bolton Wanderers"]
       },
       "tier2": [
         {
@@ -32348,14 +32149,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Aston Villa",
-          "Blackburn Rovers"
-        ],
-        "promoted": [
-          "Manchester United",
-          "Charlton Athletic"
-        ]
+        "relegated": ["Aston Villa", "Blackburn Rovers"],
+        "promoted": ["Manchester United", "Charlton Athletic"]
       },
       "tier2": [
         {
@@ -33201,14 +32996,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester United",
-          "Sheffield Wednesday"
-        ],
-        "promoted": [
-          "Leicester City",
-          "Blackpool"
-        ]
+        "relegated": ["Manchester United", "Sheffield Wednesday"],
+        "promoted": ["Leicester City", "Blackpool"]
       },
       "tier2": [
         {
@@ -34054,14 +33843,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "West Bromwich Albion"
-        ],
-        "promoted": [
-          "Aston Villa",
-          "Manchester United"
-        ]
+        "relegated": ["Manchester City", "West Bromwich Albion"],
+        "promoted": ["Aston Villa", "Manchester United"]
       },
       "tier2": [
         {
@@ -34907,14 +34690,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Birmingham",
-          "Leicester City"
-        ],
-        "promoted": [
-          "Blackburn Rovers",
-          "Sheffield United"
-        ]
+        "relegated": ["Birmingham", "Leicester City"],
+        "promoted": ["Blackburn Rovers", "Sheffield United"]
       },
       "tier2": [
         {
@@ -35760,14 +35537,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Middlesbrough",
-          "Leeds United"
-        ],
-        "promoted": [
-          "Luton Town",
-          "Birmingham"
-        ]
+        "relegated": ["Middlesbrough", "Leeds United"],
+        "promoted": ["Luton Town", "Birmingham"]
       },
       "tier2": [
         {
@@ -36667,14 +36438,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Brentford",
-          "Leeds United"
-        ],
-        "promoted": [
-          "Manchester City",
-          "Burnley"
-        ]
+        "relegated": ["Brentford", "Leeds United"],
+        "promoted": ["Manchester City", "Burnley"]
       },
       "tier2": [
         {
@@ -37520,14 +37285,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Blackburn Rovers",
-          "Grimsby Town"
-        ],
-        "promoted": [
-          "Birmingham City",
-          "Newcastle United"
-        ]
+        "relegated": ["Blackburn Rovers", "Grimsby Town"],
+        "promoted": ["Birmingham City", "Newcastle United"]
       },
       "tier2": [
         {
@@ -38373,14 +38132,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Preston North End",
-          "Sheffield United"
-        ],
-        "promoted": [
-          "Fulham",
-          "West Bromwich Albion"
-        ]
+        "relegated": ["Preston North End", "Sheffield United"],
+        "promoted": ["Fulham", "West Bromwich Albion"]
       },
       "tier2": [
         {
@@ -39226,14 +38979,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "Birmingham City"
-        ],
-        "promoted": [
-          "Tottenham Hotspur",
-          "Sheffield Wednesday"
-        ]
+        "relegated": ["Manchester City", "Birmingham City"],
+        "promoted": ["Tottenham Hotspur", "Sheffield Wednesday"]
       },
       "tier2": [
         {
@@ -40079,14 +39826,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sheffield Wednesday",
-          "Everton"
-        ],
-        "promoted": [
-          "Preston North End",
-          "Manchester City"
-        ]
+        "relegated": ["Sheffield Wednesday", "Everton"],
+        "promoted": ["Preston North End", "Manchester City"]
       },
       "tier2": [
         {
@@ -40932,14 +40673,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Huddersfield Town",
-          "Fulham"
-        ],
-        "promoted": [
-          "Sheffield Wednesday",
-          "Cardiff City"
-        ]
+        "relegated": ["Huddersfield Town", "Fulham"],
+        "promoted": ["Sheffield Wednesday", "Cardiff City"]
       },
       "tier2": [
         {
@@ -41785,14 +41520,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Stoke City",
-          "Derby County"
-        ],
-        "promoted": [
-          "Sheffield United",
-          "Huddersfield Town"
-        ]
+        "relegated": ["Stoke City", "Derby County"],
+        "promoted": ["Sheffield United", "Huddersfield Town"]
       },
       "tier2": [
         {
@@ -42638,14 +42367,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Middlesbrough",
-          "Liverpool"
-        ],
-        "promoted": [
-          "Leicester City",
-          "Everton"
-        ]
+        "relegated": ["Middlesbrough", "Liverpool"],
+        "promoted": ["Leicester City", "Everton"]
       },
       "tier2": [
         {
@@ -43491,14 +43214,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leicester City",
-          "Sheffield Wednesday"
-        ],
-        "promoted": [
-          "Birmingham City",
-          "Luton Town"
-        ]
+        "relegated": ["Leicester City", "Sheffield Wednesday"],
+        "promoted": ["Birmingham City", "Luton Town"]
       },
       "tier2": [
         {
@@ -44344,14 +44061,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Huddersfield Town",
-          "Sheffield United"
-        ],
-        "promoted": [
-          "Sheffield Wednesday",
-          "Leeds United"
-        ]
+        "relegated": ["Huddersfield Town", "Sheffield United"],
+        "promoted": ["Sheffield Wednesday", "Leeds United"]
       },
       "tier2": [
         {
@@ -45197,14 +44908,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Cardiff City",
-          "Charlton Athletic"
-        ],
-        "promoted": [
-          "Leicester City",
-          "Nottingham Forest"
-        ]
+        "relegated": ["Cardiff City", "Charlton Athletic"],
+        "promoted": ["Leicester City", "Nottingham Forest"]
       },
       "tier2": [
         {
@@ -46050,14 +45755,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sunderland",
-          "Sheffield Wednesday"
-        ],
-        "promoted": [
-          "West Ham United",
-          "Blackburn Rovers"
-        ]
+        "relegated": ["Sunderland", "Sheffield Wednesday"],
+        "promoted": ["West Ham United", "Blackburn Rovers"]
       },
       "tier2": [
         {
@@ -46903,14 +46602,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Aston Villa",
-          "Portsmouth"
-        ],
-        "promoted": [
-          "Sheffield Wednesday",
-          "Fulham"
-        ]
+        "relegated": ["Aston Villa", "Portsmouth"],
+        "promoted": ["Sheffield Wednesday", "Fulham"]
       },
       "tier2": [
         {
@@ -47756,14 +47449,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leeds United",
-          "Luton Town"
-        ],
-        "promoted": [
-          "Aston Villa",
-          "Cardiff City"
-        ]
+        "relegated": ["Leeds United", "Luton Town"],
+        "promoted": ["Aston Villa", "Cardiff City"]
       },
       "tier2": [
         {
@@ -48609,14 +48296,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Newcastle United",
-          "Preston North End"
-        ],
-        "promoted": [
-          "Ipswich Town",
-          "Sheffield United"
-        ]
+        "relegated": ["Newcastle United", "Preston North End"],
+        "promoted": ["Ipswich Town", "Sheffield United"]
       },
       "tier2": [
         {
@@ -49462,14 +49143,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Cardiff City",
-          "Chelsea"
-        ],
-        "promoted": [
-          "Liverpool",
-          "Leyton Orient"
-        ]
+        "relegated": ["Cardiff City", "Chelsea"],
+        "promoted": ["Liverpool", "Leyton Orient"]
       },
       "tier2": [
         {
@@ -50315,14 +49990,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "Leyton Orient"
-        ],
-        "promoted": [
-          "Stoke City",
-          "Chelsea"
-        ]
+        "relegated": ["Manchester City", "Leyton Orient"],
+        "promoted": ["Stoke City", "Chelsea"]
       },
       "tier2": [
         {
@@ -51168,14 +50837,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bolton Wanderers",
-          "Ipswich Town"
-        ],
-        "promoted": [
-          "Leeds United",
-          "Sunderland"
-        ]
+        "relegated": ["Bolton Wanderers", "Ipswich Town"],
+        "promoted": ["Leeds United", "Sunderland"]
       },
       "tier2": [
         {
@@ -52021,14 +51684,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Wolverhampton Wanderers",
-          "Birmingham City"
-        ],
-        "promoted": [
-          "Newcastle United",
-          "Northampton Town"
-        ]
+        "relegated": ["Wolverhampton Wanderers", "Birmingham City"],
+        "promoted": ["Newcastle United", "Northampton Town"]
       },
       "tier2": [
         {
@@ -52874,14 +52531,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Northampton Town",
-          "Blackburn Rovers"
-        ],
-        "promoted": [
-          "Manchester City",
-          "Southampton"
-        ]
+        "relegated": ["Northampton Town", "Blackburn Rovers"],
+        "promoted": ["Manchester City", "Southampton"]
       },
       "tier2": [
         {
@@ -53727,14 +53378,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Aston Villa",
-          "Blackpool"
-        ],
-        "promoted": [
-          "Coventry City",
-          "Wolverhampton Wanderers"
-        ]
+        "relegated": ["Aston Villa", "Blackpool"],
+        "promoted": ["Coventry City", "Wolverhampton Wanderers"]
       },
       "tier2": [
         {
@@ -54580,14 +54225,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sheffield United",
-          "Fulham"
-        ],
-        "promoted": [
-          "Ipswich Town",
-          "Queens Park Rangers"
-        ]
+        "relegated": ["Sheffield United", "Fulham"],
+        "promoted": ["Ipswich Town", "Queens Park Rangers"]
       },
       "tier2": [
         {
@@ -55433,14 +55072,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leicester City",
-          "Queens Park Rangers"
-        ],
-        "promoted": [
-          "Derby County",
-          "Crystal Palace"
-        ]
+        "relegated": ["Leicester City", "Queens Park Rangers"],
+        "promoted": ["Derby County", "Crystal Palace"]
       },
       "tier2": [
         {
@@ -56286,14 +55919,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sunderland",
-          "Sheffield Wednesday"
-        ],
-        "promoted": [
-          "Huddersfield Town",
-          "Blackpool"
-        ]
+        "relegated": ["Sunderland", "Sheffield Wednesday"],
+        "promoted": ["Huddersfield Town", "Blackpool"]
       },
       "tier2": [
         {
@@ -57139,14 +56766,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Burnley",
-          "Blackpool"
-        ],
-        "promoted": [
-          "Leicester City",
-          "Sheffield United"
-        ]
+        "relegated": ["Burnley", "Blackpool"],
+        "promoted": ["Leicester City", "Sheffield United"]
       },
       "tier2": [
         {
@@ -57992,14 +57613,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Nottingham Forest",
-          "Huddersfield Town"
-        ],
-        "promoted": [
-          "Norwich City",
-          "Birmingham City"
-        ]
+        "relegated": ["Nottingham Forest", "Huddersfield Town"],
+        "promoted": ["Norwich City", "Birmingham City"]
       },
       "tier2": [
         {
@@ -58845,14 +58460,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Crystal Palace",
-          "West Bromwich Albion"
-        ],
-        "promoted": [
-          "Burnley",
-          "Queens Park Rangers"
-        ]
+        "relegated": ["Crystal Palace", "West Bromwich Albion"],
+        "promoted": ["Burnley", "Queens Park Rangers"]
       },
       "tier2": [
         {
@@ -59698,16 +59307,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Southampton",
-          "Manchester United",
-          "Norwich City"
-        ],
-        "promoted": [
-          "Middlesbrough",
-          "Luton Town",
-          "Carlisle United"
-        ]
+        "relegated": ["Southampton", "Manchester United", "Norwich City"],
+        "promoted": ["Middlesbrough", "Luton Town", "Carlisle United"]
       },
       "tier2": [
         {
@@ -60553,16 +60154,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Luton Town",
-          "Chelsea",
-          "Carlisle United"
-        ],
-        "promoted": [
-          "Manchester United",
-          "Aston Villa",
-          "Norwich City"
-        ]
+        "relegated": ["Luton Town", "Chelsea", "Carlisle United"],
+        "promoted": ["Manchester United", "Aston Villa", "Norwich City"]
       },
       "tier2": [
         {
@@ -61408,16 +61001,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Wolverhampton Wanderers",
-          "Burnley",
-          "Sheffield United"
-        ],
-        "promoted": [
-          "Sunderland",
-          "Bristol City",
-          "West Bromwich Albion"
-        ]
+        "relegated": ["Wolverhampton Wanderers", "Burnley", "Sheffield United"],
+        "promoted": ["Sunderland", "Bristol City", "West Bromwich Albion"]
       },
       "tier2": [
         {
@@ -62263,16 +61848,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sunderland",
-          "Stoke City",
-          "Tottenham Hotspur"
-        ],
-        "promoted": [
-          "Wolverhampton Wanderers",
-          "Chelsea",
-          "Nottingham Forest"
-        ]
+        "relegated": ["Sunderland", "Stoke City", "Tottenham Hotspur"],
+        "promoted": ["Wolverhampton Wanderers", "Chelsea", "Nottingham Forest"]
       },
       "tier2": [
         {
@@ -63118,16 +62695,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "West Ham United",
-          "Newcastle United",
-          "Leicester City"
-        ],
-        "promoted": [
-          "Bolton Wanderers",
-          "Southampton",
-          "Tottenham Hotspur"
-        ]
+        "relegated": ["West Ham United", "Newcastle United", "Leicester City"],
+        "promoted": ["Bolton Wanderers", "Southampton", "Tottenham Hotspur"]
       },
       "tier2": [
         {
@@ -63973,16 +63542,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Queens Park Rangers",
-          "Birmingham City",
-          "Chelsea"
-        ],
-        "promoted": [
-          "Crystal Palace",
-          "Brighton & Hove Albion",
-          "Stoke City"
-        ]
+        "relegated": ["Queens Park Rangers", "Birmingham City", "Chelsea"],
+        "promoted": ["Crystal Palace", "Brighton & Hove Albion", "Stoke City"]
       },
       "tier2": [
         {
@@ -64828,16 +64389,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bristol City",
-          "Derby County",
-          "Bolton Wanderers"
-        ],
-        "promoted": [
-          "Leicester City",
-          "Sunderland",
-          "Birmingham City"
-        ]
+        "relegated": ["Bristol City", "Derby County", "Bolton Wanderers"],
+        "promoted": ["Leicester City", "Sunderland", "Birmingham City"]
       },
       "tier2": [
         {
@@ -65683,16 +65236,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Norwich City",
-          "Leicester City",
-          "Crystal Palace"
-        ],
-        "promoted": [
-          "West Ham United",
-          "Notts County",
-          "Swansea City"
-        ]
+        "relegated": ["Norwich City", "Leicester City", "Crystal Palace"],
+        "promoted": ["West Ham United", "Notts County", "Swansea City"]
       },
       "tier2": [
         {
@@ -66538,16 +66083,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leeds United",
-          "Wolverhampton Wanderers",
-          "Middlesbrough"
-        ],
-        "promoted": [
-          "Luton Town",
-          "Watford",
-          "Norwich City"
-        ]
+        "relegated": ["Leeds United", "Wolverhampton Wanderers", "Middlesbrough"],
+        "promoted": ["Luton Town", "Watford", "Norwich City"]
       },
       "tier2": [
         {
@@ -67393,16 +66930,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "Swansea City",
-          "Brighton & Hove Albion"
-        ],
-        "promoted": [
-          "Queens Park Rangers",
-          "Wolverhampton Wanderers",
-          "Leicester City"
-        ]
+        "relegated": ["Manchester City", "Swansea City", "Brighton & Hove Albion"],
+        "promoted": ["Queens Park Rangers", "Wolverhampton Wanderers", "Leicester City"]
       },
       "tier2": [
         {
@@ -68248,16 +67777,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Birmingham City",
-          "Notts County",
-          "Wolverhampton Wanderers"
-        ],
-        "promoted": [
-          "Chelsea",
-          "Sheffield Wednesday",
-          "Newcastle United"
-        ]
+        "relegated": ["Birmingham City", "Notts County", "Wolverhampton Wanderers"],
+        "promoted": ["Chelsea", "Sheffield Wednesday", "Newcastle United"]
       },
       "tier2": [
         {
@@ -69103,16 +68624,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Norwich City",
-          "Sunderland",
-          "Stoke City"
-        ],
-        "promoted": [
-          "Oxford United",
-          "Birmingham City",
-          "Manchester City"
-        ]
+        "relegated": ["Norwich City", "Sunderland", "Stoke City"],
+        "promoted": ["Oxford United", "Birmingham City", "Manchester City"]
       },
       "tier2": [
         {
@@ -69958,16 +69471,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Ipswich Town",
-          "Birmingham City",
-          "West Bromwich Albion"
-        ],
-        "promoted": [
-          "Norwich City",
-          "Charlton Athletic",
-          "Wimbledon"
-        ]
+        "relegated": ["Ipswich Town", "Birmingham City", "West Bromwich Albion"],
+        "promoted": ["Norwich City", "Charlton Athletic", "Wimbledon"]
       },
       "tier2": [
         {
@@ -70813,15 +70318,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Leicester City",
-          "Manchester City",
-          "Aston Villa"
-        ],
-        "promoted": [
-          "Derby County",
-          "Portsmouth"
-        ]
+        "relegated": ["Leicester City", "Manchester City", "Aston Villa"],
+        "promoted": ["Derby County", "Portsmouth"]
       },
       "tier2": [
         {
@@ -71648,15 +71146,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Portsmouth",
-          "Watford",
-          "Oxford United"
-        ],
-        "promoted": [
-          "Millwall",
-          "Aston Villa"
-        ]
+        "relegated": ["Portsmouth", "Watford", "Oxford United"],
+        "promoted": ["Millwall", "Aston Villa"]
       },
       "tier2": [
         {
@@ -72483,15 +71974,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Middlesbrough",
-          "West Ham United",
-          "Newcastle United"
-        ],
-        "promoted": [
-          "Chelsea",
-          "Manchester City"
-        ]
+        "relegated": ["Middlesbrough", "West Ham United", "Newcastle United"],
+        "promoted": ["Chelsea", "Manchester City"]
       },
       "tier2": [
         {
@@ -73337,15 +72821,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sheffield Wednesday",
-          "Charlton Athletic",
-          "Millwall"
-        ],
-        "promoted": [
-          "Leeds United",
-          "Sheffield United"
-        ]
+        "relegated": ["Sheffield Wednesday", "Charlton Athletic", "Millwall"],
+        "promoted": ["Leeds United", "Sheffield United"]
       },
       "tier2": [
         {
@@ -74191,15 +73668,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Sunderland",
-          "Derby County"
-        ],
-        "promoted": [
-          "Oldham Athletic",
-          "West Ham United",
-          "Sheffield Wednesday"
-        ]
+        "relegated": ["Sunderland", "Derby County"],
+        "promoted": ["Oldham Athletic", "West Ham United", "Sheffield Wednesday"]
       },
       "tier2": [
         {
@@ -75083,15 +74553,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Luton Town",
-          "Notts County",
-          "West Ham United"
-        ],
-        "promoted": [
-          "Ipswich Town",
-          "Middlesbrough"
-        ]
+        "relegated": ["Luton Town", "Notts County", "West Ham United"],
+        "promoted": ["Ipswich Town", "Middlesbrough"]
       },
       "tier2": [
         {
@@ -76013,15 +75476,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Brentford",
-          "Cambridge United",
-          "Bristol Rovers"
-        ],
-        "promoted": [
-          "Stoke City",
-          "Bolton Wanderers"
-        ]
+        "relegated": ["Brentford", "Cambridge United", "Bristol Rovers"],
+        "promoted": ["Stoke City", "Bolton Wanderers"]
       },
       "tier2": [
         {
@@ -76943,15 +76399,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Birmingham City",
-          "Oxford United",
-          "Peterborough United"
-        ],
-        "promoted": [
-          "Reading",
-          "Port Vale"
-        ]
+        "relegated": ["Birmingham City", "Oxford United", "Peterborough United"],
+        "promoted": ["Reading", "Port Vale"]
       },
       "tier2": [
         {
@@ -77873,15 +77322,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Swindon Town",
-          "Burnley",
-          "Bristol City",
-          "Notts County"
-        ],
-        "promoted": [
-          "Birmingham City"
-        ]
+        "relegated": ["Swindon Town", "Burnley", "Bristol City", "Notts County"],
+        "promoted": ["Birmingham City"]
       },
       "tier2": [
         {
@@ -78803,15 +78245,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Millwall",
-          "Watford",
-          "Luton Town"
-        ],
-        "promoted": [
-          "Swindon Town",
-          "Oxford United"
-        ]
+        "relegated": ["Millwall", "Watford", "Luton Town"],
+        "promoted": ["Swindon Town", "Oxford United"]
       },
       "tier2": [
         {
@@ -79733,15 +79168,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Grimsby Town",
-          "Oldham Athletic",
-          "Southend United"
-        ],
-        "promoted": [
-          "Bury",
-          "Stockport County"
-        ]
+        "relegated": ["Grimsby Town", "Oldham Athletic", "Southend United"],
+        "promoted": ["Bury", "Stockport County"]
       },
       "tier2": [
         {
@@ -80663,15 +80091,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Manchester City",
-          "Stoke City",
-          "Reading"
-        ],
-        "promoted": [
-          "Watford",
-          "Bristol City"
-        ]
+        "relegated": ["Manchester City", "Stoke City", "Reading"],
+        "promoted": ["Watford", "Bristol City"]
       },
       "tier2": [
         {
@@ -81593,15 +81014,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Bury",
-          "Oxford United",
-          "Bristol City"
-        ],
-        "promoted": [
-          "Fulham",
-          "Walsall"
-        ]
+        "relegated": ["Bury", "Oxford United", "Bristol City"],
+        "promoted": ["Fulham", "Walsall"]
       },
       "tier2": [
         {
@@ -82523,15 +81937,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Walsall",
-          "Port Vale",
-          "Swindon Town"
-        ],
-        "promoted": [
-          "Preston North End",
-          "Burnley"
-        ]
+        "relegated": ["Walsall", "Port Vale", "Swindon Town"],
+        "promoted": ["Preston North End", "Burnley"]
       },
       "tier2": [
         {
@@ -83453,15 +82860,8 @@
             "wasReprieved": false
           }
         ],
-        "relegated": [
-          "Huddersfield Town",
-          "Queens Park Rangers",
-          "Tranmere Rovers"
-        ],
-        "promoted": [
-          "Millwall",
-          "Rotherham United"
-        ]
+        "relegated": ["Huddersfield Town", "Queens Park Rangers", "Tranmere Rovers"],
+        "promoted": ["Millwall", "Rotherham United"]
       },
       "tier2": [
         {

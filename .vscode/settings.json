@@ -13,9 +13,5 @@
     "src/**/*.html",
     "src/**/*.scss"
   ],
-  "github.copilot.chat.ignoreFiles": [
-    "dist/**",
-    "node_modules/**",
-    "junk/**"
-  ]
+  "github.copilot.chat.ignoreFiles": ["dist/**", "node_modules/**", "junk/**"]
 }

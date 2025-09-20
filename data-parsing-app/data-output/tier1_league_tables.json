@@ -148,18 +148,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Preston North End",
-        "Aston Villa",
-        "Wolverhampton Wanderers",
-        "Blackburn Rovers"
-      ],
-      "bottom4": [
-        "Burnley",
-        "Derby County",
-        "Notts County",
-        "Stoke City"
-      ]
+      "top4": ["Preston North End", "Aston Villa", "Wolverhampton Wanderers", "Blackburn Rovers"],
+      "bottom4": ["Burnley", "Derby County", "Notts County", "Stoke City"]
     }
   },
   "1889": {
@@ -311,18 +301,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Preston North End",
-        "Everton",
-        "Blackburn Rovers",
-        "Wolverhampton Wanderers"
-      ],
-      "bottom4": [
-        "Bolton Wanderers",
-        "Notts County",
-        "Burnley",
-        "Stoke City"
-      ]
+      "top4": ["Preston North End", "Everton", "Blackburn Rovers", "Wolverhampton Wanderers"],
+      "bottom4": ["Bolton Wanderers", "Notts County", "Burnley", "Stoke City"]
     }
   },
   "1890": {
@@ -474,18 +454,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Preston North End",
-        "Notts County",
-        "Wolverhampton Wanderers"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "Accrington F.C.",
-        "Derby County",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Everton", "Preston North End", "Notts County", "Wolverhampton Wanderers"],
+      "bottom4": ["Aston Villa", "Accrington F.C.", "Derby County", "West Bromwich Albion"]
     }
   },
   "1891": {
@@ -661,18 +631,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sunderland",
-        "Preston North End",
-        "Bolton Wanderers",
-        "Aston Villa"
-      ],
-      "bottom4": [
-        "Accrington F.C.",
-        "West Bromwich Albion",
-        "Stoke City",
-        "Darwen"
-      ]
+      "top4": ["Sunderland", "Preston North End", "Bolton Wanderers", "Aston Villa"],
+      "bottom4": ["Accrington F.C.", "West Bromwich Albion", "Stoke City", "Darwen"]
     }
   },
   "1892": {
@@ -872,18 +832,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sunderland",
-        "Preston North End",
-        "Everton",
-        "Aston Villa"
-      ],
-      "bottom4": [
-        "Derby County",
-        "Notts County",
-        "Accrington F.C.",
-        "Manchester United"
-      ]
+      "top4": ["Sunderland", "Preston North End", "Everton", "Aston Villa"],
+      "bottom4": ["Derby County", "Notts County", "Accrington F.C.", "Manchester United"]
     }
   },
   "1893": {
@@ -1083,18 +1033,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Sunderland",
-        "Derby County",
-        "Blackburn Rovers"
-      ],
-      "bottom4": [
-        "Bolton Wanderers",
-        "Preston North End",
-        "Darwen",
-        "Manchester United"
-      ]
+      "top4": ["Aston Villa", "Sunderland", "Derby County", "Blackburn Rovers"],
+      "bottom4": ["Bolton Wanderers", "Preston North End", "Darwen", "Manchester United"]
     }
   },
   "1894": {
@@ -1294,18 +1234,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sunderland",
-        "Everton",
-        "Aston Villa",
-        "Preston North End"
-      ],
-      "bottom4": [
-        "West Bromwich Albion",
-        "Stoke City",
-        "Derby County",
-        "Liverpool"
-      ]
+      "top4": ["Sunderland", "Everton", "Aston Villa", "Preston North End"],
+      "bottom4": ["West Bromwich Albion", "Stoke City", "Derby County", "Liverpool"]
     }
   },
   "1895": {
@@ -1505,12 +1435,7 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Derby County",
-        "Everton",
-        "Bolton Wanderers"
-      ],
+      "top4": ["Aston Villa", "Derby County", "Everton", "Bolton Wanderers"],
       "bottom4": [
         "Nottingham Forest",
         "Wolverhampton Wanderers",
@@ -1716,18 +1641,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Sheffield United",
-        "Derby County",
-        "Preston North End"
-      ],
-      "bottom4": [
-        "Stoke City",
-        "Blackburn Rovers",
-        "Sunderland",
-        "Burnley"
-      ]
+      "top4": ["Aston Villa", "Sheffield United", "Derby County", "Preston North End"],
+      "bottom4": ["Stoke City", "Blackburn Rovers", "Sunderland", "Burnley"]
     }
   },
   "1897": {
@@ -1927,18 +1842,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sheffield United",
-        "Sunderland",
-        "Wolverhampton Wanderers",
-        "Everton"
-      ],
-      "bottom4": [
-        "Notts County",
-        "Bury",
-        "Blackburn Rovers",
-        "Stoke City"
-      ]
+      "top4": ["Sheffield United", "Sunderland", "Wolverhampton Wanderers", "Everton"],
+      "bottom4": ["Notts County", "Bury", "Blackburn Rovers", "Stoke City"]
     }
   },
   "1898": {
@@ -2162,12 +2067,7 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Liverpool",
-        "Burnley",
-        "Everton"
-      ],
+      "top4": ["Aston Villa", "Liverpool", "Burnley", "Everton"],
       "bottom4": [
         "Preston North End",
         "Sheffield United",
@@ -2397,18 +2297,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Sheffield United",
-        "Sunderland",
-        "Wolverhampton Wanderers"
-      ],
-      "bottom4": [
-        "Notts County",
-        "Preston North End",
-        "Burnley",
-        "Glossop North End"
-      ]
+      "top4": ["Aston Villa", "Sheffield United", "Sunderland", "Wolverhampton Wanderers"],
+      "bottom4": ["Notts County", "Preston North End", "Burnley", "Glossop North End"]
     }
   },
   "1900": {
@@ -2632,18 +2522,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Sunderland",
-        "Notts County",
-        "Nottingham Forest"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "Stoke City",
-        "Preston North End",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Liverpool", "Sunderland", "Notts County", "Nottingham Forest"],
+      "bottom4": ["Aston Villa", "Stoke City", "Preston North End", "West Bromwich Albion"]
     }
   },
   "1901": {
@@ -2867,18 +2747,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sunderland",
-        "Everton",
-        "Newcastle United",
-        "Blackburn Rovers"
-      ],
-      "bottom4": [
-        "Grimsby Town",
-        "Stoke City",
-        "Birmingham City",
-        "Manchester City"
-      ]
+      "top4": ["Sunderland", "Everton", "Newcastle United", "Blackburn Rovers"],
+      "bottom4": ["Grimsby Town", "Stoke City", "Birmingham City", "Manchester City"]
     }
   },
   "1902": {
@@ -3102,18 +2972,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sheffield Wednesday",
-        "Aston Villa",
-        "Sunderland",
-        "Sheffield United"
-      ],
-      "bottom4": [
-        "Notts County",
-        "Blackburn Rovers",
-        "Grimsby Town",
-        "Bolton Wanderers"
-      ]
+      "top4": ["Sheffield Wednesday", "Aston Villa", "Sunderland", "Sheffield United"],
+      "bottom4": ["Notts County", "Blackburn Rovers", "Grimsby Town", "Bolton Wanderers"]
     }
   },
   "1903": {
@@ -3337,18 +3197,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sheffield Wednesday",
-        "Manchester City",
-        "Everton",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Blackburn Rovers",
-        "Stoke City",
-        "Liverpool",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Sheffield Wednesday", "Manchester City", "Everton", "Newcastle United"],
+      "bottom4": ["Blackburn Rovers", "Stoke City", "Liverpool", "West Bromwich Albion"]
     }
   },
   "1904": {
@@ -3572,18 +3422,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Newcastle United",
-        "Everton",
-        "Manchester City",
-        "Aston Villa"
-      ],
-      "bottom4": [
-        "Middlesbrough",
-        "Nottingham Forest",
-        "Bury",
-        "Notts County"
-      ]
+      "top4": ["Newcastle United", "Everton", "Manchester City", "Aston Villa"],
+      "bottom4": ["Middlesbrough", "Nottingham Forest", "Bury", "Notts County"]
     }
   },
   "1905": {
@@ -3831,18 +3671,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Preston North End",
-        "Sheffield Wednesday",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Bury",
-        "Middlesbrough",
-        "Nottingham Forest",
-        "Wolverhampton Wanderers"
-      ]
+      "top4": ["Liverpool", "Preston North End", "Sheffield Wednesday", "Newcastle United"],
+      "bottom4": ["Bury", "Middlesbrough", "Nottingham Forest", "Wolverhampton Wanderers"]
     }
   },
   "1906": {
@@ -4090,18 +3920,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Newcastle United",
-        "Bristol City",
-        "Everton",
-        "Sheffield United"
-      ],
-      "bottom4": [
-        "Manchester City",
-        "Notts County",
-        "Derby County",
-        "Stoke City"
-      ]
+      "top4": ["Newcastle United", "Bristol City", "Everton", "Sheffield United"],
+      "bottom4": ["Manchester City", "Notts County", "Derby County", "Stoke City"]
     }
   },
   "1907": {
@@ -4349,18 +4169,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Aston Villa",
-        "Manchester City",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Sheffield United",
-        "Notts County",
-        "Bolton Wanderers",
-        "Birmingham City"
-      ]
+      "top4": ["Manchester United", "Aston Villa", "Manchester City", "Newcastle United"],
+      "bottom4": ["Sheffield United", "Notts County", "Bolton Wanderers", "Birmingham City"]
     }
   },
   "1908": {
@@ -4608,18 +4418,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Newcastle United",
-        "Everton",
-        "Sunderland",
-        "Blackburn Rovers"
-      ],
-      "bottom4": [
-        "Bury",
-        "Bradford City",
-        "Manchester City",
-        "Leicester City"
-      ]
+      "top4": ["Newcastle United", "Everton", "Sunderland", "Blackburn Rovers"],
+      "bottom4": ["Bury", "Bradford City", "Manchester City", "Leicester City"]
     }
   },
   "1909": {
@@ -4867,18 +4667,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Liverpool",
-        "Blackburn Rovers",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Middlesbrough",
-        "Arsenal",
-        "Chelsea",
-        "Bolton Wanderers"
-      ]
+      "top4": ["Aston Villa", "Liverpool", "Blackburn Rovers", "Newcastle United"],
+      "bottom4": ["Middlesbrough", "Arsenal", "Chelsea", "Bolton Wanderers"]
     }
   },
   "1910": {
@@ -5126,18 +4916,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Aston Villa",
-        "Sunderland",
-        "Everton"
-      ],
-      "bottom4": [
-        "Manchester City",
-        "Bury",
-        "Bristol City",
-        "Nottingham Forest"
-      ]
+      "top4": ["Manchester United", "Aston Villa", "Sunderland", "Everton"],
+      "bottom4": ["Manchester City", "Bury", "Bristol City", "Nottingham Forest"]
     }
   },
   "1911": {
@@ -5385,18 +5165,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Blackburn Rovers",
-        "Everton",
-        "Newcastle United",
-        "Bolton Wanderers"
-      ],
-      "bottom4": [
-        "Liverpool",
-        "Oldham Athletic",
-        "Preston North End",
-        "Bury"
-      ]
+      "top4": ["Blackburn Rovers", "Everton", "Newcastle United", "Bolton Wanderers"],
+      "bottom4": ["Liverpool", "Oldham Athletic", "Preston North End", "Bury"]
     }
   },
   "1912": {
@@ -5644,18 +5414,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sunderland",
-        "Aston Villa",
-        "Sheffield Wednesday",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Tottenham Hotspur",
-        "Chelsea",
-        "Notts County",
-        "Arsenal"
-      ]
+      "top4": ["Sunderland", "Aston Villa", "Sheffield Wednesday", "Manchester United"],
+      "bottom4": ["Tottenham Hotspur", "Chelsea", "Notts County", "Arsenal"]
     }
   },
   "1913": {
@@ -5903,18 +5663,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Blackburn Rovers",
-        "Aston Villa",
-        "Middlesbrough",
-        "Oldham Athletic"
-      ],
-      "bottom4": [
-        "Tottenham Hotspur",
-        "Sheffield Wednesday",
-        "Preston North End",
-        "Derby County"
-      ]
+      "top4": ["Blackburn Rovers", "Aston Villa", "Middlesbrough", "Oldham Athletic"],
+      "bottom4": ["Tottenham Hotspur", "Sheffield Wednesday", "Preston North End", "Derby County"]
     }
   },
   "1914": {
@@ -6162,18 +5912,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Oldham Athletic",
-        "Blackburn Rovers",
-        "Burnley"
-      ],
-      "bottom4": [
-        "Bolton Wanderers",
-        "Manchester United",
-        "Chelsea",
-        "Tottenham Hotspur"
-      ]
+      "top4": ["Everton", "Oldham Athletic", "Blackburn Rovers", "Burnley"],
+      "bottom4": ["Bolton Wanderers", "Manchester United", "Chelsea", "Tottenham Hotspur"]
     }
   },
   "1919": {
@@ -6445,18 +6185,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "West Bromwich Albion",
-        "Burnley",
-        "Chelsea",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Preston North End",
-        "Blackburn Rovers",
-        "Notts County",
-        "Sheffield Wednesday"
-      ]
+      "top4": ["West Bromwich Albion", "Burnley", "Chelsea", "Liverpool"],
+      "bottom4": ["Preston North End", "Blackburn Rovers", "Notts County", "Sheffield Wednesday"]
     }
   },
   "1920": {
@@ -6728,18 +6458,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Burnley",
-        "Manchester City",
-        "Bolton Wanderers",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Oldham Athletic",
-        "Sheffield United",
-        "Derby County",
-        "Bradford Park Avenue"
-      ]
+      "top4": ["Burnley", "Manchester City", "Bolton Wanderers", "Liverpool"],
+      "bottom4": ["Oldham Athletic", "Sheffield United", "Derby County", "Bradford Park Avenue"]
     }
   },
   "1921": {
@@ -7011,18 +6731,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Tottenham Hotspur",
-        "Burnley",
-        "Cardiff City"
-      ],
-      "bottom4": [
-        "Oldham Athletic",
-        "Everton",
-        "Bradford City",
-        "Manchester United"
-      ]
+      "top4": ["Liverpool", "Tottenham Hotspur", "Burnley", "Cardiff City"],
+      "bottom4": ["Oldham Athletic", "Everton", "Bradford City", "Manchester United"]
     }
   },
   "1922": {
@@ -7294,18 +7004,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Sunderland",
-        "Huddersfield Town",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Chelsea",
-        "Nottingham Forest",
-        "Stoke City",
-        "Oldham Athletic"
-      ]
+      "top4": ["Liverpool", "Sunderland", "Huddersfield Town", "Newcastle United"],
+      "bottom4": ["Chelsea", "Nottingham Forest", "Stoke City", "Oldham Athletic"]
     }
   },
   "1923": {
@@ -7577,18 +7277,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Huddersfield Town",
-        "Cardiff City",
-        "Sunderland",
-        "Bolton Wanderers"
-      ],
-      "bottom4": [
-        "Arsenal",
-        "Nottingham Forest",
-        "Chelsea",
-        "Middlesbrough"
-      ]
+      "top4": ["Huddersfield Town", "Cardiff City", "Sunderland", "Bolton Wanderers"],
+      "bottom4": ["Arsenal", "Nottingham Forest", "Chelsea", "Middlesbrough"]
     }
   },
   "1924": {
@@ -7860,18 +7550,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Huddersfield Town",
-        "West Bromwich Albion",
-        "Bolton Wanderers",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Burnley",
-        "Arsenal",
-        "Preston North End",
-        "Nottingham Forest"
-      ]
+      "top4": ["Huddersfield Town", "West Bromwich Albion", "Bolton Wanderers", "Liverpool"],
+      "bottom4": ["Burnley", "Arsenal", "Preston North End", "Nottingham Forest"]
     }
   },
   "1925": {
@@ -8143,18 +7823,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Huddersfield Town",
-        "Arsenal",
-        "Sunderland",
-        "Bury"
-      ],
-      "bottom4": [
-        "Leeds United",
-        "Burnley",
-        "Manchester City",
-        "Notts County"
-      ]
+      "top4": ["Huddersfield Town", "Arsenal", "Sunderland", "Bury"],
+      "bottom4": ["Leeds United", "Burnley", "Manchester City", "Notts County"]
     }
   },
   "1926": {
@@ -8426,18 +8096,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Newcastle United",
-        "Huddersfield Town",
-        "Sunderland",
-        "Bolton Wanderers"
-      ],
-      "bottom4": [
-        "Bury",
-        "Everton",
-        "Leeds United",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Newcastle United", "Huddersfield Town", "Sunderland", "Bolton Wanderers"],
+      "bottom4": ["Bury", "Everton", "Leeds United", "West Bromwich Albion"]
     }
   },
   "1927": {
@@ -8709,18 +8369,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Huddersfield Town",
-        "Leicester City",
-        "Derby County"
-      ],
-      "bottom4": [
-        "Burnley",
-        "Portsmouth",
-        "Tottenham Hotspur",
-        "Middlesbrough"
-      ]
+      "top4": ["Everton", "Huddersfield Town", "Leicester City", "Derby County"],
+      "bottom4": ["Burnley", "Portsmouth", "Tottenham Hotspur", "Middlesbrough"]
     }
   },
   "1928": {
@@ -8992,18 +8642,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sheffield Wednesday",
-        "Leicester City",
-        "Aston Villa",
-        "Sunderland"
-      ],
-      "bottom4": [
-        "Burnley",
-        "Portsmouth",
-        "Bury",
-        "Cardiff City"
-      ]
+      "top4": ["Sheffield Wednesday", "Leicester City", "Aston Villa", "Sunderland"],
+      "bottom4": ["Burnley", "Portsmouth", "Bury", "Cardiff City"]
     }
   },
   "1929": {
@@ -9275,18 +8915,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sheffield Wednesday",
-        "Derby County",
-        "Manchester City",
-        "Aston Villa"
-      ],
-      "bottom4": [
-        "Newcastle United",
-        "Sheffield United",
-        "Burnley",
-        "Everton"
-      ]
+      "top4": ["Sheffield Wednesday", "Derby County", "Manchester City", "Aston Villa"],
+      "bottom4": ["Newcastle United", "Sheffield United", "Burnley", "Everton"]
     }
   },
   "1930": {
@@ -9558,18 +9188,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Aston Villa",
-        "Sheffield Wednesday",
-        "Portsmouth"
-      ],
-      "bottom4": [
-        "Birmingham City",
-        "Blackpool",
-        "Leeds United",
-        "Manchester United"
-      ]
+      "top4": ["Arsenal", "Aston Villa", "Sheffield Wednesday", "Portsmouth"],
+      "bottom4": ["Birmingham City", "Blackpool", "Leeds United", "Manchester United"]
     }
   },
   "1931": {
@@ -9841,18 +9461,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Arsenal",
-        "Sheffield Wednesday",
-        "Huddersfield Town"
-      ],
-      "bottom4": [
-        "Leicester City",
-        "Blackpool",
-        "Grimsby Town",
-        "West Ham United"
-      ]
+      "top4": ["Everton", "Arsenal", "Sheffield Wednesday", "Huddersfield Town"],
+      "bottom4": ["Leicester City", "Blackpool", "Grimsby Town", "West Ham United"]
     }
   },
   "1932": {
@@ -10124,18 +9734,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Aston Villa",
-        "Sheffield Wednesday",
-        "West Bromwich Albion"
-      ],
-      "bottom4": [
-        "Leicester City",
-        "Wolverhampton Wanderers",
-        "Bolton Wanderers",
-        "Blackpool"
-      ]
+      "top4": ["Arsenal", "Aston Villa", "Sheffield Wednesday", "West Bromwich Albion"],
+      "bottom4": ["Leicester City", "Wolverhampton Wanderers", "Bolton Wanderers", "Blackpool"]
     }
   },
   "1933": {
@@ -10407,18 +10007,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Huddersfield Town",
-        "Tottenham Hotspur",
-        "Derby County"
-      ],
-      "bottom4": [
-        "Chelsea",
-        "Birmingham City",
-        "Newcastle United",
-        "Sheffield United"
-      ]
+      "top4": ["Arsenal", "Huddersfield Town", "Tottenham Hotspur", "Derby County"],
+      "bottom4": ["Chelsea", "Birmingham City", "Newcastle United", "Sheffield United"]
     }
   },
   "1934": {
@@ -10690,18 +10280,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Sunderland",
-        "Sheffield Wednesday",
-        "Manchester City"
-      ],
-      "bottom4": [
-        "Birmingham City",
-        "Middlesbrough",
-        "Leicester City",
-        "Tottenham Hotspur"
-      ]
+      "top4": ["Arsenal", "Sunderland", "Sheffield Wednesday", "Manchester City"],
+      "bottom4": ["Birmingham City", "Middlesbrough", "Leicester City", "Tottenham Hotspur"]
     }
   },
   "1935": {
@@ -10973,18 +10553,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Sunderland",
-        "Derby County",
-        "Huddersfield Town",
-        "Stoke City"
-      ],
-      "bottom4": [
-        "Liverpool",
-        "Sheffield Wednesday",
-        "Aston Villa",
-        "Blackburn Rovers"
-      ]
+      "top4": ["Sunderland", "Derby County", "Huddersfield Town", "Stoke City"],
+      "bottom4": ["Liverpool", "Sheffield Wednesday", "Aston Villa", "Blackburn Rovers"]
     }
   },
   "1936": {
@@ -11256,18 +10826,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Charlton Athletic",
-        "Arsenal",
-        "Derby County"
-      ],
-      "bottom4": [
-        "Leeds United",
-        "Bolton Wanderers",
-        "Manchester United",
-        "Sheffield Wednesday"
-      ]
+      "top4": ["Manchester City", "Charlton Athletic", "Arsenal", "Derby County"],
+      "bottom4": ["Leeds United", "Bolton Wanderers", "Manchester United", "Sheffield Wednesday"]
     }
   },
   "1937": {
@@ -11539,18 +11099,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Wolverhampton Wanderers",
-        "Preston North End",
-        "Charlton Athletic"
-      ],
-      "bottom4": [
-        "Portsmouth",
-        "Grimsby Town",
-        "Manchester City",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Arsenal", "Wolverhampton Wanderers", "Preston North End", "Charlton Athletic"],
+      "bottom4": ["Portsmouth", "Grimsby Town", "Manchester City", "West Bromwich Albion"]
     }
   },
   "1938": {
@@ -11822,18 +11372,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Wolverhampton Wanderers",
-        "Charlton Athletic",
-        "Middlesbrough"
-      ],
-      "bottom4": [
-        "Huddersfield Town",
-        "Chelsea",
-        "Birmingham City",
-        "Leicester City"
-      ]
+      "top4": ["Everton", "Wolverhampton Wanderers", "Charlton Athletic", "Middlesbrough"],
+      "bottom4": ["Huddersfield Town", "Chelsea", "Birmingham City", "Leicester City"]
     }
   },
   "1946": {
@@ -12105,18 +11645,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Manchester United",
-        "Wolverhampton Wanderers",
-        "Stoke City"
-      ],
-      "bottom4": [
-        "Charlton Athletic",
-        "Huddersfield Town",
-        "Brentford",
-        "Leeds United"
-      ]
+      "top4": ["Liverpool", "Manchester United", "Wolverhampton Wanderers", "Stoke City"],
+      "bottom4": ["Charlton Athletic", "Huddersfield Town", "Brentford", "Leeds United"]
     }
   },
   "1947": {
@@ -12388,18 +11918,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Manchester United",
-        "Burnley",
-        "Derby County"
-      ],
-      "bottom4": [
-        "Huddersfield Town",
-        "Sunderland",
-        "Blackburn Rovers",
-        "Grimsby Town"
-      ]
+      "top4": ["Arsenal", "Manchester United", "Burnley", "Derby County"],
+      "bottom4": ["Huddersfield Town", "Sunderland", "Blackburn Rovers", "Grimsby Town"]
     }
   },
   "1948": {
@@ -12671,18 +12191,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Portsmouth",
-        "Manchester United",
-        "Derby County",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Middlesbrough",
-        "Huddersfield Town",
-        "Preston North End",
-        "Sheffield United"
-      ]
+      "top4": ["Portsmouth", "Manchester United", "Derby County", "Newcastle United"],
+      "bottom4": ["Middlesbrough", "Huddersfield Town", "Preston North End", "Sheffield United"]
     }
   },
   "1949": {
@@ -12954,18 +12464,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Portsmouth",
-        "Wolverhampton Wanderers",
-        "Sunderland",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Stoke City",
-        "Charlton Athletic",
-        "Manchester City",
-        "Birmingham City"
-      ]
+      "top4": ["Portsmouth", "Wolverhampton Wanderers", "Sunderland", "Manchester United"],
+      "bottom4": ["Stoke City", "Charlton Athletic", "Manchester City", "Birmingham City"]
     }
   },
   "1950": {
@@ -13237,18 +12737,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Tottenham Hotspur",
-        "Manchester United",
-        "Blackpool",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Huddersfield Town",
-        "Chelsea",
-        "Sheffield Wednesday",
-        "Everton"
-      ]
+      "top4": ["Tottenham Hotspur", "Manchester United", "Blackpool", "Newcastle United"],
+      "bottom4": ["Huddersfield Town", "Chelsea", "Sheffield Wednesday", "Everton"]
     }
   },
   "1951": {
@@ -13520,18 +13010,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Tottenham Hotspur",
-        "Arsenal",
-        "Portsmouth"
-      ],
-      "bottom4": [
-        "Chelsea",
-        "Stoke City",
-        "Huddersfield Town",
-        "Fulham"
-      ]
+      "top4": ["Manchester United", "Tottenham Hotspur", "Arsenal", "Portsmouth"],
+      "bottom4": ["Chelsea", "Stoke City", "Huddersfield Town", "Fulham"]
     }
   },
   "1952": {
@@ -13803,18 +13283,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Preston North End",
-        "Wolverhampton Wanderers",
-        "West Bromwich Albion"
-      ],
-      "bottom4": [
-        "Chelsea",
-        "Manchester City",
-        "Stoke City",
-        "Derby County"
-      ]
+      "top4": ["Arsenal", "Preston North End", "Wolverhampton Wanderers", "West Bromwich Albion"],
+      "bottom4": ["Chelsea", "Manchester City", "Stoke City", "Derby County"]
     }
   },
   "1953": {
@@ -14092,12 +13562,7 @@
         "Huddersfield Town",
         "Manchester United"
       ],
-      "bottom4": [
-        "Sheffield Wednesday",
-        "Sheffield United",
-        "Middlesbrough",
-        "Liverpool"
-      ]
+      "bottom4": ["Sheffield Wednesday", "Sheffield United", "Middlesbrough", "Liverpool"]
     }
   },
   "1954": {
@@ -14369,18 +13834,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Chelsea",
-        "Wolverhampton Wanderers",
-        "Portsmouth",
-        "Sunderland"
-      ],
-      "bottom4": [
-        "Blackpool",
-        "Cardiff City",
-        "Leicester City",
-        "Sheffield Wednesday"
-      ]
+      "top4": ["Chelsea", "Wolverhampton Wanderers", "Portsmouth", "Sunderland"],
+      "bottom4": ["Blackpool", "Cardiff City", "Leicester City", "Sheffield Wednesday"]
     }
   },
   "1955": {
@@ -14652,18 +14107,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Blackpool",
-        "Wolverhampton Wanderers",
-        "Manchester City"
-      ],
-      "bottom4": [
-        "Preston North End",
-        "Aston Villa",
-        "Huddersfield Town",
-        "Sheffield United"
-      ]
+      "top4": ["Manchester United", "Blackpool", "Wolverhampton Wanderers", "Manchester City"],
+      "bottom4": ["Preston North End", "Aston Villa", "Huddersfield Town", "Sheffield United"]
     }
   },
   "1956": {
@@ -14935,18 +14380,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Tottenham Hotspur",
-        "Preston North End",
-        "Blackpool"
-      ],
-      "bottom4": [
-        "Portsmouth",
-        "Sunderland",
-        "Cardiff City",
-        "Charlton Athletic"
-      ]
+      "top4": ["Manchester United", "Tottenham Hotspur", "Preston North End", "Blackpool"],
+      "bottom4": ["Portsmouth", "Sunderland", "Cardiff City", "Charlton Athletic"]
     }
   },
   "1957": {
@@ -15224,12 +14659,7 @@
         "Tottenham Hotspur",
         "West Bromwich Albion"
       ],
-      "bottom4": [
-        "Newcastle United",
-        "Portsmouth",
-        "Sunderland",
-        "Sheffield Wednesday"
-      ]
+      "bottom4": ["Newcastle United", "Portsmouth", "Sunderland", "Sheffield Wednesday"]
     }
   },
   "1958": {
@@ -15501,18 +14931,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Wolverhampton Wanderers",
-        "Manchester United",
-        "Arsenal",
-        "Bolton Wanderers"
-      ],
-      "bottom4": [
-        "Leicester City",
-        "Manchester City",
-        "Aston Villa",
-        "Portsmouth"
-      ]
+      "top4": ["Wolverhampton Wanderers", "Manchester United", "Arsenal", "Bolton Wanderers"],
+      "bottom4": ["Leicester City", "Manchester City", "Aston Villa", "Portsmouth"]
     }
   },
   "1959": {
@@ -15784,18 +15204,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Burnley",
-        "Wolverhampton Wanderers",
-        "Tottenham Hotspur",
-        "West Bromwich Albion"
-      ],
-      "bottom4": [
-        "Birmingham City",
-        "Nottingham Forest",
-        "Leeds United",
-        "Luton Town"
-      ]
+      "top4": ["Burnley", "Wolverhampton Wanderers", "Tottenham Hotspur", "West Bromwich Albion"],
+      "bottom4": ["Birmingham City", "Nottingham Forest", "Leeds United", "Luton Town"]
     }
   },
   "1960": {
@@ -16067,18 +15477,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Tottenham Hotspur",
-        "Sheffield Wednesday",
-        "Wolverhampton Wanderers",
-        "Burnley"
-      ],
-      "bottom4": [
-        "Birmingham City",
-        "Blackpool",
-        "Newcastle United",
-        "Preston North End"
-      ]
+      "top4": ["Tottenham Hotspur", "Sheffield Wednesday", "Wolverhampton Wanderers", "Burnley"],
+      "bottom4": ["Birmingham City", "Blackpool", "Newcastle United", "Preston North End"]
     }
   },
   "1961": {
@@ -16350,18 +15750,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Ipswich Town",
-        "Burnley",
-        "Tottenham Hotspur",
-        "Everton"
-      ],
-      "bottom4": [
-        "Nottingham Forest",
-        "Fulham",
-        "Cardiff City",
-        "Chelsea"
-      ]
+      "top4": ["Ipswich Town", "Burnley", "Tottenham Hotspur", "Everton"],
+      "bottom4": ["Nottingham Forest", "Fulham", "Cardiff City", "Chelsea"]
     }
   },
   "1962": {
@@ -16633,18 +16023,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Tottenham Hotspur",
-        "Burnley",
-        "Leicester City"
-      ],
-      "bottom4": [
-        "Manchester United",
-        "Birmingham City",
-        "Manchester City",
-        "Leyton Orient"
-      ]
+      "top4": ["Everton", "Tottenham Hotspur", "Burnley", "Leicester City"],
+      "bottom4": ["Manchester United", "Birmingham City", "Manchester City", "Leyton Orient"]
     }
   },
   "1963": {
@@ -16916,18 +16296,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Manchester United",
-        "Everton",
-        "Tottenham Hotspur"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "Birmingham City",
-        "Bolton Wanderers",
-        "Ipswich Town"
-      ]
+      "top4": ["Liverpool", "Manchester United", "Everton", "Tottenham Hotspur"],
+      "bottom4": ["Aston Villa", "Birmingham City", "Bolton Wanderers", "Ipswich Town"]
     }
   },
   "1964": {
@@ -17199,18 +16569,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Leeds United",
-        "Chelsea",
-        "Everton"
-      ],
-      "bottom4": [
-        "Sheffield United",
-        "Fulham",
-        "Wolverhampton Wanderers",
-        "Birmingham City"
-      ]
+      "top4": ["Manchester United", "Leeds United", "Chelsea", "Everton"],
+      "bottom4": ["Sheffield United", "Fulham", "Wolverhampton Wanderers", "Birmingham City"]
     }
   },
   "1965": {
@@ -17482,18 +16842,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Leeds United",
-        "Burnley",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Sunderland",
-        "Fulham",
-        "Northampton Town",
-        "Blackburn Rovers"
-      ]
+      "top4": ["Liverpool", "Leeds United", "Burnley", "Manchester United"],
+      "bottom4": ["Sunderland", "Fulham", "Northampton Town", "Blackburn Rovers"]
     }
   },
   "1966": {
@@ -17765,18 +17115,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Nottingham Forest",
-        "Tottenham Hotspur",
-        "Leeds United"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Newcastle United",
-        "Aston Villa",
-        "Blackpool"
-      ]
+      "top4": ["Manchester United", "Nottingham Forest", "Tottenham Hotspur", "Leeds United"],
+      "bottom4": ["Southampton", "Newcastle United", "Aston Villa", "Blackpool"]
     }
   },
   "1967": {
@@ -18048,18 +17388,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Manchester United",
-        "Liverpool",
-        "Leeds United"
-      ],
-      "bottom4": [
-        "Sheffield Wednesday",
-        "Coventry City",
-        "Sheffield United",
-        "Fulham"
-      ]
+      "top4": ["Manchester City", "Manchester United", "Liverpool", "Leeds United"],
+      "bottom4": ["Sheffield Wednesday", "Coventry City", "Sheffield United", "Fulham"]
     }
   },
   "1968": {
@@ -18331,18 +17661,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Leeds United",
-        "Liverpool",
-        "Everton",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Stoke City",
-        "Coventry City",
-        "Leicester City",
-        "Queens Park Rangers"
-      ]
+      "top4": ["Leeds United", "Liverpool", "Everton", "Arsenal"],
+      "bottom4": ["Stoke City", "Coventry City", "Leicester City", "Queens Park Rangers"]
     }
   },
   "1969": {
@@ -18614,18 +17934,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Leeds United",
-        "Chelsea",
-        "Derby County"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Crystal Palace",
-        "Sunderland",
-        "Sheffield Wednesday"
-      ]
+      "top4": ["Everton", "Leeds United", "Chelsea", "Derby County"],
+      "bottom4": ["Southampton", "Crystal Palace", "Sunderland", "Sheffield Wednesday"]
     }
   },
   "1970": {
@@ -18897,18 +18207,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Leeds United",
-        "Tottenham Hotspur",
-        "Wolverhampton Wanderers"
-      ],
-      "bottom4": [
-        "Ipswich Town",
-        "West Ham United",
-        "Burnley",
-        "Blackpool"
-      ]
+      "top4": ["Arsenal", "Leeds United", "Tottenham Hotspur", "Wolverhampton Wanderers"],
+      "bottom4": ["Ipswich Town", "West Ham United", "Burnley", "Blackpool"]
     }
   },
   "1971": {
@@ -19180,18 +18480,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Derby County",
-        "Leeds United",
-        "Liverpool",
-        "Manchester City"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Crystal Palace",
-        "Nottingham Forest",
-        "Huddersfield Town"
-      ]
+      "top4": ["Derby County", "Leeds United", "Liverpool", "Manchester City"],
+      "bottom4": ["Southampton", "Crystal Palace", "Nottingham Forest", "Huddersfield Town"]
     }
   },
   "1972": {
@@ -19463,18 +18753,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Arsenal",
-        "Leeds United",
-        "Ipswich Town"
-      ],
-      "bottom4": [
-        "Coventry City",
-        "Norwich City",
-        "Crystal Palace",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Liverpool", "Arsenal", "Leeds United", "Ipswich Town"],
+      "bottom4": ["Coventry City", "Norwich City", "Crystal Palace", "West Bromwich Albion"]
     }
   },
   "1973": {
@@ -19746,18 +19026,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Leeds United",
-        "Liverpool",
-        "Derby County",
-        "Ipswich Town"
-      ],
-      "bottom4": [
-        "Birmingham City",
-        "Southampton",
-        "Manchester United",
-        "Norwich City"
-      ]
+      "top4": ["Leeds United", "Liverpool", "Derby County", "Ipswich Town"],
+      "bottom4": ["Birmingham City", "Southampton", "Manchester United", "Norwich City"]
     }
   },
   "1974": {
@@ -20029,18 +19299,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Derby County",
-        "Liverpool",
-        "Ipswich Town",
-        "Everton"
-      ],
-      "bottom4": [
-        "Tottenham Hotspur",
-        "Luton Town",
-        "Chelsea",
-        "Carlisle United"
-      ]
+      "top4": ["Derby County", "Liverpool", "Ipswich Town", "Everton"],
+      "bottom4": ["Tottenham Hotspur", "Luton Town", "Chelsea", "Carlisle United"]
     }
   },
   "1975": {
@@ -20312,18 +19572,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Queens Park Rangers",
-        "Manchester United",
-        "Derby County"
-      ],
-      "bottom4": [
-        "Birmingham City",
-        "Wolverhampton Wanderers",
-        "Burnley",
-        "Sheffield United"
-      ]
+      "top4": ["Liverpool", "Queens Park Rangers", "Manchester United", "Derby County"],
+      "bottom4": ["Birmingham City", "Wolverhampton Wanderers", "Burnley", "Sheffield United"]
     }
   },
   "1976": {
@@ -20595,18 +19845,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Manchester City",
-        "Ipswich Town",
-        "Aston Villa"
-      ],
-      "bottom4": [
-        "Coventry City",
-        "Sunderland",
-        "Stoke City",
-        "Tottenham Hotspur"
-      ]
+      "top4": ["Liverpool", "Manchester City", "Ipswich Town", "Aston Villa"],
+      "bottom4": ["Coventry City", "Sunderland", "Stoke City", "Tottenham Hotspur"]
     }
   },
   "1977": {
@@ -20878,18 +20118,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Nottingham Forest",
-        "Liverpool",
-        "Everton",
-        "Manchester City"
-      ],
-      "bottom4": [
-        "Queens Park Rangers",
-        "West Ham United",
-        "Newcastle United",
-        "Leicester City"
-      ]
+      "top4": ["Nottingham Forest", "Liverpool", "Everton", "Manchester City"],
+      "bottom4": ["Queens Park Rangers", "West Ham United", "Newcastle United", "Leicester City"]
     }
   },
   "1978": {
@@ -21161,18 +20391,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Nottingham Forest",
-        "West Bromwich Albion",
-        "Everton"
-      ],
-      "bottom4": [
-        "Derby County",
-        "Queens Park Rangers",
-        "Birmingham City",
-        "Chelsea"
-      ]
+      "top4": ["Liverpool", "Nottingham Forest", "West Bromwich Albion", "Everton"],
+      "bottom4": ["Derby County", "Queens Park Rangers", "Birmingham City", "Chelsea"]
     }
   },
   "1979": {
@@ -21444,18 +20664,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Manchester United",
-        "Ipswich Town",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Everton",
-        "Bristol City",
-        "Derby County",
-        "Bolton Wanderers"
-      ]
+      "top4": ["Liverpool", "Manchester United", "Ipswich Town", "Arsenal"],
+      "bottom4": ["Everton", "Bristol City", "Derby County", "Bolton Wanderers"]
     }
   },
   "1980": {
@@ -21727,18 +20937,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Aston Villa",
-        "Ipswich Town",
-        "Arsenal",
-        "West Bromwich Albion"
-      ],
-      "bottom4": [
-        "Brighton & Hove Albion",
-        "Norwich City",
-        "Leicester City",
-        "Crystal Palace"
-      ]
+      "top4": ["Aston Villa", "Ipswich Town", "Arsenal", "West Bromwich Albion"],
+      "bottom4": ["Brighton & Hove Albion", "Norwich City", "Leicester City", "Crystal Palace"]
     }
   },
   "1981": {
@@ -22010,18 +21210,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Ipswich Town",
-        "Manchester United",
-        "Tottenham Hotspur"
-      ],
-      "bottom4": [
-        "Sunderland",
-        "Leeds United",
-        "Wolverhampton Wanderers",
-        "Middlesbrough"
-      ]
+      "top4": ["Liverpool", "Ipswich Town", "Manchester United", "Tottenham Hotspur"],
+      "bottom4": ["Sunderland", "Leeds United", "Wolverhampton Wanderers", "Middlesbrough"]
     }
   },
   "1982": {
@@ -22293,18 +21483,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Watford",
-        "Manchester United",
-        "Tottenham Hotspur"
-      ],
-      "bottom4": [
-        "Coventry City",
-        "Manchester City",
-        "Swansea City",
-        "Brighton & Hove Albion"
-      ]
+      "top4": ["Liverpool", "Watford", "Manchester United", "Tottenham Hotspur"],
+      "bottom4": ["Coventry City", "Manchester City", "Swansea City", "Brighton & Hove Albion"]
     }
   },
   "1983": {
@@ -22576,18 +21756,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Southampton",
-        "Nottingham Forest",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Coventry City",
-        "Birmingham City",
-        "Notts County",
-        "Wolverhampton Wanderers"
-      ]
+      "top4": ["Liverpool", "Southampton", "Nottingham Forest", "Manchester United"],
+      "bottom4": ["Coventry City", "Birmingham City", "Notts County", "Wolverhampton Wanderers"]
     }
   },
   "1984": {
@@ -22859,18 +22029,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Liverpool",
-        "Tottenham Hotspur",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Queens Park Rangers",
-        "Norwich City",
-        "Sunderland",
-        "Stoke City"
-      ]
+      "top4": ["Everton", "Liverpool", "Tottenham Hotspur", "Manchester United"],
+      "bottom4": ["Queens Park Rangers", "Norwich City", "Sunderland", "Stoke City"]
     }
   },
   "1985": {
@@ -23142,18 +22302,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Everton",
-        "West Ham United",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Leicester City",
-        "Ipswich Town",
-        "Birmingham City",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Liverpool", "Everton", "West Ham United", "Manchester United"],
+      "bottom4": ["Leicester City", "Ipswich Town", "Birmingham City", "West Bromwich Albion"]
     }
   },
   "1986": {
@@ -23425,18 +22575,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Everton",
-        "Liverpool",
-        "Tottenham Hotspur",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Charlton Athletic",
-        "Leicester City",
-        "Manchester City",
-        "Aston Villa"
-      ]
+      "top4": ["Everton", "Liverpool", "Tottenham Hotspur", "Arsenal"],
+      "bottom4": ["Charlton Athletic", "Leicester City", "Manchester City", "Aston Villa"]
     }
   },
   "1987": {
@@ -23696,18 +22836,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Manchester United",
-        "Nottingham Forest",
-        "Everton"
-      ],
-      "bottom4": [
-        "Chelsea",
-        "Portsmouth",
-        "Watford",
-        "Oxford United"
-      ]
+      "top4": ["Liverpool", "Manchester United", "Nottingham Forest", "Everton"],
+      "bottom4": ["Chelsea", "Portsmouth", "Watford", "Oxford United"]
     }
   },
   "1988": {
@@ -23955,18 +23085,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Liverpool",
-        "Nottingham Forest",
-        "Norwich City"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "Middlesbrough",
-        "West Ham United",
-        "Newcastle United"
-      ]
+      "top4": ["Arsenal", "Liverpool", "Nottingham Forest", "Norwich City"],
+      "bottom4": ["Aston Villa", "Middlesbrough", "West Ham United", "Newcastle United"]
     }
   },
   "1989": {
@@ -24214,18 +23334,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Aston Villa",
-        "Tottenham Hotspur",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Luton Town",
-        "Sheffield Wednesday",
-        "Charlton Athletic",
-        "Millwall"
-      ]
+      "top4": ["Liverpool", "Aston Villa", "Tottenham Hotspur", "Arsenal"],
+      "bottom4": ["Luton Town", "Sheffield Wednesday", "Charlton Athletic", "Millwall"]
     }
   },
   "1990": {
@@ -24473,18 +23583,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Liverpool",
-        "Crystal Palace",
-        "Leeds United"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "Luton Town",
-        "Sunderland",
-        "Derby County"
-      ]
+      "top4": ["Arsenal", "Liverpool", "Crystal Palace", "Leeds United"],
+      "bottom4": ["Aston Villa", "Luton Town", "Sunderland", "Derby County"]
     }
   },
   "1991": {
@@ -24756,18 +23856,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Leeds United",
-        "Manchester United",
-        "Sheffield Wednesday",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Coventry City",
-        "Luton Town",
-        "Notts County",
-        "West Ham United"
-      ]
+      "top4": ["Leeds United", "Manchester United", "Sheffield Wednesday", "Arsenal"],
+      "bottom4": ["Coventry City", "Luton Town", "Notts County", "West Ham United"]
     }
   },
   "1992": {
@@ -25039,18 +24129,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Aston Villa",
-        "Norwich City",
-        "Blackburn Rovers"
-      ],
-      "bottom4": [
-        "Oldham Athletic",
-        "Crystal Palace",
-        "Middlesbrough",
-        "Nottingham Forest"
-      ]
+      "top4": ["Manchester United", "Aston Villa", "Norwich City", "Blackburn Rovers"],
+      "bottom4": ["Oldham Athletic", "Crystal Palace", "Middlesbrough", "Nottingham Forest"]
     }
   },
   "1993": {
@@ -25322,18 +24402,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Blackburn Rovers",
-        "Newcastle United",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Ipswich Town",
-        "Sheffield United",
-        "Oldham Athletic",
-        "Swindon Town"
-      ]
+      "top4": ["Manchester United", "Blackburn Rovers", "Newcastle United", "Arsenal"],
+      "bottom4": ["Ipswich Town", "Sheffield United", "Oldham Athletic", "Swindon Town"]
     }
   },
   "1994": {
@@ -25605,18 +24675,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Blackburn Rovers",
-        "Manchester United",
-        "Nottingham Forest",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Crystal Palace",
-        "Norwich City",
-        "Leicester City",
-        "Ipswich Town"
-      ]
+      "top4": ["Blackburn Rovers", "Manchester United", "Nottingham Forest", "Liverpool"],
+      "bottom4": ["Crystal Palace", "Norwich City", "Leicester City", "Ipswich Town"]
     }
   },
   "1995": {
@@ -25864,18 +24924,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Newcastle United",
-        "Liverpool",
-        "Aston Villa"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Manchester City",
-        "Queens Park Rangers",
-        "Bolton Wanderers"
-      ]
+      "top4": ["Manchester United", "Newcastle United", "Liverpool", "Aston Villa"],
+      "bottom4": ["Southampton", "Manchester City", "Queens Park Rangers", "Bolton Wanderers"]
     }
   },
   "1996": {
@@ -26123,18 +25173,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Newcastle United",
-        "Arsenal",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Coventry City",
-        "Sunderland",
-        "Nottingham Forest"
-      ]
+      "top4": ["Manchester United", "Newcastle United", "Arsenal", "Liverpool"],
+      "bottom4": ["Southampton", "Coventry City", "Sunderland", "Nottingham Forest"]
     }
   },
   "1997": {
@@ -26382,18 +25422,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Manchester United",
-        "Liverpool",
-        "Chelsea"
-      ],
-      "bottom4": [
-        "Everton",
-        "Bolton Wanderers",
-        "Barnsley",
-        "Crystal Palace"
-      ]
+      "top4": ["Arsenal", "Manchester United", "Liverpool", "Chelsea"],
+      "bottom4": ["Everton", "Bolton Wanderers", "Barnsley", "Crystal Palace"]
     }
   },
   "1998": {
@@ -26641,18 +25671,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Arsenal",
-        "Chelsea",
-        "Leeds United"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Charlton Athletic",
-        "Blackburn Rovers",
-        "Nottingham Forest"
-      ]
+      "top4": ["Manchester United", "Arsenal", "Chelsea", "Leeds United"],
+      "bottom4": ["Southampton", "Charlton Athletic", "Blackburn Rovers", "Nottingham Forest"]
     }
   },
   "1999": {
@@ -26900,18 +25920,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Arsenal",
-        "Leeds United",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Bradford City",
-        "Wimbledon",
-        "Sheffield Wednesday",
-        "Watford"
-      ]
+      "top4": ["Manchester United", "Arsenal", "Leeds United", "Liverpool"],
+      "bottom4": ["Bradford City", "Wimbledon", "Sheffield Wednesday", "Watford"]
     }
   },
   "2000": {
@@ -27159,18 +26169,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Arsenal",
-        "Liverpool",
-        "Leeds United"
-      ],
-      "bottom4": [
-        "Derby County",
-        "Manchester City",
-        "Coventry City",
-        "Bradford City"
-      ]
+      "top4": ["Manchester United", "Arsenal", "Liverpool", "Leeds United"],
+      "bottom4": ["Derby County", "Manchester City", "Coventry City", "Bradford City"]
     }
   },
   "2001": {
@@ -27418,18 +26418,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Liverpool",
-        "Manchester United",
-        "Newcastle United"
-      ],
-      "bottom4": [
-        "Sunderland",
-        "Ipswich Town",
-        "Derby County",
-        "Leicester City"
-      ]
+      "top4": ["Arsenal", "Liverpool", "Manchester United", "Newcastle United"],
+      "bottom4": ["Sunderland", "Ipswich Town", "Derby County", "Leicester City"]
     }
   },
   "2002": {
@@ -27677,18 +26667,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Arsenal",
-        "Newcastle United",
-        "Chelsea"
-      ],
-      "bottom4": [
-        "Bolton Wanderers",
-        "West Ham United",
-        "West Bromwich Albion",
-        "Sunderland"
-      ]
+      "top4": ["Manchester United", "Arsenal", "Newcastle United", "Chelsea"],
+      "bottom4": ["Bolton Wanderers", "West Ham United", "West Bromwich Albion", "Sunderland"]
     }
   },
   "2003": {
@@ -27936,18 +26916,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Arsenal",
-        "Chelsea",
-        "Manchester United",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Everton",
-        "Leicester City",
-        "Leeds United",
-        "Wolverhampton Wanderers"
-      ]
+      "top4": ["Arsenal", "Chelsea", "Manchester United", "Liverpool"],
+      "bottom4": ["Everton", "Leicester City", "Leeds United", "Wolverhampton Wanderers"]
     }
   },
   "2004": {
@@ -28195,18 +27165,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Chelsea",
-        "Arsenal",
-        "Manchester United",
-        "Everton"
-      ],
-      "bottom4": [
-        "West Bromwich Albion",
-        "Crystal Palace",
-        "Norwich City",
-        "Southampton"
-      ]
+      "top4": ["Chelsea", "Arsenal", "Manchester United", "Everton"],
+      "bottom4": ["West Bromwich Albion", "Crystal Palace", "Norwich City", "Southampton"]
     }
   },
   "2005": {
@@ -28454,18 +27414,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Chelsea",
-        "Manchester United",
-        "Liverpool",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Portsmouth",
-        "Birmingham City",
-        "West Bromwich Albion",
-        "Sunderland"
-      ]
+      "top4": ["Chelsea", "Manchester United", "Liverpool", "Arsenal"],
+      "bottom4": ["Portsmouth", "Birmingham City", "West Bromwich Albion", "Sunderland"]
     }
   },
   "2006": {
@@ -28713,18 +27663,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Chelsea",
-        "Liverpool",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Wigan Athletic",
-        "Sheffield United",
-        "Charlton Athletic",
-        "Watford"
-      ]
+      "top4": ["Manchester United", "Chelsea", "Liverpool", "Arsenal"],
+      "bottom4": ["Wigan Athletic", "Sheffield United", "Charlton Athletic", "Watford"]
     }
   },
   "2007": {
@@ -28972,18 +27912,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Chelsea",
-        "Arsenal",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Fulham",
-        "Reading",
-        "Birmingham City",
-        "Derby County"
-      ]
+      "top4": ["Manchester United", "Chelsea", "Arsenal", "Liverpool"],
+      "bottom4": ["Fulham", "Reading", "Birmingham City", "Derby County"]
     }
   },
   "2008": {
@@ -29231,18 +28161,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Liverpool",
-        "Chelsea",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Hull City",
-        "Newcastle United",
-        "Middlesbrough",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Manchester United", "Liverpool", "Chelsea", "Arsenal"],
+      "bottom4": ["Hull City", "Newcastle United", "Middlesbrough", "West Bromwich Albion"]
     }
   },
   "2009": {
@@ -29490,18 +28410,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Chelsea",
-        "Manchester United",
-        "Arsenal",
-        "Tottenham Hotspur"
-      ],
-      "bottom4": [
-        "West Ham United",
-        "Burnley",
-        "Hull City",
-        "Portsmouth"
-      ]
+      "top4": ["Chelsea", "Manchester United", "Arsenal", "Tottenham Hotspur"],
+      "bottom4": ["West Ham United", "Burnley", "Hull City", "Portsmouth"]
     }
   },
   "2010": {
@@ -29749,18 +28659,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Chelsea",
-        "Manchester City",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Wolverhampton Wanderers",
-        "Birmingham City",
-        "Blackpool",
-        "West Ham United"
-      ]
+      "top4": ["Manchester United", "Chelsea", "Manchester City", "Arsenal"],
+      "bottom4": ["Wolverhampton Wanderers", "Birmingham City", "Blackpool", "West Ham United"]
     }
   },
   "2011": {
@@ -30008,12 +28908,7 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Manchester United",
-        "Arsenal",
-        "Tottenham Hotspur"
-      ],
+      "top4": ["Manchester City", "Manchester United", "Arsenal", "Tottenham Hotspur"],
       "bottom4": [
         "Queens Park Rangers",
         "Bolton Wanderers",
@@ -30267,18 +29162,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester United",
-        "Manchester City",
-        "Chelsea",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "Sunderland",
-        "Wigan Athletic",
-        "Reading",
-        "Queens Park Rangers"
-      ]
+      "top4": ["Manchester United", "Manchester City", "Chelsea", "Arsenal"],
+      "bottom4": ["Sunderland", "Wigan Athletic", "Reading", "Queens Park Rangers"]
     }
   },
   "2013": {
@@ -30526,18 +29411,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Liverpool",
-        "Chelsea",
-        "Arsenal"
-      ],
-      "bottom4": [
-        "West Bromwich Albion",
-        "Norwich City",
-        "Fulham",
-        "Cardiff City"
-      ]
+      "top4": ["Manchester City", "Liverpool", "Chelsea", "Arsenal"],
+      "bottom4": ["West Bromwich Albion", "Norwich City", "Fulham", "Cardiff City"]
     }
   },
   "2014": {
@@ -30785,18 +29660,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Chelsea",
-        "Manchester City",
-        "Arsenal",
-        "Manchester United"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "Hull City",
-        "Burnley",
-        "Queens Park Rangers"
-      ]
+      "top4": ["Chelsea", "Manchester City", "Arsenal", "Manchester United"],
+      "bottom4": ["Aston Villa", "Hull City", "Burnley", "Queens Park Rangers"]
     }
   },
   "2015": {
@@ -31044,18 +29909,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Leicester City",
-        "Arsenal",
-        "Tottenham Hotspur",
-        "Manchester City"
-      ],
-      "bottom4": [
-        "Sunderland",
-        "Newcastle United",
-        "Norwich City",
-        "Aston Villa"
-      ]
+      "top4": ["Leicester City", "Arsenal", "Tottenham Hotspur", "Manchester City"],
+      "bottom4": ["Sunderland", "Newcastle United", "Norwich City", "Aston Villa"]
     }
   },
   "2016": {
@@ -31303,18 +30158,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Chelsea",
-        "Tottenham Hotspur",
-        "Manchester City",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Watford",
-        "Hull City",
-        "Middlesbrough",
-        "Sunderland"
-      ]
+      "top4": ["Chelsea", "Tottenham Hotspur", "Manchester City", "Liverpool"],
+      "bottom4": ["Watford", "Hull City", "Middlesbrough", "Sunderland"]
     }
   },
   "2017": {
@@ -31562,18 +30407,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Manchester United",
-        "Tottenham Hotspur",
-        "Liverpool"
-      ],
-      "bottom4": [
-        "Southampton",
-        "Swansea City",
-        "Stoke City",
-        "West Bromwich Albion"
-      ]
+      "top4": ["Manchester City", "Manchester United", "Tottenham Hotspur", "Liverpool"],
+      "bottom4": ["Southampton", "Swansea City", "Stoke City", "West Bromwich Albion"]
     }
   },
   "2018": {
@@ -31821,18 +30656,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Liverpool",
-        "Chelsea",
-        "Tottenham Hotspur"
-      ],
-      "bottom4": [
-        "Brighton & Hove Albion",
-        "Cardiff City",
-        "Fulham",
-        "Huddersfield Town"
-      ]
+      "top4": ["Manchester City", "Liverpool", "Chelsea", "Tottenham Hotspur"],
+      "bottom4": ["Brighton & Hove Albion", "Cardiff City", "Fulham", "Huddersfield Town"]
     }
   },
   "2019": {
@@ -32080,18 +30905,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Liverpool",
-        "Manchester City",
-        "Manchester United",
-        "Chelsea"
-      ],
-      "bottom4": [
-        "Aston Villa",
-        "AFC Bournemouth",
-        "Watford",
-        "Norwich City"
-      ]
+      "top4": ["Liverpool", "Manchester City", "Manchester United", "Chelsea"],
+      "bottom4": ["Aston Villa", "AFC Bournemouth", "Watford", "Norwich City"]
     }
   },
   "2020": {
@@ -32339,18 +31154,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Manchester United",
-        "Liverpool",
-        "Chelsea"
-      ],
-      "bottom4": [
-        "Burnley",
-        "Fulham",
-        "West Bromwich Albion",
-        "Sheffield United"
-      ]
+      "top4": ["Manchester City", "Manchester United", "Liverpool", "Chelsea"],
+      "bottom4": ["Burnley", "Fulham", "West Bromwich Albion", "Sheffield United"]
     }
   },
   "2021": {
@@ -32598,18 +31403,8 @@
       }
     ],
     "metadata": {
-      "top4": [
-        "Manchester City",
-        "Liverpool",
-        "Chelsea",
-        "Tottenham Hotspur"
-      ],
-      "bottom4": [
-        "Leeds United",
-        "Burnley",
-        "Watford",
-        "Norwich City"
-      ]
+      "top4": ["Manchester City", "Liverpool", "Chelsea", "Tottenham Hotspur"],
+      "bottom4": ["Leeds United", "Burnley", "Watford", "Norwich City"]
     }
   }
 }

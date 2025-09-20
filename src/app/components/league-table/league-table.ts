@@ -25,8 +25,7 @@ export class LeagueTableComponent {
 
   get sortedTable(): LeagueTableView[] {
     return [...this.leagueTable].sort(
-      (a, b) =>
-        b.points - a.points || (b.goalDifference ?? 0) - (a.goalDifference ?? 0)
+      (a, b) => b.points - a.points || (b.goalDifference ?? 0) - (a.goalDifference ?? 0)
     );
   }
 }

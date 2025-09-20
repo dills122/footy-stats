@@ -4,7 +4,9 @@ import { LeagueStore } from '../store/league.store';
 @Component({
   selector: 'app-store-test',
   standalone: true,
-  template: `<p>Check console for store output</p>`,
+  template: `
+    <p>Check console for store output</p>
+  `,
 })
 export class StoreTestComponent {
   private store = inject(LeagueStore);
