@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-mat-tailwind-starter": {
+    "footy-stats": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -52,10 +52,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-mat-tailwind-starter:build:production"
+              "buildTarget": "footy-stats:build:production"
             },
             "development": {
-              "buildTarget": "angular-mat-tailwind-starter:build:development"
+              "buildTarget": "footy-stats:build:development"
             }
           },
           "defaultConfiguration": "development"
