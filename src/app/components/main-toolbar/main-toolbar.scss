@@ -1,0 +1,32 @@
+.main-toolbar {
+  display: flex;
+  align-items: center;
+
+  .site-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-links {
+    margin-left: 2rem;
+
+    button {
+      font-weight: 500;
+    }
+  }
+
+  .flex-spacer {
+    flex: 1 1 auto;
+  }
+
+  .search-field {
+    max-width: 250px;
+    margin-right: 1rem;
+
+    input {
+      font-size: 0.9rem;
+    }
+  }
+}

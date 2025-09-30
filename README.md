@@ -11,3 +11,9 @@ A web application for viewing historical football statistics, only focused on Pr
 pnpm install
 pnpm start
 ```
+
+### Angular Theme
+
+```bash
+ng generate @angular/material:theme-color
+```
