@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { LeagueTablesViewerComponent } from '@app/components/league-tables-viewer/league-tables-viewer';
 import { LeagueTableHistoric } from './league-table-historic';
 
 describe('LeagueTableHistoric', () => {
@@ -8,7 +9,7 @@ describe('LeagueTableHistoric', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeagueTableHistoric],
+      imports: [LeagueTablesViewerComponent, LeagueTableHistoric],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LeagueTableHistoric);

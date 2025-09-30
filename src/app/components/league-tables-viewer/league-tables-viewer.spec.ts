@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { LeagueTablesViewer } from './league-tables-viewer';
+import { LeagueStore } from '@app/store/league.store';
+import { LeagueTablesViewerComponent } from './league-tables-viewer';
 
 describe('LeagueTablesViewer', () => {
-  let component: LeagueTablesViewer;
-  let fixture: ComponentFixture<LeagueTablesViewer>;
+  let component: LeagueTablesViewerComponent;
+  let fixture: ComponentFixture<LeagueTablesViewerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LeagueTablesViewer],
+      imports: [LeagueTablesViewerComponent],
+      providers: [LeagueStore],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LeagueTablesViewer);
+    fixture = TestBed.createComponent(LeagueTablesViewerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
