@@ -8,6 +8,7 @@ A web application for viewing historical football statistics, only focused on Pr
 ## Getting Started
 
 ```bash
+nvm use
 pnpm install
 pnpm start
 ```
