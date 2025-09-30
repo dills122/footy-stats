@@ -12,7 +12,7 @@ import { DataLoaderService } from './store/services/hydrate-store-json';
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
-  protected readonly title = signal('angular-mat-tailwind-starter');
+  protected readonly title = signal('Footy Stats - English Football Data');
   private dataLoader = inject(DataLoaderService);
 
   ngOnInit() {
