@@ -1,42 +1,55 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+// @use 'theme/m3-theme';
+@use '_theme-colors' as m3-theme;
 
 @import 'tailwindcss';
 
-html {
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$rose-palette,
-        tertiary: mat.$red-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+@include mat.core();
 
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+$theme: m3-theme.$light-theme;
+$dark-theme: m3-theme.$dark-theme;
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-} /* You can add global styles to this file, and also import other style files */
+:root {
+  @include mat.all-component-themes($dark-theme);
+  @include mat.color-variants-backwards-compatibility($dark-theme);
+  @include mat.all-component-typographies($dark-theme);
+
+  @media (prefers-color-scheme: light) {
+    @include mat.all-component-colors($theme);
+    @include mat.color-variants-backwards-compatibility($theme);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 5px;
+  }
+}
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons|Material+Symbols+Outlined');
 
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: var(--mat-app-background-color);
+  color: var(--mat-app-text-color);
+}
+
+body.light-theme {
+  @include mat.all-component-colors($theme);
+  @include mat.color-variants-backwards-compatibility($theme);
+}
+
+body.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+  @include mat.color-variants-backwards-compatibility($dark-theme);
 }
