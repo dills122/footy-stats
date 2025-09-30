@@ -2,7 +2,7 @@
 // @use 'theme/m3-theme';
 @use '_theme-colors' as m3-theme;
 
-@import 'tailwindcss';
+@use 'tailwindcss' as *;
 
 @include mat.core();
 
