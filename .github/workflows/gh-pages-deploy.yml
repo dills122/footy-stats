@@ -31,7 +31,7 @@ jobs:
 
       # Build Angular app (important: base-href for GitHub Pages)
       - name: Build
-        run: pnpm build -- --base-href /footy-stats/
+        run: pnpm build --base-href /footy-stats/
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
