@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
         with:
           version: 9
 
-      # Setup Node.js (use .nvmrc if present)
+      # Setup Node.js from .nvmrc
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,12 +29,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Build Angular app (important: base-href for GitHub Pages)
-      - name: Build
-        run: pnpm build --base-href /footy-stats/
+      # Lint
+      - name: Lint
+        run: pnpm lint
 
-      # Deploy to GitHub Pages
+      # Run tests
+      - name: Test
+        run: pnpm test --watch=false --browsers=ChromeHeadless
+
+      # Build & deploy using angular.json deploy target
       - name: Deploy to GitHub Pages
-        run: npx angular-cli-ghpages --dir=dist/footy-stats
+        run: pnpm ng deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
