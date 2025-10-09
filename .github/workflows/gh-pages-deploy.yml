@@ -8,17 +8,22 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
+    # ✅ Allow pushing to gh-pages
+    permissions:
+      contents: write
+
     steps:
+      # Checkout repo
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install pnpm (puts it on PATH)
+      # Install pnpm
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      # Setup Node.js (reads from .nvmrc if present)
+      # Setup Node.js (reads version from .nvmrc)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,15 +34,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # Lint
+      # Lint code
       - name: Lint
         run: pnpm lint
 
-      # Run tests (headless so CI doesn't hang)
+      # Run tests (headless)
       - name: Test
         run: pnpm test -- --watch=false --browsers=ChromeHeadless
 
-      # Build
+      # Build Angular app
       - name: Build
         run: pnpm build
 
@@ -47,7 +52,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      # Build & deploy using angular.json deploy target
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: pnpm ng deploy
         env:
