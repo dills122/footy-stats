@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-mat-tailwind-starter": {
+    "footy-stats": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/footy-stats",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
@@ -27,19 +28,13 @@
           "configurations": {
             "production": {
               "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2.8MB",
-                  "maximumError": "3MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "10kB",
-                  "maximumError": "16kB"
-                }
+                { "type": "initial", "maximumWarning": "2.8MB", "maximumError": "3MB" },
+                { "type": "anyComponentStyle", "maximumWarning": "10kB", "maximumError": "16kB" }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/footy-stats/"
             },
+
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -52,10 +47,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-mat-tailwind-starter:build:production"
+              "buildTarget": "footy-stats:build:production"
             },
             "development": {
-              "buildTarget": "angular-mat-tailwind-starter:build:development"
+              "buildTarget": "footy-stats:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,6 +72,12 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "buildTarget": "footy-stats:build:production"
           }
         }
       }

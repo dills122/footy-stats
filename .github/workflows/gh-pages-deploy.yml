@@ -1,0 +1,59 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    # ✅ Allow pushing to gh-pages
+    permissions:
+      contents: write
+
+    steps:
+      # Checkout repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Setup Node.js (reads version from .nvmrc)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Lint code
+      - name: Lint
+        run: pnpm lint
+
+      # Run tests (headless)
+      - name: Test
+        run: pnpm test -- --watch=false --browsers=ChromeHeadless
+
+      # Build Angular app
+      - name: Build
+        run: pnpm build
+
+      # Configure Git identity for deploy commits
+      - name: Configure Git user
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        run: pnpm ng deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
