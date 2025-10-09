@@ -41,6 +41,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # Configure Git identity for deploy commits
+      - name: Configure Git user
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
       # Build & deploy using angular.json deploy target
       - name: Deploy to GitHub Pages
         run: pnpm ng deploy
