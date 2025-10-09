@@ -33,7 +33,7 @@
           </span>
           <mat-select [(value)]="selectedLeague">
             @for (league of leaguesForYear; track league) {
-            <mat-option [value]="league">{{ league }}</mat-option>
+            <mat-option [value]="league">{{ league | leagueTierToStringy}}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -44,7 +44,12 @@
 
   <!-- Show Table if both selectors chosen -->
   @if (currentTable && selectedLeague) {
-  <div class="mt-8 w-full max-w-3xl">
+  <div class="w-full max-w-3xl">
+    <h1 class="my-6 text-2xl font-bold text-center">
+      {{selectedYear}} Season Results - {{selectedLeague | leagueTierToStringy}}
+    </h1>
+
+    <app-season-summary-card [tableData]="currentTable"></app-season-summary-card>
     <app-league-table [leagueTable]="currentTable"></app-league-table>
   </div>
   }

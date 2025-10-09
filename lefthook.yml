@@ -16,3 +16,11 @@ pre-push:
     lint:
       glob: '*.{ts,tsx,js,jsx,json,jsonc,css,scss,html}'
       run: npx eslint {push_files}
+    test:
+      run: |
+        echo "Running tests..."
+        npm test
+    build:
+      run: |
+        echo "Building project..."
+        npm run build
