@@ -12,13 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install pnpm
+      # Install pnpm (puts it on PATH)
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      # Setup Node.js from .nvmrc
+      # Setup Node.js (reads from .nvmrc if present)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -33,9 +33,13 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      # Run tests
+      # Run tests (headless so CI doesn't hang)
       - name: Test
-        run: pnpm test --watch=false --browsers=ChromeHeadless
+        run: pnpm test -- --watch=false --browsers=ChromeHeadless
+
+      # Build
+      - name: Build
+        run: pnpm build
 
       # Build & deploy using angular.json deploy target
       - name: Deploy to GitHub Pages
