@@ -49,11 +49,7 @@
       {{selectedYear}} Season Results - {{selectedLeague | leagueTierToStringy}}
     </h1>
 
-    <app-season-summary-card
-      [tableData]="currentTable"
-      [tier]="selectedLeague"
-      [season]="selectedYear"
-    ></app-season-summary-card>
+    <app-season-summary-card [tableData]="currentTable"></app-season-summary-card>
     <app-league-table [leagueTable]="currentTable"></app-league-table>
   </div>
   }
