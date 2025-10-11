@@ -35,9 +35,8 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      # Run tests (headless so CI doesn't hang)
       - name: Test
-        run: pnpm test -- --watch=false --browsers=ChromeHeadless
+        run: pnpm test
 
       # Build
       - name: Build
