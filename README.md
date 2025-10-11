@@ -2,8 +2,11 @@
 
 A web application for viewing historical football statistics, only focused on Premier League data.
 
-![unselected table view](./screenshots/un-selected-table-view.png)
-![unselected table view](./screenshots/selected-view.png)
+Running Site: [Footy-Stats](https://dills122.github.io/footy-stats/dashboard)
+
+![Screenshot Current UI 1](./screenshots/screenshot-1.png)
+![Screenshot Current UI 1](./screenshots/screenshot-2.png)
+![Screenshot Current UI 1](./screenshots/screenshot-3.png)
 
 ## Getting Started
 
