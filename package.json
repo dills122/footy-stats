@@ -1,6 +1,14 @@
 {
   "name": "footy-stats",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "author": {
+    "name": "Dylan Steele",
+    "email": "dylansteele57@gmail.com"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,8 +20,10 @@
     "lint": "eslint . --ext .ts,.js,.html,.json",
     "lint:fix": "eslint . --ext .ts,.js,.html,.json --fix"
   },
-  "private": true,
-  "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
   "dependencies": {
     "@angular/cdk": "^20.1.2",
     "@angular/common": "^20.1.0",
