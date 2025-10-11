@@ -40,7 +40,7 @@ jobs:
 
       # Run tests (headless)
       - name: Test
-        run: pnpm test -- --watch=false --browsers=ChromeHeadless
+        run: pnpm test
 
       # Build Angular app
       - name: Build
