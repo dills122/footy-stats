@@ -7,6 +7,9 @@
     font-size: 1.25rem;
     display: flex;
     align-items: center;
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .nav-links {
