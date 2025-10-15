@@ -1,8 +1,10 @@
 import type { Routes } from '@angular/router';
+import { Home } from './pages/home/home';
 import { LeagueTableHistoric } from './pages/league-table-historic/league-table-historic';
 
 export const routes: Routes = [
-  { path: 'dashboard', component: LeagueTableHistoric },
+  { path: 'dashboard', component: Home },
+  { path: 'tables', component: LeagueTableHistoric },
   //   { path: 'teams', component: TeamsComponent },
   //   { path: 'matches', component: MatchesComponent },
   //   { path: 'rankings', component: RankingsComponent },

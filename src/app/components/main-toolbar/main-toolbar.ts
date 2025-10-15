@@ -5,10 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-main-toolbar',
   imports: [
+    RouterModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
