@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { LeagueStore } from '@app/store/league.store';
 import { LeagueTableView } from '@app/types';
 
 @Component({
@@ -9,6 +10,7 @@ import { LeagueTableView } from '@app/types';
   imports: [CommonModule, MatCardModule],
 })
 export class SeasonSummaryCardComponent implements OnChanges {
+  store = inject(LeagueStore);
   @Input() tableData: LeagueTableView[] = [];
 
   champion?: string;
@@ -22,6 +24,7 @@ export class SeasonSummaryCardComponent implements OnChanges {
     if (!this.tableData?.length) return;
 
     const tier = this.tableData[0].tier;
+    const season = this.tableData[0].season;
 
     // Champion = team with highest points
     const sortedByPoints = [...this.tableData].sort((a, b) => b.points - a.points);
@@ -41,11 +44,8 @@ export class SeasonSummaryCardComponent implements OnChanges {
     this.avgGoalsPerGame = +(totalGF / totalGames).toFixed(2);
 
     // Promotion/Relegation)
-    if (tier !== 'tier1') {
-      this.promotedTeams = this.tableData.filter((t) => t.wasPromoted).map((t) => t.teamName);
-    } else {
-      this.promotedTeams = [];
-    }
-    this.relegatedTeams = this.tableData.filter((t) => t.wasRelegated).map((t) => t.teamName);
+    const { promoted, relegated } = this.store.getPromotionRelegationInfo(season, tier);
+    this.promotedTeams = promoted.map((t) => t.name);
+    this.relegatedTeams = relegated.map((t) => t.name);
   }
 }

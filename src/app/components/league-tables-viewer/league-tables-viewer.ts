@@ -50,7 +50,7 @@ export class LeagueTablesViewerComponent {
   get currentTable(): LeagueTableView[] | null {
     if (!this.selectedYear || !this.selectedLeague) return null;
 
-    const table = this.store.getTables(this.selectedYear, this.selectedLeague);
+    const table = this.store.getFullTable(this.selectedYear, this.selectedLeague);
     if (!table) return null;
 
     return table.map((entry) => ({

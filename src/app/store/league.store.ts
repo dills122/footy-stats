@@ -75,19 +75,14 @@ export const LeagueStore = signalStore(
         seasons,
       });
     },
-
-    // Helpers
     getSeasons(): number[] {
       return store.seasons();
     },
-
-    getTables(season?: number, tier?: string): LeagueTableEntry[] {
+    getFullTable(season?: number, tier?: string): LeagueTableEntry[] {
       return store
         .tables()
         .filter((row) => (!season || row.season === season) && (!tier || row.tier === tier));
     },
-
-    //Get all seasons & tiers so season/tier selectors can be populated
     getSeasonTiers(): { season: number; tiers: string[] }[] {
       const map: Record<number, Set<string>> = {};
 
@@ -103,36 +98,53 @@ export const LeagueStore = signalStore(
         tiers: Array.from(tiersSet).sort(),
       }));
     },
-
-    getTeamById(id: number): Team | undefined {
+    getTeams(): Team[] {
+      return Object.values(store.teams());
+    },
+    getTeamById(id: number): Team {
       return store.teams()[id];
     },
-
     getTeamNameById(id: number): string {
       return store.teams()[id]?.name ?? 'Unknown';
     },
-
-    searchTeam(
-      name: string
-    ): { season: number; tier: string; team: Team; entry: LeagueTableEntry }[] {
-      const results: any[] = [];
-      const lower = name.toLowerCase();
-
-      store.tables().forEach((entry) => {
-        const team = store.teams()[entry.teamId];
-        if (team.name.toLowerCase().includes(lower)) {
-          results.push({
-            season: entry.season,
-            tier: entry.tier,
-            team,
-            entry,
-          });
-        }
-      });
-
-      return results;
+    getSeasonsAndTiersForTeam(teamId: number): { season: number; tier: string }[] {
+      const entries = store.tables().filter((entry) => entry.teamId === teamId);
+      return entries.map((entry) => ({ season: entry.season, tier: entry.tier }));
     },
+    getTeamOverview(teamId: number): {
+      team: Team;
+      seasons: { season: number; tier: string; pos: number }[];
+    } {
+      const entries = store.tables().filter((entry) => entry.teamId === teamId);
+      const team = this.getTeamById(teamId);
+      const seasons = entries.map((entry) => ({
+        season: entry.season,
+        tier: entry.tier,
+        pos: entry.pos,
+      }));
+      return {
+        team,
+        seasons,
+      };
+    },
+    getPromotionRelegationInfo(
+      season: number,
+      tier: string
+    ): { promoted: Team[]; relegated: Team[] } {
+      const tableData = this.getFullTable(season, tier);
+      let promotedTeams = [];
+      let relegatedTeams = [];
+      if (!tableData?.length) {
+        return { promoted: [], relegated: [] };
+      }
 
-    //TODO need new method to be able to pull full table entires by season
+      promotedTeams = tier === 'tier1' ? [] : tableData.filter((entry) => entry.wasPromoted);
+      relegatedTeams = tableData.filter((entry) => entry.wasRelegated);
+
+      return {
+        promoted: promotedTeams.map((entry) => this.getTeamById(entry.teamId)),
+        relegated: relegatedTeams.map((entry) => this.getTeamById(entry.teamId)),
+      };
+    },
   }))
 );
