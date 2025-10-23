@@ -98,11 +98,34 @@ export const LeagueStore = signalStore(
         tiers: Array.from(tiersSet).sort(),
       }));
     },
+    getTeams(): Team[] {
+      return Object.values(store.teams());
+    },
     getTeamById(id: number): Team {
       return store.teams()[id];
     },
     getTeamNameById(id: number): string {
       return store.teams()[id]?.name ?? 'Unknown';
+    },
+    getSeasonsAndTiersForTeam(teamId: number): { season: number; tier: string }[] {
+      const entries = store.tables().filter((entry) => entry.teamId === teamId);
+      return entries.map((entry) => ({ season: entry.season, tier: entry.tier }));
+    },
+    getTeamOverview(teamId: number): {
+      team: Team;
+      seasons: { season: number; tier: string; pos: number }[];
+    } {
+      const entries = store.tables().filter((entry) => entry.teamId === teamId);
+      const team = this.getTeamById(teamId);
+      const seasons = entries.map((entry) => ({
+        season: entry.season,
+        tier: entry.tier,
+        pos: entry.pos,
+      }));
+      return {
+        team,
+        seasons,
+      };
     },
     getPromotionRelegationInfo(
       season: number,
