@@ -1,0 +1,42 @@
+<div class="p-4">
+  <!-- Alphabet Filter -->
+  <div class="flex flex-wrap gap-2 mb-4">
+    <button
+      *ngFor="let letter of letters()"
+      mat-stroked-button
+      color="primary"
+      (click)="selectLetter(letter)"
+      [ngClass]="{
+        'bg-blue-600 text-white': selectedLetter() === letter,
+        'bg-transparent': selectedLetter() !== letter
+      }"
+      class="rounded-lg px-3 py-1 transition-all duration-150"
+    >
+      {{ letter }}
+    </button>
+    <button
+      mat-stroked-button
+      (click)="selectLetter('')"
+      [ngClass]="{
+        'bg-blue-600 text-white': selectedLetter() === null,
+        'bg-transparent': selectedLetter() !== null
+      }"
+      class="rounded-lg px-3 py-1 transition-all duration-150"
+    >
+      All
+    </button>
+  </div>
+
+  <!-- Team List Table -->
+  <mat-card class="shadow-md">
+    <table mat-table [dataSource]="filteredTeams()" class="w-full">
+      <ng-container matColumnDef="team">
+        <th mat-header-cell *matHeaderCellDef class="text-left px-4 py-2">Team</th>
+        <td mat-cell *matCellDef="let team" class="px-4 py-2">{{ team }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['team']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['team'];"></tr>
+    </table>
+  </mat-card>
+</div>

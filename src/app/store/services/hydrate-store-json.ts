@@ -10,6 +10,8 @@ export class DataLoaderService {
 
   async loadData() {
     const data: unknown = await lastValueFrom(this.http.get('assets/seasons.json'));
+    console.log('Data loaded from JSON:', data);
     this.store.hydrate(data);
+    console.log('Store hydrated with data');
   }
 }

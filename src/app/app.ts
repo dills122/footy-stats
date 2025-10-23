@@ -16,6 +16,7 @@ export class App implements OnInit {
   private dataLoader = inject(DataLoaderService);
 
   ngOnInit() {
+    console.log('App initialized, starting data load');
     this.dataLoader.loadData(); // async, store will hydrate in background
   }
 }

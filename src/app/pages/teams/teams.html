@@ -1,0 +1,5 @@
+@if (!teams().length) {
+<p class="text-gray-400 text-center py-4">Loading teams...</p>
+} @else {
+<app-team-list [teams]="teams()" (letterSelected)="onLetterSelected($event)" />
+}
