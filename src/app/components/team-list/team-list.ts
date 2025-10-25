@@ -3,12 +3,28 @@ import { Component, computed, EventEmitter, Input, Output, signal } from '@angul
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  build11v11Links,
+  buildWikipediaLinks,
+  buildWorldFootballLink,
+} from '../../utils/link-builders';
 
 @Component({
   selector: 'app-team-list',
   templateUrl: './team-list.html',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatTableModule, FormsModule],
+  styleUrls: ['./team-list.scss'],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTableModule,
+    FormsModule,
+    MatIconModule,
+    MatTooltipModule,
+  ],
 })
 export class TeamList {
   @Input() teams: string[] = [];
@@ -17,7 +33,6 @@ export class TeamList {
   selectedLetter = signal<string | null>(null);
 
   letters = computed(() => {
-    // Unique first letters, uppercase, sorted
     const letters = Array.from(new Set(this.teams.map((t) => t[0].toUpperCase()))).sort();
     return letters;
   });
@@ -30,5 +45,18 @@ export class TeamList {
   selectLetter(letter: string) {
     this.selectedLetter.set(letter);
     this.letterSelected.emit(letter);
+  }
+
+  createWikipediaLink(club: string): string {
+    return buildWikipediaLinks([club])[club];
+  }
+
+  createWorldFootballLink(club: string): string {
+    return buildWorldFootballLink(club);
+  }
+
+  create11v11Link(club: string): string {
+    const links = build11v11Links([club]);
+    return links[club];
   }
 }
