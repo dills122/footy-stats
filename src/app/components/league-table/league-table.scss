@@ -1,0 +1,71 @@
+/* ===== TABLE CARD CONTAINER ===== */
+.table-container {
+  background: var(--mat-sys-color-surface-container-high);
+  border-radius: 16px;
+  overflow: hidden; /* Fixes bottom cell rounding issues */
+  padding: 1.25rem;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.03);
+  width: min(70rem, 100%);
+  margin-inline: auto;
+}
+
+/* ===== TABLE BASE ===== */
+.footy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.925rem;
+}
+
+/* ===== HEADER CELLS ===== */
+.footy-table th {
+  font-weight: 600;
+  padding: 0.65rem 0.5rem;
+  color: var(--mat-sys-color-on-surface);
+  border-bottom: 1px solid var(--mat-sys-color-outline-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+}
+
+/* Sticky header support (optional) */
+.footy-table th.mat-header-cell {
+  position: sticky;
+  top: 0;
+  background: var(--mat-sys-color-surface-container-high);
+  z-index: 2;
+}
+
+/* ===== ROWS ===== */
+.footy-table td {
+  padding: 0.65rem 0.5rem;
+  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 92%, transparent);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Alternate row striping */
+.footy-table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+/* Row hover highlight */
+.footy-table tr:hover td {
+  background: color-mix(in srgb, var(--mat-sys-color-primary) 8%, transparent);
+  transition: background 150ms ease;
+}
+
+/* ===== ALIGNMENT UTILITIES ===== */
+.text-center {
+  text-align: center;
+}
+
+.font-bold {
+  font-weight: 700;
+  color: var(--mat-sys-color-primary);
+}
+
+/* ===== SHARPEN TABLE BOTTOM EDGE ===== */
+.footy-table tr:last-child td {
+  border-bottom: none;
+}

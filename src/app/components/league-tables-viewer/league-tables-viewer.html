@@ -48,9 +48,10 @@
     <h1 class="my-6 text-2xl font-bold text-center">
       {{selectedYear}} Season Results - {{selectedLeague | leagueTierToStringy}}
     </h1>
-
     <app-season-summary-card [tableData]="currentTable"></app-season-summary-card>
-    <app-league-table [leagueTable]="currentTable"></app-league-table>
+    <div class="my-5">
+      <app-league-table [leagueTable]="currentTable"></app-league-table>
+    </div>
   </div>
   }
 </div>
