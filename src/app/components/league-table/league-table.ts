@@ -5,6 +5,7 @@ import type { LeagueTableView } from '@app/types';
 @Component({
   selector: 'app-league-table',
   templateUrl: './league-table.html',
+  styleUrls: ['./league-table.scss'],
   imports: [MatTableModule],
 })
 export class LeagueTableComponent {

@@ -1,31 +1,68 @@
-<!-- home.component.html -->
 <div class="home">
+  <!-- HERO -->
   <section class="home__hero">
-    <h1 class="home__title">⚽ Footy Stats</h1>
-    <p class="home__subtitle">Explore historic English football data — from the 1880s to today.</p>
-    <button class="home__cta" mat-raised-button color="accent" routerLink="/tables">
-      Browse Season Tables
-    </button>
+    <h1 class="home__title">Where Football History Comes Alive</h1>
+    <p class="home__tagline">English football data from the first league in 1888 to today.</p>
+
+    <div class="home__stats">
+      <div class="stat">
+        <strong>{{seasonsCount() || '100+'}}</strong>
+        <span>Seasons</span>
+      </div>
+      <div class="stat">
+        <strong>{{teamsCount() || '50+'}}</strong>
+        <span>Clubs Tracked</span>
+      </div>
+      <div class="stat">
+        <strong>1-3</strong>
+        <span>Tiers/Divisions</span>
+      </div>
+    </div>
+
+    <div class="home__cta-group">
+      <button mat-raised-button color="accent" routerLink="/tables">Browse Season Tables</button>
+      <button mat-stroked-button color="primary" routerLink="/rankings">View Rankings</button>
+    </div>
   </section>
 
-  <section class="home__details">
-    <mat-card class="home__card">
-      <mat-card-header class="home__card-header my-2">
-        <mat-card-title>About Footy Stats</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="home__card-content">
-        <p>
-          Footy Stats is your go-to source for comprehensive historical data on English football.
-          Dive into detailed season tables, match results, and player statistics from the 1880s to
-          the present day.
-        </p>
-        <p>
-          Whether you're a football enthusiast, researcher, or just curious about the rich history
-          of the sport, Footy Stats provides an easy-to-navigate platform to explore and analyze
-          data across different eras.
-        </p>
-        <p>Start your journey through the annals of English football today!</p>
-      </mat-card-content>
-    </mat-card>
+  <!-- FEATURE SECTION -->
+  <section class="home__benefits section">
+    <h2 class="section__title">Why Footy Stats?</h2>
+    <div class="benefit-grid">
+      <div class="benefit-item">
+        <mat-icon>auto_graph</mat-icon>
+        <h3>Historic League Tables</h3>
+        <p>Full standings for every season from 1888 to present.</p>
+      </div>
+      <div class="benefit-item">
+        <mat-icon>sports_soccer</mat-icon>
+        <h3>Club Performance</h3>
+        <p>Track clubs over eras, promotions, and titles.</p>
+      </div>
+      <div class="benefit-item">
+        <mat-icon>leaderboard</mat-icon>
+        <h3>All-Time Rankings</h3>
+        <p>Compare clubs across 100+ years of English football.</p>
+      </div>
+      <div class="benefit-item">
+        <mat-icon>search</mat-icon>
+        <h3>Easy Exploration</h3>
+        <p>Clean design, fast navigation, zero clutter.</p>
+      </div>
+    </div>
   </section>
+
+  <!-- ########TODO Need to redesign these sections######### -->
+
+  <!-- HISTORY STRIPE -->
+  <!-- <section class="home__history-highlight section">
+    <h2>136 Years of English Football</h2>
+    <p>The evolution of leagues, clubs, and the beautiful game — preserved and accessible.</p>
+  </section> -->
+
+  <!-- FINAL CTA -->
+  <!-- <section class="home__cta-final section">
+    <h2>Start exploring historic seasons now.</h2>
+    <button mat-raised-button color="accent" routerLink="/tables">Browse All Seasons</button>
+  </section> -->
 </div>

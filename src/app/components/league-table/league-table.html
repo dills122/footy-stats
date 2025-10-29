@@ -1,9 +1,5 @@
-<div class="p-4">
-  <table
-    mat-table
-    [dataSource]="sortedTable"
-    class="min-w-full border border-gray-300 rounded-xl shadow-sm"
-  >
+<div class="table-container">
+  <table mat-table [dataSource]="sortedTable" class="footy-table">
     <!-- Position Column -->
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-left">#</th>
