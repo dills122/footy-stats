@@ -1,10 +1,24 @@
 <div class="home">
   <!-- HERO -->
   <section class="home__hero">
-    <h1 class="home__title">⚽ Footy Stats</h1>
-    <p class="home__subtitle">
-      Discover the complete history of English football — from the first league in 1888 to today.
-    </p>
+    <h1 class="home__title">Where Football History Comes Alive</h1>
+    <p class="home__tagline">English football data from the first league in 1888 to today.</p>
+
+    <div class="home__stats">
+      <div class="stat">
+        <strong>{{seasonsCount() || '100+'}}</strong>
+        <span>Seasons</span>
+      </div>
+      <div class="stat">
+        <strong>{{teamsCount() || '50+'}}</strong>
+        <span>Clubs Tracked</span>
+      </div>
+      <div class="stat">
+        <strong>1-3</strong>
+        <span>Tiers/Divisions</span>
+      </div>
+    </div>
+
     <div class="home__cta-group">
       <button mat-raised-button color="accent" routerLink="/tables">Browse Season Tables</button>
       <button mat-stroked-button color="primary" routerLink="/rankings">View Rankings</button>
@@ -38,15 +52,17 @@
     </div>
   </section>
 
+  <!-- ########TODO Need to redesign these sections######### -->
+
   <!-- HISTORY STRIPE -->
-  <section class="home__history-highlight section">
+  <!-- <section class="home__history-highlight section">
     <h2>136 Years of English Football</h2>
     <p>The evolution of leagues, clubs, and the beautiful game — preserved and accessible.</p>
-  </section>
+  </section> -->
 
   <!-- FINAL CTA -->
-  <section class="home__cta-final section">
+  <!-- <section class="home__cta-final section">
     <h2>Start exploring historic seasons now.</h2>
     <button mat-raised-button color="accent" routerLink="/tables">Browse All Seasons</button>
-  </section>
+  </section> -->
 </div>
