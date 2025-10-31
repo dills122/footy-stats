@@ -2,19 +2,48 @@
 @use '../../../_theme-colors' as m3-theme;
 
 /* =======================
-    Alphabet Filter Buttons
+    Filter Title & Layout
 ======================= */
+.filter-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  color: var(--mat-sys-color-on-surface-variant);
+  margin-bottom: 0.5rem;
+}
+
 .alphabet-filter {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--mat-sys-color-surface-container-high);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--mat-sys-color-outline-variant);
 }
 
+/* =======================
+    Alphabet Buttons
+======================= */
 .letter-button {
+  border-radius: 8px;
+  font-size: 0.85rem;
   font-weight: 500;
-  border-radius: 6px;
-  padding: 6px 10px;
-  min-width: 28px;
+  letter-spacing: 0.025em;
+  padding: 0.45rem 0.75rem;
+  transition: all 150ms ease;
+  border-color: var(--mat-sys-color-outline-variant);
+}
+
+.letter-button:hover {
+  background: color-mix(in srgb, var(--mat-sys-color-primary) 18%, transparent);
+  color: var(--mat-sys-color-on-primary);
 }
 
 .letter-button--selected {
@@ -27,15 +56,16 @@
     Table Container Card
 ======================= */
 .team-container {
-  background: var(--mat-sys-color-surface-container-high);
-  border-radius: 16px;
-  overflow: hidden; /* Clips hover & striping cleanly */
-  padding: 1rem;
-  width: min(62rem, 100%);
+  background: color-mix(in srgb, var(--mat-sys-color-surface-container-high) 92%, black 8%);
+  border: 1px solid var(--mat-sys-color-outline-variant);
+  border-radius: 20px;
+  padding: 1.25rem 1.5rem;
+  width: min(64rem, 95%);
   margin-inline: auto;
   box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.03);
+    0 6px 14px rgba(0, 0, 0, 0.35),
+    inset 0 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
 }
 
 /* =======================
@@ -47,10 +77,13 @@
 }
 
 .team-header {
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
   font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.75rem;
-  color: var(--mat-sys-color-on-surface);
+  font-size: 0.8rem;
+  padding: 0.75rem 1rem;
+  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 80%, transparent);
+  background: color-mix(in srgb, var(--mat-sys-color-surface-container-highest) 25%, transparent);
   border-bottom: 1px solid var(--mat-sys-color-outline-variant);
 }
 
@@ -60,17 +93,25 @@
   gap: 0.35rem;
 }
 
+.team-header--icon--right {
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
 .team-cell {
-  padding: 0.7rem;
-  font-size: 0.95rem;
-  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 92%, transparent);
+  padding: 0.9rem 1rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 95%, transparent);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition:
+    background 120ms ease,
+    transform 120ms ease;
 }
 
 /* Row hover highlight */
-.team-table tr:hover td {
-  background: color-mix(in srgb, var(--mat-sys-color-primary) 8%, transparent);
-  transition: background 150ms ease;
+.team-row:hover td {
+  background: color-mix(in srgb, var(--mat-sys-color-primary) 12%, transparent);
+  transform: scale(1.002);
 }
 
 /* Striping */
@@ -83,11 +124,29 @@
   border-bottom: none;
 }
 
-/* External link styling */
-.team-cell a {
-  color: var(--mat-sys-color-primary);
-  text-decoration: none;
+/* =======================
+    External link styling
+======================= */
+.links-cell {
+  text-align: right;
+  font-size: 0.9rem;
 }
-.team-cell a:hover {
-  text-decoration: underline;
+
+.links-cell a {
+  color: var(--mat-sys-color-primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+.links-cell a:hover {
+  color: color-mix(in srgb, var(--mat-sys-color-primary) 80%, white 20%);
+  transform: translateY(-1px);
+}
+
+.divider {
+  margin: 0 0.35rem;
+  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 70%, transparent);
 }

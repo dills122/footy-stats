@@ -43,6 +43,12 @@ export class TeamList {
   });
 
   selectLetter(letter: string) {
+    const oldLetter = this.selectedLetter();
+    if (oldLetter === letter) {
+      this.selectedLetter.set(null);
+      this.letterSelected.emit('');
+      return;
+    }
     this.selectedLetter.set(letter);
     this.letterSelected.emit(letter);
   }
