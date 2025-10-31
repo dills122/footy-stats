@@ -1,11 +1,12 @@
 @if (!teams().length) {
-<p class="text-gray-400 text-center py-4">Loading teams...</p>
+<div class="text-center py-8 animate-pulse text-gray-500">Loading teams...</div>
 } @else {
-<div class="mx-6">
-  <h2 class="text-2xl font-semibold">Teams Archive</h2>
-  <p class="mt-2">
-    Browse through all teams that have played in English football in either tier 1 or tier 2
+<section class="teams-archive mx-auto max-w-6xl px-6">
+  <h2 class="text-3xl font-semibold tracking-tight">Teams Archive</h2>
+  <p class="mt-2 text-gray-400">
+    Browse through all teams that have played in English football in either Tier 1 or Tier 2.
   </p>
+
   <app-team-list [teams]="teams()" (letterSelected)="onLetterSelected($event)" />
-</div>
+</section>
 }

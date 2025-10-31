@@ -21,7 +21,11 @@
 
     <div class="home__cta-group">
       <button mat-raised-button color="accent" routerLink="/tables">Browse Season Tables</button>
-      <button mat-stroked-button color="primary" routerLink="/rankings">View Rankings</button>
+      <div matTooltip="Coming soon">
+        <button mat-stroked-button color="primary" routerLink="/rankings" disabled="true">
+          View Rankings
+        </button>
+      </div>
     </div>
   </section>
 

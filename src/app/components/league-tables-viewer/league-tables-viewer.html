@@ -1,20 +1,27 @@
-<div class="flex flex-col items-center py-8">
-  <mat-card class="w-full max-w-xl shadow-lg">
-    <mat-card-header>
+<div class="flex flex-col items-center py-12 space-y-12">
+  <!-- League Selector Card -->
+  <mat-card
+    class="w-full max-w-xl bg-surface-container-high/90 border border-outline-variant rounded-2xl shadow-lg backdrop-blur-md"
+  >
+    <mat-card-header class="pb-1">
       <mat-card-title>
-        <mat-icon color="primary" class="mr-2">table_chart</mat-icon>
-        League Table Viewer
+        <div
+          class="inline-flex items-center gap-2 text-lg font-semibold text-on-surface leading-none"
+        >
+          <mat-icon color="primary" class="leading-none flex items-center justify-center">
+            table_chart
+          </mat-icon>
+          <span class="leading-none">League Table Viewer</span>
+        </div>
       </mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-      <div class="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 py-4">
+      <div class="flex flex-col md:flex-row gap-6 py-4">
         <!-- Year Selector -->
-        <mat-form-field class="flex-1 min-w-[180px]">
+        <mat-form-field class="flex-1" appearance="fill">
           <mat-label>Select Year</mat-label>
-          <span matPrefix>
-            <mat-icon class="mr-2">calendar_today</mat-icon>
-          </span>
+          <mat-icon matPrefix>calendar_today</mat-icon>
           <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange($event.value)">
             @for (year of years; track year) {
             <mat-option [value]="year">{{ year }}</mat-option>
@@ -26,14 +33,12 @@
 
         <!-- League Selector -->
         @if (leaguesForYear.length > 0) {
-        <mat-form-field class="flex-1 min-w-[180px]">
+        <mat-form-field class="flex-1" appearance="fill">
           <mat-label>Select League</mat-label>
-          <span matPrefix>
-            <mat-icon class="mr-2">sports_soccer</mat-icon>
-          </span>
+          <mat-icon matPrefix>sports_soccer</mat-icon>
           <mat-select [(value)]="selectedLeague">
             @for (league of leaguesForYear; track league) {
-            <mat-option [value]="league">{{ league | leagueTierToStringy}}</mat-option>
+            <mat-option [value]="league">{{ league | leagueTierToStringy }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -42,16 +47,19 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Show Table if both selectors chosen -->
+  <!-- Table Results -->
   @if (currentTable && selectedLeague) {
-  <div class="w-full max-w-3xl">
-    <h1 class="my-6 text-2xl font-bold text-center">
-      {{selectedYear}} Season Results - {{selectedLeague | leagueTierToStringy}}
+  <div class="w-full max-w-4xl space-y-8">
+    <!-- Title -->
+    <h1 class="text-center text-2xl font-bold text-on-surface">
+      {{ selectedYear }} Season Results — {{ selectedLeague | leagueTierToStringy }}
     </h1>
-    <app-season-summary-card [tableData]="currentTable"></app-season-summary-card>
-    <div class="my-5">
-      <app-league-table [leagueTable]="currentTable"></app-league-table>
-    </div>
+
+    <!-- Summary Card -->
+    <app-season-summary-card [tableData]="currentTable" class="block"></app-season-summary-card>
+
+    <!-- League Table -->
+    <app-league-table [leagueTable]="currentTable"></app-league-table>
   </div>
   }
 </div>
