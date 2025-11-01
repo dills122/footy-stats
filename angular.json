@@ -32,9 +32,16 @@
                 { "type": "anyComponentStyle", "maximumWarning": "10kB", "maximumError": "16kB" }
               ],
               "outputHashing": "all",
+              "baseHref": "/"
+            },
+            "github": {
+              "budgets": [
+                { "type": "initial", "maximumWarning": "2.8MB", "maximumError": "3MB" },
+                { "type": "anyComponentStyle", "maximumWarning": "10kB", "maximumError": "16kB" }
+              ],
+              "outputHashing": "all",
               "baseHref": "/footy-stats/"
             },
-
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -78,6 +85,12 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "buildTarget": "footy-stats:build:production"
+          }
+        },
+        "deploy:gh-pages": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "buildTarget": "footy-stats:build:github"
           }
         }
       }
