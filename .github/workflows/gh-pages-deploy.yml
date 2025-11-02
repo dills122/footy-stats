@@ -45,8 +45,8 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          cnname="${CNAME:-footy.dsteele.dev}"
-          pnpm ng deploy --cnname="${cnname}"
+          cname="${CNAME:-footy.dsteele.dev}"
+          pnpm ng deploy --cname="${cname}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CNAME: ${{ env.CNAME }}
