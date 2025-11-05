@@ -33,11 +33,8 @@
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef class="team-header">Team</th>
           <td mat-cell *matCellDef="let team" class="team-cell">
-            <span
-              class="hover:cursor-pointer hover:underline"
-              matTooltip="Team overview page coming soon"
-            >
-              {{ team }}
+            <span class="hover:cursor-pointer hover:underline" [routerLink]="['/team', team?.id]">
+              {{ team?.name }}
             </span>
           </td>
         </ng-container>
@@ -52,12 +49,8 @@
             External Links
             <mat-icon>open_in_new</mat-icon>
           </th>
-          <td mat-cell *matCellDef="let team" class="team-cell links-cell">
-            <a [href]="createWikipediaLink(team)" target="_blank">Wikipedia</a>
-            <span class="divider">|</span>
-            <a [href]="createWorldFootballLink(team)" target="_blank">WorldFootball</a>
-            <span class="divider">|</span>
-            <a [href]="create11v11Link(team)" target="_blank">11v11</a>
+          <td mat-cell *matCellDef="let team" class="team-cell">
+            <app-team-links [teamName]="team?.name" textAlign="right"></app-team-links>
           </td>
         </ng-container>
 

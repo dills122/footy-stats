@@ -6,17 +6,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-  build11v11Links,
-  buildWikipediaLinks,
-  buildWorldFootballLink,
-} from '../../utils/link-builders';
+import { RouterModule } from '@angular/router';
+import { Team } from '@app/store/league.models';
+import { TeamLinks } from '../team-links/team-links';
 
 @Component({
   selector: 'app-team-list',
   templateUrl: './team-list.html',
   styleUrls: ['./team-list.scss'],
   imports: [
+    RouterModule,
     CommonModule,
     MatCardModule,
     MatButtonModule,
@@ -24,22 +23,23 @@ import {
     FormsModule,
     MatIconModule,
     MatTooltipModule,
+    TeamLinks,
   ],
 })
 export class TeamList {
-  @Input() teams: string[] = [];
+  @Input() teams: Team[] = [];
   @Output() letterSelected = new EventEmitter<string>();
 
   selectedLetter = signal<string | null>(null);
 
   letters = computed(() => {
-    const letters = Array.from(new Set(this.teams.map((t) => t[0].toUpperCase()))).sort();
+    const letters = Array.from(new Set(this.teams.map((t) => t.name[0].toUpperCase()))).sort();
     return letters;
   });
 
   filteredTeams = computed(() => {
     const letter = this.selectedLetter();
-    return letter ? this.teams.filter((t) => t[0].toUpperCase() === letter) : this.teams;
+    return letter ? this.teams.filter((t) => t.name[0].toUpperCase() === letter) : this.teams;
   });
 
   selectLetter(letter: string) {
@@ -51,18 +51,5 @@ export class TeamList {
     }
     this.selectedLetter.set(letter);
     this.letterSelected.emit(letter);
-  }
-
-  createWikipediaLink(club: string): string {
-    return buildWikipediaLinks([club])[club];
-  }
-
-  createWorldFootballLink(club: string): string {
-    return buildWorldFootballLink(club);
-  }
-
-  create11v11Link(club: string): string {
-    const links = build11v11Links([club]);
-    return links[club];
   }
 }

@@ -1,0 +1,16 @@
+@if(teamName) {
+<div
+  class="link-container"
+  [ngClass]="{
+  'link-container--right': textAlign === 'right',
+  'link-container--center': textAlign === 'center',
+  'link-container--left': textAlign === 'left' || !textAlign
+}"
+>
+  <a [href]="createWikipediaLink(teamName)" target="_blank">Wikipedia</a>
+  <span class="divider">|</span>
+  <a [href]="createWorldFootballLink(teamName)" target="_blank">WorldFootball</a>
+  <span class="divider">|</span>
+  <a [href]="create11v11Link(teamName)" target="_blank">11v11</a>
+</div>
+}

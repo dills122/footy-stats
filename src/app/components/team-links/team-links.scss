@@ -1,0 +1,29 @@
+.link-container {
+  font-size: 0.9rem;
+}
+
+.link-container--right {
+  text-align: right;
+}
+.link-container--left {
+  text-align: left;
+}
+.link-container--center {
+  text-align: center;
+}
+
+.link-container a {
+  color: var(--mat-sys-color-primary);
+  padding: 0 0.25rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 120ms ease,
+    transform 120ms ease;
+}
+
+.link-container a:hover {
+  color: color-mix(in srgb, var(--mat-sys-color-primary) 80%, white 20%);
+  transform: translateY(-1px);
+  text-decoration: underline;
+}

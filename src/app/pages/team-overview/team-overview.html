@@ -1,0 +1,15 @@
+<section class="mx-auto max-w-6xl px-6">
+  <div class="flex items-center gap-3 mb-4">
+    <button mat-icon-button (click)="goBack()" aria-label="Back to Teams">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="text-2xl font-semibold">Team Overview</h2>
+  </div>
+
+  <div>
+    <h2 class="text-4xl">{{ teamOverview().team.name }}</h2>
+    <div class="mt-2">
+      <app-team-links [teamName]="teamName()"></app-team-links>
+    </div>
+  </div>
+</section>

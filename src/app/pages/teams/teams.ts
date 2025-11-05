@@ -11,10 +11,9 @@ import { LeagueStore } from '@app/store/league.store';
 export class Teams {
   private store = inject(LeagueStore);
 
-  // Add a computed signal so it automatically re-evaluates once hydrated
   teams = computed(() => {
-    const teams = this.store.getTeams(); // <- reactive getter
-    return teams?.map((t) => t.name) ?? [];
+    const teams = this.store.getTeams();
+    return teams;
   });
 
   onLetterSelected(letter: string | null) {
