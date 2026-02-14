@@ -2,7 +2,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
@@ -12,14 +11,7 @@ import { LeagueStore } from '@app/store/league.store';
   selector: 'app-home',
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    RouterLink,
-    MatIconModule,
-    MatTooltipModule,
-  ],
+  imports: [CommonModule, MatButtonModule, RouterLink, MatIconModule, MatTooltipModule],
 })
 export class Home {
   private store = inject(LeagueStore);

@@ -1,153 +1,160 @@
-@use '@angular/material' as mat;
-@use '../../../_theme-colors' as m3-theme;
+.team-list {
+  display: grid;
+  gap: 14px;
+}
 
-/* =======================
-    Filter Title & Layout
-======================= */
 .filter-title {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.015em;
-  color: var(--mat-sys-color-on-surface-variant);
-  margin-bottom: 0.5rem;
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--app-text-muted);
 }
 
 .alphabet-filter {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.45rem;
-  margin-top: 0.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: var(--mat-sys-color-surface-container-high);
-  padding: 0.5rem 0.75rem;
-  border-radius: 12px;
-  backdrop-filter: blur(6px);
-  border: 1px solid var(--mat-sys-color-outline-variant);
+  gap: 8px;
+  padding: 12px;
 }
 
-/* =======================
-    Alphabet Buttons
-======================= */
 .letter-button {
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.025em;
-  padding: 0.45rem 0.75rem;
-  transition: all 150ms ease;
-  border-color: var(--mat-sys-color-outline-variant);
-}
-
-.letter-button:hover {
-  background: color-mix(in srgb, var(--mat-sys-color-primary) 18%, transparent);
-  color: var(--mat-sys-color-on-primary);
+  border-radius: var(--app-radius-pill);
 }
 
 .letter-button--selected {
-  background: var(--mat-sys-color-primary);
-  color: var(--mat-sys-color-on-primary);
-  border-color: var(--mat-sys-color-primary);
+  background: var(--app-accent-soft);
+  color: #be123c;
 }
 
-/* =======================
-    Table Container Card
-======================= */
+.table-wrap {
+  margin-top: 2px;
+}
+
 .team-container {
-  background: color-mix(in srgb, var(--mat-sys-color-surface-container-high) 92%, black 8%);
-  border: 1px solid var(--mat-sys-color-outline-variant);
-  border-radius: 20px;
-  padding: 1.25rem 1.5rem;
-  width: min(64rem, 95%);
-  margin-inline: auto;
-  box-shadow:
-    0 6px 14px rgba(0, 0, 0, 0.35),
-    inset 0 0 1px rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
+  border-radius: var(--app-radius-lg);
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--app-surface-border) 76%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 38%, transparent);
+  box-shadow: var(--app-elevation-1);
 }
 
-/* =======================
-    Table Styling
-======================= */
 .team-table {
   width: 100%;
-  border-collapse: collapse;
+  min-width: 840px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.team-head-row {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .team-header {
+  padding: 12px 14px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
-  font-weight: 600;
-  font-size: 0.8rem;
-  padding: 0.75rem 1rem;
-  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 80%, transparent);
-  background: color-mix(in srgb, var(--mat-sys-color-surface-container-highest) 25%, transparent);
-  border-bottom: 1px solid var(--mat-sys-color-outline-variant);
+  color: var(--app-text-subtle);
+  border-bottom: 1px solid color-mix(in srgb, var(--app-surface-border) 72%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 74%, transparent);
 }
 
-.team-header--icon {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+.team-col {
+  width: 52%;
 }
 
-.team-header--icon--right {
-  justify-content: flex-end;
-  align-self: flex-end;
+.ext-col {
+  width: 48%;
+  text-align: right;
 }
 
 .team-cell {
-  padding: 0.9rem 1rem;
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 95%, transparent);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition:
-    background 120ms ease,
-    transform 120ms ease;
+  padding: 13px 14px;
+  color: color-mix(in srgb, var(--app-text-subtle) 96%, var(--app-text-strong) 4%);
+  border-bottom: 1px solid color-mix(in srgb, var(--app-surface-border) 50%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 42%, transparent);
 }
 
-/* Row hover highlight */
-.team-row:hover td {
-  background: color-mix(in srgb, var(--mat-sys-color-primary) 12%, transparent);
-  transform: scale(1.002);
+.team-row:nth-child(even) .team-cell {
+  background: color-mix(in srgb, var(--app-surface-bg) 36%, transparent);
 }
 
-/* Striping */
-.team-table tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.018);
+.team-row:hover .team-cell {
+  background: color-mix(in srgb, var(--app-accent-soft) 48%, transparent);
 }
 
-/* Clean table bottom trim */
-.team-table tr:last-child td {
-  border-bottom: none;
+.team-name {
+  color: var(--app-text-strong);
+  font-weight: 600;
 }
 
-/* =======================
-    External link styling
-======================= */
+.team-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.header-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
 .links-cell {
-  text-align: right;
-  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .links-cell a {
-  color: var(--mat-sys-color-primary);
-  font-weight: 500;
+  color: #be123c;
   text-decoration: none;
-  transition:
-    color 120ms ease,
-    transform 120ms ease;
 }
 
 .links-cell a:hover {
-  color: color-mix(in srgb, var(--mat-sys-color-primary) 80%, white 20%);
-  transform: translateY(-1px);
   text-decoration: underline;
 }
 
+.links-cell a:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .divider {
-  margin: 0 0.35rem;
-  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 70%, transparent);
+  margin: 0 6px;
+  color: var(--app-text-muted);
+}
+
+.team-row:last-child .team-cell {
+  border-bottom: 0;
+}
+
+@media (max-width: 980px) {
+  .team-table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 760px) {
+  .team-header,
+  .team-cell {
+    padding: 10px 9px;
+  }
+
+  .team-header {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .links-cell {
+    white-space: normal;
+    line-height: 1.5;
+    font-size: 12px;
+  }
+
+  .divider {
+    margin: 0 4px;
+  }
 }

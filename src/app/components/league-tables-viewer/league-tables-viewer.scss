@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+.viewer {
+  display: grid;
+  gap: 16px;
+}
+
+.controls {
+  padding: 20px;
+}
+
+.controls-head {
+  margin-bottom: 10px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--app-text-muted);
+}
+
+h1 {
+  margin: 4px 0 0;
+  font-size: 22px;
+}
+
+.selectors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.results {
+  display: grid;
+  gap: 14px;
+}
+
+app-season-summary-card,
+app-league-table {
+  display: block;
+}
+
+h2 {
+  margin: 6px 2px 0;
+  font-size: 20px;
+  color: var(--app-text-strong);
+}
+
+.field {
+  --mdc-filled-text-field-container-color: color-mix(
+    in srgb,
+    var(--app-surface-bg) 88%,
+    transparent
+  );
+  --mdc-filled-text-field-container-shape: 12px;
+  --mdc-filled-text-field-active-indicator-color: transparent;
+  --mdc-filled-text-field-focus-active-indicator-color: transparent;
+  --mdc-filled-text-field-hover-active-indicator-color: transparent;
+}
+
+:host ::ng-deep .field .mdc-text-field--filled {
+  border: 1px solid color-mix(in srgb, var(--app-surface-border) 72%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+:host ::ng-deep .field .mdc-text-field--filled:hover,
+:host ::ng-deep .field .mdc-text-field--filled.mdc-text-field--focused {
+  border-color: color-mix(in srgb, var(--app-accent) 45%, white 25%);
+}
+
+@media (max-width: 760px) {
+  .selectors {
+    grid-template-columns: 1fr;
+  }
+}

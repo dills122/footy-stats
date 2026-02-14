@@ -1,32 +1,75 @@
 @use '@angular/material' as mat;
-// @use 'theme/m3-theme';
 @use '_theme-colors' as m3-theme;
-
 @use 'tailwindcss' as *;
 
 @include mat.core();
 
-$theme: m3-theme.$light-theme;
+$light-theme: m3-theme.$light-theme;
 $dark-theme: m3-theme.$dark-theme;
 
 :root {
-  @include mat.all-component-themes($dark-theme);
-  @include mat.color-variants-backwards-compatibility($dark-theme);
-  @include mat.all-component-typographies($dark-theme);
+  @include mat.all-component-themes($light-theme);
+  @include mat.color-variants-backwards-compatibility($light-theme);
+  @include mat.all-component-typographies($light-theme);
 
-  @media (prefers-color-scheme: light) {
-    @include mat.all-component-colors($theme);
-    @include mat.color-variants-backwards-compatibility($theme);
-  }
+  color-scheme: light;
+  --app-bg-gradient: linear-gradient(125deg, #fff8f3 0%, #fffdf8 36%, #f6fbff 100%);
+  --app-bg-spot-1: radial-gradient(circle at 12% 12%, rgba(251, 113, 133, 0.14), transparent 24%);
+  --app-bg-spot-2: radial-gradient(circle at 82% 18%, rgba(251, 191, 36, 0.14), transparent 26%);
+  --app-bg-spot-3: radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 28%);
 
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
+  --app-space-1: 4px;
+  --app-space-2: 8px;
+  --app-space-3: 12px;
+  --app-space-4: 16px;
+  --app-space-5: 20px;
+  --app-space-6: 24px;
+  --app-space-7: 32px;
 
-  ::-webkit-scrollbar-thumb {
-    background: #cccccc;
-    border-radius: 5px;
+  --app-radius-sm: 10px;
+  --app-radius-md: 14px;
+  --app-radius-lg: 22px;
+  --app-radius-pill: 999px;
+
+  --app-elevation-1: 0 8px 24px rgba(15, 23, 42, 0.06);
+  --app-elevation-2: 0 14px 38px rgba(15, 23, 42, 0.1);
+  --app-elevation-3: 0 24px 64px rgba(15, 23, 42, 0.12);
+
+  --app-surface-radius: var(--app-radius-lg);
+  --app-surface-border: 1px solid rgba(253, 186, 116, 0.24);
+  --app-surface-bg: rgba(255, 255, 255, 0.88);
+  --app-surface-shadow: var(--app-elevation-2);
+  --app-surface-blur: 10px;
+
+  --app-text-strong: #111827;
+  --app-text-subtle: #374151;
+  --app-text-muted: #6b7280;
+  --app-text-inverse: #ffffff;
+  --app-accent: #e11d48;
+  --app-accent-soft: #ffe4ea;
+  --app-focus-ring: #f43f5e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include mat.all-component-colors($dark-theme);
+    @include mat.color-variants-backwards-compatibility($dark-theme);
+    color-scheme: dark;
+    --app-bg-gradient: linear-gradient(130deg, #111827 0%, #131c2e 42%, #0f172a 100%);
+    --app-bg-spot-1: radial-gradient(circle at 12% 12%, rgba(244, 63, 94, 0.14), transparent 28%);
+    --app-bg-spot-2: radial-gradient(circle at 82% 18%, rgba(245, 158, 11, 0.14), transparent 30%);
+    --app-bg-spot-3: radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 32%);
+    --app-elevation-1: 0 8px 20px rgba(0, 0, 0, 0.24);
+    --app-elevation-2: 0 14px 34px rgba(0, 0, 0, 0.28);
+    --app-elevation-3: 0 22px 52px rgba(0, 0, 0, 0.32);
+    --app-surface-border: 1px solid rgba(251, 113, 133, 0.2);
+    --app-surface-bg: rgba(15, 23, 42, 0.72);
+    --app-surface-blur: 4px;
+    --app-text-strong: #f3f4f6;
+    --app-text-subtle: #d1d5db;
+    --app-text-muted: #b7c4d4;
+    --app-accent-soft: rgba(225, 29, 72, 0.22);
+    --app-focus-ring: #fb7185;
   }
 }
 
@@ -37,19 +80,82 @@ body {
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-  background-color: var(--mat-app-background-color);
-  color: var(--mat-app-text-color);
+  color: var(--app-text-strong);
+  background:
+    var(--app-bg-spot-1), var(--app-bg-spot-2), var(--app-bg-spot-3), var(--app-bg-gradient);
+  background-repeat: no-repeat;
+  background-size:
+    120% 140%,
+    130% 150%,
+    140% 160%,
+    cover;
+  background-attachment: fixed;
+  background-position:
+    top left,
+    top right,
+    bottom center,
+    center;
 }
 
-body.light-theme {
-  @include mat.all-component-colors($theme);
-  @include mat.color-variants-backwards-compatibility($theme);
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+    background-size:
+      170% 180%,
+      170% 180%,
+      180% 190%,
+      cover;
+  }
 }
 
-body.dark-theme {
-  @include mat.all-component-colors($dark-theme);
-  @include mat.color-variants-backwards-compatibility($dark-theme);
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--app-text-muted) 45%, transparent);
+}
+
+.app-surface {
+  border-radius: var(--app-surface-radius);
+  border: var(--app-surface-border);
+  background: var(--app-surface-bg);
+  box-shadow: var(--app-surface-shadow);
+  backdrop-filter: blur(var(--app-surface-blur));
+}
+
+.app-panel {
+  border-radius: var(--app-radius-md);
+  border: var(--app-surface-border);
+  background: color-mix(in srgb, var(--app-surface-bg) 94%, transparent);
+  box-shadow: var(--app-elevation-1);
+}
+
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+  border-radius: 8px;
 }

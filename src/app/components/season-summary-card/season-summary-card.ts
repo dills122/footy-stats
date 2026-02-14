@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnChanges } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import { LeagueStore } from '@app/store/league.store';
 import { LeagueTableView } from '@app/types';
 
 @Component({
   selector: 'app-season-summary-card',
   templateUrl: './season-summary-card.html',
-  imports: [CommonModule, MatCardModule],
+  styleUrl: './season-summary-card.scss',
+  imports: [CommonModule],
 })
 export class SeasonSummaryCardComponent implements OnChanges {
   store = inject(LeagueStore);
