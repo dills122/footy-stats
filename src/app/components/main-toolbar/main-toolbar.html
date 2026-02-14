@@ -1,20 +1,22 @@
-<mat-toolbar color="primary" class="main-toolbar">
-  <!-- Left: Logo / Site Title -->
-  <span class="site-title" routerLink="/">
-    <mat-icon fontIcon="sports_soccer" class="mr-2"></mat-icon>
-    FootyStats
-  </span>
+<mat-toolbar class="main-toolbar">
+  <div class="toolbar-inner app-surface">
+    <a class="brand" routerLink="/dashboard">
+      <span class="brand-mark">
+        <mat-icon fontIcon="sports_soccer" />
+      </span>
+      <span class="brand-copy">
+        <span class="eyebrow">English Football Archive</span>
+        <span class="title">FootyStats</span>
+      </span>
+    </a>
 
-  <!-- Center: Navigation Links -->
-  <span class="nav-links">
-    <button mat-button routerLink="/">Dashboard</button>
-    <button mat-button routerLink="/tables">Tables</button>
-    <button mat-button routerLink="/teams">Teams</button>
-    <span matTooltip="Coming soon">
-      <button mat-button routerLink="/rankings" disabled>Rankings</button>
-    </span>
-  </span>
-
-  <!-- Spacer -->
-  <span class="flex-spacer"></span>
+    <nav class="nav-links" aria-label="Primary">
+      <a mat-button routerLink="/dashboard" routerLinkActive="is-active">Dashboard</a>
+      <a mat-button routerLink="/tables" routerLinkActive="is-active">Tables</a>
+      <a mat-button routerLink="/teams" routerLinkActive="is-active">Teams</a>
+      <span matTooltip="Coming soon">
+        <button mat-button disabled>Rankings</button>
+      </span>
+    </nav>
+  </div>
 </mat-toolbar>

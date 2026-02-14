@@ -1,72 +1,50 @@
 <div class="home">
-  <!-- HERO -->
-  <section class="home__hero">
-    <h1 class="home__title">Where Football History Comes Alive</h1>
-    <p class="home__tagline">English football data from the first league in 1888 to today.</p>
+  <section class="hero app-surface">
+    <p class="eyebrow">Football Data Atlas</p>
+    <h1>Where English Football History Stays Searchable</h1>
+    <p class="lede">
+      From 1888 to today, inspect clubs, tables, and long-run patterns in one archive.
+    </p>
 
-    <div class="home__stats">
-      <div class="stat">
-        <strong>{{seasonsCount() || '100+'}}</strong>
-        <span>Seasons</span>
+    <div class="stats">
+      <div class="stat app-panel">
+        <span class="value">{{ seasonsCount() || '100+' }}</span>
+        <span class="label">Seasons</span>
       </div>
-      <div class="stat">
-        <strong>{{teamsCount() || '50+'}}</strong>
-        <span>Clubs Tracked</span>
+      <div class="stat app-panel">
+        <span class="value">{{ teamsCount() || '50+' }}</span>
+        <span class="label">Clubs Tracked</span>
       </div>
-      <div class="stat">
-        <strong>1-3</strong>
-        <span>Tiers/Divisions</span>
+      <div class="stat app-panel">
+        <span class="value">3</span>
+        <span class="label">Primary Tiers</span>
       </div>
     </div>
 
-    <div class="home__cta-group">
-      <button mat-raised-button color="accent" routerLink="/tables">Browse Season Tables</button>
-      <div matTooltip="Coming soon">
-        <button mat-stroked-button color="primary" routerLink="/rankings" disabled="true">
-          View Rankings
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURE SECTION -->
-  <section class="home__benefits section">
-    <h2 class="section__title">Why Footy Stats?</h2>
-    <div class="benefit-grid">
-      <div class="benefit-item">
-        <mat-icon>auto_graph</mat-icon>
-        <h3>Historic League Tables</h3>
-        <p>Full standings for every season from 1888 to present.</p>
-      </div>
-      <div class="benefit-item">
-        <mat-icon>sports_soccer</mat-icon>
-        <h3>Club Performance</h3>
-        <p>Track clubs over eras, promotions, and titles.</p>
-      </div>
-      <div class="benefit-item">
-        <mat-icon>leaderboard</mat-icon>
-        <h3>All-Time Rankings</h3>
-        <p>Compare clubs across 100+ years of English football.</p>
-      </div>
-      <div class="benefit-item">
-        <mat-icon>search</mat-icon>
-        <h3>Easy Exploration</h3>
-        <p>Clean design, fast navigation, zero clutter.</p>
-      </div>
+    <div class="cta-row">
+      <a mat-flat-button routerLink="/tables">Browse Season Tables</a>
+      <a mat-stroked-button routerLink="/teams">Explore Clubs</a>
+      <span matTooltip="Coming soon">
+        <button mat-stroked-button disabled>View Rankings</button>
+      </span>
     </div>
   </section>
 
-  <!-- ########TODO Need to redesign these sections######### -->
-
-  <!-- HISTORY STRIPE -->
-  <!-- <section class="home__history-highlight section">
-    <h2>136 Years of English Football</h2>
-    <p>The evolution of leagues, clubs, and the beautiful game — preserved and accessible.</p>
-  </section> -->
-
-  <!-- FINAL CTA -->
-  <!-- <section class="home__cta-final section">
-    <h2>Start exploring historic seasons now.</h2>
-    <button mat-raised-button color="accent" routerLink="/tables">Browse All Seasons</button>
-  </section> -->
+  <section class="feature-grid">
+    <article class="feature app-panel">
+      <mat-icon>table_chart</mat-icon>
+      <h2>Historic League Tables</h2>
+      <p>Season-by-season standings from league formation to the modern era.</p>
+    </article>
+    <article class="feature app-panel">
+      <mat-icon>sports_soccer</mat-icon>
+      <h2>Club History</h2>
+      <p>Track promotion, relegation, and performance shifts across decades.</p>
+    </article>
+    <article class="feature app-panel">
+      <mat-icon>trending_up</mat-icon>
+      <h2>Fast Comparison</h2>
+      <p>Scan key stats quickly with focused cards and cleaner table views.</p>
+    </article>
+  </section>
 </div>

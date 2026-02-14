@@ -1,71 +1,106 @@
-/* ===== TABLE CARD CONTAINER ===== */
 .table-container {
-  background: var(--mat-sys-color-surface-container-high);
-  border-radius: 16px;
-  overflow: hidden; /* Fixes bottom cell rounding issues */
-  padding: 1.25rem;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    inset 0 1px 1px rgba(255, 255, 255, 0.03);
-  width: min(70rem, 100%);
-  margin-inline: auto;
+  border-radius: var(--app-surface-radius);
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--app-surface-border) 76%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 35%, transparent);
+  box-shadow: var(--app-elevation-1);
 }
 
-/* ===== TABLE BASE ===== */
 .footy-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.925rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 760px;
 }
 
-/* ===== HEADER CELLS ===== */
-.footy-table th {
-  font-weight: 600;
-  padding: 0.65rem 0.5rem;
-  color: var(--mat-sys-color-on-surface);
-  border-bottom: 1px solid var(--mat-sys-color-outline-variant);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: 0.8rem;
-}
-
-/* Sticky header support (optional) */
-.footy-table th.mat-header-cell {
+.head {
   position: sticky;
   top: 0;
-  background: var(--mat-sys-color-surface-container-high);
   z-index: 2;
+  padding: 12px 10px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--app-text-subtle);
+  border-bottom: 1px solid color-mix(in srgb, var(--app-surface-border) 78%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 72%, transparent);
 }
 
-/* ===== ROWS ===== */
-.footy-table td {
-  padding: 0.65rem 0.5rem;
-  color: color-mix(in srgb, var(--mat-sys-color-on-surface) 92%, transparent);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.cell {
+  padding: 11px 10px;
+  color: color-mix(in srgb, var(--app-text-subtle) 96%, var(--app-text-strong) 4%);
+  border-bottom: 1px solid color-mix(in srgb, var(--app-surface-border) 50%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 44%, transparent);
 }
 
-/* Alternate row striping */
-.footy-table tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.015);
+.footy-table tr:nth-child(even) .cell {
+  background: color-mix(in srgb, var(--app-surface-bg) 37%, transparent);
 }
 
-/* Row hover highlight */
-.footy-table tr:hover td {
-  background: color-mix(in srgb, var(--mat-sys-color-primary) 8%, transparent);
-  transition: background 150ms ease;
+.footy-table tr:hover .cell {
+  background: color-mix(in srgb, var(--app-accent-soft) 48%, transparent);
+  transition: background 140ms ease;
 }
 
-/* ===== ALIGNMENT UTILITIES ===== */
-.text-center {
+.row-top .cell {
+  background: color-mix(in srgb, var(--app-accent-soft) 32%, transparent);
+}
+
+.center {
   text-align: center;
 }
 
-.font-bold {
-  font-weight: 700;
-  color: var(--mat-sys-color-primary);
+.team {
+  font-weight: 600;
+  color: var(--app-text-strong);
 }
 
-/* ===== SHARPEN TABLE BOTTOM EDGE ===== */
-.footy-table tr:last-child td {
-  border-bottom: none;
+.points {
+  font-weight: 700;
+  color: #be123c;
+}
+
+.rank {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--app-text-subtle);
+  border: 1px solid color-mix(in srgb, var(--app-surface-border) 70%, transparent);
+  background: color-mix(in srgb, var(--app-surface-bg) 72%, transparent);
+}
+
+.rank-top {
+  color: #9a3412;
+  border-color: rgba(245, 158, 11, 0.45);
+  background: rgba(254, 243, 199, 0.9);
+}
+
+.footy-table tr:last-child .cell {
+  border-bottom: 0;
+}
+
+@media (max-width: 980px) {
+  .footy-table {
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 760px) {
+  .table-container {
+    border-radius: var(--app-radius-lg);
+  }
+
+  .head,
+  .cell {
+    padding: 10px 8px;
+  }
+
+  .head {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
 }

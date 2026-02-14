@@ -1,77 +1,62 @@
 <div class="table-container">
   <table mat-table [dataSource]="sortedTable" class="footy-table">
-    <!-- Position Column -->
     <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-left">#</th>
-      <td mat-cell *matCellDef="let element; let i = index" class="px-2 py-2">{{ i + 1 }}</td>
+      <th mat-header-cell *matHeaderCellDef class="head">#</th>
+      <td mat-cell *matCellDef="let element; let i = index" class="cell">
+        <span class="rank" [class.rank-top]="i < 4">{{ i + 1 }}</span>
+      </td>
     </ng-container>
 
-    <!-- Team Column -->
     <ng-container matColumnDef="teamName">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-left">Team</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 font-semibold">
-        {{ element.teamName }}
-      </td>
+      <th mat-header-cell *matHeaderCellDef class="head">Team</th>
+      <td mat-cell *matCellDef="let element" class="cell team">{{ element.teamName }}</td>
     </ng-container>
 
-    <!-- Played -->
     <ng-container matColumnDef="played">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">P</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">{{ element.played }}</td>
+      <th mat-header-cell *matHeaderCellDef class="head center">P</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.played }}</td>
     </ng-container>
 
-    <!-- Won -->
     <ng-container matColumnDef="won">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">W</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">{{ element.won }}</td>
+      <th mat-header-cell *matHeaderCellDef class="head center">W</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.won }}</td>
     </ng-container>
 
-    <!-- Draw -->
     <ng-container matColumnDef="drawn">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">D</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">{{ element.drawn }}</td>
+      <th mat-header-cell *matHeaderCellDef class="head center">D</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.drawn }}</td>
     </ng-container>
 
-    <!-- Lost -->
     <ng-container matColumnDef="lost">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">L</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">{{ element.lost }}</td>
+      <th mat-header-cell *matHeaderCellDef class="head center">L</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.lost }}</td>
     </ng-container>
 
-    <!-- Goals For -->
     <ng-container matColumnDef="goalsFor">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">GF</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">
-        {{ element.goalsFor }}
-      </td>
+      <th mat-header-cell *matHeaderCellDef class="head center">GF</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.goalsFor }}</td>
     </ng-container>
 
-    <!-- Goals Against -->
     <ng-container matColumnDef="goalsAgainst">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">GA</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">
-        {{ element.goalsAgainst }}
-      </td>
+      <th mat-header-cell *matHeaderCellDef class="head center">GA</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.goalsAgainst }}</td>
     </ng-container>
 
-    <!-- Goal Difference -->
     <ng-container matColumnDef="goalDifference">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center">GD</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center">
-        {{ element.goalDifference }}
-      </td>
+      <th mat-header-cell *matHeaderCellDef class="head center">GD</th>
+      <td mat-cell *matCellDef="let element" class="cell center">{{ element.goalDifference }}</td>
     </ng-container>
 
-    <!-- Points -->
     <ng-container matColumnDef="points">
-      <th mat-header-cell *matHeaderCellDef class="px-2 py-2 text-center font-bold">Pts</th>
-      <td mat-cell *matCellDef="let element" class="px-2 py-2 text-center font-bold">
-        {{ element.points }}
-      </td>
+      <th mat-header-cell *matHeaderCellDef class="head center points">Pts</th>
+      <td mat-cell *matCellDef="let element" class="cell center points">{{ element.points }}</td>
     </ng-container>
 
-    <!-- Header and Row Declarations -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-200"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-100"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns; let i = index"
+      [class.row-top]="i < 4"
+    ></tr>
   </table>
 </div>

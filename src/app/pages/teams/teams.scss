@@ -1,0 +1,36 @@
+:host {
+  display: block;
+}
+
+.loading {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  text-align: center;
+  padding: 28px;
+  color: var(--app-text-muted);
+}
+
+.teams-archive {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  margin-top: 6px;
+  padding: 20px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--app-text-muted);
+}
+
+h1 {
+  margin: 5px 0 0;
+  font-size: 22px;
+}
+
+.lede {
+  margin: 8px 0 14px;
+  color: var(--app-text-subtle);
+}

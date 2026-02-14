@@ -1,69 +1,32 @@
-<mat-card
-  class="bg-surface-variant/10 text-white p-4 rounded-2xl shadow-md border border-surface-variant/20 w-full max-w-4xl mx-auto"
->
-  <mat-card-header>
-    <mat-card-title class="text-lg font-semibold flex items-center gap-2">
-      🧾 Season Summary
-    </mat-card-title>
-  </mat-card-header>
-
-  <mat-card-content class="mt-3">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-      <!-- LEFT COLUMN -->
-      <div class="space-y-2">
-        <div class="flex justify-between items-center">
-          <span class="flex items-center gap-1">
-            🥇
-            <strong>Champion:</strong>
-          </span>
-          <span>{{ champion }}</span>
-        </div>
-
-        @if(promotedTeams.length) {
-        <div class="flex justify-between items-center">
-          <span class="flex items-center gap-1">
-            ⬆️
-            <strong>Promoted:</strong>
-          </span>
-          <span class="text-green-400 text-right">{{ promotedTeams.join(', ') }}</span>
-        </div>
-        } @if(relegatedTeams.length) {
-        <div class="flex justify-between items-center">
-          <span class="flex items-center gap-1">
-            ⬇️
-            <strong>Relegated:</strong>
-          </span>
-          <span class="text-red-400 text-right">{{ relegatedTeams.join(', ') }}</span>
-        </div>
-        }
-      </div>
-
-      <!-- RIGHT COLUMN -->
-      <div class="space-y-2">
-        <div class="flex justify-between items-center">
-          <span class="flex items-center gap-1">
-            ⚽
-            <strong>Top Scoring Team:</strong>
-          </span>
-          <span>{{ topScoringTeam }}</span>
-        </div>
-
-        <div class="flex justify-between items-center">
-          <span class="flex items-center gap-1">
-            🛡️
-            <strong>Best Defense:</strong>
-          </span>
-          <span>{{ bestDefense }}</span>
-        </div>
-
-        <div class="flex justify-between items-center">
-          <span class="flex items-center gap-1">
-            📈
-            <strong>Avg Goals/Game:</strong>
-          </span>
-          <span>{{ avgGoalsPerGame }}</span>
-        </div>
-      </div>
+<section class="summary app-surface">
+  <h3>Season Summary</h3>
+  <dl class="facts">
+    <div class="fact">
+      <dt>Champion</dt>
+      <dd>{{ champion }}</dd>
     </div>
-  </mat-card-content>
-</mat-card>
+    <div class="fact">
+      <dt>Top Scoring Team</dt>
+      <dd>{{ topScoringTeam }}</dd>
+    </div>
+    <div class="fact">
+      <dt>Best Defense</dt>
+      <dd>{{ bestDefense }}</dd>
+    </div>
+    <div class="fact">
+      <dt>Avg Goals per Game</dt>
+      <dd>{{ avgGoalsPerGame }}</dd>
+    </div>
+    @if (promotedTeams.length) {
+    <div class="fact">
+      <dt>Promoted</dt>
+      <dd class="chip chip-up">{{ promotedTeams.join(', ') }}</dd>
+    </div>
+    } @if (relegatedTeams.length) {
+    <div class="fact">
+      <dt>Relegated</dt>
+      <dd class="chip chip-down">{{ relegatedTeams.join(', ') }}</dd>
+    </div>
+    }
+  </dl>
+</section>

@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: var(--app-text-strong);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.app-content {
+  padding: 28px clamp(12px, 2vw, 24px) 28px;
+}

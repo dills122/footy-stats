@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -14,13 +13,13 @@ import { SeasonSummaryCardComponent } from '../season-summary-card/season-summar
 @Component({
   selector: 'app-league-tables-viewer',
   templateUrl: './league-tables-viewer.html',
+  styleUrl: './league-tables-viewer.scss',
   imports: [
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
     LeagueTableComponent,
     CommonModule,
-    MatCardModule,
     MatIconModule,
     LeagueTierToStringyPipe,
     SeasonSummaryCardComponent,
