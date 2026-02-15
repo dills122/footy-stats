@@ -1,0 +1,146 @@
+<section class="movement-page app-surface">
+  <p class="eyebrow">Club Movement Explorer</p>
+  <h1>Promotion / Relegation by Club</h1>
+  <p class="lede">
+    Pick up to 10 clubs and a season window to compare how they move through the English pyramid.
+  </p>
+  <div class="page-note app-panel" role="note">
+    Current data coverage: tiers below Tier 2 are reliably populated mainly from the 1990s to
+    current.
+  </div>
+
+  <div class="config-toolbar">
+    <button
+      type="button"
+      class="config-toggle"
+      (click)="toggleConfigPanel()"
+      [attr.aria-expanded]="!configCollapsed()"
+    >
+      {{ configCollapsed() ? 'Expand Filters' : 'Collapse Filters' }}
+    </button>
+  </div>
+
+  @if (!configCollapsed()) {
+  <div class="controls">
+    <section class="club-picker app-panel">
+      <div class="picker-head">
+        <h2>Clubs</h2>
+        <span>{{ selectedTeamIds().length }}/{{ maxSelectedTeams }} selected</span>
+      </div>
+      <label class="search-field">
+        <input
+          type="text"
+          placeholder="Search clubs and add..."
+          [value]="clubSearchTerm()"
+          (input)="onClubSearchInput($any($event.target).value)"
+          [disabled]="selectedTeamIds().length >= maxSelectedTeams"
+        />
+      </label>
+      <div class="search-results">
+        @for (team of filteredTeamOptions(); track team.id) {
+        <button
+          class="team-option"
+          type="button"
+          (click)="addTeam(team.id)"
+          [disabled]="selectedTeamIds().length >= maxSelectedTeams"
+        >
+          {{ team.name }}
+        </button>
+        }
+      </div>
+      @if (selectedTeamIds().length) {
+      <div class="selected-block">
+        <div class="selected-label">Selected clubs</div>
+        <div class="selected-chips">
+          @for (team of selectedTeams(); track team.id) {
+          <button class="chip" type="button" (click)="removeTeam(team.id)">
+            {{ team.name }}
+            <span aria-hidden="true">x</span>
+          </button>
+          }
+        </div>
+        <button class="clear-btn" type="button" (click)="clearSelectedTeams()">Clear clubs</button>
+      </div>
+      }
+    </section>
+
+    <section class="timeline-panel app-panel">
+      <div class="timeline-head">
+        <h2>Timeline</h2>
+        <span>{{ selectedSeasonCount() }} seasons</span>
+      </div>
+      <div class="years-row">
+        <div>
+          <strong>Start</strong>
+          {{ selectedStartSeason() }}
+        </div>
+        <div>
+          <strong>End</strong>
+          {{ selectedEndSeason() }}
+        </div>
+      </div>
+
+      <div class="slider-row">
+        <label>
+          <span>Start Year</span>
+          <input
+            type="range"
+            [min]="minSeason()"
+            [max]="maxSeason()"
+            [value]="selectedStartSeason()"
+            (input)="onStartSeasonInput($any($event.target).value)"
+          />
+        </label>
+        <label>
+          <span>End Year</span>
+          <input
+            type="range"
+            [min]="minSeason()"
+            [max]="maxSeason()"
+            [value]="selectedEndSeason()"
+            (input)="onEndSeasonInput($any($event.target).value)"
+          />
+        </label>
+      </div>
+
+      <div class="preset-row">
+        @for (preset of availablePresets; track preset.id) {
+        <button
+          type="button"
+          class="preset-btn"
+          [class.is-active]="activePreset() === preset.id"
+          (click)="setPreset(preset.id)"
+        >
+          {{ preset.label }}
+        </button>
+        }
+      </div>
+    </section>
+  </div>
+  } @if (!selectedTeamIds().length) {
+  <div class="empty app-panel">Select at least one club to render the graph.</div>
+  } @else if (!teamSeries().length) {
+  <div class="empty app-panel">No data in the selected season window for the chosen clubs.</div>
+  } @else {
+  <div class="legend app-panel movement-key-panel">
+    <div class="legend-item movement-keys">
+      <span class="dot promoted"></span>
+      <span>Promotion marker</span>
+      <span class="dot relegated"></span>
+      <span>Relegation marker</span>
+      <span class="dot plain"></span>
+      <span>Team line</span>
+    </div>
+  </div>
+
+  <div class="chart-wrap app-panel">
+    <div
+      echarts
+      class="movement-chart"
+      [options]="chartOptions()"
+      [autoResize]="true"
+      aria-label="Club movement by tier over time"
+    ></div>
+  </div>
+  }
+</section>
