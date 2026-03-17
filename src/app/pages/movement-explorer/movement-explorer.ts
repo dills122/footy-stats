@@ -13,6 +13,7 @@ import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationBannerComponent } from '@app/components/notification-banner/notification-banner';
 import { LeagueStore } from '@app/store/league.store';
 
 interface TeamSeriesPoint {
@@ -63,7 +64,7 @@ echarts.use([
 
 @Component({
   selector: 'app-movement-explorer',
-  imports: [CommonModule, NgxEchartsDirective],
+  imports: [CommonModule, NgxEchartsDirective, NotificationBannerComponent],
   templateUrl: './movement-explorer.html',
   styleUrl: './movement-explorer.scss',
   providers: [provideEchartsCore({ echarts })],
@@ -316,14 +317,6 @@ export class MovementExplorer {
         },
       },
       dataZoom: [
-        {
-          type: 'inside',
-          filterMode: 'none',
-          xAxisIndex: 0,
-          zoomOnMouseWheel: true,
-          moveOnMouseMove: true,
-          moveOnMouseWheel: true,
-        },
         {
           type: 'slider',
           xAxisIndex: 0,

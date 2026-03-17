@@ -29,11 +29,10 @@ h1 {
 
 .page-note {
   margin-top: 14px;
-  padding: 12px 14px;
-  border: 1px solid color-mix(in srgb, #f59e0b 46%, var(--app-border) 54%);
-  background: color-mix(in srgb, #f59e0b 10%, var(--app-bg) 90%);
-  color: #fef3c7;
-  font-size: 0.95rem;
+}
+
+.page-note p {
+  margin: 0;
 }
 
 .config-toolbar {
