@@ -1,14 +1,14 @@
 <div class="viewer">
   <section class="controls app-surface">
-    <div class="controls-head">
-      <p class="eyebrow">Table Explorer</p>
-      <h1>League Table Viewer</h1>
-    </div>
+    <header class="controls-head app-page-header">
+      <p class="app-page-eyebrow">Table Explorer</p>
+      <h1 class="app-page-title">League Table Viewer</h1>
+    </header>
     <div class="selectors">
       <mat-form-field class="field" appearance="fill">
         <mat-label>Select Year</mat-label>
         <mat-icon matPrefix>calendar_today</mat-icon>
-        <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange($event.value)">
+        <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
           @for (year of years; track year) {
           <mat-option [value]="year">{{ year }}</mat-option>
           } @empty {
@@ -21,7 +21,7 @@
       <mat-form-field class="field" appearance="fill">
         <mat-label>Select League</mat-label>
         <mat-icon matPrefix>sports_soccer</mat-icon>
-        <mat-select [(value)]="selectedLeague">
+        <mat-select [value]="selectedLeague()" (selectionChange)="onLeagueChange($event.value)">
           @for (league of leaguesForYear; track league) {
           <mat-option [value]="league">{{ league | leagueTierToStringy }}</mat-option>
           }
@@ -31,11 +31,11 @@
     </div>
   </section>
 
-  @if (currentTable && selectedLeague) {
+  @if (currentTable(); as tableData) {
   <section class="results">
-    <h2>{{ selectedYear }} Season Results - {{ selectedLeague | leagueTierToStringy }}</h2>
-    <app-season-summary-card [tableData]="currentTable" />
-    <app-league-table [leagueTable]="currentTable" />
+    <h2>{{ selectedYear() }} Season Results - {{ currentLeagueLabel() | leagueTierToStringy }}</h2>
+    <app-season-summary-card [tableData]="tableData" />
+    <app-league-table [leagueTable]="tableData" />
   </section>
   }
 </div>

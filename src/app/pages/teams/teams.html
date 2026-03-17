@@ -1,11 +1,15 @@
 @if (!teams().length) {
 <div class="loading">Loading teams...</div>
 } @else {
-<section class="teams-archive app-surface">
-  <p class="eyebrow">Club Directory</p>
-  <h1>Teams Archive</h1>
-  <p class="lede">Browse clubs that have featured in English football tiers across eras.</p>
+<section class="teams-archive app-surface app-page-shell">
+  <header class="app-page-header">
+    <p class="app-page-eyebrow">Club Directory</p>
+    <h1 class="app-page-title">Teams Archive</h1>
+    <p class="app-page-lede">
+      Browse clubs that have featured in English football tiers across eras.
+    </p>
+  </header>
 
-  <app-team-list [teams]="teams()" (letterSelected)="onLetterSelected($event)" />
+  <app-team-list [teams]="teams()" />
 </section>
 }

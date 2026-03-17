@@ -35,6 +35,8 @@
     "@angular/router": "^20.1.0",
     "@ngrx/signals": "^20.0.1",
     "@ngrx/store": "^20.0.1",
+    "echarts": "^6.0.0",
+    "ngx-echarts": "^20.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

@@ -23,8 +23,6 @@
 }
 
 .letter-button--selected {
-  background: var(--app-accent-soft);
-  color: #be123c;
 }
 
 .table-wrap {
@@ -32,11 +30,7 @@
 }
 
 .team-container {
-  border-radius: var(--app-radius-lg);
   overflow: auto;
-  border: 1px solid color-mix(in srgb, var(--app-surface-border) 76%, transparent);
-  background: color-mix(in srgb, var(--app-surface-bg) 38%, transparent);
-  box-shadow: var(--app-elevation-1);
 }
 
 .team-table {
@@ -57,9 +51,7 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--app-text-subtle);
-  border-bottom: 1px solid color-mix(in srgb, var(--app-surface-border) 72%, transparent);
-  background: color-mix(in srgb, var(--app-surface-bg) 74%, transparent);
+  color: var(--app-text-muted);
 }
 
 .team-col {
@@ -74,20 +66,14 @@
 .team-cell {
   padding: 13px 14px;
   color: color-mix(in srgb, var(--app-text-subtle) 96%, var(--app-text-strong) 4%);
-  border-bottom: 1px solid color-mix(in srgb, var(--app-surface-border) 50%, transparent);
-  background: color-mix(in srgb, var(--app-surface-bg) 42%, transparent);
 }
 
-.team-row:nth-child(even) .team-cell {
-  background: color-mix(in srgb, var(--app-surface-bg) 36%, transparent);
-}
-
-.team-row:hover .team-cell {
-  background: color-mix(in srgb, var(--app-accent-soft) 48%, transparent);
+.team-row:hover .team-cell:first-child {
+  box-shadow: inset 3px 0 0 rgba(56, 189, 248, 0.42);
 }
 
 .team-name {
-  color: var(--app-text-strong);
+  color: #f8fbff;
   font-weight: 600;
 }
 
@@ -108,7 +94,7 @@
 }
 
 .links-cell a {
-  color: #be123c;
+  color: #fda4af;
   text-decoration: none;
 }
 
@@ -124,7 +110,7 @@
 
 .divider {
   margin: 0 6px;
-  color: var(--app-text-muted);
+  color: color-mix(in srgb, var(--app-text-muted) 80%, #fff 20%);
 }
 
 .team-row:last-child .team-cell {

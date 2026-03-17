@@ -13,11 +13,7 @@ export class Teams {
 
   // Add a computed signal so it automatically re-evaluates once hydrated
   teams = computed(() => {
-    const teams = this.store.getTeams(); // <- reactive getter
+    const teams = this.store.getTeams();
     return teams?.map((t) => t.name) ?? [];
   });
-
-  onLetterSelected(letter: string | null) {
-    console.log('Selected letter:', letter);
-  }
 }

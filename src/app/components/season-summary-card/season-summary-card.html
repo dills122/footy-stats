@@ -20,12 +20,24 @@
     @if (promotedTeams.length) {
     <div class="fact">
       <dt>Promoted</dt>
-      <dd class="chip chip-up">{{ promotedTeams.join(', ') }}</dd>
+      <dd>
+        <div class="chip-group">
+          @for (team of promotedTeams; track team) {
+          <span class="chip chip-up">{{ team }}</span>
+          }
+        </div>
+      </dd>
     </div>
     } @if (relegatedTeams.length) {
     <div class="fact">
       <dt>Relegated</dt>
-      <dd class="chip chip-down">{{ relegatedTeams.join(', ') }}</dd>
+      <dd>
+        <div class="chip-group">
+          @for (team of relegatedTeams; track team) {
+          <span class="chip chip-down">{{ team }}</span>
+          }
+        </div>
+      </dd>
     </div>
     }
   </dl>

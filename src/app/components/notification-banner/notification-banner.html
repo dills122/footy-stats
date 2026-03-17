@@ -1,0 +1,12 @@
+<section
+  class="notification-banner"
+  [class]="'notification-banner notification-banner--' + variant"
+  [attr.role]="ariaRole"
+>
+  @if (title) {
+  <strong class="notification-banner__title">{{ title }}</strong>
+  }
+  <div class="notification-banner__content">
+    <ng-content />
+  </div>
+</section>
