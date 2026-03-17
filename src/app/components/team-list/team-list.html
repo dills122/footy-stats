@@ -9,8 +9,9 @@
       color="primary"
       (click)="selectLetter(letter)"
       type="button"
-      class="letter-button"
+      class="letter-button app-pill-control"
       [class.letter-button--selected]="selectedLetter() === letter"
+      [class.is-active]="selectedLetter() === letter"
     >
       {{ letter }}
     </button>
@@ -18,8 +19,9 @@
       mat-stroked-button
       (click)="selectLetter('')"
       type="button"
-      class="letter-button"
+      class="letter-button app-pill-control"
       [class.letter-button--selected]="!selectedLetter()"
+      [class.is-active]="!selectedLetter()"
     >
       All
     </button>
@@ -27,23 +29,23 @@
 
   <!-- Teams table -->
   <div class="table-wrap">
-    <div class="team-container">
+    <div class="team-container app-data-shell">
       <table mat-table [dataSource]="filteredTeams()" class="team-table">
         <ng-container matColumnDef="team">
-          <th mat-header-cell *matHeaderCellDef class="team-header team-col">Team</th>
-          <td mat-cell *matCellDef="let team" class="team-cell team-col">
+          <th mat-header-cell *matHeaderCellDef class="team-header team-col app-data-head">Team</th>
+          <td mat-cell *matCellDef="let team" class="team-cell team-col app-data-cell">
             <span class="team-name" matTooltip="Team overview page coming soon">{{ team }}</span>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="ext">
-          <th mat-header-cell *matHeaderCellDef class="team-header ext-col">
+          <th mat-header-cell *matHeaderCellDef class="team-header ext-col app-data-head">
             <span class="header-inline">
               External Links
               <mat-icon>open_in_new</mat-icon>
             </span>
           </th>
-          <td mat-cell *matCellDef="let team" class="team-cell links-cell ext-col">
+          <td mat-cell *matCellDef="let team" class="team-cell links-cell ext-col app-data-cell">
             <a [href]="createWikipediaLink(team)" target="_blank">Wikipedia</a>
             <span class="divider">|</span>
             <a [href]="createWorldFootballLink(team)" target="_blank">WorldFootball</a>
@@ -53,7 +55,11 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="['team', 'ext']" class="team-head-row"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['team', 'ext']" class="team-row"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['team', 'ext']"
+          class="team-row app-data-row"
+        ></tr>
       </table>
     </div>
   </div>
