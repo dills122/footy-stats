@@ -7,26 +7,6 @@
   padding: clamp(20px, 3vw, 34px);
 }
 
-.eyebrow {
-  margin: 0 0 10px;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--app-text-muted);
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(28px, 4vw, 42px);
-  line-height: 1.05;
-}
-
-.lede {
-  margin: 10px 0 0;
-  max-width: 65ch;
-  color: var(--app-text-subtle);
-}
-
 .stats {
   margin-top: 22px;
   display: grid;
@@ -44,7 +24,7 @@ h1 {
 .value {
   font-size: clamp(24px, 3.2vw, 34px);
   font-weight: 700;
-  color: #be123c;
+  color: var(--app-accent);
 }
 
 .label {
@@ -80,7 +60,7 @@ h1 {
   width: 30px;
   height: 30px;
   font-size: 30px;
-  color: #be123c;
+  color: var(--app-accent);
 }
 
 .feature h2 {

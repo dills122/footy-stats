@@ -172,6 +172,34 @@ body {
   padding: clamp(16px, 2.4vw, 26px);
 }
 
+.app-page-header {
+  margin-bottom: 14px;
+}
+
+.app-page-eyebrow {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--app-text-muted);
+}
+
+.app-page-header .app-page-title {
+  margin: 8px 0 8px;
+  font-size: clamp(1.6rem, 2.3vw, 2rem);
+  line-height: 1.16;
+  letter-spacing: -0.015em;
+  color: var(--app-text-strong);
+}
+
+.app-page-header .app-page-lede {
+  margin: 0;
+  max-width: 64ch;
+  font-size: 1rem;
+  line-height: 1.42;
+  color: var(--app-text-subtle);
+}
+
 .app-pill-control {
   border: 1px solid color-mix(in srgb, var(--app-border) 82%, #fff 18%);
   border-radius: var(--app-radius-pill);
