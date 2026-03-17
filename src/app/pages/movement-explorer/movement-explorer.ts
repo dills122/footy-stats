@@ -152,6 +152,7 @@ export class MovementExplorer {
   activePreset = signal<string>('last-20');
   configCollapsed = signal<boolean>(false);
   private applyingUrlState = false;
+  private lastSyncedQueryState = '';
   private hasAppliedInitialUrlState = signal<boolean>(false);
   private queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -238,6 +239,7 @@ export class MovementExplorer {
 
   teamSeries = computed<TeamSeries[]>(() => {
     const selected = this.selectedTeamIds();
+    const selectedIds = new Set(selected);
     const range = new Set(this.selectedRange());
     if (!selected.length || !range.size) {
       return [];
@@ -245,7 +247,7 @@ export class MovementExplorer {
 
     const dataByTeam = new Map<number, TeamSeriesPoint[]>();
     this.entries().forEach((entry) => {
-      if (!selected.includes(entry.teamId)) {
+      if (!selectedIds.has(entry.teamId)) {
         return;
       }
       if (!range.has(entry.season)) {
@@ -462,7 +464,7 @@ export class MovementExplorer {
       this.hasAppliedInitialUrlState.set(true);
     });
 
-    effect(() => {
+    effect((onCleanup) => {
       if (!this.hasAppliedInitialUrlState() || this.applyingUrlState) {
         return;
       }
@@ -481,12 +483,22 @@ export class MovementExplorer {
         collapsed: collapsed ? '1' : null,
       };
 
-      void this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: nextQuery,
-        queryParamsHandling: 'merge',
-        replaceUrl: true,
-      });
+      const nextQueryState = JSON.stringify(nextQuery);
+      if (nextQueryState === this.lastSyncedQueryState) {
+        return;
+      }
+
+      const timeoutId = window.setTimeout(() => {
+        this.lastSyncedQueryState = nextQueryState;
+        void this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: nextQuery,
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        });
+      }, 140);
+
+      onCleanup(() => window.clearTimeout(timeoutId));
     });
   }
 

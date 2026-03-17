@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -15,7 +14,6 @@ import { SeasonSummaryCardComponent } from '../season-summary-card/season-summar
   templateUrl: './league-tables-viewer.html',
   styleUrl: './league-tables-viewer.scss',
   imports: [
-    FormsModule,
     MatFormFieldModule,
     MatSelectModule,
     LeagueTableComponent,
@@ -32,39 +30,50 @@ export class LeagueTablesViewerComponent {
   years: number[] = [];
   leaguesForYear: string[] = [];
 
-  selectedYear?: number;
-  selectedLeague?: string;
+  selectedYear = signal<number | undefined>(undefined);
+  selectedLeague = signal<string | undefined>(undefined);
 
   constructor() {
     effect(() => {
       const seasonTiers = this.store.getSeasonTiers();
       this.years = seasonTiers.map((st) => st.season).sort((a, b) => b - a);
 
-      if (this.years.length > 0 && !this.selectedYear) {
+      if (this.years.length > 0 && !this.selectedYear()) {
         this.onYearChange(this.years[0]);
       }
     });
   }
 
-  get currentTable(): LeagueTableView[] | null {
-    if (!this.selectedYear || !this.selectedLeague) return null;
+  currentTable = computed<LeagueTableView[] | null>(() => {
+    const year = this.selectedYear();
+    const league = this.selectedLeague();
+    if (!year || !league) return null;
 
-    const table = this.store.getFullTable(this.selectedYear, this.selectedLeague);
+    const table = this.store.getFullTable(year, league);
     if (!table) return null;
 
     return table.map((entry) => ({
       ...entry,
       teamName: this.store.getTeamNameById(entry.teamId),
     }));
-  }
+  });
+
+  currentLeagueLabel = computed(() => {
+    const league = this.selectedLeague();
+    return league ?? '';
+  });
 
   onYearChange(year: number) {
-    this.selectedYear = year;
-    this.selectedLeague = undefined;
+    this.selectedYear.set(year);
+    this.selectedLeague.set(undefined);
 
     const seasonTiers = this.store.getSeasonTiers();
     const currentSeasonsAvailableTiers = seasonTiers.find((st) => st.season === year);
     this.leaguesForYear = currentSeasonsAvailableTiers?.tiers ?? [];
-    this.selectedLeague = this.leaguesForYear[0];
+    this.selectedLeague.set(this.leaguesForYear[0]);
+  }
+
+  onLeagueChange(league: string) {
+    this.selectedLeague.set(league);
   }
 }

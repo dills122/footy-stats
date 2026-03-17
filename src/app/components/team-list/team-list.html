@@ -46,11 +46,15 @@
             </span>
           </th>
           <td mat-cell *matCellDef="let team" class="team-cell links-cell ext-col app-data-cell">
-            <a [href]="createWikipediaLink(team)" target="_blank">Wikipedia</a>
+            <a [href]="createWikipediaLink(team)" target="_blank" rel="noopener noreferrer">
+              Wikipedia
+            </a>
             <span class="divider">|</span>
-            <a [href]="createWorldFootballLink(team)" target="_blank">WorldFootball</a>
+            <a [href]="createWorldFootballLink(team)" target="_blank" rel="noopener noreferrer">
+              WorldFootball
+            </a>
             <span class="divider">|</span>
-            <a [href]="create11v11Link(team)" target="_blank">11v11</a>
+            <a [href]="create11v11Link(team)" target="_blank" rel="noopener noreferrer">11v11</a>
           </td>
         </ng-container>
 
