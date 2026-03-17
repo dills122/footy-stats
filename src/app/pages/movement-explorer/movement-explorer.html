@@ -29,10 +29,64 @@
         <h2>Clubs</h2>
         <span>{{ selectedTeamIds().length }}/{{ maxSelectedTeams }} selected</span>
       </div>
+      <div class="quick-pick-block">
+        <div class="quick-pick-shell">
+          <button
+            type="button"
+            class="quick-pick-trigger"
+            (click)="toggleQuickPickMenu()"
+            [attr.aria-expanded]="quickPickMenuOpen()"
+          >
+            <span class="quick-pick-trigger-copy">
+              <span class="quick-pick-trigger-label">Browse club groups</span>
+              <span class="quick-pick-trigger-meta">
+                {{ activeClubQuickPickGroup()?.label ?? 'Quick picks' }}
+              </span>
+            </span>
+            <span class="quick-pick-trigger-icon" aria-hidden="true">
+              {{ quickPickMenuOpen() ? '−' : '+' }}
+            </span>
+          </button>
+
+          @if (quickPickMenuOpen()) {
+          <div class="quick-pick-popover app-panel">
+            <div class="quick-pick-tabs">
+              @for (group of clubQuickPickGroups(); track group.id) {
+              <button
+                type="button"
+                class="quick-pick-tab"
+                [class.is-active]="activeClubQuickPick() === group.id"
+                (click)="setActiveClubQuickPick(group.id)"
+              >
+                {{ group.label }}
+              </button>
+              }
+            </div>
+            @if (activeClubQuickPickGroup(); as activeGroup) {
+            <div class="quick-pick-meta">{{ activeGroup.description }}</div>
+            <div class="quick-pick-results">
+              @for (team of activeGroup.teams; track team.id) {
+              <button
+                class="team-option"
+                type="button"
+                (click)="addQuickPickTeam(team.id)"
+                [disabled]="selectedTeamIds().length >= maxSelectedTeams"
+              >
+                {{ team.name }}
+              </button>
+              }
+            </div>
+            @if (!activeGroup.teams.length) {
+            <div class="quick-pick-empty">All clubs in this group are already selected.</div>
+            } }
+          </div>
+          }
+        </div>
+      </div>
       <label class="search-field">
         <input
           type="text"
-          placeholder="Search clubs and add..."
+          placeholder="Search clubs directly..."
           [value]="clubSearchTerm()"
           (input)="onClubSearchInput($any($event.target).value)"
           [disabled]="selectedTeamIds().length >= maxSelectedTeams"

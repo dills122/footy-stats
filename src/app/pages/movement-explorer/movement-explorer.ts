@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LineChart } from 'echarts/charts';
 import {
@@ -30,6 +30,17 @@ interface TeamSeries {
   points: TeamSeriesPoint[];
 }
 
+interface ClubQuickPickGroup {
+  id: string;
+  label: string;
+  description: string;
+  teamNames: string[];
+}
+
+interface ClubQuickPickResolvedGroup extends ClubQuickPickGroup {
+  teams: { id: number; name: string }[];
+}
+
 const TEAM_COLOR_POOL = [
   '#dc2626',
   '#2563eb',
@@ -52,6 +63,56 @@ const TIER_LABELS: Record<number, string> = {
   6: 'National League North',
   7: 'National League South',
 };
+
+const CLUB_QUICK_PICK_GROUPS: ClubQuickPickGroup[] = [
+  {
+    id: 'common',
+    label: 'Common Picks',
+    description: 'Frequently compared clubs and modern heavyweights.',
+    teamNames: [
+      'Arsenal',
+      'Chelsea',
+      'Liverpool',
+      'Manchester City',
+      'Manchester United',
+      'Tottenham Hotspur',
+      'Newcastle United',
+      'Aston Villa',
+      'Everton',
+      'Leeds United',
+    ],
+  },
+  {
+    id: 'big-six',
+    label: 'Big Six',
+    description: 'Fast add for the clubs most people reach for first.',
+    teamNames: [
+      'Arsenal',
+      'Chelsea',
+      'Liverpool',
+      'Manchester City',
+      'Manchester United',
+      'Tottenham Hotspur',
+    ],
+  },
+  {
+    id: 'historic',
+    label: 'Historic Clubs',
+    description: 'Older powers and long-running names across the pyramid.',
+    teamNames: [
+      'Blackburn Rovers',
+      'Derby County',
+      'Ipswich Town',
+      'Nottingham Forest',
+      'Sheffield Wednesday',
+      'Sunderland',
+      'Wolverhampton Wanderers',
+      'Preston North End',
+      'Bolton Wanderers',
+      'Huddersfield Town',
+    ],
+  },
+] as const;
 
 echarts.use([
   LineChart,
@@ -84,6 +145,8 @@ export class MovementExplorer {
 
   selectedTeamIds = signal<number[]>([]);
   clubSearchTerm = signal<string>('');
+  activeClubQuickPick = signal<string>('common');
+  quickPickMenuOpen = signal<boolean>(false);
   selectedStartSeason = signal<number | null>(null);
   selectedEndSeason = signal<number | null>(null);
   activePreset = signal<string>('last-20');
@@ -123,6 +186,26 @@ export class MovementExplorer {
       .filter((team) => !term || team.name.toLowerCase().includes(term))
       .slice(0, 14);
   });
+
+  clubQuickPickGroups = computed<ClubQuickPickResolvedGroup[]>(() => {
+    const teams = this.teams();
+    const selectedIds = new Set(this.selectedTeamIds());
+    return CLUB_QUICK_PICK_GROUPS.map((group) => ({
+      ...group,
+      teams: group.teamNames
+        .map((teamName) => teams.find((team) => team.name === teamName))
+        .filter((team): team is { id: number; name: string } => Boolean(team))
+        .filter((team) => !selectedIds.has(team.id))
+        .map((team) => ({ id: team.id, name: team.name })),
+    }));
+  });
+
+  activeClubQuickPickGroup = computed<ClubQuickPickResolvedGroup | null>(
+    () =>
+      this.clubQuickPickGroups().find((group) => group.id === this.activeClubQuickPick()) ??
+      this.clubQuickPickGroups()[0] ??
+      null
+  );
 
   selectedSeasonCount = computed(() => this.selectedRange().length);
 
@@ -416,6 +499,10 @@ export class MovementExplorer {
     this.clubSearchTerm.set('');
   }
 
+  addQuickPickTeam(teamId: number) {
+    this.addTeam(teamId);
+  }
+
   removeTeam(teamId: number) {
     this.selectedTeamIds.set(this.selectedTeamIds().filter((id) => id !== teamId));
   }
@@ -426,6 +513,29 @@ export class MovementExplorer {
 
   onClubSearchInput(value: string) {
     this.clubSearchTerm.set(value);
+  }
+
+  setActiveClubQuickPick(groupId: string) {
+    this.activeClubQuickPick.set(groupId);
+  }
+
+  toggleQuickPickMenu() {
+    this.quickPickMenuOpen.set(!this.quickPickMenuOpen());
+  }
+
+  closeQuickPickMenu() {
+    this.quickPickMenuOpen.set(false);
+  }
+
+  @HostListener('document:click', ['$event.target'])
+  onDocumentClick(target: EventTarget | null) {
+    if (!this.quickPickMenuOpen() || !(target instanceof Element)) {
+      return;
+    }
+
+    if (!target.closest('.quick-pick-shell')) {
+      this.closeQuickPickMenu();
+    }
   }
 
   toggleConfigPanel() {
