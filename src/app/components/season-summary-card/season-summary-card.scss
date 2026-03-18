@@ -31,9 +31,7 @@ h3 {
     color-mix(in srgb, var(--app-surface-bg) 98%, #fff 2%),
     color-mix(in srgb, var(--app-surface-bg) 90%, #0f172a 10%)
   );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 10px 22px rgba(2, 6, 23, 0.16);
+  box-shadow: 0 4px 10px rgba(2, 6, 23, 0.1);
 }
 
 dt {
