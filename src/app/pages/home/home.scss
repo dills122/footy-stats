@@ -42,6 +42,12 @@
 
 .cta-row a {
   border-radius: 8px;
+  --mdc-filled-button-container-color: #d97706;
+  --mdc-filled-button-label-text-color: #111827;
+  --mdc-outlined-button-label-text-color: var(--app-text-strong);
+  --mdc-outlined-button-outline-color: var(--app-border);
+  --mat-outlined-button-state-layer-color: var(--app-text-strong);
+  --mat-filled-button-state-layer-color: #111827;
 }
 
 .archive-sections {
@@ -81,13 +87,15 @@
 .archive-section a {
   margin-top: 16px;
   display: inline-flex;
-  color: #fecdd3;
+  color: var(--app-text-strong);
   text-decoration: none;
   font-weight: 650;
 }
 
 .archive-section a:hover {
+  color: #fde68a;
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 900px) {

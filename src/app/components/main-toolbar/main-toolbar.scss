@@ -12,7 +12,7 @@
 }
 
 .toolbar-inner {
-  width: min(1160px, calc(100% - 24px));
+  width: min(1160px, calc(100vw - 24px));
   margin: 0 auto;
   padding: 10px 0 12px;
   display: flex;
@@ -36,9 +36,9 @@
   border-radius: 9px;
   display: grid;
   place-items: center;
-  color: #fecdd3;
-  background: rgba(225, 29, 72, 0.16);
-  border: 1px solid rgba(251, 113, 133, 0.28);
+  color: #fde68a;
+  background: rgba(217, 119, 6, 0.14);
+  border: 1px solid rgba(217, 119, 6, 0.32);
   box-shadow: none;
 }
 
@@ -83,14 +83,14 @@
 }
 
 .nav-links .is-active {
-  color: #fecdd3;
-  background: rgba(225, 29, 72, 0.14);
-  box-shadow: inset 0 -2px 0 rgba(251, 113, 133, 0.5);
+  color: #fde68a;
+  background: rgba(217, 119, 6, 0.12);
+  box-shadow: inset 0 -2px 0 rgba(217, 119, 6, 0.52);
 }
 
 @media (max-width: 720px) {
   .toolbar-inner {
-    width: min(100% - 24px, 1160px);
+    width: min(calc(100vw - 24px), 1160px);
     padding: 10px 0;
     gap: 10px;
     flex-direction: column;

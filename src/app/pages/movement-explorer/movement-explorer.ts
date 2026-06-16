@@ -42,16 +42,17 @@ interface ClubQuickPickResolvedGroup extends ClubQuickPickGroup {
 }
 
 const TEAM_COLOR_POOL = [
-  '#dc2626',
-  '#2563eb',
-  '#059669',
-  '#7c3aed',
   '#d97706',
-  '#db2777',
+  '#059669',
+  '#2563eb',
   '#0891b2',
+  '#be123c',
   '#65a30d',
   '#4f46e5',
-  '#be123c',
+  '#b45309',
+  '#7c3aed',
+  '#0f766e',
+  '#64748b',
 ];
 
 const TIER_LABELS: Record<number, string> = {
@@ -349,10 +350,10 @@ export class MovementExplorer {
       animation: false,
       backgroundColor: 'transparent',
       grid: {
-        left: 220,
+        left: 184,
         right: 40,
-        top: 88,
-        bottom: 122,
+        top: 72,
+        bottom: 108,
         containLabel: false,
       },
       legend: {
@@ -360,7 +361,7 @@ export class MovementExplorer {
         left: 18,
         textStyle: {
           color: '#d7deeb',
-          fontSize: 18,
+          fontSize: 14,
           fontWeight: 600,
         },
       },
@@ -374,8 +375,8 @@ export class MovementExplorer {
         boundaryGap: false,
         axisLabel: {
           color: '#c5d0e4',
-          fontSize: 18,
-          margin: 20,
+          fontSize: 13,
+          margin: 16,
           hideOverlap: true,
         },
         axisLine: {
@@ -391,9 +392,9 @@ export class MovementExplorer {
         inverse: true,
         axisLabel: {
           color: '#c5d0e4',
-          fontSize: 17,
+          fontSize: 13,
           fontWeight: 700,
-          margin: 18,
+          margin: 14,
           formatter: (value: number) => this.tierLabel(value),
         },
         axisLine: { show: false },
@@ -409,15 +410,15 @@ export class MovementExplorer {
           bottom: 48,
           filterMode: 'none',
           backgroundColor: 'rgba(15, 23, 42, 0.75)',
-          fillerColor: 'rgba(225, 29, 72, 0.28)',
+          fillerColor: 'rgba(217, 119, 6, 0.24)',
           borderColor: 'rgba(148, 163, 184, 0.42)',
           handleStyle: {
-            color: '#f43f5e',
-            borderColor: '#fb7185',
+            color: '#d97706',
+            borderColor: '#f59e0b',
           },
           textStyle: {
             color: '#d7deeb',
-            fontSize: 14,
+            fontSize: 12,
           },
         },
       ],

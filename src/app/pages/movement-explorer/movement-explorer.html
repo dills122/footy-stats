@@ -46,7 +46,7 @@
               </span>
             </span>
             <span class="quick-pick-trigger-icon" aria-hidden="true">
-              {{ quickPickMenuOpen() ? '−' : '+' }}
+              {{ quickPickMenuOpen() ? '-' : '+' }}
             </span>
           </button>
 
@@ -86,9 +86,10 @@
         </div>
       </div>
       <label class="search-field">
+        <span class="field-label">Search clubs</span>
         <input
           type="text"
-          placeholder="Search clubs directly..."
+          placeholder="Start typing a club name"
           [value]="clubSearchTerm()"
           (input)="onClubSearchInput($any($event.target).value)"
           [disabled]="selectedTeamIds().length >= maxSelectedTeams"
@@ -111,7 +112,12 @@
         <div class="selected-label">Selected clubs</div>
         <div class="selected-chips">
           @for (team of selectedTeams(); track team.id) {
-          <button class="chip" type="button" (click)="removeTeam(team.id)">
+          <button
+            class="chip"
+            type="button"
+            (click)="removeTeam(team.id)"
+            [attr.aria-label]="'Remove ' + team.name"
+          >
             {{ team.name }}
             <span aria-hidden="true">x</span>
           </button>
