@@ -3,79 +3,54 @@
 }
 
 .viewer {
-  display: grid;
-  gap: 16px;
-}
-
-.controls {
-  padding: 20px;
-}
-
-.controls-head {
-  margin-bottom: 10px;
-}
-
-.eyebrow {
-  margin: 0;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--app-text-muted);
-}
-
-h1 {
-  margin: 4px 0 0;
-  font-size: 22px;
-}
-
-.selectors {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.results {
-  display: grid;
-  gap: 14px;
-}
-
-app-season-summary-card,
-app-league-table {
   display: block;
+  min-width: 0;
 }
 
-h2 {
-  margin: 6px 2px 0;
-  font-size: 20px;
-  color: var(--app-text-strong);
+.table-record {
+  display: grid;
+  gap: clamp(24px, 4vw, 42px);
+  min-width: 0;
+}
+
+.table-record > * {
+  min-width: 0;
+}
+
+.record-header {
+  margin-bottom: 0;
+  padding-bottom: clamp(16px, 2.4vw, 26px);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.record-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+  max-width: 760px;
+  margin-top: -4px;
 }
 
 .field {
-  --mdc-filled-text-field-container-color: color-mix(
-    in srgb,
-    var(--app-surface-bg) 94%,
-    transparent
-  );
-  --mdc-filled-text-field-container-shape: 12px;
+  width: min(100%, 280px);
+  --mdc-filled-text-field-container-color: rgba(7, 10, 19, 0.3);
+  --mdc-filled-text-field-container-shape: 8px;
   --mdc-filled-text-field-active-indicator-color: transparent;
   --mdc-filled-text-field-focus-active-indicator-color: transparent;
   --mdc-filled-text-field-hover-active-indicator-color: transparent;
-  --mat-select-panel-background-color: color-mix(in srgb, var(--app-surface-bg) 98%, transparent);
+  --mat-select-panel-background-color: #111827;
 }
 
 :host ::ng-deep .field .mdc-text-field--filled {
-  border: 1px solid color-mix(in srgb, var(--app-border) 82%, #fff 18%);
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--app-surface-bg) 98%, #fff 2%),
-    color-mix(in srgb, var(--app-surface-bg) 92%, #0f172a 8%)
-  );
-  box-shadow: 0 4px 10px rgba(2, 6, 23, 0.08);
+  border: 1px solid var(--app-border);
+  background: rgba(7, 10, 19, 0.28);
+  box-shadow: none;
 }
 
 :host ::ng-deep .field .mdc-text-field--filled:hover,
 :host ::ng-deep .field .mdc-text-field--filled.mdc-text-field--focused {
-  border-color: rgba(251, 113, 133, 0.45);
+  border-color: rgba(148, 163, 184, 0.42);
 }
 
 :host ::ng-deep .field .mat-mdc-select-value,
@@ -87,8 +62,17 @@ h2 {
   color: var(--app-text-strong) !important;
 }
 
+app-league-table,
+app-season-summary-card {
+  display: block;
+}
+
 @media (max-width: 760px) {
-  .selectors {
-    grid-template-columns: 1fr;
+  .record-tools {
+    display: grid;
+  }
+
+  .field {
+    width: 100%;
   }
 }

@@ -1,52 +1,56 @@
 <div class="home app-page-shell">
-  <section class="hero app-surface">
+  <section class="hero">
     <header class="app-page-header">
-      <p class="app-page-eyebrow">Football Data Atlas</p>
-      <h1 class="app-page-title">Where English Football History Stays Searchable</h1>
+      <p class="app-page-eyebrow">English Football Archive</p>
+      <h1 class="app-page-title">Explore 137 seasons of English football history.</h1>
       <p class="app-page-lede">
-        From 1888 to today, inspect clubs, tables, and long-run patterns in one archive.
+        FootyStats brings league tables, club histories, promotion paths, and long-run patterns into
+        one searchable reference for the English game.
       </p>
     </header>
 
-    <div class="stats">
-      <div class="stat app-panel">
-        <span class="value">{{ seasonsCount() || '100+' }}</span>
-        <span class="label">Seasons</span>
-      </div>
-      <div class="stat app-panel">
-        <span class="value">{{ teamsCount() || '50+' }}</span>
-        <span class="label">Clubs Tracked</span>
-      </div>
-      <div class="stat app-panel">
-        <span class="value">3</span>
-        <span class="label">Primary Tiers</span>
-      </div>
+    <div class="archive-meta" aria-label="Archive coverage">
+      <span>
+        <strong>{{ seasonsCount() || '100+' }}</strong>
+        seasons
+      </span>
+      <span>
+        <strong>{{ teamsCount() || '50+' }}</strong>
+        clubs
+      </span>
+      <span>
+        <strong>3</strong>
+        primary tiers
+      </span>
     </div>
 
     <div class="cta-row">
-      <a mat-flat-button routerLink="/tables">Browse Season Tables</a>
+      <a mat-flat-button routerLink="/tables">Browse Tables</a>
       <a mat-stroked-button routerLink="/teams">Explore Clubs</a>
-      <span matTooltip="Coming soon">
-        <button mat-stroked-button disabled>View Rankings</button>
-      </span>
+      <a mat-stroked-button routerLink="/movement">Track Movement</a>
     </div>
   </section>
 
-  <section class="feature-grid">
-    <article class="feature app-panel">
-      <mat-icon>table_chart</mat-icon>
-      <h2>Historic League Tables</h2>
-      <p>Season-by-season standings from league formation to the modern era.</p>
+  <section class="archive-sections" aria-label="Archive pathways">
+    <article class="archive-section">
+      <p class="section-kicker">Tables</p>
+      <h2>Season records from the Football League era to today</h2>
+      <p>
+        Read each campaign as a preserved table, with standings, scoring, and relegation context.
+      </p>
+      <a routerLink="/tables">Open table archive</a>
     </article>
-    <article class="feature app-panel">
-      <mat-icon>sports_soccer</mat-icon>
-      <h2>Club History</h2>
-      <p>Track promotion, relegation, and performance shifts across decades.</p>
+    <article class="archive-section">
+      <p class="section-kicker">Clubs</p>
+      <h2>A directory of clubs across eras</h2>
+      <p>Browse every tracked club and jump to outside references for deeper research.</p>
+      <a routerLink="/teams">Browse club index</a>
     </article>
-    <article class="feature app-panel">
-      <mat-icon>trending_up</mat-icon>
-      <h2>Fast Comparison</h2>
-      <p>Scan key stats quickly with focused cards and cleaner table views.</p>
+    <article class="archive-section">
+      <p class="section-kicker">Movement</p>
+      <h2>Promotion and relegation paths over time</h2>
+      <p>Compare how clubs move through the pyramid across selected season windows.</p>
+      <a routerLink="/movement">Explore movement</a>
     </article>
   </section>
 </div>

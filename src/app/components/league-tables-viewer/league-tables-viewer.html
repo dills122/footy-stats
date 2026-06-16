@@ -1,12 +1,20 @@
 <div class="viewer">
-  <section class="controls app-surface">
-    <header class="controls-head app-page-header">
-      <p class="app-page-eyebrow">Table Explorer</p>
-      <h1 class="app-page-title">League Table Viewer</h1>
+  <section class="table-record">
+    <header class="record-header app-page-header">
+      <p class="app-page-eyebrow">League Table Archive</p>
+      <h1 class="app-page-title">
+        @if (selectedYear() && currentLeagueLabel()) { {{ selectedYear() }} {{ currentLeagueLabel()
+        | leagueTierToStringy }} Table } @else { League Tables }
+      </h1>
+      <p class="app-page-lede">
+        Read preserved season standings with wins, draws, losses, scoring record, goal difference,
+        and points.
+      </p>
     </header>
-    <div class="selectors">
+
+    <div class="record-tools" aria-label="Select season table">
       <mat-form-field class="field" appearance="fill">
-        <mat-label>Select Year</mat-label>
+        <mat-label>Season</mat-label>
         <mat-icon matPrefix>calendar_today</mat-icon>
         <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
           @for (year of years; track year) {
@@ -19,7 +27,7 @@
 
       @if (leaguesForYear.length > 0) {
       <mat-form-field class="field" appearance="fill">
-        <mat-label>Select League</mat-label>
+        <mat-label>Competition</mat-label>
         <mat-icon matPrefix>sports_soccer</mat-icon>
         <mat-select [value]="selectedLeague()" (selectionChange)="onLeagueChange($event.value)">
           @for (league of leaguesForYear; track league) {
@@ -29,13 +37,10 @@
       </mat-form-field>
       }
     </div>
-  </section>
 
-  @if (currentTable(); as tableData) {
-  <section class="results">
-    <h2>{{ selectedYear() }} Season Results - {{ currentLeagueLabel() | leagueTierToStringy }}</h2>
+    @if (currentTable(); as tableData) {
     <app-season-summary-card [tableData]="tableData" />
     <app-league-table [leagueTable]="tableData" />
+    }
   </section>
-  }
 </div>

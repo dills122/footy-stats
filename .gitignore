@@ -40,3 +40,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Codex local integration links. These point at user-specific AI Central
+# checkouts and are recreated with `pnpm codex:links`.
+.codex/skills/
+.codex/steering/*-steering.md
+!.codex/steering/repository-steering.md
+!.codex/steering/testing-quality-gates-steering.md

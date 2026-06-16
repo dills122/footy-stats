@@ -5,4 +5,60 @@
   <main class="app-content">
     <router-outlet />
   </main>
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <section class="footer-brand" aria-label="FootyStats project">
+        <a
+          class="footer-mark"
+          href="https://shwimp.studio/org/wimpy-productions/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Wimpy Productions"
+        >
+          FS
+        </a>
+        <div>
+          <p class="footer-kicker">A Wimpy Productions Project</p>
+          <p class="footer-title">FootyStats</p>
+          <p class="footer-copy">
+            Historical English football tables, club records, and movement research.
+          </p>
+        </div>
+      </section>
+
+      <nav class="footer-nav" aria-label="Footer">
+        <div class="footer-link-group">
+          <p>Explore</p>
+          <a routerLink="/tables">Tables</a>
+          <a routerLink="/movement">Movement</a>
+          <a routerLink="/teams">Clubs</a>
+        </div>
+        <div class="footer-link-group">
+          <p>Studio</p>
+          <a
+            href="https://shwimp.studio/org/wimpy-productions/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Wimpy Productions
+          </a>
+          <a href="https://shwimp.studio/" target="_blank" rel="noopener noreferrer">
+            Shwimp Studios
+          </a>
+          <a
+            href="https://github.com/dills122/footy-stats"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Source
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 FootyStats</span>
+      <span>Wimpy Productions / Shwimp Studios</span>
+    </div>
+  </footer>
 </div>
