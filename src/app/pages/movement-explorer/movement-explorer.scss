@@ -6,18 +6,31 @@
   margin-top: 0;
 }
 
-.page-note {
+.research-note {
   margin-top: 18px;
+  border-left: 2px solid rgba(217, 119, 6, 0.62);
+  padding: 10px 0 10px 14px;
+  display: grid;
+  gap: 3px;
+  color: var(--app-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
-.page-note p {
-  margin: 0;
+.research-note strong {
+  color: #fde68a;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .config-toolbar {
   margin-top: 18px;
   display: flex;
+  gap: 10px;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .config-toggle {
@@ -34,6 +47,85 @@
 .config-toggle:hover {
   color: var(--app-text-strong);
   border-color: rgba(148, 163, 184, 0.38);
+}
+
+.chart-setups {
+  margin-top: 18px;
+  padding: clamp(16px, 2vw, 20px);
+}
+
+.chart-setups-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.chart-setups-head h2 {
+  margin: 0;
+  color: var(--app-text-strong);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.chart-setups-head p {
+  margin: 5px 0 0;
+  color: var(--app-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.setup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.setup-card {
+  min-height: 132px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 12px;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  background: rgba(7, 10, 19, 0.18);
+  color: var(--app-text-subtle);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.setup-card:hover {
+  border-color: rgba(148, 163, 184, 0.42);
+  color: var(--app-text-strong);
+}
+
+.setup-card.is-active {
+  border-color: rgba(217, 119, 6, 0.58);
+  background: rgba(217, 119, 6, 0.1);
+}
+
+.setup-kicker {
+  color: var(--app-text-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.setup-title {
+  color: var(--app-text-strong);
+  font-weight: 780;
+  line-height: 1.25;
+}
+
+.setup-copy {
+  color: var(--app-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
 }
 
 .controls {
@@ -333,9 +425,74 @@
 }
 
 .empty,
-.legend,
 .chart-wrap {
   margin-top: 18px;
+}
+
+.chart-wrap {
+  padding: 14px;
+  overflow: hidden;
+}
+
+.chart-header {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.chart-context {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: grid;
+  gap: 10px;
+}
+
+.chart-context-main {
+  min-width: 220px;
+}
+
+.context-label {
+  display: block;
+  color: var(--app-text-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chart-context h2 {
+  margin: 4px 0 0;
+  color: var(--app-text-strong);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.chart-context p {
+  margin: 5px 0 0;
+  color: var(--app-text-muted);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.chart-context-clubs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.chart-context-clubs span {
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  background: rgba(7, 10, 19, 0.18);
+  color: var(--app-text-subtle);
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .empty {
@@ -344,16 +501,8 @@
   text-align: center;
 }
 
-.legend {
-  padding: 12px 14px;
-}
-
-.movement-key-panel {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .legend-item {
+  flex: 0 1 auto;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -373,6 +522,13 @@
   background: #60a5fa;
 }
 
+.dot.wartime {
+  width: 18px;
+  border-radius: 3px;
+  border: 1px solid rgba(245, 158, 11, 0.42);
+  background: rgba(245, 158, 11, 0.18);
+}
+
 .dot.promoted,
 .movement-dot.promoted {
   fill: #16a34a;
@@ -385,12 +541,8 @@
   background: #dc2626;
 }
 
-.chart-wrap {
-  padding: 14px;
-  overflow: hidden;
-}
-
 .movement-chart {
+  margin-top: 12px;
   width: 100%;
   height: 680px;
   min-height: 520px;
@@ -398,11 +550,20 @@
 }
 
 @media (max-width: 900px) {
+  .setup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .controls {
     grid-template-columns: 1fr;
   }
 
-  .movement-key-panel {
+  .chart-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .chart-context-clubs {
     justify-content: flex-start;
   }
 
@@ -413,6 +574,18 @@
 }
 
 @media (max-width: 560px) {
+  .config-toolbar {
+    justify-content: stretch;
+  }
+
+  .config-toggle {
+    flex: 1 1 140px;
+  }
+
+  .setup-grid {
+    grid-template-columns: 1fr;
+  }
+
   .years-row {
     grid-template-columns: 1fr;
   }
