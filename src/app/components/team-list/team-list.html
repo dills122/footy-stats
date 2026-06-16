@@ -1,31 +1,30 @@
 <div class="team-list">
-  <h4 class="filter-title">Filter by Letter</h4>
+  <div class="index-header">
+    <h4 class="filter-title">Club Index</h4>
+    <span>{{ filteredTeams().length }} clubs</span>
+  </div>
 
-  <!-- Alphabet filter -->
-  <div class="alphabet-filter">
+  <nav class="alphabet-filter" aria-label="Filter clubs by letter">
     <button
-      *ngFor="let letter of letters()"
-      mat-stroked-button
-      color="primary"
-      (click)="selectLetter(letter)"
-      type="button"
-      class="letter-button app-pill-control"
-      [class.letter-button--selected]="selectedLetter() === letter"
-      [class.is-active]="selectedLetter() === letter"
-    >
-      {{ letter }}
-    </button>
-    <button
-      mat-stroked-button
       (click)="selectLetter('')"
       type="button"
-      class="letter-button app-pill-control"
+      class="letter-button"
       [class.letter-button--selected]="!selectedLetter()"
-      [class.is-active]="!selectedLetter()"
+      [attr.aria-pressed]="!selectedLetter()"
     >
       All
     </button>
-  </div>
+    <button
+      *ngFor="let letter of letters()"
+      (click)="selectLetter(letter)"
+      type="button"
+      class="letter-button"
+      [class.letter-button--selected]="selectedLetter() === letter"
+      [attr.aria-pressed]="selectedLetter() === letter"
+    >
+      {{ letter }}
+    </button>
+  </nav>
 
   <!-- Teams table -->
   <div class="table-wrap">

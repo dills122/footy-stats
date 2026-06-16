@@ -1,7 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, EventEmitter, Input, Output, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,14 +13,7 @@ import {
   selector: 'app-team-list',
   templateUrl: './team-list.html',
   styleUrls: ['./team-list.scss'],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatTableModule,
-    FormsModule,
-    MatIconModule,
-    MatTooltipModule,
-  ],
+  imports: [CommonModule, MatTableModule, MatIconModule, MatTooltipModule],
 })
 export class TeamList {
   @Input() teams: string[] = [];

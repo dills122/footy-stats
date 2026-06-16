@@ -7,7 +7,7 @@
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 
 .app-header {
@@ -18,4 +18,127 @@
 
 .app-content {
   padding: 28px clamp(12px, 2vw, 24px) 28px;
+}
+
+.app-footer {
+  padding: 24px clamp(12px, 2vw, 24px) 30px;
+}
+
+.footer-inner {
+  width: min(1160px, calc(100% - 24px));
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--app-border);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 32px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 560px;
+}
+
+.footer-mark {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  display: inline-grid;
+  place-items: center;
+  color: var(--app-text-strong);
+  background: rgba(15, 23, 42, 0.72);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.footer-mark:hover {
+  border-color: rgba(248, 250, 252, 0.42);
+  color: #fff;
+}
+
+.footer-kicker {
+  margin: 0;
+  color: var(--app-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.footer-title {
+  margin: 4px 0 0;
+  color: var(--app-text-strong);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.footer-copy {
+  margin: 8px 0 0;
+  color: var(--app-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, auto));
+  gap: 32px;
+}
+
+.footer-link-group p {
+  margin: 0 0 10px;
+  color: var(--app-text-subtle);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.footer-link-group a {
+  display: block;
+  color: var(--app-text-muted);
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 650;
+  line-height: 1.75;
+}
+
+.footer-link-group a:hover {
+  color: var(--app-text-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-bottom {
+  width: min(1160px, calc(100% - 24px));
+  margin: 22px auto 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--app-text-subtle);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 700px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+  }
 }

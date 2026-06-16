@@ -1,5 +1,5 @@
 <mat-toolbar class="main-toolbar">
-  <div class="toolbar-inner app-surface">
+  <div class="toolbar-inner">
     <a class="brand" routerLink="/dashboard">
       <span class="brand-mark">
         <mat-icon fontIcon="sports_soccer" />
@@ -11,13 +11,10 @@
     </a>
 
     <nav class="nav-links" aria-label="Primary">
-      <a mat-button routerLink="/dashboard" routerLinkActive="is-active">Dashboard</a>
+      <a mat-button routerLink="/dashboard" routerLinkActive="is-active">Archive</a>
       <a mat-button routerLink="/tables" routerLinkActive="is-active">Tables</a>
       <a mat-button routerLink="/movement" routerLinkActive="is-active">Movement</a>
-      <a mat-button routerLink="/teams" routerLinkActive="is-active">Teams</a>
-      <span matTooltip="Coming soon">
-        <button mat-button disabled>Rankings</button>
-      </span>
+      <a mat-button routerLink="/teams" routerLinkActive="is-active">Clubs</a>
     </nav>
   </div>
 </mat-toolbar>

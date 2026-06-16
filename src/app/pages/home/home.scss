@@ -1,81 +1,97 @@
 .home {
   display: grid;
-  gap: 22px;
+  gap: clamp(30px, 5vw, 58px);
 }
 
 .hero {
-  padding: clamp(20px, 3vw, 34px);
+  padding: clamp(8px, 2vw, 18px) 0 clamp(12px, 3vw, 28px);
+  border-bottom: 1px solid var(--app-border);
 }
 
-.stats {
-  margin-top: 22px;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.app-page-header {
+  max-width: 860px;
 }
 
-.stat {
-  padding: 14px;
+.archive-meta {
+  margin-top: clamp(22px, 4vw, 36px);
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.value {
-  font-size: clamp(24px, 3.2vw, 34px);
-  font-weight: 700;
-  color: var(--app-accent);
-}
-
-.label {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  flex-wrap: wrap;
+  gap: 10px 24px;
   color: var(--app-text-muted);
+  font-size: 0.98rem;
+}
+
+.archive-meta span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.archive-meta strong {
+  color: var(--app-text-strong);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1;
 }
 
 .cta-row {
-  margin-top: 20px;
+  margin-top: clamp(24px, 4vw, 40px);
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.cta-row a,
-.cta-row button {
-  border-radius: var(--app-radius-pill);
+.cta-row a {
+  border-radius: 8px;
 }
 
-.feature-grid {
+.archive-sections {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: clamp(18px, 2.5vw, 28px);
 }
 
-.feature {
-  padding: 18px;
+.archive-section {
+  padding-top: 18px;
+  border-top: 1px solid var(--app-border);
 }
 
-.feature mat-icon {
-  width: 30px;
-  height: 30px;
-  font-size: 30px;
-  color: var(--app-accent);
+.section-kicker {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--app-text-muted);
 }
 
-.feature h2 {
-  margin: 10px 0 6px;
-  font-size: 17px;
-}
-
-.feature p {
+.archive-section h2 {
   margin: 0;
+  max-width: 22ch;
+  color: var(--app-text-strong);
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.18;
+  font-weight: 650;
+}
+
+.archive-section p:not(.section-kicker) {
+  margin: 12px 0 0;
   color: var(--app-text-subtle);
+  line-height: 1.55;
+}
+
+.archive-section a {
+  margin-top: 16px;
+  display: inline-flex;
+  color: #fecdd3;
+  text-decoration: none;
+  font-weight: 650;
+}
+
+.archive-section a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {
-  .stats,
-  .feature-grid {
+  .archive-sections {
     grid-template-columns: 1fr;
   }
 }
