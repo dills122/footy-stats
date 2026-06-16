@@ -501,6 +501,47 @@
   text-align: center;
 }
 
+.chart-tools {
+  flex: 0 1 460px;
+  display: grid;
+  justify-items: end;
+  align-content: start;
+  gap: 10px;
+}
+
+.detail-toggle {
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: rgba(7, 10, 19, 0.22);
+}
+
+.detail-toggle button {
+  min-width: 72px;
+  height: auto;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--app-text-muted);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.detail-toggle button:hover {
+  color: var(--app-text-strong);
+}
+
+.detail-toggle button.is-active {
+  background: rgba(217, 119, 6, 0.16);
+  color: #fde68a;
+}
+
 .legend-item {
   flex: 0 1 auto;
   display: inline-flex;
@@ -561,6 +602,11 @@
   .chart-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .chart-tools {
+    width: 100%;
+    justify-items: start;
   }
 
   .chart-context-clubs {

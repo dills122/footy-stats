@@ -54,6 +54,8 @@ interface MovementChartSetup {
   endSeason: number | null;
 }
 
+type ChartDetailMode = 'path' | 'events';
+
 const TEAM_COLOR_POOL = [
   '#d97706',
   '#059669',
@@ -276,6 +278,10 @@ export class MovementExplorer {
     { id: 'last-50', label: 'Last 50' },
     { id: 'all', label: 'All Time' },
   ] as const;
+  readonly chartDetailModes: { id: ChartDetailMode; label: string }[] = [
+    { id: 'path', label: 'Path' },
+    { id: 'events', label: 'Events' },
+  ];
 
   selectedTeamIds = signal<number[]>([]);
   clubSearchTerm = signal<string>('');
@@ -286,6 +292,7 @@ export class MovementExplorer {
   activePreset = signal<string>('last-20');
   configCollapsed = signal<boolean>(false);
   chartSetupsCollapsed = signal<boolean>(true);
+  chartDetailMode = signal<ChartDetailMode>('path');
   activeChartSetupId = signal<string>(DEFAULT_CHART_SETUP_ID);
   private applyingUrlState = false;
   private lastSyncedQueryState = '';
@@ -485,6 +492,10 @@ export class MovementExplorer {
     const tierBounds = this.visibleTierBounds();
     const series = this.teamSeries();
     const wartimeSuspensionRanges = getWartimeSuspensionRanges(seasons);
+    const showMovementEvents = this.chartDetailMode() === 'events';
+    const isDenseComparison = series.length >= 5 || seasons.length >= 45;
+    const pathOpacity = isDenseComparison ? 0.64 : 0.88;
+    const pathWidth = isDenseComparison ? 2 : 2.4;
     const wartimeMarkAreas = wartimeSuspensionRanges.map((range) => [
       {
         name: range.label,
@@ -533,8 +544,8 @@ export class MovementExplorer {
         .map((point) => ({
           coord: [String(point.season), point.tier],
           symbol: 'circle',
-          symbolSize: 12,
-          itemStyle: { color: '#16a34a' },
+          symbolSize: 9,
+          itemStyle: { color: '#16a34a', borderColor: '#0f172a', borderWidth: 1 },
         }));
 
       const relegatedMarkers = team.points
@@ -542,8 +553,8 @@ export class MovementExplorer {
         .map((point) => ({
           coord: [String(point.season), point.tier],
           symbol: 'diamond',
-          symbolSize: 12,
-          itemStyle: { color: '#dc2626' },
+          symbolSize: 9,
+          itemStyle: { color: '#dc2626', borderColor: '#0f172a', borderWidth: 1 },
         }));
 
       return {
@@ -551,15 +562,24 @@ export class MovementExplorer {
         type: 'line',
         data: lineData,
         connectNulls: false,
-        showSymbol: true,
-        symbolSize: 6,
-        lineStyle: { width: 2.6, color: team.color },
-        itemStyle: { color: team.color },
-        emphasis: { focus: 'series' },
+        step: 'end',
+        showSymbol: false,
+        symbol: 'circle',
+        symbolSize: 5,
+        lineStyle: { width: pathWidth, color: team.color, opacity: pathOpacity },
+        itemStyle: { color: team.color, opacity: pathOpacity },
+        emphasis: {
+          focus: 'series',
+          lineStyle: { width: 3.4, opacity: 1 },
+          itemStyle: { opacity: 1 },
+        },
         markPoint: {
-          data: [...promotedMarkers, ...relegatedMarkers],
+          data: showMovementEvents ? [...promotedMarkers, ...relegatedMarkers] : [],
           silent: true,
           z: 6,
+          itemStyle: {
+            opacity: 0.82,
+          },
         },
         ...(index === 0 && wartimeMarkAreas.length
           ? {
@@ -598,6 +618,11 @@ export class MovementExplorer {
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'line' },
+        backgroundColor: 'rgba(7, 10, 19, 0.94)',
+        borderColor: 'rgba(148, 163, 184, 0.28)',
+        textStyle: {
+          color: '#d7deeb',
+        },
       },
       xAxis: {
         type: 'category',
@@ -794,6 +819,10 @@ export class MovementExplorer {
 
   toggleChartSetupsPanel() {
     this.chartSetupsCollapsed.set(!this.chartSetupsCollapsed());
+  }
+
+  setChartDetailMode(mode: ChartDetailMode) {
+    this.chartDetailMode.set(mode);
   }
 
   applyChartSetup(setupId: string) {

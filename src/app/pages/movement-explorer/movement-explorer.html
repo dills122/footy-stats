@@ -238,15 +238,30 @@
         </div>
       </section>
 
-      <div class="legend-item movement-keys" aria-label="Chart legend">
-        <span class="dot promoted"></span>
-        <span>Promotion marker</span>
-        <span class="dot relegated"></span>
-        <span>Relegation marker</span>
-        <span class="dot plain"></span>
-        <span>Team line</span>
-        <span class="dot wartime"></span>
-        <span>Official league suspended</span>
+      <div class="chart-tools">
+        <div class="detail-toggle" aria-label="Chart detail mode">
+          @for (mode of chartDetailModes; track mode.id) {
+          <button
+            type="button"
+            [class.is-active]="chartDetailMode() === mode.id"
+            (click)="setChartDetailMode(mode.id)"
+          >
+            {{ mode.label }}
+          </button>
+          }
+        </div>
+        <div class="legend-item movement-keys" aria-label="Chart legend">
+          <span class="dot plain"></span>
+          <span>Club path</span>
+          @if (chartDetailMode() === 'events') {
+          <span class="dot promoted"></span>
+          <span>Promoted</span>
+          <span class="dot relegated"></span>
+          <span>Relegated</span>
+          }
+          <span class="dot wartime"></span>
+          <span>League suspended</span>
+        </div>
       </div>
     </div>
 
