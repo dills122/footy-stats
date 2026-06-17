@@ -2,7 +2,13 @@
 <div class="loading app-page-shell">Loading club profile...</div>
 } @else if (!club()) {
 <section class="team-overview app-surface app-page-shell">
-  <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
+  <div class="profile-top-actions">
+    <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
+    <app-data-issue-report-dialog
+      triggerLabel="Report missing club"
+      [context]="dataIssueContext()"
+    />
+  </div>
   <div class="empty-state app-panel">
     <p class="app-page-eyebrow">Club Profile</p>
     <h1>Club not found</h1>
@@ -11,7 +17,10 @@
 </section>
 } @else {
 <section class="team-overview app-surface app-page-shell">
-  <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
+  <div class="profile-top-actions">
+    <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
+    <app-data-issue-report-dialog [context]="dataIssueContext()" />
+  </div>
 
   <header class="profile-header">
     <div>
@@ -207,6 +216,7 @@
         <span>Position</span>
         <span>Record</span>
         <span>Points</span>
+        <span>Report</span>
       </div>
       @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
       <div class="recent-row">
@@ -216,6 +226,13 @@
         <span>{{ ordinal(entry.pos) }}</span>
         <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
         <span>{{ entry.points }}</span>
+        <span class="recent-report">
+          <app-data-issue-report-dialog
+            triggerLabel="Report"
+            triggerStyle="link"
+            [context]="dataIssueContextForSeason(entry)"
+          />
+        </span>
       </div>
       }
     </div>

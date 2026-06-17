@@ -1,0 +1,117 @@
+<button
+  type="button"
+  class="report-trigger"
+  [class.report-trigger--link]="triggerStyle() === 'link'"
+  (click)="open()"
+>
+  {{ triggerLabel() }}
+</button>
+
+@if (isOpen()) {
+<div class="report-backdrop" role="presentation" (click)="close()"></div>
+<section class="report-dialog" role="dialog" aria-modal="true" aria-labelledby="data-report-title">
+  <header class="report-head">
+    <div>
+      <p>Data report</p>
+      <h2 id="data-report-title">Report a data issue</h2>
+    </div>
+    <button type="button" class="icon-btn" aria-label="Close data report form" (click)="close()">
+      x
+    </button>
+  </header>
+
+  <div class="report-body">
+    <label class="wide-field">
+      <span>
+        What should we fix?
+        <em>Required</em>
+      </span>
+      <textarea
+        rows="3"
+        required
+        aria-required="true"
+        placeholder="Example: The 1999 points total looks too high."
+        [value]="form().summary"
+        (input)="updateField('summary', $any($event.target).value)"
+      ></textarea>
+    </label>
+
+    <label class="wide-field">
+      <span>Correct value or source</span>
+      <input
+        type="text"
+        placeholder="Optional: add the right value, source, or link if you have it."
+        [value]="form().source"
+        (input)="updateField('source', $any($event.target).value)"
+      />
+    </label>
+
+    <div class="field-grid">
+      <label>
+        <span>Club</span>
+        <input
+          type="text"
+          [value]="form().clubName || ''"
+          (input)="updateField('clubName', $any($event.target).value)"
+        />
+      </label>
+      <label>
+        <span>Season</span>
+        <input
+          type="number"
+          inputmode="numeric"
+          [value]="form().season || ''"
+          (input)="updateField('season', $any($event.target).value)"
+        />
+      </label>
+      <label>
+        <span>League</span>
+        <input
+          type="text"
+          [value]="form().competition || ''"
+          (input)="updateField('competition', $any($event.target).value)"
+        />
+      </label>
+    </div>
+
+    <div class="contact-row">
+      <label>
+        <span>Your email</span>
+        <input
+          type="email"
+          placeholder="Optional, only if we can follow up."
+          [value]="form().reporterEmail"
+          (input)="updateField('reporterEmail', $any($event.target).value)"
+        />
+      </label>
+    </div>
+  </div>
+
+  <footer class="report-actions">
+    <span>
+      @if (submitState() === 'sent') { Report sent. Thanks for helping improve the data. } @else if
+      (submitState() === 'error') { {{ errorMessage() }} } @else if (submitState() ===
+      'missing-key') { Report submissions need a Web3Forms access key before they can be sent. }
+      @else { Sends this report directly to FootyStats. }
+    </span>
+    <span
+      class="send-action"
+      [matTooltip]="!canSubmit() ? disabledReason() : ''"
+      [matTooltipDisabled]="canSubmit()"
+      [matTooltipShowDelay]="150"
+      [attr.aria-label]="!canSubmit() ? disabledReason() : null"
+    >
+      <button
+        type="button"
+        class="send-link"
+        [class.send-link--disabled]="!canSubmit()"
+        [disabled]="!canSubmit()"
+        (click)="submit()"
+      >
+        @if (submitState() === 'sending') { Sending... } @else if (submitState() === 'sent') { Sent
+        } @else { Send report }
+      </button>
+    </span>
+  </footer>
+</section>
+}

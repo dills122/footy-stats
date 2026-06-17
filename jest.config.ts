@@ -18,6 +18,7 @@ const config: Config = {
   testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
   moduleNameMapper: {
     '^@app/(.*)$': '<rootDir>/src/app/$1',
+    '^@env/(.*)$': '<rootDir>/src/environments/$1',
   },
 };
 

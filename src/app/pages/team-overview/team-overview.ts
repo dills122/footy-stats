@@ -8,9 +8,11 @@ import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/data-issue-report-dialog';
 import type { LeagueTableEntry } from '@app/store/league.models';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
+import type { DataIssueReportContext } from '@app/utils/data-issue-report';
 import { buildClubDerivedGaps, buildClubDisplayNamePeriods } from '@app/utils/club-identity-ranges';
 import { buildClubPerformanceMilestones } from '@app/utils/club-performance-milestones';
 import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
@@ -68,7 +70,7 @@ echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, Canv
 
 @Component({
   selector: 'app-team-overview',
-  imports: [CommonModule, RouterLink, NgxEchartsDirective],
+  imports: [CommonModule, RouterLink, NgxEchartsDirective, DataIssueReportDialog],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './team-overview.html',
   styleUrl: './team-overview.scss',
@@ -105,6 +107,11 @@ export class TeamOverview {
 
     return club.derived.lastSeenSeason === this.latestDataSeason() ? 'active' : 'historical';
   });
+  dataIssueContext = computed<DataIssueReportContext>(() => ({
+    pageTitle: 'Club profile',
+    sourcePath: `/teams/${this.clubId()}`,
+    clubName: this.club()?.canonicalName ?? (this.clubId() || undefined),
+  }));
   teamNames = computed(() =>
     Array.from(
       new Set(this.entries().map((entry) => this.leagueStore.getTeamNameById(entry.teamId)))
@@ -168,6 +175,16 @@ export class TeamOverview {
       teamName: this.leagueStore.getTeamNameById(entry.teamId),
     }))
   );
+
+  dataIssueContextForSeason(entry: RecentSeasonRow): DataIssueReportContext {
+    return {
+      pageTitle: 'Club season row',
+      sourcePath: `/teams/${this.clubId()} season ${entry.season}`,
+      clubName: entry.teamName || this.club()?.canonicalName || undefined,
+      season: entry.season,
+      competition: this.tierLabel(entry.tier),
+    };
+  }
   entriesAscending = computed(() =>
     this.entries()
       .slice()

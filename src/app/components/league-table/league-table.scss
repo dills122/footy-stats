@@ -8,7 +8,7 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 760px;
+  min-width: 820px;
   background: transparent;
 }
 
@@ -61,6 +61,15 @@
   color: var(--app-text-strong);
 }
 
+.report {
+  width: 72px;
+  text-align: right;
+}
+
+.cell.report {
+  font-size: 0.82rem;
+}
+
 .rank {
   width: 26px;
   height: 26px;
@@ -86,7 +95,7 @@
 
 @media (max-width: 980px) {
   .footy-table {
-    min-width: 680px;
+    min-width: 760px;
   }
 }
 

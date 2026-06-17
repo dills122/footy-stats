@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LeagueStore } from '@app/store/league.store';
 import { LeagueTablesViewerComponent } from './league-tables-viewer';
@@ -9,7 +10,7 @@ describe('LeagueTablesViewer', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LeagueTablesViewerComponent],
-      providers: [LeagueStore],
+      providers: [LeagueStore, provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LeagueTablesViewerComponent);
