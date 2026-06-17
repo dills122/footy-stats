@@ -80,6 +80,11 @@ const TIER_LABELS: Record<number, string> = {
   7: 'National League South',
 };
 
+const MOVEMENT_CHART_MIN_HEIGHT = 320;
+const MOVEMENT_CHART_MAX_HEIGHT = 560;
+const MOVEMENT_CHART_VERTICAL_CHROME = 148;
+const MOVEMENT_CHART_TIER_GAP = 82;
+
 const DEFAULT_STARTER_TEAM_NAMES = [
   'Arsenal',
   'Chelsea',
@@ -402,11 +407,31 @@ export class MovementExplorer {
 
     const minVisibleTier = Math.min(...tierValues);
     const maxVisibleTier = Math.max(...tierValues);
+    const visibleTierCount = maxVisibleTier - minVisibleTier + 1;
+
+    if (visibleTierCount === 1) {
+      return {
+        min: Math.max(1, minVisibleTier - 1),
+        max: Math.min(globalMaxTier, maxVisibleTier + 1),
+      };
+    }
 
     return {
-      min: Math.max(1, minVisibleTier - 1),
-      max: Math.min(globalMaxTier, maxVisibleTier + 1),
+      min: minVisibleTier,
+      max: maxVisibleTier,
     };
+  });
+
+  movementChartHeight = computed(() => {
+    const tierBounds = this.visibleTierBounds();
+    const tierIntervals = Math.max(1, tierBounds.max - tierBounds.min);
+    const preferredHeight =
+      MOVEMENT_CHART_VERTICAL_CHROME + tierIntervals * MOVEMENT_CHART_TIER_GAP;
+
+    return Math.min(
+      MOVEMENT_CHART_MAX_HEIGHT,
+      Math.max(MOVEMENT_CHART_MIN_HEIGHT, preferredHeight)
+    );
   });
 
   selectedRange = computed(() => {
@@ -563,7 +588,6 @@ export class MovementExplorer {
         type: 'line',
         data: lineData,
         connectNulls: false,
-        step: 'end',
         showSymbol: false,
         symbol: 'circle',
         symbolSize: 5,
@@ -603,8 +627,8 @@ export class MovementExplorer {
       grid: {
         left: 184,
         right: 40,
-        top: 72,
-        bottom: 108,
+        top: 60,
+        bottom: 88,
         containLabel: false,
       },
       legend: {
@@ -650,7 +674,7 @@ export class MovementExplorer {
           color: '#c5d0e4',
           fontSize: 13,
           fontWeight: 700,
-          margin: 14,
+          margin: 12,
           formatter: (value: number) => this.tierLabel(value),
         },
         axisLine: { show: false },

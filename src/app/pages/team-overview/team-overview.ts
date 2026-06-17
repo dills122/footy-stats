@@ -486,8 +486,8 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
       grid: {
         left: isSmallChart ? 96 : 110,
         right: 18,
-        top: 18,
-        bottom: isSmallChart ? 30 : 36,
+        top: isSmallChart ? 14 : 16,
+        bottom: isSmallChart ? 24 : 30,
         containLabel: false,
       },
       tooltip: {
@@ -523,7 +523,7 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
           color: '#c5d0e4',
           fontSize: isSmallChart ? 10 : 11,
           fontWeight: 700,
-          margin: 12,
+          margin: 10,
           formatter: (value: number) => this.tierLabel(`tier${value}`),
         },
         axisLine: { show: false },
@@ -536,7 +536,6 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
           name: this.club()?.canonicalName ?? 'Club path',
           type: 'line',
           data,
-          step: 'end',
           connectNulls: false,
           showSymbol: false,
           symbolSize: 6,
