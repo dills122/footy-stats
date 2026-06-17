@@ -9,8 +9,8 @@
       (click)="selectLetter('')"
       type="button"
       class="letter-button"
-      [class.letter-button--selected]="!selectedLetter()"
-      [attr.aria-pressed]="!selectedLetter()"
+      [class.letter-button--selected]="!selectedLetterSignal()"
+      [attr.aria-pressed]="!selectedLetterSignal()"
     >
       All
     </button>
@@ -19,8 +19,8 @@
       (click)="selectLetter(letter)"
       type="button"
       class="letter-button"
-      [class.letter-button--selected]="selectedLetter() === letter"
-      [attr.aria-pressed]="selectedLetter() === letter"
+      [class.letter-button--selected]="selectedLetterSignal() === letter"
+      [attr.aria-pressed]="selectedLetterSignal() === letter"
     >
       {{ letter }}
     </button>
@@ -40,7 +40,11 @@
             Team
           </th>
           <td mat-cell *matCellDef="let team" class="team-cell team-col app-data-cell">
-            <span class="team-name" matTooltip="Team overview page coming soon">{{ team }}</span>
+            @if (primaryClubId(team); as clubId) {
+            <a class="team-name" [routerLink]="['/teams', clubId]">{{ team.name }}</a>
+            } @else {
+            <span class="team-name" matTooltip="No club metadata available">{{ team.name }}</span>
+            }
           </td>
         </ng-container>
 
@@ -57,15 +61,21 @@
             </span>
           </th>
           <td mat-cell *matCellDef="let team" class="team-cell links-cell ext-col app-data-cell">
-            <a [href]="createWikipediaLink(team)" target="_blank" rel="noopener noreferrer">
+            <a [href]="createWikipediaLink(team.name)" target="_blank" rel="noopener noreferrer">
               Wikipedia
             </a>
             <span class="divider">|</span>
-            <a [href]="createWorldFootballLink(team)" target="_blank" rel="noopener noreferrer">
+            <a
+              [href]="createWorldFootballLink(team.name)"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               WorldFootball
             </a>
             <span class="divider">|</span>
-            <a [href]="create11v11Link(team)" target="_blank" rel="noopener noreferrer">11v11</a>
+            <a [href]="create11v11Link(team.name)" target="_blank" rel="noopener noreferrer">
+              11v11
+            </a>
           </td>
         </ng-container>
 

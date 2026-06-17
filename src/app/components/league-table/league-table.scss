@@ -45,6 +45,17 @@
   color: var(--app-text-strong);
 }
 
+.team-link {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.team-link:hover {
+  color: #fde68a;
+  text-decoration: underline;
+}
+
 .points {
   font-weight: 700;
   color: var(--app-text-strong);

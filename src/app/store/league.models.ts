@@ -4,6 +4,7 @@ export interface LeagueTableEntry {
   season: number;
   tier: string;
   teamId: number;
+  clubId: string | null;
   pos: number;
   played: number;
   won: number;
@@ -25,6 +26,7 @@ export interface LeagueTableEntry {
 export interface Team {
   id: number;
   name: string;
+  clubIds: string[];
 }
 
 export interface LeagueState {

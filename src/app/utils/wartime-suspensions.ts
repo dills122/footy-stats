@@ -20,6 +20,41 @@ const WARTIME_SUSPENSION_RANGES: readonly WartimeSuspensionRange[] = [
   },
 ] as const;
 
+export function isWartimeSuspensionSeason(season: number): boolean {
+  return WARTIME_SUSPENSION_RANGES.some(
+    (range) => season >= range.startSeason && season <= range.endSeason
+  );
+}
+
+export function isWartimeSuspensionSpan(startSeason: number, endSeason: number): boolean {
+  if (startSeason > endSeason) {
+    return false;
+  }
+
+  for (let season = startSeason; season <= endSeason; season += 1) {
+    if (!isWartimeSuspensionSeason(season)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export function getWartimeSuspensionLabelForSpan(
+  startSeason: number,
+  endSeason: number
+): string | null {
+  if (!isWartimeSuspensionSpan(startSeason, endSeason)) {
+    return null;
+  }
+
+  const matchingRanges = WARTIME_SUSPENSION_RANGES.filter(
+    (range) => startSeason <= range.endSeason && endSeason >= range.startSeason
+  );
+
+  return matchingRanges.map((range) => range.label).join(' / ') || 'Official league suspended';
+}
+
 export function getWartimeSuspensionRanges(seasons: readonly number[]): WartimeSuspensionRange[] {
   if (!seasons.length) {
     return [];

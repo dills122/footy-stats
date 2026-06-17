@@ -1,0 +1,164 @@
+@if (!metadataLoaded()) {
+<div class="loading app-page-shell">Loading club profile...</div>
+} @else if (!club()) {
+<section class="team-overview app-surface app-page-shell">
+  <a class="back-link" routerLink="/teams">Back to clubs</a>
+  <div class="empty-state app-panel">
+    <p class="app-page-eyebrow">Club Profile</p>
+    <h1>Club not found</h1>
+    <p>The requested club identity is not available in the current metadata release.</p>
+  </div>
+</section>
+} @else {
+<section class="team-overview app-surface app-page-shell">
+  <a class="back-link" routerLink="/teams">Back to clubs</a>
+
+  <header class="profile-header">
+    <div>
+      <p class="app-page-eyebrow">Club Profile</p>
+      <h1 class="app-page-title">{{ club()!.canonicalName }}</h1>
+      <p class="app-page-lede">
+        {{ club()!.derived.totalSeasonsSeen }} tracked seasons from {{
+        club()!.derived.firstSeenSeason }} to {{ club()!.derived.lastSeenSeason }}.
+      </p>
+    </div>
+    <div class="status-block" [class.is-active]="statusLabel() === 'active'">
+      <span>Status</span>
+      <strong>{{ statusLabel() }}</strong>
+    </div>
+  </header>
+
+  <section class="stat-grid" aria-label="Club record summary">
+    <div class="stat-cell">
+      <span>Latest Record</span>
+      <strong>{{ entryLabel(latestEntry()) }}</strong>
+    </div>
+    <div class="stat-cell">
+      <span>Best Top-Flight Finish</span>
+      <strong>
+        {{ topTierBestFinish() ? entryLabel(topTierBestFinish()) : 'No top-flight data' }}
+      </strong>
+    </div>
+    <div class="stat-cell">
+      <span>Movement Events</span>
+      <strong>
+        {{ movementSummary().promoted }} promoted / {{ movementSummary().relegated }} relegated
+      </strong>
+    </div>
+    <div class="stat-cell">
+      <span>Known Names</span>
+      <strong>{{ teamNames().join(', ') || club()!.canonicalName }}</strong>
+    </div>
+  </section>
+
+  <div class="profile-grid">
+    <section class="profile-panel app-panel">
+      <div class="panel-head">
+        <h2>League Footprint</h2>
+        <span>{{ entries().length }} table rows</span>
+      </div>
+      <div class="tier-list">
+        @for (tier of tierSummary(); track tier.tier) {
+        <div class="tier-row">
+          <span>{{ tier.label }}</span>
+          <strong>{{ tier.count }}</strong>
+        </div>
+        }
+      </div>
+    </section>
+
+    <section class="profile-panel app-panel">
+      <div class="panel-head">
+        <h2>Identity</h2>
+        <span>{{ club()!.derived.aliases.length }} aliases</span>
+      </div>
+      <div class="chip-list">
+        @for (alias of club()!.derived.aliases; track alias) {
+        <span>{{ alias }}</span>
+        }
+      </div>
+      @if (displayNamePeriods().length) {
+      <div class="period-list">
+        @for (period of displayNamePeriods(); track period.name + period.startSeason) {
+        <div>
+          <span>
+            <strong>{{ period.name }}</strong>
+            @if (period.omittedRanges.length) {
+            <small>
+              {{ period.omittedRanges[0].fromSeason }}-{{ period.omittedRanges[0].toSeason }}
+              omitted: {{ period.omittedRanges[0].reason }}
+            </small>
+            }
+          </span>
+          <span>{{ period.startSeason }}-{{ period.endSeason }}</span>
+        </div>
+        }
+      </div>
+      }
+    </section>
+  </div>
+
+  @if (relationshipRows().length || gapRows().length) {
+  <div class="profile-grid">
+    @if (relationshipRows().length) {
+    <section class="profile-panel app-panel">
+      <div class="panel-head">
+        <h2>Continuity Links</h2>
+        <span>{{ relationshipRows().length }} records</span>
+      </div>
+      <div class="relationship-list">
+        @for (relationship of relationshipRows(); track relationship.clubKey +
+        relationship.relationship) {
+        <div>
+          <span>{{ relationship.relationship }} / {{ relationship.direction }}</span>
+          <strong>{{ relationship.relatedName }}</strong>
+        </div>
+        }
+      </div>
+    </section>
+    } @if (gapRows().length) {
+    <section class="profile-panel app-panel">
+      <div class="panel-head">
+        <h2>Known Gaps</h2>
+        <span>{{ gapRows().length }} gaps</span>
+      </div>
+      <div class="gap-list">
+        @for (gap of gapRows().slice(0, 6); track gap.fromSeason + '-' + gap.toSeason + gap.reason)
+        {
+        <div>
+          <strong>{{ gap.fromSeason }}-{{ gap.toSeason }}</strong>
+          <span [class.suspension-note]="gap.isOfficialSuspension">{{ gap.reason }}</span>
+        </div>
+        }
+      </div>
+    </section>
+    }
+  </div>
+  }
+
+  <section class="profile-panel app-panel recent-panel">
+    <div class="panel-head">
+      <h2>Recent Seasons</h2>
+      <span>{{ recentEntries().length }} shown</span>
+    </div>
+    <div class="recent-table">
+      <div class="recent-row recent-head">
+        <span>Season</span>
+        <span>Tier</span>
+        <span>Position</span>
+        <span>Record</span>
+        <span>Points</span>
+      </div>
+      @for (entry of recentEntries(); track entry.season + entry.tier) {
+      <div class="recent-row">
+        <span>{{ entry.season }}</span>
+        <span>{{ tierLabel(entry.tier) }}</span>
+        <span>{{ ordinal(entry.pos) }}</span>
+        <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
+        <span>{{ entry.points }}</span>
+      </div>
+      }
+    </div>
+  </section>
+</section>
+}

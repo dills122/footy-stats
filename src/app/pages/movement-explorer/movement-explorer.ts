@@ -339,10 +339,11 @@ export class MovementExplorer {
     return CLUB_QUICK_PICK_GROUPS.map((group) => ({
       ...group,
       teams: group.teamNames
-        .map((teamName) => teams.find((team) => team.name === teamName))
-        .filter((team): team is { id: number; name: string } => Boolean(team))
-        .filter((team) => !selectedIds.has(team.id))
-        .map((team) => ({ id: team.id, name: team.name })),
+        .flatMap((teamName) => {
+          const team = teams.find((candidate) => candidate.name === teamName);
+          return team ? [{ id: team.id, name: team.name }] : [];
+        })
+        .filter((team) => !selectedIds.has(team.id)),
     }));
   });
 

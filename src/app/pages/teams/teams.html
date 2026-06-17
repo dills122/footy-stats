@@ -10,6 +10,10 @@
     </p>
   </header>
 
-  <app-team-list [teams]="teams()" />
+  <app-team-list
+    [teams]="teams()"
+    [selectedLetter]="selectedLetter()"
+    (letterSelected)="onLetterSelected($event)"
+  />
 </section>
 }
