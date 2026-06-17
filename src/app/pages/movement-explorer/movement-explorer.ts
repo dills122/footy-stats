@@ -6,6 +6,8 @@ import {
   DataZoomComponent,
   GridComponent,
   LegendComponent,
+  MarkAreaComponent,
+  MarkPointComponent,
   TooltipComponent,
 } from 'echarts/components';
 import type { EChartsCoreOption } from 'echarts/core';
@@ -13,8 +15,9 @@ import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationBannerComponent } from '@app/components/notification-banner/notification-banner';
 import { LeagueStore } from '@app/store/league.store';
+import { buildClubIdentityTeamIndex } from '@app/utils/club-aliases';
+import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
 
 interface TeamSeriesPoint {
   season: number;
@@ -41,6 +44,18 @@ interface ClubQuickPickResolvedGroup extends ClubQuickPickGroup {
   teams: { id: number; name: string }[];
 }
 
+interface MovementChartSetup {
+  id: string;
+  label: string;
+  era: string;
+  description: string;
+  teamNames: string[];
+  startSeason: number | null;
+  endSeason: number | null;
+}
+
+type ChartDetailMode = 'path' | 'events';
+
 const TEAM_COLOR_POOL = [
   '#d97706',
   '#059669',
@@ -64,6 +79,124 @@ const TIER_LABELS: Record<number, string> = {
   6: 'National League North',
   7: 'National League South',
 };
+
+const DEFAULT_STARTER_TEAM_NAMES = [
+  'Arsenal',
+  'Chelsea',
+  'Liverpool',
+  'Manchester City',
+  'Manchester United',
+  'Tottenham Hotspur',
+] as const;
+
+const DEFAULT_CHART_SETUP_ID = 'big-six-all-time';
+
+const MOVEMENT_CHART_SETUPS: MovementChartSetup[] = [
+  {
+    id: DEFAULT_CHART_SETUP_ID,
+    label: 'Big Six, full archive',
+    era: 'All seasons',
+    description: 'Modern heavyweights across the full recorded league archive.',
+    teamNames: [...DEFAULT_STARTER_TEAM_NAMES],
+    startSeason: null,
+    endSeason: null,
+  },
+  {
+    id: 'north-west-rivalries',
+    label: 'North West rivalries',
+    era: '1890 onward',
+    description: 'Liverpool, Everton, Manchester United, and Manchester City over the long run.',
+    teamNames: ['Liverpool', 'Everton', 'Manchester United', 'Manchester City'],
+    startSeason: 1890,
+    endSeason: null,
+  },
+  {
+    id: 'north-london',
+    label: 'North London',
+    era: '1893 onward',
+    description:
+      'Arsenal and Tottenham through early league entry, promotion, and modern stability.',
+    teamNames: ['Arsenal', 'Tottenham Hotspur'],
+    startSeason: 1893,
+    endSeason: null,
+  },
+  {
+    id: 'manchester',
+    label: 'Manchester divide',
+    era: '1890 onward',
+    description: 'United and City from Newton Heath and Ardwick roots to the Premier League era.',
+    teamNames: ['Manchester United', 'Manchester City'],
+    startSeason: 1890,
+    endSeason: null,
+  },
+  {
+    id: 'premier-league-powers',
+    label: 'Premier League powers',
+    era: '1992 onward',
+    description: 'The familiar Premier League contenders from the competition reset onward.',
+    teamNames: [
+      'Arsenal',
+      'Chelsea',
+      'Liverpool',
+      'Manchester City',
+      'Manchester United',
+      'Tottenham Hotspur',
+      'Newcastle United',
+    ],
+    startSeason: 1992,
+    endSeason: null,
+  },
+  {
+    id: 'leeds-rise-fall',
+    label: 'Leeds rise and fall',
+    era: '1960-2004',
+    description: 'Leeds against major rivals through ascent, title contention, and relegation.',
+    teamNames: ['Leeds United', 'Manchester United', 'Liverpool', 'Chelsea'],
+    startSeason: 1960,
+    endSeason: 2004,
+  },
+  {
+    id: 'outsider-champions',
+    label: 'Outsider champions',
+    era: '1988 onward',
+    description: 'Blackburn and Leicester beside the clubs that shaped their title-era context.',
+    teamNames: ['Blackburn Rovers', 'Leicester City', 'Manchester City', 'Chelsea'],
+    startSeason: 1988,
+    endSeason: null,
+  },
+  {
+    id: 'midlands-old-powers',
+    label: 'Midlands old powers',
+    era: 'All seasons',
+    description: 'Villa, Wolves, Albion, Birmingham, Derby, and Forest across the pyramid.',
+    teamNames: [
+      'Aston Villa',
+      'Wolverhampton Wanderers',
+      'West Bromwich Albion',
+      'Birmingham',
+      'Derby County',
+      'Nottingham Forest',
+    ],
+    startSeason: null,
+    endSeason: null,
+  },
+  {
+    id: 'fallen-giants',
+    label: 'Fallen giants',
+    era: '1960 onward',
+    description: 'Historic names with long arcs away from the top flight.',
+    teamNames: [
+      'Sunderland',
+      'Sheffield Wednesday',
+      'Ipswich Town',
+      'Bolton Wanderers',
+      'Preston North End',
+      'Derby County',
+    ],
+    startSeason: 1960,
+    endSeason: null,
+  },
+];
 
 const CLUB_QUICK_PICK_GROUPS: ClubQuickPickGroup[] = [
   {
@@ -121,12 +254,14 @@ echarts.use([
   TooltipComponent,
   LegendComponent,
   DataZoomComponent,
+  MarkAreaComponent,
+  MarkPointComponent,
   CanvasRenderer,
 ]);
 
 @Component({
   selector: 'app-movement-explorer',
-  imports: [CommonModule, NgxEchartsDirective, NotificationBannerComponent],
+  imports: [CommonModule, NgxEchartsDirective],
   templateUrl: './movement-explorer.html',
   styleUrl: './movement-explorer.scss',
   providers: [provideEchartsCore({ echarts })],
@@ -143,6 +278,10 @@ export class MovementExplorer {
     { id: 'last-50', label: 'Last 50' },
     { id: 'all', label: 'All Time' },
   ] as const;
+  readonly chartDetailModes: { id: ChartDetailMode; label: string }[] = [
+    { id: 'path', label: 'Path' },
+    { id: 'events', label: 'Events' },
+  ];
 
   selectedTeamIds = signal<number[]>([]);
   clubSearchTerm = signal<string>('');
@@ -152,6 +291,9 @@ export class MovementExplorer {
   selectedEndSeason = signal<number | null>(null);
   activePreset = signal<string>('last-20');
   configCollapsed = signal<boolean>(false);
+  chartSetupsCollapsed = signal<boolean>(true);
+  chartDetailMode = signal<ChartDetailMode>('path');
+  activeChartSetupId = signal<string>(DEFAULT_CHART_SETUP_ID);
   private applyingUrlState = false;
   private lastSyncedQueryState = '';
   private hasAppliedInitialUrlState = signal<boolean>(false);
@@ -189,6 +331,8 @@ export class MovementExplorer {
       .slice(0, 14);
   });
 
+  hasClubSearchTerm = computed(() => Boolean(this.clubSearchTerm().trim()));
+
   clubQuickPickGroups = computed<ClubQuickPickResolvedGroup[]>(() => {
     const teams = this.teams();
     const selectedIds = new Set(this.selectedTeamIds());
@@ -209,7 +353,60 @@ export class MovementExplorer {
       null
   );
 
+  chartSetups = computed(() =>
+    MOVEMENT_CHART_SETUPS.map((setup) => ({
+      ...setup,
+      teamCount: this.getTeamIdsForNames(setup.teamNames).length,
+    })).filter((setup) => setup.teamCount > 0)
+  );
+
+  activeChartSetup = computed(
+    () => MOVEMENT_CHART_SETUPS.find((setup) => setup.id === this.activeChartSetupId()) ?? null
+  );
+
+  chartContextTitle = computed(() => this.activeChartSetup()?.label ?? 'Custom comparison');
+
+  selectedTeamNames = computed(() =>
+    this.selectedTeamIds()
+      .map((teamId) => this.store.getTeamById(teamId)?.name)
+      .filter((teamName): teamName is string => Boolean(teamName))
+  );
+
+  selectedSeasonRangeLabel = computed(() => {
+    const start = this.selectedStartSeason();
+    const end = this.selectedEndSeason();
+
+    if (start === null || end === null) {
+      return 'No season range selected';
+    }
+
+    return start === end ? String(start) : `${start}-${end}`;
+  });
+
   selectedSeasonCount = computed(() => this.selectedRange().length);
+
+  visibleTierBounds = computed(() => {
+    const tierValues = this.teamSeries().flatMap((series) =>
+      series.points.map((point) => point.tier)
+    );
+    const allTiers = this.tierLevels();
+    const globalMaxTier = allTiers.length ? Math.max(...allTiers) : 7;
+
+    if (!tierValues.length) {
+      return {
+        min: 1,
+        max: globalMaxTier,
+      };
+    }
+
+    const minVisibleTier = Math.min(...tierValues);
+    const maxVisibleTier = Math.max(...tierValues);
+
+    return {
+      min: Math.max(1, minVisibleTier - 1),
+      max: Math.min(globalMaxTier, maxVisibleTier + 1),
+    };
+  });
 
   selectedRange = computed(() => {
     const allSeasons = this.seasons();
@@ -240,15 +437,16 @@ export class MovementExplorer {
 
   teamSeries = computed<TeamSeries[]>(() => {
     const selected = this.selectedTeamIds();
-    const selectedIds = new Set(selected);
     const range = new Set(this.selectedRange());
     if (!selected.length || !range.size) {
       return [];
     }
 
+    const teamIdToSelectedId = buildClubIdentityTeamIndex(selected, this.teams());
     const dataByTeam = new Map<number, TeamSeriesPoint[]>();
     this.entries().forEach((entry) => {
-      if (!selectedIds.has(entry.teamId)) {
+      const selectedTeamId = teamIdToSelectedId.get(entry.teamId);
+      if (selectedTeamId === undefined) {
         return;
       }
       if (!range.has(entry.season)) {
@@ -260,11 +458,11 @@ export class MovementExplorer {
         return;
       }
 
-      if (!dataByTeam.has(entry.teamId)) {
-        dataByTeam.set(entry.teamId, []);
+      if (!dataByTeam.has(selectedTeamId)) {
+        dataByTeam.set(selectedTeamId, []);
       }
 
-      dataByTeam.get(entry.teamId)!.push({
+      dataByTeam.get(selectedTeamId)!.push({
         season: entry.season,
         tier: tierNumber,
         wasPromoted: entry.wasPromoted,
@@ -291,9 +489,40 @@ export class MovementExplorer {
 
   chartOptions = computed<EChartsCoreOption>(() => {
     const seasons = this.selectedRange();
-    const tiers = this.tierLevels();
-    const maxTier = tiers.length ? Math.max(...tiers) : 7;
+    const tierBounds = this.visibleTierBounds();
     const series = this.teamSeries();
+    const wartimeSuspensionRanges = getWartimeSuspensionRanges(seasons);
+    const showMovementEvents = this.chartDetailMode() === 'events';
+    const isDenseComparison = series.length >= 5 || seasons.length >= 45;
+    const pathOpacity = isDenseComparison ? 0.64 : 0.88;
+    const pathWidth = isDenseComparison ? 2 : 2.4;
+    const wartimeMarkAreas = wartimeSuspensionRanges.map((range) => [
+      {
+        name: range.label,
+        xAxis: String(range.startSeason),
+        itemStyle: {
+          color: 'rgba(245, 158, 11, 0.12)',
+          borderColor: 'rgba(245, 158, 11, 0.32)',
+          borderWidth: 1,
+        },
+        label: {
+          show: true,
+          color: '#fde68a',
+          fontSize: 12,
+          fontWeight: 700,
+          formatter: range.label,
+          position: 'insideTop',
+        },
+        emphasis: {
+          label: {
+            color: '#fef3c7',
+          },
+        },
+      },
+      {
+        xAxis: String(range.endSeason),
+      },
+    ]);
 
     if (!seasons.length || !series.length) {
       return {
@@ -304,7 +533,7 @@ export class MovementExplorer {
       };
     }
 
-    const chartSeries = series.map((team) => {
+    const chartSeries = series.map((team, index) => {
       const pointsBySeason = new Map(team.points.map((point) => [point.season, point]));
       const lineData: (number | null)[] = seasons.map(
         (season) => pointsBySeason.get(season)?.tier ?? null
@@ -315,8 +544,8 @@ export class MovementExplorer {
         .map((point) => ({
           coord: [String(point.season), point.tier],
           symbol: 'circle',
-          symbolSize: 12,
-          itemStyle: { color: '#16a34a' },
+          symbolSize: 9,
+          itemStyle: { color: '#16a34a', borderColor: '#0f172a', borderWidth: 1 },
         }));
 
       const relegatedMarkers = team.points
@@ -324,8 +553,8 @@ export class MovementExplorer {
         .map((point) => ({
           coord: [String(point.season), point.tier],
           symbol: 'diamond',
-          symbolSize: 12,
-          itemStyle: { color: '#dc2626' },
+          symbolSize: 9,
+          itemStyle: { color: '#dc2626', borderColor: '#0f172a', borderWidth: 1 },
         }));
 
       return {
@@ -333,16 +562,37 @@ export class MovementExplorer {
         type: 'line',
         data: lineData,
         connectNulls: false,
-        showSymbol: true,
-        symbolSize: 6,
-        lineStyle: { width: 2.6, color: team.color },
-        itemStyle: { color: team.color },
-        emphasis: { focus: 'series' },
+        step: 'end',
+        showSymbol: false,
+        symbol: 'circle',
+        symbolSize: 5,
+        lineStyle: { width: pathWidth, color: team.color, opacity: pathOpacity },
+        itemStyle: { color: team.color, opacity: pathOpacity },
+        emphasis: {
+          focus: 'series',
+          lineStyle: { width: 3.4, opacity: 1 },
+          itemStyle: { opacity: 1 },
+        },
         markPoint: {
-          data: [...promotedMarkers, ...relegatedMarkers],
+          data: showMovementEvents ? [...promotedMarkers, ...relegatedMarkers] : [],
           silent: true,
           z: 6,
+          itemStyle: {
+            opacity: 0.82,
+          },
         },
+        ...(index === 0 && wartimeMarkAreas.length
+          ? {
+              markArea: {
+                silent: false,
+                tooltip: {
+                  formatter: (params: { name?: string }) =>
+                    `${params.name ?? 'Wartime suspension'}: no official league table`,
+                },
+                data: wartimeMarkAreas,
+              },
+            }
+          : {}),
       };
     });
 
@@ -368,6 +618,11 @@ export class MovementExplorer {
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'line' },
+        backgroundColor: 'rgba(7, 10, 19, 0.94)',
+        borderColor: 'rgba(148, 163, 184, 0.28)',
+        textStyle: {
+          color: '#d7deeb',
+        },
       },
       xAxis: {
         type: 'category',
@@ -386,8 +641,8 @@ export class MovementExplorer {
       },
       yAxis: {
         type: 'value',
-        min: 1,
-        max: maxTier,
+        min: tierBounds.min,
+        max: tierBounds.max,
         interval: 1,
         inverse: true,
         axisLabel: {
@@ -460,7 +715,9 @@ export class MovementExplorer {
         query.get('start'),
         query.get('end'),
         query.get('preset'),
-        query.get('collapsed')
+        query.get('collapsed'),
+        query.get('setup'),
+        ['teams', 'start', 'end', 'preset', 'collapsed', 'setup'].some((param) => query.has(param))
       );
       this.hasAppliedInitialUrlState.set(true);
     });
@@ -475,6 +732,7 @@ export class MovementExplorer {
       const end = this.selectedEndSeason();
       const preset = this.activePreset();
       const collapsed = this.configCollapsed();
+      const setup = this.activeChartSetupId();
 
       const nextQuery: Record<string, string | null> = {
         teams: teams || null,
@@ -482,6 +740,7 @@ export class MovementExplorer {
         end: end === null ? null : String(end),
         preset: preset || null,
         collapsed: collapsed ? '1' : null,
+        setup: setup || null,
       };
 
       const nextQueryState = JSON.stringify(nextQuery);
@@ -510,6 +769,7 @@ export class MovementExplorer {
     }
     this.selectedTeamIds.set([...selected, teamId]);
     this.clubSearchTerm.set('');
+    this.activeChartSetupId.set('');
   }
 
   addQuickPickTeam(teamId: number) {
@@ -518,10 +778,12 @@ export class MovementExplorer {
 
   removeTeam(teamId: number) {
     this.selectedTeamIds.set(this.selectedTeamIds().filter((id) => id !== teamId));
+    this.activeChartSetupId.set('');
   }
 
   clearSelectedTeams() {
     this.selectedTeamIds.set([]);
+    this.activeChartSetupId.set('');
   }
 
   onClubSearchInput(value: string) {
@@ -555,6 +817,38 @@ export class MovementExplorer {
     this.configCollapsed.set(!this.configCollapsed());
   }
 
+  toggleChartSetupsPanel() {
+    this.chartSetupsCollapsed.set(!this.chartSetupsCollapsed());
+  }
+
+  setChartDetailMode(mode: ChartDetailMode) {
+    this.chartDetailMode.set(mode);
+  }
+
+  applyChartSetup(setupId: string) {
+    const setup = MOVEMENT_CHART_SETUPS.find((candidate) => candidate.id === setupId);
+    if (!setup) {
+      return;
+    }
+
+    const min = this.minSeason();
+    const max = this.maxSeason();
+    const start = Math.max(min, Math.min(setup.startSeason ?? min, max));
+    const end = Math.max(start, Math.min(setup.endSeason ?? max, max));
+    const selectedTeamIds = this.getTeamIdsForNames(setup.teamNames).slice(
+      0,
+      this.maxSelectedTeams
+    );
+
+    this.selectedTeamIds.set(selectedTeamIds);
+    this.selectedStartSeason.set(start);
+    this.selectedEndSeason.set(end);
+    this.activePreset.set(start === min && end === max ? 'all' : '');
+    this.activeClubQuickPick.set(setup.id === DEFAULT_CHART_SETUP_ID ? 'big-six' : 'common');
+    this.activeChartSetupId.set(setup.id);
+    this.configCollapsed.set(true);
+  }
+
   onStartSeasonInput(rawValue: string) {
     const parsed = Number.parseInt(rawValue, 10);
     if (!Number.isFinite(parsed)) {
@@ -566,6 +860,7 @@ export class MovementExplorer {
     const currentEnd = this.selectedEndSeason() ?? max;
     this.selectedStartSeason.set(Math.min(clamped, currentEnd));
     this.activePreset.set('');
+    this.activeChartSetupId.set('');
   }
 
   onEndSeasonInput(rawValue: string) {
@@ -579,6 +874,7 @@ export class MovementExplorer {
     const currentStart = this.selectedStartSeason() ?? min;
     this.selectedEndSeason.set(Math.max(clamped, currentStart));
     this.activePreset.set('');
+    this.activeChartSetupId.set('');
   }
 
   setPreset(presetId: string) {
@@ -593,6 +889,7 @@ export class MovementExplorer {
       this.selectedStartSeason.set(min);
       this.selectedEndSeason.set(max);
       this.activePreset.set(presetId);
+      this.activeChartSetupId.set('');
       return;
     }
 
@@ -609,6 +906,7 @@ export class MovementExplorer {
     this.selectedStartSeason.set(Math.max(min, max - size + 1));
     this.selectedEndSeason.set(max);
     this.activePreset.set(presetId);
+    this.activeChartSetupId.set('');
   }
 
   tierLabel(tier: number): string {
@@ -625,7 +923,9 @@ export class MovementExplorer {
     startRaw: string | null,
     endRaw: string | null,
     presetRaw: string | null,
-    collapsedRaw: string | null
+    collapsedRaw: string | null,
+    setupRaw: string | null,
+    hasQueryState: boolean
   ) {
     this.applyingUrlState = true;
     try {
@@ -635,12 +935,22 @@ export class MovementExplorer {
         .map((value) => Number.parseInt(value, 10))
         .filter((value) => Number.isFinite(value) && validTeamIds.has(value))
         .slice(0, this.maxSelectedTeams);
-      this.selectedTeamIds.set(parsedTeams);
+      this.selectedTeamIds.set(hasQueryState ? parsedTeams : this.getDefaultSelectedTeamIds());
 
       const min = this.minSeason();
       const max = this.maxSeason();
       const parsedStart = Number.parseInt(startRaw ?? '', 10);
       const parsedEnd = Number.parseInt(endRaw ?? '', 10);
+
+      if (!hasQueryState) {
+        this.selectedStartSeason.set(min);
+        this.selectedEndSeason.set(max);
+        this.activePreset.set('all');
+        this.activeClubQuickPick.set('big-six');
+        this.activeChartSetupId.set(DEFAULT_CHART_SETUP_ID);
+        this.configCollapsed.set(true);
+        return;
+      }
 
       if (Number.isFinite(parsedStart)) {
         this.selectedStartSeason.set(Math.max(min, Math.min(parsedStart, max)));
@@ -658,9 +968,24 @@ export class MovementExplorer {
       if (presetRaw && this.availablePresets.some((preset) => preset.id === presetRaw)) {
         this.activePreset.set(presetRaw);
       }
+      this.activeChartSetupId.set(
+        setupRaw && MOVEMENT_CHART_SETUPS.some((setup) => setup.id === setupRaw) ? setupRaw : ''
+      );
       this.configCollapsed.set(collapsedRaw === '1');
     } finally {
       this.applyingUrlState = false;
     }
+  }
+
+  private getDefaultSelectedTeamIds(): number[] {
+    return this.getTeamIdsForNames([...DEFAULT_STARTER_TEAM_NAMES]);
+  }
+
+  private getTeamIdsForNames(teamNames: readonly string[]): number[] {
+    const teamByName = new Map(this.teams().map((team) => [team.name, team.id]));
+
+    return teamNames
+      .map((teamName) => teamByName.get(teamName))
+      .filter((teamId): teamId is number => teamId !== undefined);
   }
 }

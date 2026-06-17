@@ -6,14 +6,23 @@
       Pick up to 10 clubs and a season window to compare how they move through the English pyramid.
     </p>
   </header>
-  <app-notification-banner class="page-note" title="Data Coverage Warning" variant="warning">
-    <p>
+  <section class="research-note" aria-label="Data coverage note">
+    <strong>Research note</strong>
+    <span>
       Tier 1 and Tier 2 are the most complete. Data for lower tiers becomes much less reliable
       before the 1990s, so older promotion and relegation paths may be incomplete.
-    </p>
-  </app-notification-banner>
+    </span>
+  </section>
 
   <div class="config-toolbar">
+    <button
+      type="button"
+      class="config-toggle"
+      (click)="toggleChartSetupsPanel()"
+      [attr.aria-expanded]="!chartSetupsCollapsed()"
+    >
+      {{ chartSetupsCollapsed() ? 'Show Setups' : 'Hide Setups' }}
+    </button>
     <button
       type="button"
       class="config-toggle"
@@ -24,7 +33,30 @@
     </button>
   </div>
 
-  @if (!configCollapsed()) {
+  @if (!chartSetupsCollapsed()) {
+  <section class="chart-setups app-panel" aria-label="Quick chart setups">
+    <div class="chart-setups-head">
+      <div>
+        <h2>Chart Setups</h2>
+        <p>Quick comparisons for rivalries, eras, and clubs with dramatic movement.</p>
+      </div>
+    </div>
+    <div class="setup-grid">
+      @for (setup of chartSetups(); track setup.id) {
+      <button
+        type="button"
+        class="setup-card"
+        [class.is-active]="activeChartSetupId() === setup.id"
+        (click)="applyChartSetup(setup.id)"
+      >
+        <span class="setup-kicker">{{ setup.era }} / {{ setup.teamCount }} clubs</span>
+        <span class="setup-title">{{ setup.label }}</span>
+        <span class="setup-copy">{{ setup.description }}</span>
+      </button>
+      }
+    </div>
+  </section>
+  } @if (!configCollapsed()) {
   <div class="controls">
     <section class="club-picker app-panel">
       <div class="picker-head">
@@ -95,6 +127,7 @@
           [disabled]="selectedTeamIds().length >= maxSelectedTeams"
         />
       </label>
+      @if (hasClubSearchTerm()) {
       <div class="search-results">
         @for (team of filteredTeamOptions(); track team.id) {
         <button
@@ -107,7 +140,7 @@
         </button>
         }
       </div>
-      @if (selectedTeamIds().length) {
+      } @if (selectedTeamIds().length) {
       <div class="selected-block">
         <div class="selected-label">Selected clubs</div>
         <div class="selected-chips">
@@ -186,18 +219,52 @@
   } @else if (!teamSeries().length) {
   <div class="empty app-panel">No data in the selected season window for the chosen clubs.</div>
   } @else {
-  <div class="legend app-panel movement-key-panel">
-    <div class="legend-item movement-keys">
-      <span class="dot promoted"></span>
-      <span>Promotion marker</span>
-      <span class="dot relegated"></span>
-      <span>Relegation marker</span>
-      <span class="dot plain"></span>
-      <span>Team line</span>
-    </div>
-  </div>
-
   <div class="chart-wrap app-panel">
+    <div class="chart-header">
+      <section class="chart-context" aria-label="Current chart filters">
+        <div class="chart-context-main">
+          <span class="context-label">Current view</span>
+          <h2>{{ chartContextTitle() }}</h2>
+          <p>
+            {{ selectedSeasonRangeLabel() }} / {{ selectedSeasonCount() }} {{ selectedSeasonCount()
+            === 1 ? 'season' : 'seasons' }} / {{ selectedTeamIds().length }} {{
+            selectedTeamIds().length === 1 ? 'club' : 'clubs' }}
+          </p>
+        </div>
+        <div class="chart-context-clubs" aria-label="Selected clubs">
+          @for (teamName of selectedTeamNames(); track teamName) {
+          <span>{{ teamName }}</span>
+          }
+        </div>
+      </section>
+
+      <div class="chart-tools">
+        <div class="detail-toggle" aria-label="Chart detail mode">
+          @for (mode of chartDetailModes; track mode.id) {
+          <button
+            type="button"
+            [class.is-active]="chartDetailMode() === mode.id"
+            (click)="setChartDetailMode(mode.id)"
+          >
+            {{ mode.label }}
+          </button>
+          }
+        </div>
+        <div class="legend-item movement-keys" aria-label="Chart legend">
+          <span class="dot plain"></span>
+          <span>Club path</span>
+          @if (chartDetailMode() === 'events') {
+          <span class="dot promoted"></span>
+          <span>Promoted</span>
+          <span class="dot relegated"></span>
+          <span>Relegated</span>
+          }
+          <span class="dot wartime"></span>
+          <span>League suspended</span>
+        </div>
+      </div>
+    </div>
+
     <div
       echarts
       class="movement-chart"
