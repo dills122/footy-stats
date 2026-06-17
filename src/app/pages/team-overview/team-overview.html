@@ -41,8 +41,7 @@
         </span>
       </div>
       <p class="app-page-lede">
-        {{ club()!.derived.totalSeasonsSeen }} tracked seasons from {{
-        club()!.derived.firstSeenSeason }} to {{ club()!.derived.lastSeenSeason }}.
+        {{ club()!.derived.totalSeasonsSeen }} tracked seasons from {{ trackedSeasonRangeLabel() }}.
       </p>
     </div>
   </header>
@@ -182,14 +181,8 @@
         <div>
           <span>
             <strong>{{ period.name }}</strong>
-            @if (period.omittedRanges.length) {
-            <small>
-              {{ period.omittedRanges[0].fromSeason }}-{{ period.omittedRanges[0].toSeason }}
-              omitted: {{ period.omittedRanges[0].reason }}
-            </small>
-            }
           </span>
-          <span>{{ period.startSeason }}-{{ period.endSeason }}</span>
+          <span>{{ identityPeriodRangeLabel(period) }}</span>
         </div>
         }
       </div>
@@ -197,9 +190,26 @@
     </section>
   </div>
 
-  @if (relationshipRows().length || gapRows().length) {
+  @if (historicalStatusSummary() || relationshipRows().length || gapRows().length) {
   <div class="profile-grid">
-    @if (relationshipRows().length) {
+    @if (historicalStatusSummary(); as historicalStatus) {
+    <section class="profile-panel app-panel historical-status-panel">
+      <div class="panel-head">
+        <h2>Historical Status</h2>
+        <span>{{ historicalStatus.label }}</span>
+      </div>
+      <div class="historical-status">
+        <strong>{{ historicalStatus.summary }}</strong>
+        <p>{{ historicalStatus.detail }}</p>
+        @if (historicalStatus.sourceNote) {
+        <small>{{ historicalStatus.sourceNote }}</small>
+        }
+        <a [href]="historicalStatus.sourceUrl" target="_blank" rel="noopener noreferrer">
+          {{ historicalStatus.sourceLabel }}
+        </a>
+      </div>
+    </section>
+    } @if (relationshipRows().length) {
     <section class="profile-panel app-panel">
       <div class="panel-head">
         <h2>Continuity Links</h2>

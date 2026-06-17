@@ -1,25 +1,58 @@
 import { buildClubDerivedGaps, buildClubDisplayNamePeriods } from './club-identity-ranges';
 
 describe('club identity ranges', () => {
-  it('merges identical observed name periods separated only by wartime suspension years', () => {
+  it('merges identical observed name periods across missing archive seasons', () => {
     expect(
       buildClubDisplayNamePeriods([
+        { name: 'Leeds United', startSeason: 1905, endSeason: 1914 },
         { name: 'Leeds United', startSeason: 1920, endSeason: 1938 },
         { name: 'Leeds United', startSeason: 1946, endSeason: 2025 },
       ])
     ).toEqual([
       {
         name: 'Leeds United',
-        startSeason: 1920,
+        startSeason: 1905,
         endSeason: 2025,
-        omittedRanges: [
-          {
-            fromSeason: 1939,
-            toSeason: 1945,
-            reason: 'Second World War',
-            isOfficialSuspension: true,
-          },
-        ],
+        omittedRanges: [],
+      },
+    ]);
+  });
+
+  it('keeps actual display name changes as separate identity periods', () => {
+    expect(
+      buildClubDisplayNamePeriods([
+        { name: 'Newton Heath', startSeason: 1890, endSeason: 1901 },
+        { name: 'Manchester United', startSeason: 1902, endSeason: 1938 },
+        { name: 'Manchester United', startSeason: 1946, endSeason: 2025 },
+      ])
+    ).toEqual([
+      {
+        name: 'Newton Heath',
+        startSeason: 1890,
+        endSeason: 1901,
+        omittedRanges: [],
+      },
+      {
+        name: 'Manchester United',
+        startSeason: 1902,
+        endSeason: 2025,
+        omittedRanges: [],
+      },
+    ]);
+  });
+
+  it('matches identical display names with small whitespace and case differences', () => {
+    expect(
+      buildClubDisplayNamePeriods([
+        { name: 'Leamington', startSeason: 2021, endSeason: 2022 },
+        { name: ' leamington ', startSeason: 2024, endSeason: 2025 },
+      ])
+    ).toEqual([
+      {
+        name: 'Leamington',
+        startSeason: 2021,
+        endSeason: 2025,
+        omittedRanges: [],
       },
     ]);
   });

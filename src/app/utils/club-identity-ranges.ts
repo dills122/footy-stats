@@ -1,4 +1,4 @@
-import { getWartimeSuspensionLabelForSpan, isWartimeSuspensionSpan } from './wartime-suspensions';
+import { getWartimeSuspensionLabelForSpan } from './wartime-suspensions';
 
 export interface ClubObservedNamePeriod {
   name: string;
@@ -29,30 +29,24 @@ export function buildClubDisplayNamePeriods(
     .slice()
     .sort((a, b) => a.startSeason - b.startSeason || a.name.localeCompare(b.name))
     .reduce<ClubDisplayNamePeriod[]>((acc, period) => {
-      const previous = acc.at(-1);
+      const periodKey = normalizeDisplayName(period.name);
+      const existing = acc.find(
+        (displayPeriod) => normalizeDisplayName(displayPeriod.name) === periodKey
+      );
 
-      if (!previous || previous.name !== period.name) {
-        acc.push({ ...period, omittedRanges: [] });
-        return acc;
-      }
-
-      const omittedFrom = previous.endSeason + 1;
-      const omittedTo = period.startSeason - 1;
-      if (omittedFrom <= omittedTo && isWartimeSuspensionSpan(omittedFrom, omittedTo)) {
-        previous.endSeason = period.endSeason;
-        previous.omittedRanges.push({
-          fromSeason: omittedFrom,
-          toSeason: omittedTo,
-          reason:
-            getWartimeSuspensionLabelForSpan(omittedFrom, omittedTo) ?? 'Official league suspended',
-          isOfficialSuspension: true,
-        });
+      if (existing) {
+        existing.startSeason = Math.min(existing.startSeason, period.startSeason);
+        existing.endSeason = Math.max(existing.endSeason, period.endSeason);
         return acc;
       }
 
       acc.push({ ...period, omittedRanges: [] });
       return acc;
     }, []);
+}
+
+function normalizeDisplayName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ').toLowerCase();
 }
 
 export function buildClubDerivedGaps(periods: readonly ClubObservedNamePeriod[]): ClubDerivedGap[] {

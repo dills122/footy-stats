@@ -28,12 +28,18 @@ describe('data issue report helpers', () => {
     expect(payload['access_key']).toBe('test-access-key');
     expect(payload['subject']).toBe('FootyStats data issue: Example FC (1999)');
     expect(payload['email']).toBe('alex@example.com');
-    expect(payload['Current page URL']).toBe(
+    expect(payload['Problem summary']).toBe('The points total looks wrong.');
+    expect(payload['Reported page URL']).toBe(
       'https://footystats.example/teams/example-fc?tab=records'
     );
+    expect(payload['Report context']).toBe(
+      'Club: Example FC / Season: 1999 / League: Championship / Screen: /teams/example-fc'
+    );
+    expect(payload['Reporter email']).toBe('alex@example.com');
     expect(payload['message']).toContain('The points total looks wrong.');
+    expect(payload['message']).toContain('Problem summary: The points total looks wrong.');
     expect(payload['message']).toContain(
-      'Current page URL: https://footystats.example/teams/example-fc?tab=records'
+      'Reported page URL: https://footystats.example/teams/example-fc?tab=records'
     );
     expect(payload['Correct value or source']).toBe('Should be 42 points.');
   });
@@ -49,6 +55,8 @@ describe('data issue report helpers', () => {
     });
 
     expect(message).toContain('What should we fix?\nNot provided');
+    expect(message).toContain('Problem summary: Not provided');
+    expect(message).toContain('Report context: Not sure');
     expect(message).toContain('Correct value or source\nNot provided');
     expect(message).toContain('Reporter email: Not provided');
   });

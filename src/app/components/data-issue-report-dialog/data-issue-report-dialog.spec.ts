@@ -66,9 +66,13 @@ describe('DataIssueReportDialog', () => {
     const request = httpMock.expectOne(DATA_ISSUE_WEB3FORMS_ENDPOINT);
     expect(request.request.method).toBe('POST');
     expect(request.request.body['access_key']).toBe('test-access-key');
+    expect(request.request.body['Problem summary']).toBe('The season total looks wrong.');
     expect(request.request.body['message']).toContain('The season total looks wrong.');
-    expect(request.request.body['Current page URL']).toContain('/teams/example-fc?view=recent');
+    expect(request.request.body['Reported page URL']).toContain('/teams/example-fc?view=recent');
     expect(request.request.body['Link or screen']).toBe('/teams/example-fc');
+    expect(request.request.body['Report context']).toBe(
+      'Club: Example FC / Screen: /teams/example-fc'
+    );
 
     request.flush({ success: true, message: 'Email sent successfully!' });
     fixture.detectChanges();
