@@ -232,8 +232,15 @@
           </p>
         </div>
         <div class="chart-context-clubs" aria-label="Selected clubs">
-          @for (teamName of selectedTeamNames(); track teamName) {
-          <span>{{ teamName }}</span>
+          @for (team of selectedTeams(); track team.id) {
+          <button
+            type="button"
+            [class.is-focused]="focusedTeamId() === team.id"
+            [attr.aria-pressed]="focusedTeamId() === team.id"
+            (click)="toggleFocusedTeam(team.id)"
+          >
+            {{ team.name }}
+          </button>
           }
         </div>
       </section>

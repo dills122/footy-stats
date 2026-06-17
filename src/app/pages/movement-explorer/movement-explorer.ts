@@ -94,11 +94,20 @@ const DEFAULT_STARTER_TEAM_NAMES = [
   'Tottenham Hotspur',
 ] as const;
 
-const DEFAULT_CHART_SETUP_ID = 'big-six-all-time';
+const DEFAULT_CHART_SETUP_ID = 'big-six-premier-league-era';
 
 const MOVEMENT_CHART_SETUPS: MovementChartSetup[] = [
   {
     id: DEFAULT_CHART_SETUP_ID,
+    label: 'Big Six, Premier League era',
+    era: '1992 onward',
+    description: 'The modern Big Six across the Premier League era.',
+    teamNames: [...DEFAULT_STARTER_TEAM_NAMES],
+    startSeason: 1992,
+    endSeason: null,
+  },
+  {
+    id: 'big-six-all-time',
     label: 'Big Six, full archive',
     era: 'All seasons',
     description: 'Modern heavyweights across the full recorded league archive.',
@@ -299,6 +308,7 @@ export class MovementExplorer {
   chartSetupsCollapsed = signal<boolean>(true);
   chartDetailMode = signal<ChartDetailMode>('path');
   activeChartSetupId = signal<string>(DEFAULT_CHART_SETUP_ID);
+  focusedTeamId = signal<number | null>(null);
   private applyingUrlState = false;
   private lastSyncedQueryState = '';
   private hasAppliedInitialUrlState = signal<boolean>(false);
@@ -371,12 +381,6 @@ export class MovementExplorer {
   );
 
   chartContextTitle = computed(() => this.activeChartSetup()?.label ?? 'Custom comparison');
-
-  selectedTeamNames = computed(() =>
-    this.selectedTeamIds()
-      .map((teamId) => this.store.getTeamById(teamId)?.name)
-      .filter((teamName): teamName is string => Boolean(teamName))
-  );
 
   selectedSeasonRangeLabel = computed(() => {
     const start = this.selectedStartSeason();
@@ -520,8 +524,10 @@ export class MovementExplorer {
     const wartimeSuspensionRanges = getWartimeSuspensionRanges(seasons);
     const showMovementEvents = this.chartDetailMode() === 'events';
     const isDenseComparison = series.length >= 5 || seasons.length >= 45;
-    const pathOpacity = isDenseComparison ? 0.64 : 0.88;
-    const pathWidth = isDenseComparison ? 2 : 2.4;
+    const showWartimeLabels = !isDenseComparison && seasons.length <= 60;
+    const pathOpacity = isDenseComparison ? 0.52 : 0.88;
+    const pathWidth = isDenseComparison ? 1.8 : 2.4;
+    const focusedTeamId = this.focusedTeamId();
     const wartimeMarkAreas = wartimeSuspensionRanges.map((range) => [
       {
         name: range.label,
@@ -532,7 +538,7 @@ export class MovementExplorer {
           borderWidth: 1,
         },
         label: {
-          show: true,
+          show: showWartimeLabels,
           color: '#fde68a',
           fontSize: 12,
           fontWeight: 700,
@@ -564,6 +570,8 @@ export class MovementExplorer {
       const lineData: (number | null)[] = seasons.map(
         (season) => pointsBySeason.get(season)?.tier ?? null
       );
+      const isFocused = focusedTeamId === team.teamId;
+      const seriesOpacity = focusedTeamId === null ? pathOpacity : isFocused ? 0.96 : 0.14;
 
       const promotedMarkers = team.points
         .filter((point) => point.wasPromoted)
@@ -591,8 +599,15 @@ export class MovementExplorer {
         showSymbol: false,
         symbol: 'circle',
         symbolSize: 5,
-        lineStyle: { width: pathWidth, color: team.color, opacity: pathOpacity },
-        itemStyle: { color: team.color, opacity: pathOpacity },
+        lineStyle: {
+          width: isFocused ? 2.8 : pathWidth,
+          color: team.color,
+          opacity: seriesOpacity,
+        },
+        itemStyle: {
+          color: team.color,
+          opacity: seriesOpacity,
+        },
         emphasis: {
           focus: 'series',
           lineStyle: { width: 3.4, opacity: 1 },
@@ -803,11 +818,15 @@ export class MovementExplorer {
 
   removeTeam(teamId: number) {
     this.selectedTeamIds.set(this.selectedTeamIds().filter((id) => id !== teamId));
+    if (this.focusedTeamId() === teamId) {
+      this.focusedTeamId.set(null);
+    }
     this.activeChartSetupId.set('');
   }
 
   clearSelectedTeams() {
     this.selectedTeamIds.set([]);
+    this.focusedTeamId.set(null);
     this.activeChartSetupId.set('');
   }
 
@@ -850,6 +869,10 @@ export class MovementExplorer {
     this.chartDetailMode.set(mode);
   }
 
+  toggleFocusedTeam(teamId: number) {
+    this.focusedTeamId.set(this.focusedTeamId() === teamId ? null : teamId);
+  }
+
   applyChartSetup(setupId: string) {
     const setup = MOVEMENT_CHART_SETUPS.find((candidate) => candidate.id === setupId);
     if (!setup) {
@@ -866,6 +889,7 @@ export class MovementExplorer {
     );
 
     this.selectedTeamIds.set(selectedTeamIds);
+    this.focusedTeamId.set(null);
     this.selectedStartSeason.set(start);
     this.selectedEndSeason.set(end);
     this.activePreset.set(start === min && end === max ? 'all' : '');
@@ -968,9 +992,18 @@ export class MovementExplorer {
       const parsedEnd = Number.parseInt(endRaw ?? '', 10);
 
       if (!hasQueryState) {
-        this.selectedStartSeason.set(min);
-        this.selectedEndSeason.set(max);
-        this.activePreset.set('all');
+        const defaultSetup =
+          MOVEMENT_CHART_SETUPS.find((setup) => setup.id === DEFAULT_CHART_SETUP_ID) ??
+          MOVEMENT_CHART_SETUPS[0];
+        const defaultStart = Math.max(min, Math.min(defaultSetup.startSeason ?? min, max));
+        const defaultEnd = Math.max(defaultStart, Math.min(defaultSetup.endSeason ?? max, max));
+
+        this.selectedTeamIds.set(
+          this.getTeamIdsForNames(defaultSetup.teamNames).slice(0, this.maxSelectedTeams)
+        );
+        this.selectedStartSeason.set(defaultStart);
+        this.selectedEndSeason.set(defaultEnd);
+        this.activePreset.set('');
         this.activeClubQuickPick.set('big-six');
         this.activeChartSetupId.set(DEFAULT_CHART_SETUP_ID);
         this.configCollapsed.set(true);
