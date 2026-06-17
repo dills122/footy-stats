@@ -96,20 +96,19 @@
     </span>
     <span
       class="send-action"
-      [matTooltip]="!canSubmit() ? disabledReason() : ''"
-      [matTooltipDisabled]="canSubmit()"
+      [matTooltip]="isPrimaryActionDisabled() ? disabledReason() : ''"
+      [matTooltipDisabled]="!isPrimaryActionDisabled()"
       [matTooltipShowDelay]="150"
-      [attr.aria-label]="!canSubmit() ? disabledReason() : null"
+      [attr.aria-label]="isPrimaryActionDisabled() ? disabledReason() : null"
     >
       <button
         type="button"
         class="send-link"
-        [class.send-link--disabled]="!canSubmit()"
-        [disabled]="!canSubmit()"
-        (click)="submit()"
+        [class.send-link--disabled]="isPrimaryActionDisabled()"
+        [disabled]="isPrimaryActionDisabled()"
+        (click)="handlePrimaryAction()"
       >
-        @if (submitState() === 'sending') { Sending... } @else if (submitState() === 'sent') { Sent
-        } @else { Send report }
+        {{ primaryActionLabel() }}
       </button>
     </span>
   </footer>

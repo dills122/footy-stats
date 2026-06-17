@@ -2,6 +2,7 @@ export const DATA_ISSUE_WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 export interface DataIssueReportContext {
   pageTitle?: string;
+  pageUrl?: string;
   sourcePath?: string;
   clubName?: string;
   season?: number;
@@ -36,6 +37,7 @@ export function buildDataIssueWeb3FormsPayload(
     botcheck: false,
     'Issue type': form.issueType || 'Not sure',
     'Page or feature': form.pageTitle || 'Not sure',
+    'Current page URL': form.pageUrl || 'Not sure',
     'Link or screen': form.sourcePath || 'Not sure',
     'Club or team': form.clubName || 'Not sure',
     'Season or year': form.season?.toString() || 'Not sure',
@@ -55,6 +57,7 @@ ${form.expectedValue || form.source || 'Not provided'}
 
 Issue type: ${form.issueType || 'Not sure'}
 Page or feature: ${form.pageTitle || 'Not sure'}
+Current page URL: ${form.pageUrl || 'Not sure'}
 Link or screen: ${form.sourcePath || 'Not sure'}
 Club or team: ${form.clubName || 'Not sure'}
 Season or year: ${form.season?.toString() || 'Not sure'}
