@@ -15,6 +15,7 @@ describe('data issue report helpers', () => {
         expectedValue: 'Should be 42 points.',
         source: 'Club handbook',
         pageTitle: 'Club profile',
+        pageUrl: 'https://footystats.example/teams/example-fc?tab=records',
         sourcePath: '/teams/example-fc',
         clubName: 'Example FC',
         season: 1999,
@@ -27,7 +28,13 @@ describe('data issue report helpers', () => {
     expect(payload['access_key']).toBe('test-access-key');
     expect(payload['subject']).toBe('FootyStats data issue: Example FC (1999)');
     expect(payload['email']).toBe('alex@example.com');
+    expect(payload['Current page URL']).toBe(
+      'https://footystats.example/teams/example-fc?tab=records'
+    );
     expect(payload['message']).toContain('The points total looks wrong.');
+    expect(payload['message']).toContain(
+      'Current page URL: https://footystats.example/teams/example-fc?tab=records'
+    );
     expect(payload['Correct value or source']).toBe('Should be 42 points.');
   });
 

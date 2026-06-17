@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatTooltip } from '@angular/material/tooltip';
+import { provideRouter } from '@angular/router';
 import { DATA_ISSUE_WEB3FORMS_ENDPOINT } from '@app/utils/data-issue-report';
 import { DataIssueReportDialog } from './data-issue-report-dialog';
 
@@ -14,7 +15,7 @@ describe('DataIssueReportDialog', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DataIssueReportDialog],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataIssueReportDialog);
@@ -48,7 +49,13 @@ describe('DataIssueReportDialog', () => {
     expect(tooltip.disabled).toBe(false);
   });
 
-  it('submits a data report through Web3Forms', () => {
+  it('submits a data report through Web3Forms with current page context', () => {
+    window.history.pushState({}, '', '/teams/example-fc?view=recent');
+    fixture.componentRef.setInput('context', {
+      pageTitle: 'Club profile',
+      sourcePath: '/teams/example-fc',
+      clubName: 'Example FC',
+    });
     component.open();
     component.updateField('summary', 'The season total looks wrong.');
     fixture.detectChanges();
@@ -60,10 +67,19 @@ describe('DataIssueReportDialog', () => {
     expect(request.request.method).toBe('POST');
     expect(request.request.body['access_key']).toBe('test-access-key');
     expect(request.request.body['message']).toContain('The season total looks wrong.');
+    expect(request.request.body['Current page URL']).toContain('/teams/example-fc?view=recent');
+    expect(request.request.body['Link or screen']).toBe('/teams/example-fc');
 
     request.flush({ success: true, message: 'Email sent successfully!' });
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('Report sent.');
+    expect(sendButton.disabled).toBe(false);
+    expect(sendButton.textContent).toContain('Close');
+
+    sendButton.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeFalsy();
   });
 });

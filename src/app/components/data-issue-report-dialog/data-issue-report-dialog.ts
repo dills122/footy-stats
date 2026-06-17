@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 import { environment } from '@env/environment';
 import {
   buildDataIssueWeb3FormsPayload,
@@ -37,6 +38,7 @@ export class DataIssueReportDialog {
   accessKey = input(environment.web3FormsAccessKey);
 
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
   protected readonly isOpen = signal(false);
   protected readonly form = signal<DataIssueReportForm>(this.buildInitialForm());
@@ -45,8 +47,25 @@ export class DataIssueReportDialog {
   protected readonly isConfigured = computed(() => Boolean(this.accessKey().trim()));
   protected readonly canSubmit = computed(
     () =>
-      Boolean(this.form().summary.trim()) && this.isConfigured() && this.submitState() !== 'sending'
+      Boolean(this.form().summary.trim()) &&
+      this.isConfigured() &&
+      this.submitState() !== 'sending' &&
+      this.submitState() !== 'sent'
   );
+  protected readonly isPrimaryActionDisabled = computed(
+    () => this.submitState() !== 'sent' && !this.canSubmit()
+  );
+  protected readonly primaryActionLabel = computed(() => {
+    if (this.submitState() === 'sending') {
+      return 'Sending...';
+    }
+
+    if (this.submitState() === 'sent') {
+      return 'Close';
+    }
+
+    return 'Send report';
+  });
   protected readonly disabledReason = computed(() => {
     if (this.submitState() === 'sending') {
       return 'Sending the report now.';
@@ -129,6 +148,15 @@ export class DataIssueReportDialog {
       });
   }
 
+  handlePrimaryAction() {
+    if (this.submitState() === 'sent') {
+      this.close();
+      return;
+    }
+
+    this.submit();
+  }
+
   private buildInitialForm(): DataIssueReportForm {
     const context = this.context();
     return {
@@ -139,6 +167,7 @@ export class DataIssueReportDialog {
       expectedValue: '',
       source: '',
       pageTitle: context.pageTitle,
+      pageUrl: context.pageUrl ?? this.currentPageUrl(),
       sourcePath: context.sourcePath,
       clubName: context.clubName ?? '',
       season: context.season,
@@ -149,5 +178,9 @@ export class DataIssueReportDialog {
   private parseSeason(value: string): number | undefined {
     const parsed = Number.parseInt(value, 10);
     return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  private currentPageUrl(): string {
+    return globalThis.location?.href || this.router.url;
   }
 }

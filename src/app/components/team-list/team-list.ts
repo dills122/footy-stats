@@ -68,4 +68,9 @@ export class TeamList {
   primaryClubId(team: Team): string | null {
     return team.clubIds[0] ?? null;
   }
+
+  teamLinkState(): Record<string, string> {
+    const letter = this.selectedLetterSignal();
+    return letter ? { teamsReturnLetter: letter } : {};
+  }
 }

@@ -27,6 +27,16 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": {
+                  "inline": false
+                }
+              },
               "budgets": [
                 { "type": "initial", "maximumWarning": "2.8MB", "maximumError": "3MB" },
                 { "type": "anyComponentStyle", "maximumWarning": "10kB", "maximumError": "16kB" }
@@ -35,6 +45,16 @@
               "baseHref": "/"
             },
             "github": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": {
+                  "inline": false
+                }
+              },
               "budgets": [
                 { "type": "initial", "maximumWarning": "2.8MB", "maximumError": "3MB" },
                 { "type": "anyComponentStyle", "maximumWarning": "10kB", "maximumError": "16kB" }
@@ -97,6 +117,9 @@
     }
   },
   "cli": {
+    "cache": {
+      "enabled": false
+    },
     "schematicCollections": ["angular-eslint"]
   }
 }

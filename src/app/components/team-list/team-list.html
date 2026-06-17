@@ -41,7 +41,7 @@
           </th>
           <td mat-cell *matCellDef="let team" class="team-cell team-col app-data-cell">
             @if (primaryClubId(team); as clubId) {
-            <a class="team-name" [routerLink]="['/teams', clubId]" queryParamsHandling="preserve">
+            <a class="team-name" [routerLink]="['/teams', clubId]" [state]="teamLinkState()">
               {{ team.name }}
             </a>
             } @else {
