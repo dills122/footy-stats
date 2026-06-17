@@ -3,6 +3,27 @@ import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { TeamOverview } from './team-overview';
 
+jest.mock('echarts/charts', () => ({ LineChart: {} }));
+jest.mock('echarts/components', () => ({
+  GridComponent: {},
+  MarkAreaComponent: {},
+  TooltipComponent: {},
+}));
+jest.mock('echarts/core', () => ({ use: jest.fn() }));
+jest.mock('echarts/renderers', () => ({ CanvasRenderer: {} }));
+jest.mock('ngx-echarts', () => {
+  const core = jest.requireActual('@angular/core');
+  class MockNgxEchartsDirective {}
+  core.Directive({ selector: '[echarts]' })(MockNgxEchartsDirective);
+  core.Input()(MockNgxEchartsDirective.prototype, 'options');
+  core.Input()(MockNgxEchartsDirective.prototype, 'autoResize');
+
+  return {
+    NgxEchartsDirective: MockNgxEchartsDirective,
+    provideEchartsCore: () => [],
+  };
+});
+
 describe('TeamOverview', () => {
   let component: TeamOverview;
   let fixture: ComponentFixture<TeamOverview>;

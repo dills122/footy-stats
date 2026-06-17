@@ -2,7 +2,7 @@
 <div class="loading app-page-shell">Loading club profile...</div>
 } @else if (!club()) {
 <section class="team-overview app-surface app-page-shell">
-  <a class="back-link" routerLink="/teams">Back to clubs</a>
+  <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
   <div class="empty-state app-panel">
     <p class="app-page-eyebrow">Club Profile</p>
     <h1>Club not found</h1>
@@ -11,7 +11,7 @@
 </section>
 } @else {
 <section class="team-overview app-surface app-page-shell">
-  <a class="back-link" routerLink="/teams">Back to clubs</a>
+  <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
 
   <header class="profile-header">
     <div>
@@ -51,6 +51,58 @@
     </div>
   </section>
 
+  <div class="profile-feature-grid">
+    <section
+      class="profile-panel app-panel path-panel"
+      [class.path-panel--compact]="historyDisplayMode() === 'compact'"
+    >
+      <div class="panel-head">
+        <h2>{{ historyPanelTitle() }}</h2>
+        <span>{{ historyPanelMeta() }}</span>
+      </div>
+      @if (historyDisplayMode() === 'compact') {
+      <div class="season-snapshot-list">
+        @for (row of compactSeasonRows(); track row.season + row.tierLabel) {
+        <div>
+          <strong>{{ row.season }}</strong>
+          <span>{{ row.tierLabel }}</span>
+          <span>{{ row.positionLabel }}</span>
+          <span>{{ row.recordLabel }}</span>
+          @if (row.movementLabel) {
+          <em>{{ row.movementLabel }}</em>
+          }
+        </div>
+        }
+      </div>
+      } @else {
+      <div
+        echarts
+        class="path-chart"
+        [class.path-chart--small]="historyDisplayMode() === 'small-chart'"
+        [options]="chartOptions()"
+        [autoResize]="true"
+        aria-label="Club league tier path over time"
+      ></div>
+      }
+    </section>
+
+    <section class="profile-panel app-panel milestone-panel">
+      <div class="panel-head">
+        <h2>Milestones</h2>
+        <span>{{ milestoneCards().length }} notes</span>
+      </div>
+      <div class="milestone-list">
+        @for (milestone of milestoneCards(); track milestone.label) {
+        <div>
+          <span>{{ milestone.label }}</span>
+          <strong>{{ milestone.value }}</strong>
+          <small>{{ milestone.detail }}</small>
+        </div>
+        }
+      </div>
+    </section>
+  </div>
+
   <div class="profile-grid">
     <section class="profile-panel app-panel">
       <div class="panel-head">
@@ -74,7 +126,7 @@
       </div>
       <div class="chip-list">
         @for (alias of club()!.derived.aliases; track alias) {
-        <span>{{ alias }}</span>
+        <a [routerLink]="['/teams']" [queryParams]="{ letter: aliasLetter(alias) }">{{ alias }}</a>
         }
       </div>
       @if (displayNamePeriods().length) {
@@ -110,8 +162,14 @@
         @for (relationship of relationshipRows(); track relationship.clubKey +
         relationship.relationship) {
         <div>
-          <span>{{ relationship.relationship }} / {{ relationship.direction }}</span>
-          <strong>{{ relationship.relatedName }}</strong>
+          <span>{{ relationshipLabel(relationship.relationship, relationship.direction) }}</span>
+          <strong>
+            @if (relationship.relatedClubId) {
+            <a [routerLink]="['/teams', relationship.relatedClubId]" queryParamsHandling="preserve">
+              {{ relationship.relatedName }}
+            </a>
+            } @else { {{ relationship.relatedName }} }
+          </strong>
         </div>
         }
       </div>
@@ -144,14 +202,16 @@
     <div class="recent-table">
       <div class="recent-row recent-head">
         <span>Season</span>
+        <span>Name</span>
         <span>Tier</span>
         <span>Position</span>
         <span>Record</span>
         <span>Points</span>
       </div>
-      @for (entry of recentEntries(); track entry.season + entry.tier) {
+      @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
       <div class="recent-row">
         <span>{{ entry.season }}</span>
+        <span>{{ entry.teamName }}</span>
         <span>{{ tierLabel(entry.tier) }}</span>
         <span>{{ ordinal(entry.pos) }}</span>
         <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>

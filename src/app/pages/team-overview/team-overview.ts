@@ -2,10 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { LineChart } from 'echarts/charts';
+import { GridComponent, MarkAreaComponent, TooltipComponent } from 'echarts/components';
+import type { EChartsCoreOption } from 'echarts/core';
+import * as echarts from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import type { LeagueTableEntry } from '@app/store/league.models';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
 import { buildClubDerivedGaps, buildClubDisplayNamePeriods } from '@app/utils/club-identity-ranges';
+import { buildClubPerformanceMilestones } from '@app/utils/club-performance-milestones';
+import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
 
 const TIER_LABELS: Record<string, string> = {
   tier1: 'Premier League',
@@ -17,9 +25,51 @@ const TIER_LABELS: Record<string, string> = {
   tier7: 'National League South',
 };
 
+const RELATIONSHIP_LABELS: Record<string, string> = {
+  merger: 'Merger',
+  phoenix: 'Phoenix club',
+  relocation: 'Relocation',
+  successor: 'Successor',
+  supporterPhoenix: 'Supporter phoenix',
+};
+
+const RELATIONSHIP_DIRECTION_LABELS: Record<string, string> = {
+  formedBySupportersOf: 'formed by supporters of',
+  formedFrom: 'formed from',
+  mergedInto: 'merged into',
+  predecessor: 'predecessor',
+  relocatedFrom: 'relocated from',
+  relocatedTo: 'relocated to',
+  successor: 'successor',
+  supporterFounded: 'supporter founded',
+};
+
+interface MilestoneCard {
+  label: string;
+  value: string;
+  detail: string;
+}
+
+interface CompactSeasonRow {
+  season: number;
+  tierLabel: string;
+  positionLabel: string;
+  recordLabel: string;
+  movementLabel: string | null;
+}
+
+interface RecentSeasonRow extends LeagueTableEntry {
+  teamName: string;
+}
+
+type HistoryDisplayMode = 'compact' | 'small-chart' | 'full-chart';
+
+echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, CanvasRenderer]);
+
 @Component({
   selector: 'app-team-overview',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NgxEchartsDirective],
+  providers: [provideEchartsCore({ echarts })],
   templateUrl: './team-overview.html',
   styleUrl: './team-overview.scss',
 })
@@ -86,12 +136,14 @@ export class TeamOverview {
   });
   relationshipRows = computed(
     () =>
-      this.club()?.derived.relationships?.map((relationship) => ({
-        ...relationship,
-        relatedName:
-          this.clubMetadataStore.getClubById(relationship.clubKey)?.canonicalName ??
-          relationship.clubKey,
-      })) ?? []
+      this.club()?.derived.relationships?.map((relationship) => {
+        const relatedClub = this.clubMetadataStore.getClubById(relationship.clubKey);
+        return {
+          ...relationship,
+          relatedClubId: relatedClub ? relationship.clubKey : null,
+          relatedName: relatedClub?.canonicalName ?? relationship.clubKey,
+        };
+      }) ?? []
   );
   displayNamePeriods = computed(() =>
     buildClubDisplayNamePeriods(this.club()?.derived.observedNamePeriods ?? [])
@@ -110,9 +162,223 @@ export class TeamOverview {
     return buildClubDerivedGaps(this.club()?.derived.observedNamePeriods ?? []);
   });
   recentEntries = computed(() => this.entries().slice(0, 12));
+  recentSeasonRows = computed<RecentSeasonRow[]>(() =>
+    this.recentEntries().map((entry) => ({
+      ...entry,
+      teamName: this.leagueStore.getTeamNameById(entry.teamId),
+    }))
+  );
+  entriesAscending = computed(() =>
+    this.entries()
+      .slice()
+      .sort((a, b) => a.season - b.season || this.tierRank(a.tier) - this.tierRank(b.tier))
+  );
+  historyDisplayMode = computed<HistoryDisplayMode>(() => {
+    const seasonCount = this.club()?.derived.totalSeasonsSeen ?? this.entries().length;
+    if (seasonCount <= 10) {
+      return 'compact';
+    }
+
+    if (seasonCount <= 20) {
+      return 'small-chart';
+    }
+
+    return 'full-chart';
+  });
+  historyPanelTitle = computed(() =>
+    this.historyDisplayMode() === 'compact' ? 'Season Snapshot' : 'League Path'
+  );
+  historyPanelMeta = computed(() => {
+    const seasonCount = this.club()?.derived.totalSeasonsSeen ?? this.entries().length;
+    return `${seasonCount} ${seasonCount === 1 ? 'season' : 'seasons'}`;
+  });
+  compactSeasonRows = computed<CompactSeasonRow[]>(() =>
+    this.entriesAscending().map((entry) => ({
+      season: entry.season,
+      tierLabel: this.tierLabel(entry.tier),
+      positionLabel: this.ordinal(entry.pos),
+      recordLabel: `${entry.won}-${entry.drawn}-${entry.lost}`,
+      movementLabel: this.movementLabel(entry),
+    }))
+  );
+  performanceMilestones = computed(() => buildClubPerformanceMilestones(this.entries()));
+  milestoneCards = computed<MilestoneCard[]>(() => {
+    const milestones = this.performanceMilestones();
+
+    return [
+      {
+        label: 'First table record',
+        value: this.entryLabel(milestones.firstEntry),
+        detail: 'Earliest season in the current archive data.',
+      },
+      {
+        label: 'Top-flight peak',
+        value: milestones.bestTopFlightEntry
+          ? this.entryLabel(milestones.bestTopFlightEntry)
+          : 'No top-flight data',
+        detail: 'Best recorded finish in the highest available tier.',
+      },
+      {
+        label: 'Longest top-flight run',
+        value: this.runLabel(milestones.longestTopFlightRun),
+        detail: 'Consecutive top-tier table rows; official war gaps do not break the run.',
+      },
+      {
+        label: 'Longest tracked run',
+        value: this.runLabel(milestones.longestTrackedRun),
+        detail: 'Longest continuous spell anywhere in the tracked league pyramid.',
+      },
+      {
+        label: 'Largest non-war gap',
+        value: milestones.longestNonWartimeGap
+          ? `${milestones.longestNonWartimeGap.fromSeason}-${milestones.longestNonWartimeGap.toSeason}`
+          : 'No non-war gaps',
+        detail: milestones.longestNonWartimeGap
+          ? `${milestones.longestNonWartimeGap.seasons} missing seasons between table records.`
+          : 'Only official wartime suspensions or continuous records were found.',
+      },
+      {
+        label: 'Movement seasons',
+        value: `${milestones.promotionSeasons.length} up / ${milestones.relegationSeasons.length} down`,
+        detail: this.movementYearsLabel(milestones.promotionSeasons, milestones.relegationSeasons),
+      },
+    ];
+  });
+  chartOptions = computed<EChartsCoreOption>(() => {
+    const entries = this.entriesAscending();
+    if (!entries.length) {
+      return {
+        animation: false,
+        xAxis: { type: 'category', data: [] },
+        yAxis: { type: 'value' },
+        series: [],
+      };
+    }
+
+    const firstSeason = entries[0].season;
+    const lastSeason = entries.at(-1)!.season;
+    const seasons = Array.from(
+      { length: lastSeason - firstSeason + 1 },
+      (_, index) => firstSeason + index
+    );
+    const entriesBySeason = new Map(entries.map((entry) => [entry.season, entry]));
+    const data = seasons.map((season) => {
+      const entry = entriesBySeason.get(season);
+      return entry ? this.tierNumber(entry.tier) : null;
+    });
+    const tierValues = entries.map((entry) => this.tierNumber(entry.tier));
+    const isSmallChart = this.historyDisplayMode() === 'small-chart';
+    const wartimeMarkAreas = getWartimeSuspensionRanges(seasons).map((range) => [
+      {
+        name: range.label,
+        xAxis: String(range.startSeason),
+        itemStyle: {
+          color: 'rgba(217, 119, 6, 0.14)',
+          borderColor: 'rgba(217, 119, 6, 0.28)',
+          borderWidth: 1,
+        },
+        label: {
+          color: '#fde68a',
+          fontSize: 11,
+        },
+      },
+      {
+        xAxis: String(range.endSeason),
+      },
+    ]);
+
+    return {
+      animation: false,
+      backgroundColor: 'transparent',
+      grid: {
+        left: isSmallChart ? 96 : 110,
+        right: 18,
+        top: 18,
+        bottom: isSmallChart ? 30 : 36,
+        containLabel: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: 'rgba(7, 10, 19, 0.94)',
+        borderColor: 'rgba(148, 163, 184, 0.28)',
+        textStyle: {
+          color: '#d7deeb',
+        },
+        formatter: (params: unknown) => this.pathTooltip(params, entriesBySeason),
+      },
+      xAxis: {
+        type: 'category',
+        data: seasons.map((season) => String(season)),
+        boundaryGap: false,
+        axisLabel: {
+          color: '#c5d0e4',
+          hideOverlap: true,
+          fontSize: isSmallChart ? 10 : 11,
+        },
+        axisLine: {
+          lineStyle: { color: 'rgba(148, 163, 184, 0.45)' },
+        },
+        axisTick: { show: false },
+      },
+      yAxis: {
+        type: 'value',
+        inverse: true,
+        min: Math.max(1, Math.min(...tierValues) - 0.25),
+        max: Math.max(...tierValues) + 0.25,
+        interval: 1,
+        axisLabel: {
+          color: '#c5d0e4',
+          fontSize: isSmallChart ? 10 : 11,
+          fontWeight: 700,
+          margin: 12,
+          formatter: (value: number) => this.tierLabel(`tier${value}`),
+        },
+        axisLine: { show: false },
+        splitLine: {
+          lineStyle: { color: 'rgba(148, 163, 184, 0.18)' },
+        },
+      },
+      series: [
+        {
+          name: this.club()?.canonicalName ?? 'Club path',
+          type: 'line',
+          data,
+          step: 'end',
+          connectNulls: false,
+          showSymbol: false,
+          symbolSize: 6,
+          lineStyle: {
+            width: 2.8,
+            color: '#f59e0b',
+          },
+          itemStyle: {
+            color: '#fbbf24',
+          },
+          markArea: {
+            silent: false,
+            tooltip: {
+              formatter: (params: { name?: string }) =>
+                `${params.name ?? 'Official league suspended'}: no official table record`,
+            },
+            data: wartimeMarkAreas,
+          },
+        },
+      ],
+    };
+  });
 
   tierLabel(tier: string): string {
     return TIER_LABELS[tier] ?? tier;
+  }
+
+  aliasLetter(alias: string): string {
+    return alias.trim().charAt(0).toUpperCase();
+  }
+
+  relationshipLabel(relationship: string, direction: string): string {
+    const relationshipLabel = RELATIONSHIP_LABELS[relationship] ?? relationship;
+    const directionLabel = RELATIONSHIP_DIRECTION_LABELS[direction] ?? direction;
+    return `${relationshipLabel} / ${directionLabel}`;
   }
 
   entryLabel(entry: LeagueTableEntry | null): string {
@@ -136,7 +402,70 @@ export class TeamOverview {
     return `${value}${suffixByMod10[value % 10] ?? 'th'}`;
   }
 
+  runLabel(run: { startSeason: number; endSeason: number; rowCount: number } | null): string {
+    if (!run) {
+      return 'No tracked run';
+    }
+
+    return `${run.startSeason}-${run.endSeason} / ${run.rowCount} ${run.rowCount === 1 ? 'season' : 'seasons'}`;
+  }
+
+  private movementLabel(entry: LeagueTableEntry): string | null {
+    if (entry.wasPromoted) {
+      return 'Promoted';
+    }
+
+    if (entry.wasRelegated) {
+      return 'Relegated';
+    }
+
+    if (entry.wasReprieved) {
+      return 'Reprieved';
+    }
+
+    return null;
+  }
+
+  private movementYearsLabel(promoted: readonly number[], relegated: readonly number[]): string {
+    const latestPromotions = promoted.slice(-3).join(', ');
+    const latestRelegations = relegated.slice(-3).join(', ');
+
+    if (!latestPromotions && !latestRelegations) {
+      return 'No promotion or relegation markers in the current table data.';
+    }
+
+    return [
+      latestPromotions ? `Recent promotions: ${latestPromotions}` : null,
+      latestRelegations ? `Recent relegations: ${latestRelegations}` : null,
+    ]
+      .filter((line): line is string => Boolean(line))
+      .join(' / ');
+  }
+
+  private pathTooltip(
+    params: unknown,
+    entriesBySeason: ReadonlyMap<number, LeagueTableEntry>
+  ): string {
+    const point = Array.isArray(params) ? params[0] : params;
+    if (!point || typeof point !== 'object' || !('axisValue' in point)) {
+      return '';
+    }
+
+    const season = Number((point as { axisValue: string }).axisValue);
+    const entry = entriesBySeason.get(season);
+    if (!entry) {
+      return `${season}: no table record`;
+    }
+
+    return `${season}: ${this.tierLabel(entry.tier)}, ${this.ordinal(entry.pos)}, ${entry.points} pts`;
+  }
+
   private tierRank(tier: string): number {
+    const parsed = Number.parseInt(tier.replace('tier', ''), 10);
+    return Number.isFinite(parsed) ? parsed : 99;
+  }
+
+  private tierNumber(tier: string): number {
     const parsed = Number.parseInt(tier.replace('tier', ''), 10);
     return Number.isFinite(parsed) ? parsed : 99;
   }
