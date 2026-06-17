@@ -22,4 +22,8 @@ export class Home {
     const seasonsAndTiers = this.store.getSeasons(); // <- reactive getter
     return seasonsAndTiers?.length ?? 0;
   });
+  tiersCount = computed(() => {
+    const tierNames = new Set(this.store.getSeasonTiers().flatMap((season) => season.tiers));
+    return tierNames.size;
+  });
 }

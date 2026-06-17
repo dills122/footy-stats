@@ -10,7 +10,9 @@
     <ng-container matColumnDef="teamName">
       <th mat-header-cell *matHeaderCellDef scope="col" class="head app-data-head">Team</th>
       <td mat-cell *matCellDef="let element" class="cell team app-data-cell">
-        {{ element.teamName }}
+        @if (element.clubId) {
+        <a class="team-link" [routerLink]="['/teams', element.clubId]">{{ element.teamName }}</a>
+        } @else { {{ element.teamName }} }
       </td>
     </ng-container>
 

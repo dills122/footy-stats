@@ -2,7 +2,9 @@
   <section class="hero">
     <header class="app-page-header">
       <p class="app-page-eyebrow">English Football Archive</p>
-      <h1 class="app-page-title">Explore 137 seasons of English football history.</h1>
+      <h1 class="app-page-title">
+        Explore {{ seasonsCount() || '100+' }} seasons of English football history.
+      </h1>
       <p class="app-page-lede">
         FootyStats brings league tables, club histories, promotion paths, and long-run patterns into
         one searchable reference for the English game.
@@ -19,8 +21,8 @@
         clubs
       </span>
       <span>
-        <strong>3</strong>
-        primary tiers
+        <strong>{{ tiersCount() || '7' }}</strong>
+        tracked tiers
       </span>
     </div>
 

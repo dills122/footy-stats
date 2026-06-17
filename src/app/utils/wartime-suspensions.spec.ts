@@ -1,4 +1,8 @@
-import { getWartimeSuspensionRanges } from './wartime-suspensions';
+import {
+  getWartimeSuspensionLabelForSpan,
+  getWartimeSuspensionRanges,
+  isWartimeSuspensionSpan,
+} from './wartime-suspensions';
 
 describe('wartime suspensions', () => {
   it('returns no ranges when the selected seasons avoid wartime gaps', () => {
@@ -32,5 +36,11 @@ describe('wartime suspensions', () => {
         endSeason: 1918,
       }),
     ]);
+  });
+
+  it('classifies spans fully covered by official wartime suspensions', () => {
+    expect(isWartimeSuspensionSpan(1939, 1945)).toBe(true);
+    expect(isWartimeSuspensionSpan(1938, 1945)).toBe(false);
+    expect(getWartimeSuspensionLabelForSpan(1939, 1945)).toBe('Second World War');
   });
 });

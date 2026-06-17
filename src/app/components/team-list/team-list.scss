@@ -119,11 +119,19 @@
 .team-name {
   color: var(--app-text-strong);
   font-weight: 600;
+  text-decoration: none;
 }
 
 .team-name:hover {
   text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
+}
+
+.team-name:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .header-inline {

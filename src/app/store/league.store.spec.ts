@@ -175,14 +175,15 @@ describe('LeagueStore', () => {
       },
     },
   };
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LeagueStore],
     });
 
     store = TestBed.inject(LeagueStore);
-    store.hydrate(rawData);
+    store.hydrate(rawData, (teamName: string, season: number) =>
+      teamName === 'Alpha FC' && season >= 2020 ? 'alpha fc' : null
+    );
   });
 
   afterEach(() => {
@@ -239,6 +240,17 @@ describe('LeagueStore', () => {
     expect(store.getTeamById(alpha.id)).toEqual(alpha);
     expect(store.getTeamNameById(alpha.id)).toBe('Alpha FC');
     expect(store.getTeamNameById(9999)).toBe('Unknown');
+  });
+
+  it('hydrates stable club metadata foreign keys when a resolver is provided', () => {
+    const alpha = getTeam('Alpha FC');
+    const bravo = getTeam('Bravo United');
+
+    expect(alpha.clubIds).toEqual(['alpha fc']);
+    expect(bravo.clubIds).toEqual([]);
+    expect(store.getFullTable(2020, 'tier1')[0].clubId).toBe('alpha fc');
+    expect(store.getFullTable(2020, 'tier1')[1].clubId).toBeNull();
+    expect(store.getEntriesByClubId('alpha fc')).toHaveLength(2);
   });
 
   it('returns each team season history', () => {

@@ -4,6 +4,8 @@ import type { LeagueState, LeagueTableEntry, Team } from './league.models';
 
 let nextTeamId = 1;
 
+type ClubIdResolver = (teamName: string, season: number) => string | null;
+
 export const LeagueStore = signalStore(
   { providedIn: 'root' },
   withState<LeagueState>({
@@ -15,12 +17,14 @@ export const LeagueStore = signalStore(
     let seasonIndex = new Map<number, LeagueTableEntry[]>();
     let seasonTierIndex = new Map<string, LeagueTableEntry[]>();
     let teamEntriesIndex = new Map<number, LeagueTableEntry[]>();
+    let clubEntriesIndex = new Map<string, LeagueTableEntry[]>();
     let seasonTiersIndex: { season: number; tiers: string[] }[] = [];
 
     return {
-      hydrate(rawData: any) {
+      hydrate(rawData: any, resolveClubId?: ClubIdResolver) {
         nextTeamId = 1;
         const teamsMap: Record<string, number> = {};
+        const clubIdsByTeamId = new Map<number, Set<string>>();
         const tables: LeagueTableEntry[] = [];
         const seasons: number[] = [];
 
@@ -37,6 +41,13 @@ export const LeagueStore = signalStore(
                 teamId = nextTeamId++;
                 teamsMap[row.team] = teamId;
               }
+              const clubId = resolveClubId?.(row.team, year) ?? null;
+              if (clubId) {
+                if (!clubIdsByTeamId.has(teamId)) {
+                  clubIdsByTeamId.set(teamId, new Set());
+                }
+                clubIdsByTeamId.get(teamId)!.add(clubId);
+              }
 
               // Calculate goalDifference if not provided
               const goalDifference =
@@ -49,6 +60,7 @@ export const LeagueStore = signalStore(
                 season: year,
                 tier: tierName,
                 teamId,
+                clubId,
                 pos: row.pos,
                 played: row.played,
                 won: row.won,
@@ -73,12 +85,13 @@ export const LeagueStore = signalStore(
         // Build teams object
         const teams: Record<number, Team> = {};
         Object.entries(teamsMap).forEach(([name, id]) => {
-          teams[id] = { id, name };
+          teams[id] = { id, name, clubIds: Array.from(clubIdsByTeamId.get(id) ?? []).sort() };
         });
 
         seasonIndex = new Map<number, LeagueTableEntry[]>();
         seasonTierIndex = new Map<string, LeagueTableEntry[]>();
         teamEntriesIndex = new Map<number, LeagueTableEntry[]>();
+        clubEntriesIndex = new Map<string, LeagueTableEntry[]>();
         const seasonTiersMap = new Map<number, Set<string>>();
 
         tables.forEach((entry) => {
@@ -97,6 +110,13 @@ export const LeagueStore = signalStore(
             teamEntriesIndex.set(entry.teamId, []);
           }
           teamEntriesIndex.get(entry.teamId)!.push(entry);
+
+          if (entry.clubId) {
+            if (!clubEntriesIndex.has(entry.clubId)) {
+              clubEntriesIndex.set(entry.clubId, []);
+            }
+            clubEntriesIndex.get(entry.clubId)!.push(entry);
+          }
 
           if (!seasonTiersMap.has(entry.season)) {
             seasonTiersMap.set(entry.season, new Set());
@@ -147,6 +167,10 @@ export const LeagueStore = signalStore(
       },
       getTeamNameById(id: number): string {
         return store.teams()[id]?.name ?? 'Unknown';
+      },
+      getEntriesByClubId(clubId: string): LeagueTableEntry[] {
+        store.tables();
+        return clubEntriesIndex.get(clubId) ?? [];
       },
       getSeasonsAndTiersForTeam(teamId: number): { season: number; tier: string }[] {
         store.tables();
