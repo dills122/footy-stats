@@ -36,6 +36,12 @@
         </mat-select>
       </mat-form-field>
       }
+
+      <app-data-issue-report-dialog
+        class="report-field"
+        triggerLabel="Report table issue"
+        [context]="dataIssueContext()"
+      />
     </div>
 
     @if (currentTable(); as tableData) {

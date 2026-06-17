@@ -42,6 +42,11 @@
   --mat-select-panel-background-color: #111827;
 }
 
+.report-field {
+  display: block;
+  padding-top: 8px;
+}
+
 :host ::ng-deep .field .mdc-text-field--filled {
   border: 1px solid var(--app-border);
   background: rgba(7, 10, 19, 0.28);

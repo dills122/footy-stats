@@ -12,6 +12,13 @@
   gap: 20px;
 }
 
+.profile-top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .back-link {
   width: fit-content;
   color: var(--app-text-muted);
@@ -366,7 +373,7 @@
 }
 
 .recent-table {
-  min-width: 820px;
+  min-width: 900px;
   display: grid;
   border: 1px solid rgba(148, 163, 184, 0.28);
   border-radius: 8px;
@@ -376,7 +383,7 @@
 
 .recent-row {
   display: grid;
-  grid-template-columns: 0.7fr 1.35fr 1.25fr 0.8fr 0.9fr 0.7fr;
+  grid-template-columns: 0.7fr 1.35fr 1.25fr 0.8fr 0.9fr 0.7fr 0.65fr;
 }
 
 .recent-row span {
@@ -396,6 +403,14 @@
 
 .recent-row:last-child span {
   border-bottom: 0;
+}
+
+.recent-report {
+  text-align: right;
+}
+
+.recent-report app-data-issue-report-dialog {
+  font-size: 0.82rem;
 }
 
 .recent-head span {
@@ -428,6 +443,11 @@
 }
 
 @media (max-width: 620px) {
+  .profile-top-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .stat-grid {
     grid-template-columns: 1fr;
   }

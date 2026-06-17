@@ -109,6 +109,10 @@
   line-height: 1.75;
 }
 
+.footer-link-group app-data-issue-report-dialog {
+  display: block;
+}
+
 .footer-link-group a:hover {
   color: var(--app-text-strong);
   text-decoration: underline;
