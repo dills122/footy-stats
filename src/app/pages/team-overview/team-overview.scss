@@ -123,6 +123,12 @@
   line-height: 1.3;
 }
 
+.profile-feature-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.8fr);
+  gap: 14px;
+}
+
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -154,6 +160,14 @@
   background: rgba(217, 119, 6, 0.76);
 }
 
+.path-panel::before {
+  background: rgba(96, 165, 250, 0.72);
+}
+
+.milestone-panel::before {
+  background: rgba(20, 184, 166, 0.72);
+}
+
 .panel-head {
   display: flex;
   align-items: baseline;
@@ -174,7 +188,8 @@
 .tier-list,
 .relationship-list,
 .gap-list,
-.period-list {
+.period-list,
+.milestone-list {
   display: grid;
   gap: 8px;
 }
@@ -182,7 +197,8 @@
 .tier-row,
 .relationship-list > div,
 .gap-list > div,
-.period-list > div {
+.period-list > div,
+.milestone-list > div {
   min-height: 42px;
   border: 1px solid var(--app-border);
   border-radius: 8px;
@@ -197,7 +213,8 @@
 .tier-row:hover,
 .relationship-list > div:hover,
 .gap-list > div:hover,
-.period-list > div:hover {
+.period-list > div:hover,
+.milestone-list > div:hover {
   border-color: rgba(148, 163, 184, 0.34);
   background: rgba(15, 23, 42, 0.42);
 }
@@ -205,7 +222,8 @@
 .tier-row span,
 .relationship-list span,
 .gap-list span,
-.period-list span {
+.period-list span,
+.milestone-list span {
   color: var(--app-text-muted);
   font-size: 0.9rem;
 }
@@ -228,9 +246,90 @@
 .tier-row strong,
 .relationship-list strong,
 .gap-list strong,
-.period-list strong {
+.period-list strong,
+.milestone-list strong {
   color: var(--app-text-strong);
   font-size: 0.95rem;
+}
+
+.relationship-list a {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.relationship-list a:hover {
+  color: #fde68a;
+  text-decoration: underline;
+}
+
+.path-chart {
+  height: 285px;
+  min-height: 285px;
+}
+
+.path-chart--small {
+  height: 190px;
+  min-height: 190px;
+}
+
+.season-snapshot-list {
+  display: grid;
+  gap: 8px;
+}
+
+.season-snapshot-list > div {
+  min-height: 42px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: 62px minmax(120px, 1fr) 54px 64px auto;
+  align-items: center;
+  gap: 10px;
+  background: rgba(7, 10, 19, 0.2);
+}
+
+.season-snapshot-list > div:hover {
+  border-color: rgba(148, 163, 184, 0.34);
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.season-snapshot-list strong {
+  color: var(--app-text-strong);
+  font-size: 0.95rem;
+}
+
+.season-snapshot-list span {
+  color: var(--app-text-muted);
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.season-snapshot-list em {
+  width: fit-content;
+  border: 1px solid rgba(245, 158, 11, 0.34);
+  border-radius: 999px;
+  padding: 3px 7px;
+  background: rgba(245, 158, 11, 0.1);
+  color: #fde68a;
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 750;
+}
+
+.milestone-list > div {
+  min-height: 74px;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.milestone-list small {
+  color: var(--app-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .chip-list {
@@ -239,7 +338,8 @@
   gap: 8px;
 }
 
-.chip-list span {
+.chip-list span,
+.chip-list a {
   border: 1px solid var(--app-border);
   border-radius: 6px;
   padding: 6px 8px;
@@ -247,6 +347,14 @@
   color: var(--app-text-strong);
   font-size: 0.88rem;
   font-weight: 650;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.chip-list a:hover {
+  border-color: rgba(245, 158, 11, 0.42);
+  color: #fde68a;
+  text-decoration: underline;
 }
 
 .period-list {
@@ -258,7 +366,7 @@
 }
 
 .recent-table {
-  min-width: 720px;
+  min-width: 820px;
   display: grid;
   border: 1px solid rgba(148, 163, 184, 0.28);
   border-radius: 8px;
@@ -268,7 +376,7 @@
 
 .recent-row {
   display: grid;
-  grid-template-columns: 0.8fr 1.5fr 0.9fr 1fr 0.8fr;
+  grid-template-columns: 0.7fr 1.35fr 1.25fr 0.8fr 0.9fr 0.7fr;
 }
 
 .recent-row span {
@@ -301,6 +409,7 @@
 
 @media (max-width: 980px) {
   .profile-header,
+  .profile-feature-grid,
   .profile-grid {
     grid-template-columns: 1fr;
   }
@@ -326,8 +435,13 @@
   .tier-row,
   .relationship-list > div,
   .gap-list > div,
-  .period-list > div {
+  .period-list > div,
+  .season-snapshot-list > div {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .season-snapshot-list > div {
+    display: flex;
   }
 }
