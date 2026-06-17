@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { convertToParamMap, ActivatedRoute } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { TeamOverview } from './team-overview';
 
@@ -41,6 +42,7 @@ describe('TeamOverview', () => {
             },
           },
         },
+        provideRouter([]),
       ],
     }).compileComponents();
 
@@ -51,5 +53,11 @@ describe('TeamOverview', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('builds a teams back link query param from hidden navigation state', () => {
+    component.teamsReturnLetter.set('A');
+
+    expect(component.backToTeamsQueryParams()).toEqual({ letter: 'A' });
   });
 });

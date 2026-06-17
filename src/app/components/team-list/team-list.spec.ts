@@ -41,4 +41,10 @@ describe('TeamList', () => {
     expect(component.selectedLetterSignal()).toBeNull();
     expect(emittedLetters).toEqual(['']);
   });
+
+  it('stores the selected letter in navigation state for team links', () => {
+    component.selectedLetter = 'a';
+
+    expect(component.teamLinkState()).toEqual({ teamsReturnLetter: 'A' });
+  });
 });

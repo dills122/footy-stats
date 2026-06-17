@@ -3,7 +3,9 @@
 } @else if (!club()) {
 <section class="team-overview app-surface app-page-shell">
   <div class="profile-top-actions">
-    <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
+    <a class="back-link" routerLink="/teams" [queryParams]="backToTeamsQueryParams()">
+      Back to clubs
+    </a>
     <app-data-issue-report-dialog
       triggerLabel="Report missing club"
       [context]="dataIssueContext()"
@@ -18,22 +20,30 @@
 } @else {
 <section class="team-overview app-surface app-page-shell">
   <div class="profile-top-actions">
-    <a class="back-link" routerLink="/teams" queryParamsHandling="preserve">Back to clubs</a>
-    <app-data-issue-report-dialog [context]="dataIssueContext()" />
+    <a class="back-link" routerLink="/teams" [queryParams]="backToTeamsQueryParams()">
+      Back to clubs
+    </a>
+    <app-data-issue-report-dialog
+      class="header-report"
+      triggerLabel="Flag club data"
+      triggerStyle="link"
+      [context]="dataIssueContext()"
+    />
   </div>
 
   <header class="profile-header">
     <div>
       <p class="app-page-eyebrow">Club Profile</p>
-      <h1 class="app-page-title">{{ club()!.canonicalName }}</h1>
+      <div class="title-line">
+        <h1 class="app-page-title">{{ club()!.canonicalName }}</h1>
+        <span class="status-block" [class.is-active]="statusLabel() === 'active'">
+          {{ statusLabel() }}
+        </span>
+      </div>
       <p class="app-page-lede">
         {{ club()!.derived.totalSeasonsSeen }} tracked seasons from {{
         club()!.derived.firstSeenSeason }} to {{ club()!.derived.lastSeenSeason }}.
       </p>
-    </div>
-    <div class="status-block" [class.is-active]="statusLabel() === 'active'">
-      <span>Status</span>
-      <strong>{{ statusLabel() }}</strong>
     </div>
   </header>
 
@@ -62,6 +72,7 @@
 
   <div class="profile-feature-grid">
     <section
+      #historyPanel
       class="profile-panel app-panel path-panel"
       [class.path-panel--compact]="historyDisplayMode() === 'compact'"
     >
@@ -83,6 +94,14 @@
         </div>
         }
       </div>
+      <div class="compact-snapshot-summary" aria-label="Compact season summary">
+        @for (fact of compactSnapshotFacts(); track fact.label) {
+        <div>
+          <span>{{ fact.label }}</span>
+          <strong>{{ fact.value }}</strong>
+        </div>
+        }
+      </div>
       } @else {
       <div
         echarts
@@ -95,10 +114,29 @@
       }
     </section>
 
-    <section class="profile-panel app-panel milestone-panel">
+    <section
+      class="profile-panel app-panel milestone-panel"
+      [class.milestone-panel--collapsed]="!milestonesExpanded()"
+      [class.milestone-panel--expanded]="milestonesExpanded()"
+      [style.--milestone-collapsed-height]="
+        milestoneCollapsedHeight() ? milestoneCollapsedHeight() + 'px' : null
+      "
+    >
       <div class="panel-head">
         <h2>Milestones</h2>
-        <span>{{ milestoneCards().length }} notes</span>
+        <div class="panel-actions">
+          <span>{{ milestoneCards().length }} notes</span>
+          @if (milestoneCards().length > 3) {
+          <button
+            type="button"
+            class="panel-toggle"
+            [attr.aria-expanded]="milestonesExpanded()"
+            (click)="toggleMilestones()"
+          >
+            {{ milestonesExpanded() ? 'Collapse' : 'Show all' }}
+          </button>
+          }
+        </div>
       </div>
       <div class="milestone-list">
         @for (milestone of milestoneCards(); track milestone.label) {
@@ -174,7 +212,7 @@
           <span>{{ relationshipLabel(relationship.relationship, relationship.direction) }}</span>
           <strong>
             @if (relationship.relatedClubId) {
-            <a [routerLink]="['/teams', relationship.relatedClubId]" queryParamsHandling="preserve">
+            <a [routerLink]="['/teams', relationship.relatedClubId]">
               {{ relationship.relatedName }}
             </a>
             } @else { {{ relationship.relatedName }} }
@@ -216,7 +254,7 @@
         <span>Position</span>
         <span>Record</span>
         <span>Points</span>
-        <span>Report</span>
+        <span>Data issue</span>
       </div>
       @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
       <div class="recent-row">
@@ -228,7 +266,7 @@
         <span>{{ entry.points }}</span>
         <span class="recent-report">
           <app-data-issue-report-dialog
-            triggerLabel="Report"
+            triggerLabel="Flag issue"
             triggerStyle="link"
             [context]="dataIssueContextForSeason(entry)"
           />

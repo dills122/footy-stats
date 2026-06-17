@@ -1,7 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, MarkAreaComponent, TooltipComponent } from 'echarts/components';
 import type { EChartsCoreOption } from 'echarts/core';
@@ -52,6 +61,11 @@ interface MilestoneCard {
   detail: string;
 }
 
+interface SnapshotFact {
+  label: string;
+  value: string;
+}
+
 interface CompactSeasonRow {
   season: number;
   tierLabel: string;
@@ -66,6 +80,10 @@ interface RecentSeasonRow extends LeagueTableEntry {
 
 type HistoryDisplayMode = 'compact' | 'small-chart' | 'full-chart';
 
+interface TeamsReturnNavigationState {
+  teamsReturnLetter?: unknown;
+}
+
 echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, CanvasRenderer]);
 
 @Component({
@@ -75,10 +93,14 @@ echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, Canv
   templateUrl: './team-overview.html',
   styleUrl: './team-overview.scss',
 })
-export class TeamOverview {
+export class TeamOverview implements AfterViewInit, OnDestroy {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private clubMetadataStore = inject(ClubMetadataStore);
   private leagueStore = inject(LeagueStore);
+  private historyPanelObserver?: ResizeObserver;
+
+  @ViewChild('historyPanel') private historyPanel?: ElementRef<HTMLElement>;
 
   private paramMap = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
@@ -86,6 +108,13 @@ export class TeamOverview {
 
   clubId = computed(() => this.paramMap().get('clubId') ?? '');
   metadataLoaded = computed(() => Boolean(this.clubMetadataStore.getGeneratedAt()));
+  milestonesExpanded = signal(false);
+  milestoneCollapsedHeight = signal<number | null>(null);
+  teamsReturnLetter = signal(this.readTeamsReturnLetter());
+  backToTeamsQueryParams = computed(() => {
+    const letter = this.teamsReturnLetter();
+    return letter ? { letter } : null;
+  });
   club = computed(() => this.clubMetadataStore.getClubById(this.clubId()));
   entries = computed(() =>
     this.leagueStore
@@ -185,6 +214,41 @@ export class TeamOverview {
       competition: this.tierLabel(entry.tier),
     };
   }
+
+  ngAfterViewInit() {
+    const historyPanel = this.historyPanel?.nativeElement;
+
+    if (!historyPanel || typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
+    const updateCollapsedHeight = () => {
+      const height = Math.ceil(historyPanel.getBoundingClientRect().height);
+      this.milestoneCollapsedHeight.set(height > 0 ? height : null);
+    };
+
+    updateCollapsedHeight();
+    this.historyPanelObserver = new ResizeObserver(updateCollapsedHeight);
+    this.historyPanelObserver.observe(historyPanel);
+  }
+
+  ngOnDestroy() {
+    this.historyPanelObserver?.disconnect();
+  }
+
+  toggleMilestones() {
+    this.milestonesExpanded.update((expanded) => !expanded);
+  }
+
+  private readTeamsReturnLetter(): string {
+    const state = (this.router.getCurrentNavigation()?.extras.state ??
+      globalThis.history?.state) as TeamsReturnNavigationState | undefined;
+    const rawLetter = typeof state?.teamsReturnLetter === 'string' ? state.teamsReturnLetter : '';
+    const letter = rawLetter.trim().toUpperCase();
+
+    return /^[A-Z]$/.test(letter) ? letter : '';
+  }
+
   entriesAscending = computed(() =>
     this.entries()
       .slice()
@@ -218,6 +282,35 @@ export class TeamOverview {
       movementLabel: this.movementLabel(entry),
     }))
   );
+  compactSnapshotFacts = computed<SnapshotFact[]>(() => {
+    const entries = this.entries();
+    const totalRecord = entries.reduce(
+      (record, entry) => ({
+        won: record.won + entry.won,
+        drawn: record.drawn + entry.drawn,
+        lost: record.lost + entry.lost,
+        points: record.points + entry.points,
+      }),
+      { won: 0, drawn: 0, lost: 0, points: 0 }
+    );
+    const bestFinish = this.topTierBestFinish();
+    const averagePoints = entries.length ? (totalRecord.points / entries.length).toFixed(1) : null;
+
+    return [
+      {
+        label: 'Best finish',
+        value: bestFinish ? `${bestFinish.season} / ${this.ordinal(bestFinish.pos)}` : 'No data',
+      },
+      {
+        label: 'Total record',
+        value: `${totalRecord.won}-${totalRecord.drawn}-${totalRecord.lost}`,
+      },
+      {
+        label: 'Avg points',
+        value: averagePoints ?? 'No data',
+      },
+    ];
+  });
   performanceMilestones = computed(() => buildClubPerformanceMilestones(this.entries()));
   milestoneCards = computed<MilestoneCard[]>(() => {
     const milestones = this.performanceMilestones();
