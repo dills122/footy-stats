@@ -5,6 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
 
+interface ArchiveStat {
+  label: string;
+  value: number;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.html',
@@ -26,4 +31,10 @@ export class Home {
     const tierNames = new Set(this.store.getSeasonTiers().flatMap((season) => season.tiers));
     return tierNames.size;
   });
+  archiveLoaded = computed(() => this.seasonsCount() > 0 && this.teamsCount() > 0);
+  archiveStats = computed<ArchiveStat[]>(() => [
+    { label: 'seasons', value: this.seasonsCount() },
+    { label: 'clubs', value: this.teamsCount() },
+    { label: 'tracked tiers', value: this.tiersCount() },
+  ]);
 }

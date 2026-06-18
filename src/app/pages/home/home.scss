@@ -33,6 +33,41 @@
   line-height: 1;
 }
 
+.metric-skeleton {
+  display: inline-block;
+  width: 3.2ch;
+  height: clamp(1.25rem, 2vw, 1.65rem);
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.14),
+    rgba(148, 163, 184, 0.28),
+    rgba(148, 163, 184, 0.14)
+  );
+  background-size: 200% 100%;
+  animation: metric-skeleton-pulse 1.35s ease-in-out infinite;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@keyframes metric-skeleton-pulse {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 .cta-row {
   margin-top: clamp(24px, 4vw, 40px);
   display: flex;
@@ -128,5 +163,11 @@
 
   .cta-row a {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metric-skeleton {
+    animation: none;
   }
 }

@@ -3,7 +3,8 @@
     <header class="app-page-header">
       <p class="app-page-eyebrow">English Football Archive</p>
       <h1 class="app-page-title">
-        Explore {{ seasonsCount() || '100+' }} seasons of English football history.
+        @if (archiveLoaded()) { Explore {{ seasonsCount() }} seasons of English football history. }
+        @else { Explore English football history. }
       </h1>
       <p class="app-page-lede">
         FootyStats brings league tables, club histories, promotion paths, and long-run patterns into
@@ -11,19 +12,17 @@
       </p>
     </header>
 
-    <div class="archive-meta" aria-label="Archive coverage">
+    <div class="archive-meta" aria-label="Archive coverage" [attr.aria-busy]="!archiveLoaded()">
+      @for (stat of archiveStats(); track stat.label) {
       <span>
-        <strong>{{ seasonsCount() || '100+' }}</strong>
-        seasons
+        @if (archiveLoaded()) {
+        <strong>{{ stat.value }}</strong>
+        } @else {
+        <strong class="metric-skeleton" aria-hidden="true"></strong>
+        <span class="sr-only">Loading {{ stat.label }}</span>
+        } {{ stat.label }}
       </span>
-      <span>
-        <strong>{{ teamsCount() || '50+' }}</strong>
-        clubs
-      </span>
-      <span>
-        <strong>{{ tiersCount() || '7' }}</strong>
-        tracked tiers
-      </span>
+      }
     </div>
 
     <div class="cta-row">
