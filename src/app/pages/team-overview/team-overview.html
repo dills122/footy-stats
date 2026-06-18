@@ -284,6 +284,25 @@
       </div>
       }
     </div>
+    <div class="mobile-recent-list" aria-label="Recent seasons">
+      @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
+      <article class="mobile-recent-card">
+        <div class="mobile-recent-main">
+          <strong>{{ entry.season }}</strong>
+          <span>{{ entry.teamName }}</span>
+        </div>
+        <div class="mobile-recent-facts">
+          <span>{{ tierLabel(entry.tier) }} / {{ ordinal(entry.pos) }}</span>
+          <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }} / {{ entry.points }} pts</span>
+        </div>
+        <app-data-issue-report-dialog
+          triggerLabel="Flag issue"
+          triggerStyle="link"
+          [context]="dataIssueContextForSeason(entry)"
+        />
+      </article>
+      }
+    </div>
   </section>
 </section>
 }

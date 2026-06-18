@@ -513,6 +513,10 @@
   background: rgba(7, 10, 19, 0.18);
 }
 
+.mobile-recent-list {
+  display: none;
+}
+
 .recent-row {
   display: grid;
   grid-template-columns: 0.7fr 1.35fr 1.25fr 0.8fr 0.9fr 0.7fr 0.82fr;
@@ -595,8 +599,12 @@
     grid-template-columns: 1fr;
   }
 
+  .stat-cell {
+    overflow: visible;
+  }
+
   .compact-snapshot-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .tier-row,
@@ -613,20 +621,19 @@
 
   .season-snapshot-list > div {
     min-height: 0;
-    padding: 9px 10px;
+    padding: 8px 9px;
     display: grid;
-    grid-template-columns: 54px 1fr;
-    gap: 4px 10px;
+    grid-template-columns: 46px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 7px;
   }
 
   .season-snapshot-list strong {
-    grid-row: span 2;
-    align-self: center;
     font-size: 0.92rem;
   }
 
   .season-snapshot-list span {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     line-height: 1.25;
   }
 
@@ -640,60 +647,50 @@
   }
 
   .recent-table {
-    min-width: 0;
-    border: 0;
-    border-radius: 0;
-    gap: 8px;
-    background: transparent;
-  }
-
-  .recent-row.recent-head {
     display: none;
   }
 
-  .recent-row {
+  .mobile-recent-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .mobile-recent-card {
     border: 1px solid var(--app-border);
     border-radius: 8px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px 12px;
-    padding: 11px 12px;
-    overflow: hidden;
+    gap: 8px;
+    padding: 10px;
     background: rgba(7, 10, 19, 0.22);
   }
 
-  .recent-row span {
-    min-width: 0;
-    padding: 0;
-    border-bottom: 0;
-    display: grid;
-    gap: 2px;
+  .mobile-recent-main,
+  .mobile-recent-facts {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .mobile-recent-main {
+    align-items: baseline;
     color: var(--app-text-strong);
-    font-size: 0.9rem;
-    font-weight: 650;
-    background: transparent !important;
+    font-weight: 760;
   }
 
-  .recent-row span::before {
-    content: attr(data-label);
+  .mobile-recent-main span,
+  .mobile-recent-facts {
+    min-width: 0;
+  }
+
+  .mobile-recent-main span {
+    text-align: right;
+  }
+
+  .mobile-recent-facts {
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    padding-top: 8px;
     color: var(--app-text-muted);
-    font-size: 0.62rem;
-    font-weight: 750;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .recent-row span:nth-child(3),
-  .recent-row span:nth-child(4),
-  .recent-row span:nth-child(5),
-  .recent-row span:nth-child(6) {
-    border-top: 1px solid rgba(148, 163, 184, 0.16);
-  }
-
-  .recent-report {
-    grid-column: 1 / -1;
-    border-top: 1px solid rgba(148, 163, 184, 0.16);
-    border-bottom: 0;
-    text-align: left;
+    font-size: 0.84rem;
+    font-weight: 650;
   }
 }
