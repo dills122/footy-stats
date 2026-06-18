@@ -120,6 +120,17 @@
       }
     </section>
 
+    @if (tableDataNotices().length) {
+    <section class="data-notice-stack" aria-label="Data classification notes">
+      @for (notice of tableDataNotices(); track notice.id) {
+      <aside class="data-notice" role="note">
+        <strong>{{ notice.title }}</strong>
+        <p>{{ notice.detail }}</p>
+      </aside>
+      }
+    </section>
+    }
+
     <section
       #tableResultShell
       class="table-result-shell"

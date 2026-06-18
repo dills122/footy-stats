@@ -26,10 +26,24 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px 22px;
+  min-width: 0;
 }
 
 .fact {
-  min-width: max-content;
+  min-width: 0;
+}
+
+.fact:not(.fact--movement) {
+  width: max-content;
+  max-width: 100%;
+}
+
+.fact--movement {
+  width: 100%;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
 }
 
 dt {
@@ -56,17 +70,64 @@ dd {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 6px;
+  max-width: 100%;
   vertical-align: middle;
 }
 
 .chip {
   display: inline-block;
+  max-width: min(220px, 100%);
+  overflow: hidden;
   padding: 1px 6px;
   border-radius: 5px;
   border: 1px solid var(--app-border);
   color: var(--app-text-strong);
   font-size: 0.88rem;
   line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+a.chip {
+  cursor: pointer;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+a.chip:hover {
+  filter: brightness(1.12);
+  text-decoration: underline;
+}
+
+a.chip:focus-visible,
+.chip-toggle:focus-visible {
+  outline: 2px solid rgba(226, 232, 240, 0.76);
+  outline-offset: 2px;
+}
+
+.chip-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 5px;
+  background: rgba(148, 163, 184, 0.08);
+  color: var(--app-text-strong);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.chip-toggle:hover,
+.chip-toggle:focus-visible {
+  border-color: rgba(148, 163, 184, 0.46);
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.chip-toggle:active {
+  transform: translateY(1px);
 }
 
 .chip-up {
@@ -94,6 +155,11 @@ dd {
   dt,
   dd {
     display: block;
+  }
+
+  .fact--movement {
+    grid-template-columns: 1fr;
+    gap: 3px;
   }
 
   dt {

@@ -7,9 +7,9 @@
 <div class="loading app-page-shell" role="status" aria-live="polite">Loading tier profile...</div>
 } } @else if (!profile()) {
 <section class="tier-profile app-surface app-page-shell">
-  <div class="profile-top-actions">
+  <nav class="profile-top-actions" aria-label="Tier profile actions">
     <a class="back-link" routerLink="/tables">Back to tables</a>
-  </div>
+  </nav>
   <div class="empty-state app-panel">
     <p class="app-page-eyebrow">Tier Profile</p>
     <h1>Tier not found</h1>
@@ -18,9 +18,20 @@
 </section>
 } @else {
 <section class="tier-profile app-surface app-page-shell">
-  <div class="profile-top-actions">
+  <nav class="profile-top-actions" aria-label="Tier profile actions">
     <a class="back-link" routerLink="/tables">Back to tables</a>
-  </div>
+    <div class="profile-action-links">
+      @if (latestTableQueryParams(); as latestTableParams) {
+      <a mat-stroked-button routerLink="/tables" [queryParams]="latestTableParams">
+        View latest table
+      </a>
+      } @if (upperTierId(); as upperTier) {
+      <a mat-button [routerLink]="['/leagues', upperTier]">Tier above</a>
+      } @if (lowerTierId(); as lowerTier) {
+      <a mat-button [routerLink]="['/leagues', lowerTier]">Tier below</a>
+      }
+    </div>
+  </nav>
 
   <header class="profile-header">
     <p class="app-page-eyebrow">Tier Profile</p>
@@ -30,6 +41,20 @@
       from {{ seasonRangeLabel() }}.
     </p>
   </header>
+
+  @if (dataNotices().length) {
+  <section class="data-notice-stack" aria-label="Data classification notes">
+    @for (notice of dataNotices(); track notice.id) {
+    <aside class="data-notice" role="note">
+      <div>
+        <strong>{{ notice.title }}</strong>
+        <p>{{ notice.detail }}</p>
+      </div>
+      <span>Affected seasons: {{ notice.seasonsLabel }}</span>
+    </aside>
+    }
+  </section>
+  }
 
   <section class="stat-grid" aria-label="Tier record summary">
     <div class="stat-cell">
@@ -50,6 +75,27 @@
         {{ profile()!.promotionInCount }} promotions / {{ profile()!.relegationOutCount }}
         relegations
       </strong>
+    </div>
+  </section>
+
+  <section class="era-filter-panel app-panel" aria-label="Season era filters">
+    <div class="era-filter-copy">
+      <h2>Era View</h2>
+      <p>{{ selectedEraSummary() }}</p>
+    </div>
+    <div class="era-filter-list">
+      @for (filter of availableEraFilters(); track filter.id) {
+      <a
+        [routerLink]="[]"
+        [queryParams]="eraQueryParams(filter.id)"
+        queryParamsHandling="merge"
+        [class.is-active]="selectedEraFilter().id === filter.id"
+        [attr.aria-current]="selectedEraFilter().id === filter.id ? 'page' : null"
+      >
+        <strong>{{ filter.label }}</strong>
+        <span>{{ filter.detail }}</span>
+      </a>
+      }
     </div>
   </section>
 
@@ -112,11 +158,29 @@
           <h3>Title races</h3>
           <div class="race-list">
             @for (row of raceRows(profile()!.closeTitleRaces); track row.season) {
-            <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season)">
-              <strong>{{ row.season }}</strong>
-              <span>{{ row.primaryName }} over {{ row.secondaryName }}</span>
+            <div class="race-row">
+              <a
+                class="race-season-link"
+                [routerLink]="['/tables']"
+                [queryParams]="tableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+              <span class="race-matchup">
+                @if (row.primaryClubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                  {{ row.primaryName }}
+                </a>
+                } @else { {{ row.primaryName }} }
+                <span>over</span>
+                @if (row.secondaryClubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                  {{ row.secondaryName }}
+                </a>
+                } @else { {{ row.secondaryName }} }
+              </span>
               <em>{{ row.detail }}</em>
-            </a>
+            </div>
             }
           </div>
         </section>
@@ -126,11 +190,29 @@
           @if (raceRows(profile()!.closeSurvivalRaces).length) {
           <div class="race-list">
             @for (row of raceRows(profile()!.closeSurvivalRaces); track row.season) {
-            <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season)">
-              <strong>{{ row.season }}</strong>
-              <span>{{ row.primaryName }} above {{ row.secondaryName }}</span>
+            <div class="race-row">
+              <a
+                class="race-season-link"
+                [routerLink]="['/tables']"
+                [queryParams]="tableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+              <span class="race-matchup">
+                @if (row.primaryClubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                  {{ row.primaryName }}
+                </a>
+                } @else { {{ row.primaryName }} }
+                <span>above</span>
+                @if (row.secondaryClubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                  {{ row.secondaryName }}
+                </a>
+                } @else { {{ row.secondaryName }} }
+              </span>
               <em>{{ row.detail }}</em>
-            </a>
+            </div>
             }
           </div>
           } @else {
@@ -143,11 +225,29 @@
           @if (raceRows(profile()!.closePromotionRaces).length) {
           <div class="race-list">
             @for (row of raceRows(profile()!.closePromotionRaces); track row.season) {
-            <a [routerLink]="['/tables']" [queryParams]="sourceTableQueryParams(row.season)">
-              <strong>{{ row.season }}</strong>
-              <span>{{ row.primaryName }} over {{ row.secondaryName }}</span>
+            <div class="race-row">
+              <a
+                class="race-season-link"
+                [routerLink]="['/tables']"
+                [queryParams]="sourceTableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+              <span class="race-matchup">
+                @if (row.primaryClubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                  {{ row.primaryName }}
+                </a>
+                } @else { {{ row.primaryName }} }
+                <span>over</span>
+                @if (row.secondaryClubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                  {{ row.secondaryName }}
+                </a>
+                } @else { {{ row.secondaryName }} }
+              </span>
               <em>{{ row.detail }}</em>
-            </a>
+            </div>
             }
           </div>
           } @else {
@@ -185,11 +285,24 @@
       </div>
       <div class="mark-list">
         @for (row of profile()!.notableSeasons; track row.label) {
-        <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season)">
-          <span>{{ row.label }}</span>
-          <strong>{{ row.value }}</strong>
-          <small>{{ row.season }} / {{ row.teamName }}</small>
-        </a>
+        <div class="mark-row">
+          <a
+            class="mark-table-link"
+            [routerLink]="['/tables']"
+            [queryParams]="tableQueryParams(row.season)"
+          >
+            <span class="mark-label">{{ row.label }}</span>
+            <strong class="mark-value">{{ row.value }}</strong>
+            <small class="mark-season">{{ row.season }}</small>
+          </a>
+          @if (row.clubId) {
+          <a class="app-club-link mark-club-link" [routerLink]="['/teams', row.clubId]">
+            {{ row.teamName }}
+          </a>
+          } @else {
+          <small>{{ row.teamName }}</small>
+          }
+        </div>
         }
       </div>
     </section>

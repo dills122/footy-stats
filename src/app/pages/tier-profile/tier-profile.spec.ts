@@ -1,17 +1,22 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { convertToParamMap, ActivatedRoute, provideRouter } from '@angular/router';
+import { convertToParamMap, ActivatedRoute, ParamMap, provideRouter } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
 import { DataLoaderService } from '@app/store/services/hydrate-store-json';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { TierProfile } from './tier-profile';
 
 describe('TierProfile', () => {
   let fixture: ComponentFixture<TierProfile>;
   let component: TierProfile;
   let store: InstanceType<typeof LeagueStore>;
+  let paramMap$: BehaviorSubject<ParamMap>;
+  let queryParamMap$: BehaviorSubject<ParamMap>;
 
   beforeEach(async () => {
+    paramMap$ = new BehaviorSubject(convertToParamMap({ tier: 'tier1' }));
+    queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
+
     await TestBed.configureTestingModule({
       imports: [TierProfile],
       providers: [
@@ -20,9 +25,11 @@ describe('TierProfile', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: of(convertToParamMap({ tier: 'tier1' })),
+            paramMap: paramMap$.asObservable(),
+            queryParamMap: queryParamMap$.asObservable(),
             snapshot: {
               paramMap: convertToParamMap({ tier: 'tier1' }),
+              queryParamMap: convertToParamMap({}),
             },
           },
         },
@@ -53,6 +60,8 @@ describe('TierProfile', () => {
     expect(element.textContent).toContain('Most promoted into Premier League');
     expect(element.textContent).toContain('Most relegated from Premier League');
     expect(element.textContent).toContain('Close Seasons');
+    expect(element.textContent).toContain('Era View');
+    expect(element.textContent).not.toContain('Regional Third Division data');
   });
 
   it('links close races to the selected table archive season', () => {
@@ -61,11 +70,48 @@ describe('TierProfile', () => {
 
     expect(tableLink?.getAttribute('href')).toContain('/tables?season=2020&tier=tier1');
   });
+
+  it('links the action row to the latest table in the selected view', () => {
+    const links = Array.from(fixture.nativeElement.querySelectorAll<HTMLAnchorElement>('a'));
+    const latestTableLink = links.find((link) => link.textContent?.includes('View latest table'));
+
+    expect(latestTableLink?.getAttribute('href')).toContain('/tables?season=2021&tier=tier1');
+  });
+
+  it('filters profile data by the selected era query param', () => {
+    queryParamMap$.next(convertToParamMap({ era: 'goal-average' }));
+    fixture.detectChanges();
+
+    expect(component.profile()?.seasons).toEqual([1975]);
+    expect(fixture.nativeElement.textContent).toContain('Showing 1975');
+  });
+
+  it('shows a targeted data note for regional Third Division seasons', () => {
+    paramMap$.next(convertToParamMap({ tier: 'tier4' }));
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Regional Third Division data');
+    expect(text).toContain('both represent pyramid level 3');
+    expect(text).toContain('Affected seasons: 1921');
+  });
 });
 
 function tierProfileFixture() {
   return {
     seasons: {
+      1975: {
+        tier1: [
+          row('Alpha FC', 1, 50, 60, 30, false, false),
+          row('Bravo Town', 2, 49, 70, 40, false, false),
+        ],
+      },
+      1921: {
+        tier4: [
+          row('Charlie City', 1, 40, 60, 30, false, false),
+          row('Delta United', 2, 39, 58, 31, false, false),
+        ],
+      },
       2020: {
         tier1: [
           row('Alpha FC', 1, 82, 80, 30, false, false),

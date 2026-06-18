@@ -38,32 +38,54 @@
       <dd>{{ avgGoalsPerGame }}</dd>
     </div>
     @if (promotedTeams.length) {
-    <div class="fact">
+    <div class="fact fact--movement">
       <dt>Promoted</dt>
       <dd>
         <div class="chip-group">
-          @for (team of promotedTeams; track team) { @if (team.clubId) {
+          @for (team of visibleMovementTeams(promotedTeams, promotedExpanded); track team) { @if
+          (team.clubId) {
           <a class="chip chip-up app-club-link" [routerLink]="['/teams', team.clubId]">
             {{ team.name }}
           </a>
           } @else {
           <span class="chip chip-up">{{ team.name }}</span>
-          } }
+          } } @if (movementOverflowTeams(promotedTeams).length) {
+          <button
+            type="button"
+            class="chip-toggle"
+            [attr.aria-expanded]="promotedExpanded"
+            (click)="togglePromotedExpanded()"
+          >
+            {{ promotedExpanded ? 'Show fewer' : '+' + movementOverflowTeams(promotedTeams).length +
+            ' more' }}
+          </button>
+          }
         </div>
       </dd>
     </div>
     } @if (relegatedTeams.length) {
-    <div class="fact">
+    <div class="fact fact--movement">
       <dt>Relegated</dt>
       <dd>
         <div class="chip-group">
-          @for (team of relegatedTeams; track team) { @if (team.clubId) {
+          @for (team of visibleMovementTeams(relegatedTeams, relegatedExpanded); track team) { @if
+          (team.clubId) {
           <a class="chip chip-down app-club-link" [routerLink]="['/teams', team.clubId]">
             {{ team.name }}
           </a>
           } @else {
           <span class="chip chip-down">{{ team.name }}</span>
-          } }
+          } } @if (movementOverflowTeams(relegatedTeams).length) {
+          <button
+            type="button"
+            class="chip-toggle"
+            [attr.aria-expanded]="relegatedExpanded"
+            (click)="toggleRelegatedExpanded()"
+          >
+            {{ relegatedExpanded ? 'Show fewer' : '+' + movementOverflowTeams(relegatedTeams).length
+            + ' more' }}
+          </button>
+          }
         </div>
       </dd>
     </div>

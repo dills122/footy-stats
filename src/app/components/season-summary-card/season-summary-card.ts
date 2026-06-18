@@ -4,10 +4,12 @@ import { RouterLink } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
 import { LeagueTableView } from '@app/types';
 
-interface ClubNameReference {
+export interface ClubNameReference {
   name: string;
   clubId: string | null;
 }
+
+const MOVEMENT_TEAM_PREVIEW_LIMIT = 4;
 
 @Component({
   selector: 'app-season-summary-card',
@@ -25,9 +27,14 @@ export class SeasonSummaryCardComponent implements OnChanges {
   avgGoalsPerGame?: number;
   promotedTeams: ClubNameReference[] = [];
   relegatedTeams: ClubNameReference[] = [];
+  promotedExpanded = false;
+  relegatedExpanded = false;
 
   ngOnChanges(): void {
     if (!this.tableData?.length) return;
+
+    this.promotedExpanded = false;
+    this.relegatedExpanded = false;
 
     const tier = this.tableData[0].tier;
     const season = this.tableData[0].season;
@@ -59,6 +66,29 @@ export class SeasonSummaryCardComponent implements OnChanges {
       name: team.name,
       clubId: team.clubIds[0] ?? null,
     }));
+  }
+
+  movementPreviewTeams(teams: readonly ClubNameReference[]): readonly ClubNameReference[] {
+    return teams.slice(0, MOVEMENT_TEAM_PREVIEW_LIMIT);
+  }
+
+  movementOverflowTeams(teams: readonly ClubNameReference[]): readonly ClubNameReference[] {
+    return teams.slice(MOVEMENT_TEAM_PREVIEW_LIMIT);
+  }
+
+  visibleMovementTeams(
+    teams: readonly ClubNameReference[],
+    expanded: boolean
+  ): readonly ClubNameReference[] {
+    return expanded ? teams : this.movementPreviewTeams(teams);
+  }
+
+  togglePromotedExpanded() {
+    this.promotedExpanded = !this.promotedExpanded;
+  }
+
+  toggleRelegatedExpanded() {
+    this.relegatedExpanded = !this.relegatedExpanded;
   }
 
   private tableEntryReference(entry: LeagueTableView): ClubNameReference {

@@ -121,6 +121,32 @@ describe('LeagueTablesViewer', () => {
     expect(component.selectedLeague()).toBe('tier2');
   });
 
+  it('shows a targeted data note for selected regional Third Division tables', () => {
+    queryParamMap$.next(convertToParamMap({ season: '1921', tier: 'tier4' }));
+    store.hydrate(tableArchiveFixture());
+    fixture.detectChanges();
+
+    expect(component.tableDataNotices().map((notice) => notice.id)).toEqual([
+      'third-division-regional',
+    ]);
+    expect(fixture.nativeElement.textContent).toContain('Regional Third Division data');
+    expect(fixture.nativeElement.textContent).toContain('both represent pyramid level 3');
+  });
+
+  it('shows a targeted data note for selected parallel National League tables', () => {
+    queryParamMap$.next(convertToParamMap({ season: '2025', tier: 'tier7' }));
+    store.hydrate(tableArchiveFixture());
+    fixture.detectChanges();
+
+    expect(component.tableDataNotices().map((notice) => notice.id)).toEqual([
+      'national-league-regional',
+    ]);
+    expect(fixture.nativeElement.textContent).toContain('Parallel level 6 divisions');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Tier7 should not be read as a true level 7'
+    );
+  });
+
   it('collapses and expands the preset strip from the control row', () => {
     store.hydrate(tableArchiveFixture());
     fixture.detectChanges();
@@ -159,6 +185,10 @@ describe('LeagueTablesViewer', () => {
 function tableArchiveFixture() {
   return {
     seasons: {
+      1921: {
+        tier3: [tableRow('Third Division North FC')],
+        tier4: [tableRow('Third Division South FC')],
+      },
       1992: {
         seasonInfo: { table: [tableRow('Ignored Info Row')] },
         tier1: [tableRow('Arsenal'), tableRow('Aston Villa', 2)],
@@ -168,6 +198,8 @@ function tableArchiveFixture() {
         seasonInfo: { table: [tableRow('Ignored Current Info Row')] },
         tier1: [tableRow('Alpha FC'), tableRow('Bravo Town', 2)],
         tier2: [tableRow('Charlie City')],
+        tier6: [tableRow('National North FC')],
+        tier7: [tableRow('National South FC')],
       },
     },
   };

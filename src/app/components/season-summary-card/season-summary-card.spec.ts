@@ -45,6 +45,28 @@ describe('SeasonSummaryCard', () => {
       '/teams/alpha%20fc',
     ]);
   });
+
+  it('limits movement chip previews before showing overflow teams', () => {
+    const teams = [
+      { name: 'One', clubId: 'one' },
+      { name: 'Two', clubId: 'two' },
+      { name: 'Three', clubId: 'three' },
+      { name: 'Four', clubId: 'four' },
+      { name: 'Five', clubId: 'five' },
+      { name: 'Six', clubId: 'six' },
+    ];
+
+    expect(component.movementPreviewTeams(teams).map((team) => team.name)).toEqual([
+      'One',
+      'Two',
+      'Three',
+      'Four',
+    ]);
+    expect(component.movementOverflowTeams(teams).map((team) => team.name)).toEqual([
+      'Five',
+      'Six',
+    ]);
+  });
 });
 
 function tableRow(

@@ -21,6 +21,42 @@ interface TablePreset {
   tier: string;
 }
 
+interface TableDataNoticeDefinition {
+  id: string;
+  tiers: readonly string[];
+  ranges: readonly { start: number; end: number }[];
+  title: string;
+  detail: string;
+}
+
+interface TableDataNotice {
+  id: string;
+  title: string;
+  detail: string;
+}
+
+const TABLE_DATA_NOTICES: TableDataNoticeDefinition[] = [
+  {
+    id: 'third-division-regional',
+    tiers: ['tier3', 'tier4'],
+    ranges: [
+      { start: 1921, end: 1938 },
+      { start: 1946, end: 1957 },
+    ],
+    title: 'Regional Third Division data',
+    detail:
+      'From 1921-22 through 1957-58, the Football League Third Division was split into North and South. These archive slots use tier3 for Third Division North and tier4 for Third Division South, but both represent pyramid level 3. True level 4 begins in 1958-59 with the Fourth Division.',
+  },
+  {
+    id: 'national-league-regional',
+    tiers: ['tier6', 'tier7'],
+    ranges: [{ start: 2021, end: 2025 }],
+    title: 'Parallel level 6 divisions',
+    detail:
+      'From 2021-2025 in the current archive, National League North and South are stored as tier6 and tier7 slots, but both represent parallel pyramid level 6 divisions. Tier7 should not be read as a true level 7 in this period.',
+  },
+];
+
 @Component({
   selector: 'app-league-tables-viewer',
   templateUrl: './league-tables-viewer.html',
@@ -208,6 +244,24 @@ export class LeagueTablesViewerComponent implements OnDestroy {
     const year = this.selectedYear();
     const league = this.selectedLeague();
     return year && league ? `${year}:${league}` : '';
+  });
+
+  tableDataNotices = computed<TableDataNotice[]>(() => {
+    const year = this.selectedYear();
+    const league = this.selectedLeague();
+    if (!year || !league) {
+      return [];
+    }
+
+    return TABLE_DATA_NOTICES.filter(
+      (notice) =>
+        notice.tiers.includes(league) &&
+        notice.ranges.some((range) => year >= range.start && year <= range.end)
+    ).map((notice) => ({
+      id: notice.id,
+      title: notice.title,
+      detail: notice.detail,
+    }));
   });
 
   dataIssueContext = computed<DataIssueReportContext>(() => {

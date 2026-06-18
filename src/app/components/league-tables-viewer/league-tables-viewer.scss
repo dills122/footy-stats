@@ -227,6 +227,33 @@
   background: rgba(148, 163, 184, 0.12);
 }
 
+.data-notice-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.data-notice {
+  border: 1px solid rgba(245, 158, 11, 0.34);
+  border-radius: 8px;
+  padding: 13px 14px;
+  display: grid;
+  gap: 5px;
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--app-text-muted);
+}
+
+.data-notice strong {
+  color: var(--app-text-strong);
+  font-size: 0.96rem;
+}
+
+.data-notice p {
+  max-width: 82ch;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 :host ::ng-deep .field .mdc-text-field--filled {
   border: 1px solid var(--app-border);
   background: rgba(7, 10, 19, 0.28);
