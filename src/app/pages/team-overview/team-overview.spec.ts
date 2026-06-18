@@ -1,6 +1,8 @@
+import { signal, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { provideRouter } from '@angular/router';
+import { DataLoaderService, type DataLoadStatus } from '@app/store/services/hydrate-store-json';
 import { of } from 'rxjs';
 import { TeamOverview } from './team-overview';
 
@@ -28,8 +30,15 @@ jest.mock('ngx-echarts', () => {
 describe('TeamOverview', () => {
   let component: TeamOverview;
   let fixture: ComponentFixture<TeamOverview>;
+  let loadStatus: WritableSignal<DataLoadStatus>;
+  let showLoadingState: WritableSignal<boolean>;
+  let loadDataSpy: jest.Mock;
 
   beforeEach(async () => {
+    loadStatus = signal<DataLoadStatus>('idle');
+    showLoadingState = signal(false);
+    loadDataSpy = jest.fn().mockResolvedValue(undefined);
+
     await TestBed.configureTestingModule({
       imports: [TeamOverview],
       providers: [
@@ -40,6 +49,15 @@ describe('TeamOverview', () => {
             snapshot: {
               paramMap: convertToParamMap({ clubId: 'alpha fc' }),
             },
+          },
+        },
+        {
+          provide: DataLoaderService,
+          useValue: {
+            loadStatus,
+            loadError: signal(null),
+            showLoadingState,
+            loadData: loadDataSpy,
           },
         },
         provideRouter([]),
@@ -53,6 +71,35 @@ describe('TeamOverview', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('does not show a profile loading banner until the loader discloses slow loading', () => {
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('.loading')).toBeNull();
+
+    loadStatus.set('loading');
+    showLoadingState.set(true);
+    fixture.detectChanges();
+
+    expect(element.querySelector('[role="status"]')?.textContent).toContain(
+      'Loading club profile...'
+    );
+  });
+
+  it('shows a retryable error state when profile data fails to load', () => {
+    loadStatus.set('error');
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('[role="alert"]')?.textContent).toContain(
+      'Club profile data could not load.'
+    );
+
+    element.querySelector<HTMLButtonElement>('button')?.click();
+
+    expect(loadDataSpy).toHaveBeenCalledTimes(1);
   });
 
   it('builds a teams back link query param from hidden navigation state', () => {

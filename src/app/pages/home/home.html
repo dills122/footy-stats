@@ -2,28 +2,51 @@
   <section class="hero">
     <header class="app-page-header">
       <p class="app-page-eyebrow">English Football Archive</p>
-      <h1 class="app-page-title">
-        @if (archiveLoaded()) { Explore {{ seasonsCount() }} seasons of English football history. }
-        @else { Explore English football history. }
-      </h1>
+      <h1 class="app-page-title">Explore English football history.</h1>
       <p class="app-page-lede">
         FootyStats brings league tables, club histories, promotion paths, and long-run patterns into
         one searchable reference for the English game.
       </p>
     </header>
 
-    <div class="archive-meta" aria-label="Archive coverage" [attr.aria-busy]="!archiveLoaded()">
+    @if (archiveLoadFailed()) {
+    <div class="archive-status archive-status--error" role="alert">
+      <p>Archive coverage could not load.</p>
+      <button type="button" mat-button (click)="retryArchiveLoad()">Retry</button>
+    </div>
+    } @else {
+    <div
+      class="archive-meta"
+      aria-label="Archive coverage"
+      [attr.aria-busy]="archiveBusy() ? 'true' : null"
+    >
       @for (stat of archiveStats(); track stat.label) {
       <span>
         @if (archiveLoaded()) {
-        <strong>{{ stat.value }}</strong>
+        <strong
+          class="ticker-number"
+          [class.ticker-number--running]="archiveTickerRunning()"
+          [class.ticker-number--simple-reveal]="archiveSimpleRevealRunning()"
+          aria-hidden="true"
+        >
+          {{ archiveStatDisplayValue(stat) }}
+        </strong>
+        <span class="sr-only">{{ stat.value }}</span>
         } @else {
-        <strong class="metric-skeleton" aria-hidden="true"></strong>
+        <strong
+          class="metric-placeholder"
+          [class.metric-placeholder--visible]="showArchiveLoading()"
+          aria-hidden="true"
+        ></strong>
+        @if (showArchiveLoading()) {
         <span class="sr-only">Loading {{ stat.label }}</span>
-        } {{ stat.label }}
+        } } {{ stat.label }}
       </span>
+      } @if (showArchiveLoading()) {
+      <p class="sr-only" role="status">Loading archive coverage.</p>
       }
     </div>
+    }
 
     <div class="cta-row">
       <a mat-flat-button routerLink="/tables">Browse Tables</a>

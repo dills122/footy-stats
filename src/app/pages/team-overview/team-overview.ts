@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, MarkAreaComponent, TooltipComponent } from 'echarts/components';
@@ -21,6 +22,7 @@ import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/
 import type { LeagueTableEntry } from '@app/store/league.models';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
+import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { isTeamDirectoryFilter, type TeamDirectoryFilter } from '@app/types';
 import type { DataIssueReportContext } from '@app/utils/data-issue-report';
 import {
@@ -104,7 +106,7 @@ echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, Canv
 
 @Component({
   selector: 'app-team-overview',
-  imports: [CommonModule, RouterLink, NgxEchartsDirective, DataIssueReportDialog],
+  imports: [CommonModule, MatButtonModule, RouterLink, NgxEchartsDirective, DataIssueReportDialog],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './team-overview.html',
   styleUrl: './team-overview.scss',
@@ -114,6 +116,7 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
   private router = inject(Router);
   private clubMetadataStore = inject(ClubMetadataStore);
   private leagueStore = inject(LeagueStore);
+  private dataLoader = inject(DataLoaderService);
   private historyPanelObserver?: ResizeObserver;
 
   @ViewChild('historyPanel') private historyPanel?: ElementRef<HTMLElement>;
@@ -124,6 +127,8 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
 
   clubId = computed(() => this.paramMap().get('clubId') ?? '');
   metadataLoaded = computed(() => Boolean(this.clubMetadataStore.getGeneratedAt()));
+  showLoadingState = computed(() => !this.metadataLoaded() && this.dataLoader.showLoadingState());
+  loadFailed = computed(() => !this.metadataLoaded() && this.dataLoader.loadStatus() === 'error');
   milestonesExpanded = signal(false);
   milestoneCollapsedHeight = signal<number | null>(null);
   teamsReturnLetter = signal(this.readTeamsReturnLetter());
@@ -258,6 +263,10 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
       season: entry.season,
       competition: this.tierLabel(entry.tier),
     };
+  }
+
+  retryArchiveLoad() {
+    void this.dataLoader.loadData();
   }
 
   identityPeriodRangeLabel(period: ClubDisplayNamePeriod): string {

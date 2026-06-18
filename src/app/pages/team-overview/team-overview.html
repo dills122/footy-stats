@@ -1,6 +1,11 @@
-@if (!metadataLoaded()) {
-<div class="loading app-page-shell">Loading club profile...</div>
-} @else if (!club()) {
+@if (!metadataLoaded()) { @if (loadFailed()) {
+<div class="loading loading--error app-page-shell" role="alert">
+  <p>Club profile data could not load.</p>
+  <button type="button" mat-button (click)="retryArchiveLoad()">Retry</button>
+</div>
+} @else if (showLoadingState()) {
+<div class="loading app-page-shell" role="status" aria-live="polite">Loading club profile...</div>
+} } @else if (!club()) {
 <section class="team-overview app-surface app-page-shell">
   <div class="profile-top-actions">
     <a class="back-link" routerLink="/teams" [queryParams]="backToTeamsQueryParams()">
