@@ -1,52 +1,156 @@
 <div class="viewer">
   <section class="table-record">
     <header class="record-header app-page-header">
-      <p class="app-page-eyebrow">League Table Archive</p>
-      <h1 class="app-page-title">
-        @if (selectedYear() && currentLeagueLabel()) { {{ selectedYear() }} {{ currentLeagueLabel()
-        | leagueTierToStringy }} Table } @else { League Tables }
-      </h1>
-      <p class="app-page-lede">
-        Read preserved season standings with wins, draws, losses, scoring record, goal difference,
-        and points.
-      </p>
+      <div class="record-header-copy">
+        <p class="app-page-eyebrow">League Table Archive</p>
+        <h1 class="app-page-title">League Tables</h1>
+        <p class="record-selection">
+          @if (selectedYear() && currentLeagueLabel()) { {{ selectedYear() }} {{
+          currentLeagueLabel() | leagueTierToStringy }} } @else { &nbsp; }
+        </p>
+        <p class="app-page-lede">
+          Read preserved season standings with wins, draws, losses, scoring record, goal difference,
+          and points.
+        </p>
+      </div>
+      <div class="record-header-action">
+        @if (tableControlsReady()) {
+        <app-data-issue-report-dialog
+          triggerLabel="Report table issue"
+          [context]="dataIssueContext()"
+        />
+        } @else {
+        <span class="report-action-placeholder" aria-hidden="true"></span>
+        }
+      </div>
     </header>
 
-    <div class="record-tools" aria-label="Select season table">
-      <mat-form-field class="field" appearance="fill">
-        <mat-label>Season</mat-label>
-        <mat-icon matPrefix>calendar_today</mat-icon>
-        <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
-          @for (year of years; track year) {
-          <mat-option [value]="year">{{ year }}</mat-option>
-          } @empty {
-          <mat-option disabled>No Seasons Available</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+    <div class="record-control-row">
+      <div class="record-tools" aria-label="Select season table">
+        @if (tableControlsReady()) {
+        <mat-form-field class="field" appearance="fill">
+          <mat-label>Season</mat-label>
+          <mat-icon matPrefix>calendar_today</mat-icon>
+          <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
+            @for (year of years; track year) {
+            <mat-option [value]="year">{{ year }}</mat-option>
+            } @empty {
+            <mat-option disabled>No Seasons Available</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-      @if (leaguesForYear.length > 0) {
-      <mat-form-field class="field" appearance="fill">
-        <mat-label>Competition</mat-label>
-        <mat-icon matPrefix>sports_soccer</mat-icon>
-        <mat-select [value]="selectedLeague()" (selectionChange)="onLeagueChange($event.value)">
-          @for (league of leaguesForYear; track league) {
-          <mat-option [value]="league">{{ league | leagueTierToStringy }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      }
+        <mat-form-field class="field" appearance="fill">
+          <mat-label>Competition</mat-label>
+          <mat-icon matPrefix>sports_soccer</mat-icon>
+          <mat-select [value]="selectedLeague()" (selectionChange)="onLeagueChange($event.value)">
+            @for (league of leaguesForYear; track league) {
+            <mat-option [value]="league">{{ league | leagueTierToStringy }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        } @else {
+        <div class="field-placeholder" aria-hidden="true">
+          <span></span>
+          <strong></strong>
+        </div>
+        <div class="field-placeholder" aria-hidden="true">
+          <span></span>
+          <strong></strong>
+        </div>
+        <p class="sr-only" role="status">Loading table filters.</p>
+        }
+      </div>
 
-      <app-data-issue-report-dialog
-        class="report-field"
-        triggerLabel="Report table issue"
-        [context]="dataIssueContext()"
-      />
+      <div class="record-control-actions">
+        <button
+          type="button"
+          class="control-action"
+          (click)="scrollToTableContent(tableResultShell)"
+        >
+          <mat-icon aria-hidden="true">south</mat-icon>
+          <span>Jump to table</span>
+        </button>
+        <button
+          type="button"
+          class="control-action"
+          aria-controls="table-presets"
+          [attr.aria-expanded]="!quickFiltersCollapsed()"
+          (click)="toggleQuickFilters()"
+        >
+          <mat-icon aria-hidden="true">
+            {{ quickFiltersCollapsed() ? 'unfold_more' : 'unfold_less' }}
+          </mat-icon>
+          <span>{{ quickFiltersCollapsed() ? 'Show presets' : 'Hide presets' }}</span>
+        </button>
+      </div>
     </div>
 
-    @if (currentTable(); as tableData) {
-    <app-season-summary-card [tableData]="tableData" />
-    <app-league-table [leagueTable]="tableData" />
-    }
+    <section
+      id="table-presets"
+      class="preset-panel"
+      aria-label="Notable table presets"
+      [hidden]="quickFiltersCollapsed()"
+    >
+      <div class="preset-panel-head">
+        <h2>Notable tables</h2>
+        <span>Fast jumps into useful archive views</span>
+      </div>
+      @if (tablePresets().length) {
+      <div class="preset-list">
+        @for (preset of tablePresets(); track preset.id) {
+        <button
+          type="button"
+          class="preset-chip"
+          [class.is-active]="activePresetId() === preset.id"
+          [attr.aria-pressed]="activePresetId() === preset.id"
+          (click)="applyPreset(preset)"
+        >
+          <span>{{ preset.label }}</span>
+          <small>{{ preset.season }} / {{ preset.detail }}</small>
+        </button>
+        }
+      </div>
+      } @else {
+      <div class="preset-placeholder-list" aria-hidden="true">
+        @for (preset of [1, 2, 3, 4]; track preset) {
+        <span></span>
+        }
+      </div>
+      }
+    </section>
+
+    <section
+      #tableResultShell
+      class="table-result-shell"
+      aria-label="Selected league table"
+      [attr.aria-busy]="currentTable() ? null : 'true'"
+      tabindex="-1"
+    >
+      @if (currentTable(); as tableData) {
+      <div
+        class="table-result"
+        [class.table-result--revealed]="tableRevealActive()"
+        [attr.data-table-key]="tableResultKey()"
+      >
+        <app-season-summary-card [tableData]="tableData" />
+        <app-league-table [leagueTable]="tableData" />
+      </div>
+      } @else {
+      <div class="table-result-placeholder" aria-hidden="true">
+        <div class="summary-placeholder app-panel">
+          <span></span>
+          <strong></strong>
+          <span></span>
+        </div>
+        <div class="table-placeholder app-data-shell">
+          @for (row of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; track row) {
+          <span></span>
+          }
+        </div>
+      </div>
+      <p class="sr-only" role="status">Loading league table.</p>
+      }
+    </section>
   </section>
 </div>

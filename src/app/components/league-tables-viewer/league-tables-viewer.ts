@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
@@ -10,6 +10,14 @@ import { LeagueTableView } from '@app/types';
 import type { DataIssueReportContext } from '@app/utils/data-issue-report';
 import { LeagueTableComponent } from '../league-table/league-table';
 import { SeasonSummaryCardComponent } from '../season-summary-card/season-summary-card';
+
+interface TablePreset {
+  id: string;
+  label: string;
+  detail: string;
+  season: number;
+  tier: string;
+}
 
 @Component({
   selector: 'app-league-tables-viewer',
@@ -27,25 +35,52 @@ import { SeasonSummaryCardComponent } from '../season-summary-card/season-summar
   ],
   providers: [LeagueTierToStringyPipe],
 })
-export class LeagueTablesViewerComponent {
+export class LeagueTablesViewerComponent implements OnDestroy {
   store = inject(LeagueStore);
   private leagueLabelPipe = inject(LeagueTierToStringyPipe);
+  private tableRevealTimer: ReturnType<typeof setTimeout> | null = null;
 
   years: number[] = [];
   leaguesForYear: string[] = [];
 
   selectedYear = signal<number | undefined>(undefined);
   selectedLeague = signal<string | undefined>(undefined);
+  tableRevealActive = signal(false);
+  quickFiltersCollapsed = signal(false);
 
   constructor() {
     effect(() => {
-      const seasonTiers = this.store.getSeasonTiers();
+      const seasonTiers = this.getCompetitionSeasonTiers();
       this.years = seasonTiers.map((st) => st.season).sort((a, b) => b - a);
 
       if (this.years.length > 0 && !this.selectedYear()) {
         this.onYearChange(this.years[0]);
       }
     });
+
+    effect(() => {
+      const tableKey = this.tableResultKey();
+      if (!tableKey) {
+        this.tableRevealActive.set(false);
+        return;
+      }
+
+      this.tableRevealActive.set(false);
+      if (this.tableRevealTimer) {
+        clearTimeout(this.tableRevealTimer);
+      }
+
+      this.tableRevealTimer = setTimeout(() => {
+        this.tableRevealActive.set(true);
+        this.tableRevealTimer = null;
+      }, 20);
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.tableRevealTimer) {
+      clearTimeout(this.tableRevealTimer);
+    }
   }
 
   currentTable = computed<LeagueTableView[] | null>(() => {
@@ -67,6 +102,89 @@ export class LeagueTablesViewerComponent {
     return league ?? '';
   });
 
+  tableControlsReady = computed(() =>
+    Boolean(this.selectedYear() && this.selectedLeague() && this.years.length)
+  );
+
+  tablePresets = computed<TablePreset[]>(() => {
+    const seasonTiers = this.getCompetitionSeasonTiers();
+    const latestSeason = seasonTiers.at(-1)?.season;
+    const earliestTopFlight = seasonTiers.find((season) => season.tiers.includes('tier1'))?.season;
+    const firstSecondTier = seasonTiers.find((season) => season.tiers.includes('tier2'))?.season;
+    const candidates: TablePreset[] = [
+      {
+        id: 'latest-top-flight',
+        label: 'Latest top flight',
+        detail: 'Current Premier League table',
+        season: latestSeason ?? 0,
+        tier: 'tier1',
+      },
+      {
+        id: 'latest-championship',
+        label: 'Latest Championship',
+        detail: 'Promotion race context',
+        season: latestSeason ?? 0,
+        tier: 'tier2',
+      },
+      {
+        id: 'premier-league-launch',
+        label: 'Premier League launch',
+        detail: '1992 top-flight reset',
+        season: 1992,
+        tier: 'tier1',
+      },
+      {
+        id: 'post-war-restart',
+        label: 'Post-war restart',
+        detail: '1946 league return',
+        season: 1946,
+        tier: 'tier1',
+      },
+      {
+        id: 'first-football-league',
+        label: 'First league table',
+        detail: 'Earliest top-flight record',
+        season: earliestTopFlight ?? 0,
+        tier: 'tier1',
+      },
+      {
+        id: 'first-second-tier',
+        label: 'Second tier begins',
+        detail: 'First recorded tier two',
+        season: firstSecondTier ?? 0,
+        tier: 'tier2',
+      },
+    ];
+
+    return candidates.filter((preset, index, presets) => {
+      if (!this.hasSeasonTier(preset.season, preset.tier)) {
+        return false;
+      }
+
+      return (
+        presets.findIndex(
+          (candidate) => candidate.season === preset.season && candidate.tier === preset.tier
+        ) === index
+      );
+    });
+  });
+
+  activePresetId = computed(() => {
+    const selectedYear = this.selectedYear();
+    const selectedLeague = this.selectedLeague();
+    return (
+      this.tablePresets().find(
+        (preset) => preset.season === selectedYear && preset.tier === selectedLeague
+      )?.id ?? ''
+    );
+  });
+
+  tableResultKey = computed(() => {
+    const year = this.selectedYear();
+    const league = this.selectedLeague();
+    return year && league ? `${year}:${league}` : '';
+  });
+
   dataIssueContext = computed<DataIssueReportContext>(() => {
     const league = this.selectedLeague();
     return {
@@ -81,7 +199,7 @@ export class LeagueTablesViewerComponent {
     this.selectedYear.set(year);
     this.selectedLeague.set(undefined);
 
-    const seasonTiers = this.store.getSeasonTiers();
+    const seasonTiers = this.getCompetitionSeasonTiers();
     const currentSeasonsAvailableTiers = seasonTiers.find((st) => st.season === year);
     this.leaguesForYear = currentSeasonsAvailableTiers?.tiers ?? [];
     this.selectedLeague.set(this.leaguesForYear[0]);
@@ -89,5 +207,46 @@ export class LeagueTablesViewerComponent {
 
   onLeagueChange(league: string) {
     this.selectedLeague.set(league);
+  }
+
+  applyPreset(preset: TablePreset) {
+    this.onYearChange(preset.season);
+    this.selectedLeague.set(preset.tier);
+  }
+
+  toggleQuickFilters() {
+    this.quickFiltersCollapsed.update((isCollapsed) => !isCollapsed);
+  }
+
+  scrollToTableContent(target: HTMLElement) {
+    target.scrollIntoView({
+      behavior: this.prefersReducedMotion() ? 'auto' : 'smooth',
+      block: 'start',
+    });
+    target.focus({ preventScroll: true });
+  }
+
+  private hasSeasonTier(season: number, tier: string): boolean {
+    return this.getCompetitionSeasonTiers().some(
+      (seasonTier) => seasonTier.season === season && seasonTier.tiers.includes(tier)
+    );
+  }
+
+  private getCompetitionSeasonTiers(): { season: number; tiers: string[] }[] {
+    return this.store
+      .getSeasonTiers()
+      .map((seasonTier) => ({
+        season: seasonTier.season,
+        tiers: seasonTier.tiers.filter((tier) => /^tier\d+$/.test(tier)),
+      }))
+      .filter((seasonTier) => seasonTier.tiers.length);
+  }
+
+  private prefersReducedMotion(): boolean {
+    return (
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    );
   }
 }
