@@ -15,6 +15,12 @@
       </div>
       <div class="record-header-action">
         @if (tableControlsReady()) {
+        <app-data-export-menu
+          [title]="'League table ' + selectedYear() + ' ' + currentCompetitionName()"
+          [filename]="exportFilename()"
+          [summary]="exportSummary()"
+          [rows]="exportRows()"
+        />
         <app-data-issue-report-dialog
           triggerLabel="Report table issue"
           [context]="dataIssueContext()"

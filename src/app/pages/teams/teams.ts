@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { TeamList } from '@app/components/team-list/team-list';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
@@ -12,10 +13,11 @@ import {
   type TeamDirectoryFilter,
   type TeamDirectoryItem,
 } from '@app/types';
+import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 
 @Component({
   selector: 'app-teams',
-  imports: [MatButtonModule, TeamList],
+  imports: [MatButtonModule, TeamList, DataExportMenu],
   templateUrl: './teams.html',
   styleUrl: './teams.scss',
 })
@@ -88,6 +90,37 @@ export class Teams {
     const filter = this.queryParamMap().get('filter') ?? 'all';
     return isTeamDirectoryFilter(filter) ? filter : 'all';
   });
+  exportTeams = computed(() => {
+    const filter = this.selectedFilter();
+    const letter = this.selectedLetter();
+    return this.teams().filter(
+      (team) =>
+        (filter === 'all' || team.categories.includes(filter)) &&
+        (!letter || team.name[0].toUpperCase() === letter)
+    );
+  });
+  exportSummary = computed<ExportSummary>(() => ({
+    page: 'Teams Archive',
+    filter: this.selectedFilter(),
+    letter: this.selectedLetter() || 'all',
+    rows: this.exportTeams().length,
+  }));
+  exportRows = computed<ExportRow[]>(() =>
+    this.exportTeams().map((team) => ({
+      id: team.id,
+      name: team.name,
+      primaryClubId: team.clubIds[0] ?? '',
+      clubIds: team.clubIds,
+      status: team.status,
+      categories: team.categories,
+      firstSeenSeason: team.firstSeenSeason,
+      lastSeenSeason: team.lastSeenSeason,
+      totalSeasonsSeen: team.totalSeasonsSeen,
+    }))
+  );
+  exportFilename = computed(
+    () => `footy-stats-teams-${this.selectedFilter()}-${this.selectedLetter() || 'all'}`
+  );
   showLoadingState = computed(() => !this.teams().length && this.dataLoader.showLoadingState());
   loadFailed = computed(() => !this.teams().length && this.dataLoader.loadStatus() === 'error');
 

@@ -15,8 +15,10 @@ import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { LeagueStore } from '@app/store/league.store';
 import { buildClubIdentityTeamIndex } from '@app/utils/club-aliases';
+import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
 
 interface TeamSeriesPoint {
@@ -275,7 +277,7 @@ echarts.use([
 
 @Component({
   selector: 'app-movement-explorer',
-  imports: [CommonModule, RouterLink, NgxEchartsDirective],
+  imports: [CommonModule, RouterLink, NgxEchartsDirective, DataExportMenu],
   templateUrl: './movement-explorer.html',
   styleUrl: './movement-explorer.scss',
   providers: [provideEchartsCore({ echarts })],
@@ -521,6 +523,35 @@ export class MovementExplorer {
       })
       .filter((series): series is TeamSeries => series !== null);
   });
+  exportSummary = computed<ExportSummary>(() => ({
+    page: 'Movement Explorer',
+    chart: this.chartContextTitle(),
+    seasonRange: this.selectedSeasonRangeLabel(),
+    seasons: this.selectedSeasonCount(),
+    clubs: this.selectedTeams().map((team) => team.name),
+    detailMode: this.chartDetailMode(),
+  }));
+  exportRows = computed<ExportRow[]>(() =>
+    this.teamSeries().flatMap((series) =>
+      series.points.map((point) => ({
+        teamId: series.teamId,
+        teamName: series.teamName,
+        season: point.season,
+        tier: point.tier,
+        tierLabel: this.tierLabel(point.tier),
+        wasPromoted: point.wasPromoted,
+        wasRelegated: point.wasRelegated,
+      }))
+    )
+  );
+  exportData = computed(() => ({
+    selectedTeamIds: this.selectedTeamIds(),
+    selectedTeams: this.selectedTeams(),
+    selectedRange: this.selectedRange(),
+    chartDetailMode: this.chartDetailMode(),
+    series: this.teamSeries(),
+  }));
+  exportFilename = computed(() => `footy-stats-movement-${this.selectedSeasonRangeLabel()}`);
 
   chartOptions = computed<EChartsCoreOption>(() => {
     const seasons = this.selectedRange();

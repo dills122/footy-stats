@@ -29,6 +29,13 @@
       Back to clubs
     </a>
     <div class="profile-action-links">
+      <app-data-export-menu
+        [title]="'Club profile ' + club()!.canonicalName"
+        [filename]="exportFilename()"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+        [data]="exportData()"
+      />
       <a mat-button [routerLink]="['/teams', clubId(), 'deep-stats']">Deep stats</a>
       <app-data-issue-report-dialog
         class="header-report"

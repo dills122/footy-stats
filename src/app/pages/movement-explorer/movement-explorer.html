@@ -15,6 +15,13 @@
   </section>
 
   <div class="config-toolbar">
+    <app-data-export-menu
+      [title]="'Movement explorer ' + selectedSeasonRangeLabel()"
+      [filename]="exportFilename()"
+      [summary]="exportSummary()"
+      [rows]="exportRows()"
+      [data]="exportData()"
+    />
     <button
       type="button"
       class="config-toggle"

@@ -21,6 +21,13 @@
   <nav class="profile-top-actions" aria-label="Club deep stats actions">
     <a class="back-link" [routerLink]="['/teams', clubId()]">Back to overview</a>
     <div class="profile-action-links">
+      <app-data-export-menu
+        [title]="'Club deep stats ' + club()!.canonicalName"
+        [filename]="exportFilename()"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+        [data]="deepStats()"
+      />
       <button type="button" mat-button (click)="printPage()">Print</button>
       <a mat-stroked-button routerLink="/teams">Club index</a>
     </div>

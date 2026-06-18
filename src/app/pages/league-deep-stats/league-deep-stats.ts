@@ -3,6 +3,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { LeagueTierToStringyPipe } from '@app/pipes/league-tier-to-stringy-pipe';
 import { LeagueStore } from '@app/store/league.store';
 import { DataLoaderService } from '@app/store/services/hydrate-store-json';
@@ -11,10 +12,11 @@ import {
   type TierClubTotal,
   type TierRaceRow,
 } from '@app/utils/tier-profile';
+import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 
 @Component({
   selector: 'app-league-deep-stats',
-  imports: [CommonModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, RouterLink, DataExportMenu],
   providers: [LeagueTierToStringyPipe],
   templateUrl: './league-deep-stats.html',
   styleUrl: './league-deep-stats.scss',
@@ -53,6 +55,77 @@ export class LeagueDeepStats {
   });
   tierLabel = computed(() => this.formatTierLabel(this.tierId()));
   sourceTierLabel = computed(() => this.formatTierLabel(this.adjacentLowerTier(this.tierId())));
+  exportSummary = computed<ExportSummary>(() => {
+    const profile = this.profile();
+    return {
+      page: 'League Deep Stats',
+      tier: this.tierId(),
+      competition: this.tierLabel(),
+      seasonRange: this.seasonRangeLabel(),
+      rows: profile?.totalRows ?? 0,
+      seasons: profile?.seasons.length ?? 0,
+      uniqueClubs: profile?.uniqueClubCount ?? 0,
+      promotedIn: profile?.promotionInCount ?? 0,
+      relegatedOut: profile?.relegationOutCount ?? 0,
+    };
+  });
+  exportRows = computed<ExportRow[]>(() => {
+    const profile = this.profile();
+    if (!profile) {
+      return [];
+    }
+
+    const rows: ExportRow[] = [];
+    const addClubTotals = (section: string, totals: readonly TierClubTotal[]) => {
+      totals.forEach((row, index) =>
+        rows.push({
+          section,
+          rank: index + 1,
+          name: row.name,
+          clubId: row.clubId,
+          count: row.count,
+          detail: row.detail,
+        })
+      );
+    };
+    const addRaces = (section: string, races: readonly TierRaceRow[]) => {
+      races.forEach((row, index) =>
+        rows.push({
+          section,
+          rank: index + 1,
+          season: row.season,
+          gap: row.gap,
+          tieBreakerGap: row.tieBreakerGap,
+          primaryName: row.primaryName,
+          primaryClubId: row.primaryClubId,
+          secondaryName: row.secondaryName,
+          secondaryClubId: row.secondaryClubId,
+          detail: row.detail,
+        })
+      );
+    };
+
+    addClubTotals('Most seasons', profile.mostSeasons);
+    addClubTotals('Most titles', profile.mostTitles);
+    addClubTotals('Top-three finishes', profile.mostTopThreeFinishes);
+    addClubTotals('Promotions in', profile.mostPromotionsIn);
+    addClubTotals('Relegations out', profile.mostRelegationsOut);
+    addRaces('Close title races', profile.closeTitleRaces);
+    addRaces('Close survival races', profile.closeSurvivalRaces);
+    addRaces('Close promotion races', profile.closePromotionRaces);
+    profile.churnSeasons.forEach((row) =>
+      rows.push({
+        section: 'High-churn seasons',
+        season: row.season,
+        promotedIn: row.promotedIn,
+        relegatedOut: row.relegatedOut,
+        totalMovement: row.totalMovement,
+      })
+    );
+
+    return rows;
+  });
+  exportFilename = computed(() => `footy-stats-league-deep-stats-${this.tierId()}`);
 
   retryArchiveLoad() {
     void this.dataLoader.loadData();
