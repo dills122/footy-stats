@@ -694,7 +694,7 @@
 
   .chart-wrap {
     padding: 10px;
-    overflow-x: auto;
+    overflow: hidden;
   }
 
   .chart-tools {
@@ -717,8 +717,8 @@
   }
 
   .movement-chart {
-    min-width: 620px;
-    height: 420px;
+    min-width: 0;
+    height: 300px;
     min-height: 300px;
   }
 }

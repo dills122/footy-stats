@@ -309,6 +309,7 @@ export class MovementExplorer {
   chartDetailMode = signal<ChartDetailMode>('path');
   activeChartSetupId = signal<string>(DEFAULT_CHART_SETUP_ID);
   focusedTeamId = signal<number | null>(null);
+  isCompactViewport = signal<boolean>(this.readIsCompactViewport());
   private applyingUrlState = false;
   private lastSyncedQueryState = '';
   private hasAppliedInitialUrlState = signal<boolean>(false);
@@ -427,6 +428,10 @@ export class MovementExplorer {
   });
 
   movementChartHeight = computed(() => {
+    if (this.isCompactViewport()) {
+      return 300;
+    }
+
     const tierBounds = this.visibleTierBounds();
     const tierIntervals = Math.max(1, tierBounds.max - tierBounds.min);
     const preferredHeight =
@@ -523,6 +528,7 @@ export class MovementExplorer {
     const series = this.teamSeries();
     const wartimeSuspensionRanges = getWartimeSuspensionRanges(seasons);
     const showMovementEvents = this.chartDetailMode() === 'events';
+    const isCompactViewport = this.isCompactViewport();
     const isDenseComparison = series.length >= 5 || seasons.length >= 45;
     const showWartimeLabels = !isDenseComparison && seasons.length <= 60;
     const pathOpacity = isDenseComparison ? 0.52 : 0.88;
@@ -640,13 +646,14 @@ export class MovementExplorer {
       animation: false,
       backgroundColor: 'transparent',
       grid: {
-        left: 184,
-        right: 40,
-        top: 60,
-        bottom: 88,
+        left: isCompactViewport ? 58 : 184,
+        right: isCompactViewport ? 14 : 40,
+        top: isCompactViewport ? 16 : 60,
+        bottom: isCompactViewport ? 48 : 88,
         containLabel: false,
       },
       legend: {
+        show: !isCompactViewport,
         top: 14,
         left: 18,
         textStyle: {
@@ -670,8 +677,8 @@ export class MovementExplorer {
         boundaryGap: false,
         axisLabel: {
           color: '#c5d0e4',
-          fontSize: 13,
-          margin: 16,
+          fontSize: isCompactViewport ? 10 : 13,
+          margin: isCompactViewport ? 9 : 16,
           hideOverlap: true,
         },
         axisLine: {
@@ -687,10 +694,11 @@ export class MovementExplorer {
         inverse: true,
         axisLabel: {
           color: '#c5d0e4',
-          fontSize: 13,
+          fontSize: isCompactViewport ? 10 : 13,
           fontWeight: 700,
-          margin: 12,
-          formatter: (value: number) => this.tierLabel(value),
+          margin: isCompactViewport ? 7 : 12,
+          formatter: (value: number) =>
+            isCompactViewport ? this.compactTierLabel(value) : this.tierLabel(value),
         },
         axisLine: { show: false },
         splitLine: {
@@ -701,8 +709,8 @@ export class MovementExplorer {
         {
           type: 'slider',
           xAxisIndex: 0,
-          height: 24,
-          bottom: 48,
+          height: isCompactViewport ? 18 : 24,
+          bottom: isCompactViewport ? 14 : 48,
           filterMode: 'none',
           backgroundColor: 'rgba(15, 23, 42, 0.75)',
           fillerColor: 'rgba(217, 119, 6, 0.24)',
@@ -713,7 +721,7 @@ export class MovementExplorer {
           },
           textStyle: {
             color: '#d7deeb',
-            fontSize: 12,
+            fontSize: isCompactViewport ? 10 : 12,
           },
         },
       ],
@@ -857,6 +865,11 @@ export class MovementExplorer {
     }
   }
 
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.isCompactViewport.set(this.readIsCompactViewport());
+  }
+
   toggleConfigPanel() {
     this.configCollapsed.set(!this.configCollapsed());
   }
@@ -960,6 +973,14 @@ export class MovementExplorer {
 
   tierLabel(tier: number): string {
     return TIER_LABELS[tier] ?? `Tier ${tier}`;
+  }
+
+  private compactTierLabel(tier: number): string {
+    return `T${tier}`;
+  }
+
+  private readIsCompactViewport(): boolean {
+    return typeof window !== 'undefined' && window.matchMedia('(max-width: 560px)').matches;
   }
 
   private tierToNumber(tier: string): number | null {

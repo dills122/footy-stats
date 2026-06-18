@@ -70,6 +70,10 @@
   overflow: auto;
 }
 
+.mobile-team-list {
+  display: none;
+}
+
 .team-container {
   width: 100%;
   max-width: 100%;
@@ -236,72 +240,63 @@
     border-color: rgba(217, 119, 6, 0.52);
   }
 
-  .team-container {
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
+  .table-wrap {
+    display: none;
   }
 
-  .team-table,
-  .team-table tbody,
-  .team-row,
-  .team-cell {
-    display: block;
-    width: 100%;
-  }
-
-  .team-table {
-    min-width: 0;
-  }
-
-  .team-table tbody {
+  .mobile-team-list {
     display: grid;
     gap: 10px;
   }
 
-  .team-head-row {
-    display: none;
-  }
-
-  .team-row {
+  .mobile-team-card {
     overflow: hidden;
     border: 1px solid var(--app-border);
     border-radius: 8px;
     background: rgba(7, 10, 19, 0.22);
   }
 
-  .team-cell {
-    padding: 10px 12px;
+  .mobile-team-main {
+    padding: 13px 14px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.16);
   }
 
-  .team-cell:last-child {
-    border-bottom: 0;
+  .mobile-links {
+    padding: 0 14px;
   }
 
-  .team-col,
-  .ext-col {
-    width: auto;
-    text-align: left;
-  }
-
-  .team-col {
-    padding: 13px 14px;
-  }
-
-  .ext-col::before {
-    content: attr(data-label);
-    display: block;
-    margin-bottom: 4px;
+  .mobile-links summary {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
     color: var(--app-text-muted);
-    font-size: 0.68rem;
     font-weight: 750;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    cursor: pointer;
   }
 
-  .links-cell {
-    line-height: 1.6;
+  .mobile-links summary:hover {
+    color: var(--app-text-strong);
+  }
+
+  .mobile-links div {
+    padding: 0 0 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobile-links a {
+    border: 1px solid var(--app-border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    color: var(--app-text-subtle);
+    font-size: 0.86rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .mobile-links a:hover {
+    border-color: rgba(148, 163, 184, 0.42);
+    color: var(--app-text-strong);
   }
 }

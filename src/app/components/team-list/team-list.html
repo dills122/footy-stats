@@ -100,4 +100,33 @@
       </table>
     </div>
   </div>
+
+  <div class="mobile-team-list" aria-label="Clubs">
+    @for (team of filteredTeams(); track team.id) {
+    <article class="mobile-team-card">
+      <div class="mobile-team-main">
+        @if (primaryClubId(team); as clubId) {
+        <a class="team-name" [routerLink]="['/teams', clubId]" [state]="teamLinkState()">
+          {{ team.name }}
+        </a>
+        } @else {
+        <span class="team-name" matTooltip="No club metadata available">{{ team.name }}</span>
+        }
+      </div>
+
+      <details class="mobile-links">
+        <summary>External links</summary>
+        <div>
+          <a [href]="createWikipediaLink(team.name)" target="_blank" rel="noopener noreferrer">
+            Wikipedia
+          </a>
+          <a [href]="createWorldFootballLink(team.name)" target="_blank" rel="noopener noreferrer">
+            WorldFootball
+          </a>
+          <a [href]="create11v11Link(team.name)" target="_blank" rel="noopener noreferrer">11v11</a>
+        </div>
+      </details>
+    </article>
+    }
+  </div>
 </div>
