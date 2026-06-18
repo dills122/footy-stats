@@ -35,4 +35,13 @@ describe('MainToolbar', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('links the brand and archive nav item to the root archive page', () => {
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector<HTMLAnchorElement>('.brand')?.getAttribute('href')).toBe('/');
+    expect(element.querySelector<HTMLAnchorElement>('.nav-links a')?.getAttribute('href')).toBe(
+      '/'
+    );
+  });
 });
