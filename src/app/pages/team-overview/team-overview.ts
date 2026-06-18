@@ -22,8 +22,13 @@ import type { LeagueTableEntry } from '@app/store/league.models';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
 import type { DataIssueReportContext } from '@app/utils/data-issue-report';
-import { buildClubDerivedGaps, buildClubDisplayNamePeriods } from '@app/utils/club-identity-ranges';
+import {
+  buildClubDerivedGaps,
+  buildClubDisplayNamePeriods,
+  type ClubDisplayNamePeriod,
+} from '@app/utils/club-identity-ranges';
 import { buildClubPerformanceMilestones } from '@app/utils/club-performance-milestones';
+import { buildWikipediaLinks } from '@app/utils/link-builders';
 import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
 
 const TIER_LABELS: Record<string, string> = {
@@ -76,6 +81,15 @@ interface CompactSeasonRow {
 
 interface RecentSeasonRow extends LeagueTableEntry {
   teamName: string;
+}
+
+interface HistoricalStatusSummary {
+  label: string;
+  summary: string;
+  detail: string;
+  sourceUrl: string;
+  sourceLabel: string;
+  sourceNote: string | null;
 }
 
 type HistoryDisplayMode = 'compact' | 'small-chart' | 'full-chart';
@@ -181,6 +195,28 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
         };
       }) ?? []
   );
+  historicalStatusSummary = computed<HistoricalStatusSummary | null>(() => {
+    const club = this.club();
+    if (!club || this.statusLabel() === 'active') {
+      return null;
+    }
+
+    const source = this.primaryClubSource();
+    const lastSeenSeason = club.derived.lastSeenSeason;
+    const relationship = this.relationshipRows()[0];
+    const relationshipDetail = relationship
+      ? `${this.relationshipLabel(relationship.relationship, relationship.direction)} ${relationship.relatedName}.`
+      : 'No explicit fold, merger, or exit reason is recorded in metadata yet.';
+
+    return {
+      label: this.statusLabel(),
+      summary: `Historical in this archive after ${lastSeenSeason}.`,
+      detail: relationshipDetail,
+      sourceUrl: source.url,
+      sourceLabel: source.label,
+      sourceNote: source.note,
+    };
+  });
   displayNamePeriods = computed(() =>
     buildClubDisplayNamePeriods(this.club()?.derived.observedNamePeriods ?? [])
   );
@@ -212,6 +248,53 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
       clubName: entry.teamName || this.club()?.canonicalName || undefined,
       season: entry.season,
       competition: this.tierLabel(entry.tier),
+    };
+  }
+
+  identityPeriodRangeLabel(period: ClubDisplayNamePeriod): string {
+    return `${period.startSeason}-${this.seasonEndLabel(period.endSeason)}`;
+  }
+
+  trackedSeasonRangeLabel(): string {
+    const club = this.club();
+    if (!club) {
+      return '';
+    }
+
+    return `${club.derived.firstSeenSeason} to ${this.seasonEndLabel(club.derived.lastSeenSeason)}`;
+  }
+
+  private seasonEndLabel(season: number): string {
+    return season === this.latestDataSeason() ? `current (${season})` : season.toString();
+  }
+
+  private primaryClubSource(): { url: string; label: string; note: string | null } {
+    const club = this.club();
+    const identitySource = club?.derived.identitySources?.find((source) => source.sourceUrl);
+    if (identitySource?.sourceUrl) {
+      return {
+        url: identitySource.sourceUrl,
+        label: 'Metadata source',
+        note: identitySource.notes ?? null,
+      };
+    }
+
+    const relationshipSource = club?.derived.relationships
+      ?.flatMap((relationship) => relationship.sourceRefs ?? [])
+      .find((source) => source.sourceUrl);
+    if (relationshipSource?.sourceUrl) {
+      return {
+        url: relationshipSource.sourceUrl,
+        label: 'Continuity source',
+        note: relationshipSource.notes ?? null,
+      };
+    }
+
+    const name = club?.canonicalName ?? this.clubId();
+    return {
+      url: buildWikipediaLinks([name])[name],
+      label: 'Wikipedia',
+      note: null,
     };
   }
 
@@ -403,8 +486,8 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
       grid: {
         left: isSmallChart ? 96 : 110,
         right: 18,
-        top: 18,
-        bottom: isSmallChart ? 30 : 36,
+        top: isSmallChart ? 14 : 16,
+        bottom: isSmallChart ? 24 : 30,
         containLabel: false,
       },
       tooltip: {
@@ -440,7 +523,7 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
           color: '#c5d0e4',
           fontSize: isSmallChart ? 10 : 11,
           fontWeight: 700,
-          margin: 12,
+          margin: 10,
           formatter: (value: number) => this.tierLabel(`tier${value}`),
         },
         axisLine: { show: false },
@@ -453,7 +536,6 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
           name: this.club()?.canonicalName ?? 'Club path',
           type: 'line',
           data,
-          step: 'end',
           connectNulls: false,
           showSymbol: false,
           symbolSize: 6,

@@ -184,6 +184,10 @@
   background: rgba(20, 184, 166, 0.72);
 }
 
+.historical-status-panel::before {
+  background: rgba(245, 158, 11, 0.78);
+}
+
 .milestone-panel {
   transition: max-height 180ms ease;
 }
@@ -252,6 +256,7 @@
 }
 
 .tier-list,
+.historical-status,
 .relationship-list,
 .gap-list,
 .period-list,
@@ -329,14 +334,51 @@
   text-decoration: underline;
 }
 
+.historical-status {
+  gap: 9px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 11px 12px;
+  background: rgba(7, 10, 19, 0.2);
+}
+
+.historical-status strong {
+  color: var(--app-text-strong);
+  font-size: 0.98rem;
+}
+
+.historical-status p,
+.historical-status small {
+  margin: 0;
+  color: var(--app-text-muted);
+  line-height: 1.45;
+}
+
+.historical-status small {
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.historical-status a {
+  width: fit-content;
+  color: #fde68a;
+  font-weight: 800;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.historical-status a:hover {
+  text-decoration: underline;
+}
+
 .path-chart {
-  height: 285px;
-  min-height: 285px;
+  height: 240px;
+  min-height: 240px;
 }
 
 .path-chart--small {
-  height: 190px;
-  min-height: 190px;
+  height: 165px;
+  min-height: 165px;
 }
 
 .season-snapshot-list {
