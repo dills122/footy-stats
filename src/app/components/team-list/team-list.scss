@@ -17,9 +17,39 @@
   padding-bottom: 8px;
 }
 
-.index-header span {
+.index-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.index-actions span {
   color: var(--app-text-muted);
   font-size: 0.9rem;
+}
+
+.clear-filters-button {
+  min-height: 30px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  background: rgba(7, 10, 19, 0.18);
+  color: var(--app-text-subtle);
+  padding: 4px 9px;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.clear-filters-button:hover {
+  border-color: rgba(148, 163, 184, 0.42);
+  color: var(--app-text-strong);
+}
+
+.clear-filters-button:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
 }
 
 .filter-title {
@@ -28,6 +58,65 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--app-text-muted);
+}
+
+.category-filter {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+.filter-button {
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: rgba(7, 10, 19, 0.16);
+  color: var(--app-text-subtle);
+  padding: 8px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.filter-button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.filter-button small {
+  min-width: 2ch;
+  color: var(--app-text-muted);
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-align: right;
+}
+
+.filter-button:hover {
+  border-color: rgba(148, 163, 184, 0.42);
+  color: var(--app-text-strong);
+}
+
+.filter-button:focus-visible,
+.letter-button:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.filter-button--selected {
+  border-color: rgba(217, 119, 6, 0.56);
+  background: rgba(217, 119, 6, 0.12);
+  color: #fde68a;
+}
+
+.filter-button--selected small {
+  color: color-mix(in srgb, #fde68a 82%, var(--app-text-muted) 18%);
 }
 
 .alphabet-filter {
@@ -70,6 +159,20 @@
   overflow: auto;
 }
 
+.empty-filter-state {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: rgba(7, 10, 19, 0.18);
+  padding: 18px;
+  color: var(--app-text-subtle);
+}
+
+.empty-filter-state strong {
+  color: var(--app-text-strong);
+}
+
 .mobile-team-list {
   display: none;
 }
@@ -82,7 +185,7 @@
 
 .team-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 920px;
   border-collapse: separate;
   border-spacing: 0;
   background: transparent;
@@ -103,11 +206,19 @@
 }
 
 .team-col {
-  width: 44%;
+  width: 30%;
+}
+
+.status-col {
+  width: 14%;
+}
+
+.span-col {
+  width: 20%;
 }
 
 .ext-col {
-  width: 56%;
+  width: 36%;
   text-align: right;
 }
 
@@ -136,6 +247,37 @@
   outline: 2px solid var(--app-focus-ring);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+.status-pill {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--app-text-subtle);
+  padding: 3px 9px;
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.status-pill--active {
+  border-color: rgba(34, 197, 94, 0.38);
+  background: rgba(34, 197, 94, 0.12);
+  color: #bbf7d0;
+}
+
+.span-label {
+  display: block;
+  color: var(--app-text-strong);
+  font-weight: 700;
+}
+
+.span-col small {
+  color: var(--app-text-muted);
+  font-weight: 650;
 }
 
 .header-inline {
@@ -185,7 +327,7 @@
 
 @media (max-width: 980px) {
   .team-table {
-    min-width: 680px;
+    min-width: 860px;
   }
 }
 
@@ -220,6 +362,29 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 4px;
+  }
+
+  .index-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .clear-filters-button {
+    min-height: 34px;
+  }
+
+  .category-filter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-button {
+    min-height: 42px;
+    padding: 8px;
+  }
+
+  .filter-button span {
+    white-space: normal;
+    line-height: 1.15;
   }
 
   .alphabet-filter {
@@ -257,8 +422,20 @@
   }
 
   .mobile-team-main {
+    display: grid;
+    gap: 8px;
     padding: 13px 14px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  }
+
+  .mobile-team-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    color: var(--app-text-muted);
+    font-size: 0.82rem;
+    font-weight: 650;
   }
 
   .mobile-links {

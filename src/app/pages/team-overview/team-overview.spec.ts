@@ -57,8 +57,9 @@ describe('TeamOverview', () => {
 
   it('builds a teams back link query param from hidden navigation state', () => {
     component.teamsReturnLetter.set('A');
+    component.teamsReturnFilter.set('top-flight');
 
-    expect(component.backToTeamsQueryParams()).toEqual({ letter: 'A' });
+    expect(component.backToTeamsQueryParams()).toEqual({ letter: 'A', filter: 'top-flight' });
   });
 
   it('labels identity periods ending in the latest tracked season as current', () => {

@@ -17,8 +17,8 @@ describe('Teams', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            queryParamMap: of(convertToParamMap({ letter: 'm' })),
-            snapshot: { queryParamMap: convertToParamMap({ letter: 'm' }) },
+            queryParamMap: of(convertToParamMap({ letter: 'm', filter: 'historical' })),
+            snapshot: { queryParamMap: convertToParamMap({ letter: 'm', filter: 'historical' }) },
           },
         },
       ],
@@ -38,6 +38,10 @@ describe('Teams', () => {
     expect(component.selectedLetter()).toBe('M');
   });
 
+  it('reads the selected filter from the route query params', () => {
+    expect(component.selectedFilter()).toBe('historical');
+  });
+
   it('writes the selected letter to the route query params', () => {
     const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
 
@@ -46,6 +50,45 @@ describe('Teams', () => {
     expect(navigateSpy).toHaveBeenCalledWith([], {
       relativeTo: TestBed.inject(ActivatedRoute),
       queryParams: { letter: 'C' },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  });
+
+  it('writes the selected filter to the route query params', () => {
+    const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.onFilterSelected('active');
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: TestBed.inject(ActivatedRoute),
+      queryParams: { filter: 'active' },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  });
+
+  it('clears the filter query param when all teams are selected', () => {
+    const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.onFilterSelected('all');
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: TestBed.inject(ActivatedRoute),
+      queryParams: { filter: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  });
+
+  it('clears letter and filter query params together', () => {
+    const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.onFiltersCleared();
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: TestBed.inject(ActivatedRoute),
+      queryParams: { letter: null, filter: null },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });

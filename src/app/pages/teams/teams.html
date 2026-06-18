@@ -13,7 +13,10 @@
   <app-team-list
     [teams]="teams()"
     [selectedLetter]="selectedLetter()"
+    [selectedFilter]="selectedFilter()"
     (letterSelected)="onLetterSelected($event)"
+    (filterSelected)="onFilterSelected($event)"
+    (filtersCleared)="onFiltersCleared()"
   />
 </section>
 }

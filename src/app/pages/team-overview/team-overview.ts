@@ -21,6 +21,7 @@ import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/
 import type { LeagueTableEntry } from '@app/store/league.models';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
+import { isTeamDirectoryFilter, type TeamDirectoryFilter } from '@app/types';
 import type { DataIssueReportContext } from '@app/utils/data-issue-report';
 import {
   buildClubDerivedGaps,
@@ -96,6 +97,7 @@ type HistoryDisplayMode = 'compact' | 'small-chart' | 'full-chart';
 
 interface TeamsReturnNavigationState {
   teamsReturnLetter?: unknown;
+  teamsReturnFilter?: unknown;
 }
 
 echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, CanvasRenderer]);
@@ -125,9 +127,16 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
   milestonesExpanded = signal(false);
   milestoneCollapsedHeight = signal<number | null>(null);
   teamsReturnLetter = signal(this.readTeamsReturnLetter());
+  teamsReturnFilter = signal<TeamDirectoryFilter>(this.readTeamsReturnFilter());
   backToTeamsQueryParams = computed(() => {
     const letter = this.teamsReturnLetter();
-    return letter ? { letter } : null;
+    const filter = this.teamsReturnFilter();
+    const queryParams = {
+      ...(letter ? { letter } : {}),
+      ...(filter !== 'all' ? { filter } : {}),
+    };
+
+    return Object.keys(queryParams).length ? queryParams : null;
   });
   club = computed(() => this.clubMetadataStore.getClubById(this.clubId()));
   entries = computed(() =>
@@ -330,6 +339,14 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
     const letter = rawLetter.trim().toUpperCase();
 
     return /^[A-Z]$/.test(letter) ? letter : '';
+  }
+
+  private readTeamsReturnFilter(): TeamDirectoryFilter {
+    const state = (this.router.getCurrentNavigation()?.extras.state ??
+      globalThis.history?.state) as TeamsReturnNavigationState | undefined;
+    const filter = typeof state?.teamsReturnFilter === 'string' ? state.teamsReturnFilter : '';
+
+    return isTeamDirectoryFilter(filter) ? filter : 'all';
   }
 
   entriesAscending = computed(() =>
