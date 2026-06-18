@@ -40,6 +40,7 @@ export class TeamList {
 
   @Output() letterSelected = new EventEmitter<string>();
   @Output() filterSelected = new EventEmitter<TeamDirectoryFilter>();
+  @Output() filtersCleared = new EventEmitter<void>();
 
   selectedLetterSignal = signal<string | null>(null);
   selectedFilterSignal = signal<TeamDirectoryFilter>('all');
@@ -74,6 +75,9 @@ export class TeamList {
     const teams = this.categoryFilteredTeams();
     return letter ? teams.filter((team) => team.name[0].toUpperCase() === letter) : teams;
   });
+  hasActiveFilters = computed(
+    () => Boolean(this.selectedLetterSignal()) || this.selectedFilterSignal() !== 'all'
+  );
 
   selectLetter(letter: string) {
     const normalized = letter.trim().toUpperCase();
@@ -90,6 +94,12 @@ export class TeamList {
   selectFilter(filter: TeamDirectoryFilter) {
     this.selectedFilterSignal.set(filter);
     this.filterSelected.emit(filter);
+  }
+
+  clearFilters() {
+    this.selectedLetterSignal.set(null);
+    this.selectedFilterSignal.set('all');
+    this.filtersCleared.emit();
   }
 
   createWikipediaLink(club: string): string {

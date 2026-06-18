@@ -103,4 +103,13 @@ export class Teams {
       replaceUrl: true,
     });
   }
+
+  onFiltersCleared() {
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { letter: null, filter: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
 }

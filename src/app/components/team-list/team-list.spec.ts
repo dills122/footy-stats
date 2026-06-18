@@ -85,6 +85,19 @@ describe('TeamList', () => {
     expect(emittedFilters).toEqual(['top-flight']);
   });
 
+  it('clears the active letter and directory filter together', () => {
+    const emittedClears: void[] = [];
+    component.selectedLetter = 'a';
+    component.selectedFilter = 'historical';
+    component.filtersCleared.subscribe(() => emittedClears.push(undefined));
+
+    component.clearFilters();
+
+    expect(component.selectedLetterSignal()).toBeNull();
+    expect(component.selectedFilterSignal()).toBe('all');
+    expect(emittedClears).toEqual([undefined]);
+  });
+
   it('stores the selected filters in navigation state for team links', () => {
     component.selectedLetter = 'a';
     component.selectedFilter = 'active';

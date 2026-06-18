@@ -1,7 +1,14 @@
 <div class="team-list">
   <div class="index-header">
     <h4 class="filter-title">Club Index</h4>
-    <span>{{ filteredTeams().length }} clubs</span>
+    <div class="index-actions">
+      <span>{{ filteredTeams().length }} clubs</span>
+      @if (hasActiveFilters()) {
+      <button type="button" class="clear-filters-button" (click)="clearFilters()">
+        Clear filters
+      </button>
+      }
+    </div>
   </div>
 
   <nav class="category-filter" aria-label="Filter clubs by status or archive category">

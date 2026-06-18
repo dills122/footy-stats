@@ -80,4 +80,17 @@ describe('Teams', () => {
       replaceUrl: true,
     });
   });
+
+  it('clears letter and filter query params together', () => {
+    const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    component.onFiltersCleared();
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: TestBed.inject(ActivatedRoute),
+      queryParams: { letter: null, filter: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  });
 });
