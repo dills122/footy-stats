@@ -638,19 +638,87 @@
 }
 
 @media (max-width: 560px) {
+  .movement-page {
+    padding-inline: 12px;
+  }
+
+  .research-note {
+    margin-top: 14px;
+    padding-left: 10px;
+  }
+
   .config-toolbar {
     justify-content: stretch;
   }
 
   .config-toggle {
     flex: 1 1 140px;
+    min-height: 40px;
   }
 
   .setup-grid {
     grid-template-columns: 1fr;
   }
 
+  .setup-card {
+    min-height: 0;
+  }
+
+  .quick-pick-popover {
+    position: static;
+    margin-top: 8px;
+    box-shadow: none;
+  }
+
+  .quick-pick-tabs,
+  .quick-pick-results,
+  .search-results,
+  .selected-chips,
+  .preset-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  }
+
+  .team-option,
+  .preset-btn,
+  .chip,
+  .clear-btn {
+    min-height: 38px;
+    justify-content: center;
+    text-align: center;
+  }
+
   .years-row {
     grid-template-columns: 1fr;
+  }
+
+  .chart-wrap {
+    padding: 10px;
+    overflow-x: auto;
+  }
+
+  .chart-tools {
+    justify-items: stretch;
+  }
+
+  .detail-toggle {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .detail-toggle button {
+    min-width: 0;
+    padding-inline: 6px;
+  }
+
+  .legend-item {
+    font-size: 0.8rem;
+  }
+
+  .movement-chart {
+    min-width: 620px;
+    height: 420px;
+    min-height: 300px;
   }
 }

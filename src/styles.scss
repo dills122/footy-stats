@@ -136,6 +136,28 @@ body {
   }
 }
 
+@media (max-width: 640px) {
+  .app-page-shell {
+    width: min(100%, calc(100vw - 16px));
+    margin: 10px auto 28px;
+    padding: 14px;
+  }
+
+  .app-page-header .app-page-title {
+    font-size: clamp(1.9rem, 11vw, 2.45rem);
+    line-height: 1.08;
+  }
+
+  .app-page-header .app-page-lede {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .app-data-shell {
+    border-radius: 8px;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

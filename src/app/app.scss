@@ -132,6 +132,14 @@
 }
 
 @media (max-width: 700px) {
+  .app-content {
+    padding: 14px 0 22px;
+  }
+
+  .app-footer {
+    padding-inline: 12px;
+  }
+
   .footer-inner {
     grid-template-columns: 1fr;
     gap: 24px;

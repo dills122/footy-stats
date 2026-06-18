@@ -268,13 +268,13 @@
       </div>
       @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
       <div class="recent-row">
-        <span>{{ entry.season }}</span>
-        <span>{{ entry.teamName }}</span>
-        <span>{{ tierLabel(entry.tier) }}</span>
-        <span>{{ ordinal(entry.pos) }}</span>
-        <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
-        <span>{{ entry.points }}</span>
-        <span class="recent-report">
+        <span data-label="Season">{{ entry.season }}</span>
+        <span data-label="Name">{{ entry.teamName }}</span>
+        <span data-label="Tier">{{ tierLabel(entry.tier) }}</span>
+        <span data-label="Position">{{ ordinal(entry.pos) }}</span>
+        <span data-label="Record">{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
+        <span data-label="Points">{{ entry.points }}</span>
+        <span class="recent-report" data-label="Data issue">
           <app-data-issue-report-dialog
             triggerLabel="Flag issue"
             triggerStyle="link"

@@ -75,9 +75,15 @@ app-season-summary-card {
 @media (max-width: 760px) {
   .record-tools {
     display: grid;
+    gap: 10px;
+    max-width: none;
   }
 
   .field {
     width: 100%;
+  }
+
+  .report-field {
+    padding-top: 0;
   }
 }
