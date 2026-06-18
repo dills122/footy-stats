@@ -3,10 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { LeagueStore } from '@app/store/league.store';
-import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 
 interface ArchiveStat {
   label: string;
@@ -17,7 +15,7 @@ interface ArchiveStat {
   selector: 'app-home',
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
-  imports: [CommonModule, MatButtonModule, RouterLink, DataExportMenu],
+  imports: [CommonModule, MatButtonModule, RouterLink],
 })
 export class Home implements OnDestroy {
   private store = inject(LeagueStore);
@@ -49,15 +47,6 @@ export class Home implements OnDestroy {
     { label: 'clubs', value: this.teamsCount() },
     { label: 'tracked tiers', value: this.tiersCount() },
   ]);
-  exportSummary = computed<ExportSummary>(() => ({
-    page: 'Archive Home',
-    seasons: this.seasonsCount(),
-    clubs: this.teamsCount(),
-    trackedTiers: this.tiersCount(),
-  }));
-  exportRows = computed<ExportRow[]>(() =>
-    this.archiveStats().map((stat) => ({ metric: stat.label, value: stat.value }))
-  );
   archiveTickerValues = signal<Record<string, string>>({});
   archiveTickerRunning = signal(false);
   archiveSimpleRevealRunning = signal(false);
