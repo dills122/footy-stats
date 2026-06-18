@@ -91,6 +91,82 @@ describe('DataUpdateService', () => {
     expect(service.latestManifest()?.version).toBe('data-2026-06-18');
   });
 
+  it('builds a verified manifest from footy-data-kit release assets', async () => {
+    const checkPromise = service.checkForUpdates();
+
+    http.expectOne(environment.dataUpdates.githubLatestReleaseApiUrl).flush({
+      tag_name: 'v0.8.2',
+      published_at: '2026-06-18T01:33:25.000Z',
+      target_commitish: 'main',
+      assets: [
+        {
+          url: 'https://api.github.com/repos/dills122/footy-data-kit/releases/assets/1',
+          name: 'all-seasons.min.json',
+          browser_download_url: 'https://example.com/all-seasons.min.json',
+          digest: `sha256:${'c'.repeat(64)}`,
+          size: 3300786,
+        },
+        {
+          url: 'https://api.github.com/repos/dills122/footy-data-kit/releases/assets/2',
+          name: 'all-seasons.json',
+          browser_download_url: 'https://example.com/all-seasons.json',
+          digest: `sha256:${'a'.repeat(64)}`,
+          size: 6187960,
+        },
+        {
+          url: 'https://api.github.com/repos/dills122/footy-data-kit/releases/assets/3',
+          name: 'club-metadata.json',
+          browser_download_url: 'https://example.com/club-metadata.json',
+          digest: `sha256:${'b'.repeat(64)}`,
+          size: 1267095,
+        },
+      ],
+    });
+    await Promise.resolve();
+    http
+      .expectOne(
+        'https://api.github.com/repos/dills122/footy-data-kit/git/trees/v0.8.2?recursive=1'
+      )
+      .flush({
+        truncated: false,
+        tree: [
+          {
+            path: 'data-output/all-seasons.min.json',
+            type: 'blob',
+            sha: 'season-git-sha',
+            size: 3300774,
+          },
+          {
+            path: 'data/club-metadata.json',
+            type: 'blob',
+            sha: 'club-git-sha',
+            size: 1267071,
+          },
+        ],
+      });
+
+    await checkPromise;
+
+    expect(service.checkStatus()).toBe('available');
+    expect(service.latestManifest()).toEqual({
+      version: 'v0.8.2',
+      generatedAt: '2026-06-18T01:33:25.000Z',
+      gitSha: 'v0.8.2',
+      assets: {
+        seasons: {
+          url: 'https://raw.githubusercontent.com/dills122/footy-data-kit/v0.8.2/data-output/all-seasons.min.json',
+          gitBlobSha: 'season-git-sha',
+          size: 3300774,
+        },
+        clubMetadata: {
+          url: 'https://raw.githubusercontent.com/dills122/footy-data-kit/v0.8.2/data/club-metadata.json',
+          gitBlobSha: 'club-git-sha',
+          size: 1267071,
+        },
+      },
+    });
+  });
+
   it('downloads, verifies, and installs the latest data bundle', async () => {
     const seasonsText = JSON.stringify(seasonsDocument());
     const clubMetadataText = JSON.stringify(clubMetadataDocument());
@@ -116,7 +192,9 @@ describe('DataUpdateService', () => {
 
     const installPromise = service.installLatestUpdate();
 
-    http.expectOne('https://example.com/seasons.json').flush(seasonsText);
+    const seasonsRequest = http.expectOne('https://example.com/seasons.json');
+    expect(seasonsRequest.request.headers.has('Accept')).toBe(false);
+    seasonsRequest.flush(seasonsText);
     http.expectOne('https://example.com/club-metadata.json').flush(clubMetadataText);
 
     await installPromise;
@@ -130,6 +208,59 @@ describe('DataUpdateService', () => {
     );
     expect(service.installStatus()).toBe('installed');
     expect(service.checkStatus()).toBe('up-to-date');
+  });
+
+  it('downloads and verifies raw GitHub URLs for release fallback manifests', async () => {
+    const seasonsText = JSON.stringify(seasonsDocument());
+    const clubMetadataText = JSON.stringify(clubMetadataDocument());
+    const updateManifest = manifest({
+      seasonsUrl:
+        'https://raw.githubusercontent.com/dills122/footy-data-kit/v0.8.2/data-output/all-seasons.min.json',
+      clubMetadataUrl:
+        'https://raw.githubusercontent.com/dills122/footy-data-kit/v0.8.2/data/club-metadata.json',
+      seasonsSha256: null,
+      clubMetadataSha256: null,
+      seasonsGitBlobSha: await gitBlobSha(seasonsText),
+      clubMetadataGitBlobSha: await gitBlobSha(clubMetadataText),
+    });
+
+    const checkPromise = service.checkForUpdates();
+    http.expectOne(environment.dataUpdates.githubLatestReleaseApiUrl).flush({
+      tag_name: 'data-2026-06-18',
+      published_at: '2026-06-18T12:00:00.000Z',
+      assets: [
+        {
+          name: 'footy-stats-data-manifest.json',
+          browser_download_url: 'https://example.com/manifest.json',
+        },
+      ],
+    });
+    await Promise.resolve();
+    http.expectOne('https://example.com/manifest.json').flush(updateManifest);
+    await checkPromise;
+
+    const installPromise = service.installLatestUpdate();
+
+    const seasonsRequest = http.expectOne(
+      'https://raw.githubusercontent.com/dills122/footy-data-kit/v0.8.2/data-output/all-seasons.min.json'
+    );
+    expect(seasonsRequest.request.headers.has('Accept')).toBe(false);
+    seasonsRequest.flush(seasonsText);
+
+    const clubMetadataRequest = http.expectOne(
+      'https://raw.githubusercontent.com/dills122/footy-data-kit/v0.8.2/data/club-metadata.json'
+    );
+    expect(clubMetadataRequest.request.headers.has('Accept')).toBe(false);
+    clubMetadataRequest.flush(clubMetadataText);
+
+    await installPromise;
+
+    expect(dataLoader.installOverride).toHaveBeenCalledWith(
+      expect.objectContaining({
+        manifest: updateManifest,
+      })
+    );
+    expect(service.installStatus()).toBe('installed');
   });
 
   it('reports checksum failures without installing the bundle', async () => {
@@ -167,11 +298,19 @@ describe('DataUpdateService', () => {
 });
 
 function manifest({
+  seasonsUrl = 'https://example.com/seasons.json',
+  clubMetadataUrl = 'https://example.com/club-metadata.json',
   seasonsSha256 = '0'.repeat(64),
   clubMetadataSha256 = '1'.repeat(64),
+  seasonsGitBlobSha,
+  clubMetadataGitBlobSha,
 }: {
-  seasonsSha256?: string;
-  clubMetadataSha256?: string;
+  seasonsUrl?: string;
+  clubMetadataUrl?: string;
+  seasonsSha256?: string | null;
+  clubMetadataSha256?: string | null;
+  seasonsGitBlobSha?: string;
+  clubMetadataGitBlobSha?: string;
 } = {}): DataBundleManifest {
   return {
     version: 'data-2026-06-18',
@@ -179,12 +318,14 @@ function manifest({
     gitSha: 'remote-sha',
     assets: {
       seasons: {
-        url: 'https://example.com/seasons.json',
-        sha256: seasonsSha256,
+        url: seasonsUrl,
+        sha256: seasonsSha256 ?? undefined,
+        gitBlobSha: seasonsGitBlobSha,
       },
       clubMetadata: {
-        url: 'https://example.com/club-metadata.json',
-        sha256: clubMetadataSha256,
+        url: clubMetadataUrl,
+        sha256: clubMetadataSha256 ?? undefined,
+        gitBlobSha: clubMetadataGitBlobSha,
       },
     },
   };
@@ -219,6 +360,19 @@ function clubMetadataDocument(): ClubMetadataDocument {
 async function sha256Hex(text: string): Promise<string> {
   const bytes = new TextEncoder().encode(text);
   const hash = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(hash))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function gitBlobSha(text: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(text);
+  const prefix = encoder.encode(`blob ${bytes.length}\0`);
+  const payload = new Uint8Array(prefix.length + bytes.length);
+  payload.set(prefix);
+  payload.set(bytes, prefix.length);
+  const hash = await globalThis.crypto.subtle.digest('SHA-1', payload);
   return Array.from(new Uint8Array(hash))
     .map((byte) => byte.toString(16).padStart(2, '0'))
     .join('');

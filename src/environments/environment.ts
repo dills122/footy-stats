@@ -4,7 +4,13 @@ export const environment = {
     githubLatestReleaseApiUrl:
       'https://api.github.com/repos/dills122/footy-data-kit/releases/latest',
     manifestAssetNames: ['footy-stats-data-manifest.json', 'data-manifest.json'],
-    seasonsAssetName: 'seasons.json',
-    clubMetadataAssetName: 'club-metadata.json',
+    seasonsAssetNames: ['seasons.json', 'all-seasons.min.json', 'all-seasons.json'],
+    clubMetadataAssetNames: ['club-metadata.json'],
+    rawAssetPathsByName: {
+      'seasons.json': 'data-output/all-seasons.json',
+      'all-seasons.min.json': 'data-output/all-seasons.min.json',
+      'all-seasons.json': 'data-output/all-seasons.json',
+      'club-metadata.json': 'data/club-metadata.json',
+    },
   },
 };

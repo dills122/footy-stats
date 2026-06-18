@@ -8,6 +8,8 @@ import type {
   DataBundleManifest,
   GitHubRelease,
   GitHubReleaseAsset,
+  GitHubTree,
+  GitHubTreeItem,
   InstalledDataBundle,
   SeasonsDocument,
 } from './data-bundle.models';
@@ -90,10 +92,10 @@ export class DataUpdateService {
 
       this.installState.set('verifying');
       await Promise.all([
-        this.verifySha256(seasonsText, manifest.assets.seasons.sha256, 'seasons.json'),
-        this.verifySha256(
+        this.verifyAssetIntegrity(seasonsText, manifest.assets.seasons, 'seasons.json'),
+        this.verifyAssetIntegrity(
           clubMetadataText,
-          manifest.assets.clubMetadata.sha256,
+          manifest.assets.clubMetadata,
           'club-metadata.json'
         ),
       ]);
@@ -142,59 +144,97 @@ export class DataUpdateService {
   private async buildManifestFromReleaseAssets(
     release: GitHubRelease
   ): Promise<DataBundleManifest> {
-    const seasonsAsset = this.requiredAsset(
+    const seasonsAsset = this.releaseAssetForDataSlot(
       release.assets,
-      environment.dataUpdates.seasonsAssetName
+      environment.dataUpdates.seasonsAssetNames,
+      'season data'
     );
-    const clubMetadataAsset = this.requiredAsset(
+    const clubMetadataAsset = this.releaseAssetForDataSlot(
       release.assets,
-      environment.dataUpdates.clubMetadataAssetName
+      environment.dataUpdates.clubMetadataAssetNames,
+      'club metadata'
     );
-    const [seasonsSha256, clubMetadataSha256] = await Promise.all([
-      this.fetchSha256ForAsset(release.assets, seasonsAsset.name),
-      this.fetchSha256ForAsset(release.assets, clubMetadataAsset.name),
-    ]);
+    const releaseTree = await this.fetchReleaseTree(release.tag_name);
 
     return {
       version: release.tag_name,
       generatedAt: release.published_at,
-      gitSha: release.target_commitish ?? release.tag_name,
+      gitSha: release.tag_name,
       assets: {
-        seasons: this.assetManifest(seasonsAsset, seasonsSha256),
-        clubMetadata: this.assetManifest(clubMetadataAsset, clubMetadataSha256),
+        seasons: this.rawAssetManifest(release.tag_name, releaseTree, seasonsAsset),
+        clubMetadata: this.rawAssetManifest(release.tag_name, releaseTree, clubMetadataAsset),
       },
     };
   }
 
-  private requiredAsset(assets: readonly GitHubReleaseAsset[], name: string): GitHubReleaseAsset {
-    const asset = assets.find((candidate) => candidate.name === name);
+  private releaseAssetForDataSlot(
+    assets: readonly GitHubReleaseAsset[],
+    names: readonly string[],
+    label: string
+  ): GitHubReleaseAsset {
+    const asset = assets.find((candidate) => names.includes(candidate.name));
     if (!asset) {
-      throw new Error(`The latest data release is missing ${name}.`);
+      throw new Error(`The latest data release is missing a supported ${label} file.`);
     }
 
     return asset;
   }
 
-  private async fetchSha256ForAsset(
-    assets: readonly GitHubReleaseAsset[],
-    assetName: string
-  ): Promise<string> {
-    const checksumAsset = this.requiredAsset(assets, `${assetName}.sha256`);
-    const checksumText = await this.downloadText(checksumAsset.browser_download_url);
-    const checksum = checksumText.trim().split(/\s+/)[0]?.toLowerCase();
-    if (!checksum || !/^[a-f0-9]{64}$/.test(checksum)) {
-      throw new Error(`${checksumAsset.name} does not contain a valid SHA-256 checksum.`);
+  private async fetchReleaseTree(tagName: string): Promise<GitHubTree> {
+    const tree = await lastValueFrom(
+      this.http.get<GitHubTree>(
+        `${this.githubRepoApiUrl()}/git/trees/${encodeURIComponent(tagName)}?recursive=1`
+      )
+    );
+
+    if (tree.truncated) {
+      throw new Error('The latest data release tree is too large to verify in the browser.');
     }
 
-    return checksum;
+    return tree;
   }
 
-  private assetManifest(asset: GitHubReleaseAsset, sha256: string): DataBundleAssetManifest {
+  private rawAssetManifest(
+    tagName: string,
+    releaseTree: GitHubTree,
+    asset: GitHubReleaseAsset
+  ): DataBundleAssetManifest {
+    const rawPath = this.rawPathForReleaseAsset(asset.name);
+    const treeItem = this.requiredTreeItem(releaseTree.tree, rawPath);
+
     return {
-      url: asset.browser_download_url,
-      sha256,
-      size: asset.size,
+      url: this.rawGithubUrl(tagName, rawPath),
+      gitBlobSha: treeItem.sha,
+      size: treeItem.size ?? asset.size,
     };
+  }
+
+  private rawPathForReleaseAsset(assetName: string): string {
+    const rawPath =
+      environment.dataUpdates.rawAssetPathsByName[
+        assetName as keyof typeof environment.dataUpdates.rawAssetPathsByName
+      ];
+
+    if (!rawPath) {
+      throw new Error(
+        `The latest data release does not define a browser-safe path for ${assetName}.`
+      );
+    }
+
+    return rawPath;
+  }
+
+  private requiredTreeItem(tree: readonly GitHubTreeItem[], path: string): GitHubTreeItem {
+    const item = tree.find((candidate) => candidate.type === 'blob' && candidate.path === path);
+    if (!item) {
+      throw new Error(`The latest data release is missing ${path}.`);
+    }
+
+    return item;
+  }
+
+  private rawGithubUrl(tagName: string, path: string): string {
+    return `https://raw.githubusercontent.com/dills122/footy-data-kit/${encodeURIComponent(tagName)}/${path}`;
   }
 
   private isNewerThanActiveData(manifest: DataBundleManifest): boolean {
@@ -233,5 +273,47 @@ export class DataUpdateService {
     return Array.from(new Uint8Array(hash))
       .map((byte) => byte.toString(16).padStart(2, '0'))
       .join('');
+  }
+
+  private async verifyAssetIntegrity(
+    text: string,
+    asset: DataBundleAssetManifest,
+    label: string
+  ): Promise<void> {
+    if (asset.sha256) {
+      await this.verifySha256(text, asset.sha256, label);
+      return;
+    }
+
+    if (asset.gitBlobSha) {
+      await this.verifyGitBlobSha(text, asset.gitBlobSha, label);
+      return;
+    }
+
+    throw new Error(`${label} is missing a verification checksum.`);
+  }
+
+  private async verifyGitBlobSha(text: string, expected: string, label: string): Promise<void> {
+    const actual = await this.gitBlobSha(text);
+    if (actual !== expected.toLowerCase()) {
+      throw new Error(`${label} git blob checksum mismatch.`);
+    }
+  }
+
+  private async gitBlobSha(text: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(text);
+    const prefix = encoder.encode(`blob ${bytes.length}\0`);
+    const payload = new Uint8Array(prefix.length + bytes.length);
+    payload.set(prefix);
+    payload.set(bytes, prefix.length);
+    const hash = await globalThis.crypto.subtle.digest('SHA-1', payload);
+    return Array.from(new Uint8Array(hash))
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  private githubRepoApiUrl(): string {
+    return environment.dataUpdates.githubLatestReleaseApiUrl.replace(/\/releases\/latest$/, '');
   }
 }

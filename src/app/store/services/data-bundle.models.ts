@@ -7,7 +7,8 @@ export interface SeasonsDocument {
 
 export interface DataBundleAssetManifest {
   url: string;
-  sha256: string;
+  sha256?: string;
+  gitBlobSha?: string;
   size?: number;
 }
 
@@ -37,8 +38,10 @@ export interface ActiveDataInfo {
 }
 
 export interface GitHubReleaseAsset {
+  url?: string;
   name: string;
   browser_download_url: string;
+  digest?: string;
   size?: number;
 }
 
@@ -47,4 +50,16 @@ export interface GitHubRelease {
   published_at: string;
   target_commitish?: string;
   assets: GitHubReleaseAsset[];
+}
+
+export interface GitHubTreeItem {
+  path: string;
+  type: 'blob' | 'tree' | string;
+  sha: string;
+  size?: number;
+}
+
+export interface GitHubTree {
+  tree: GitHubTreeItem[];
+  truncated?: boolean;
 }
