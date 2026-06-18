@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { DataIssueReportDialogService } from '@app/components/data-issue-report-dialog/data-issue-report-dialog.service';
 
 import { LeagueTableComponent } from './league-table';
 
@@ -57,7 +58,9 @@ describe('LeagueTable', () => {
     expect(link?.getAttribute('href')).toBe('/teams/manchester%20united');
   });
 
-  it('prefills row report context from table data', () => {
+  it('opens the global row report with table data context', () => {
+    const dialogService = TestBed.inject(DataIssueReportDialogService);
+    const openSpy = jest.spyOn(dialogService, 'open');
     component.leagueTable = [
       {
         season: 2025,
@@ -88,15 +91,12 @@ describe('LeagueTable', () => {
     fixture.nativeElement.querySelector('.report-trigger').click();
     fixture.detectChanges();
 
-    const inputs = Array.from(
-      fixture.nativeElement.querySelectorAll('input')
-    ) as HTMLInputElement[];
-    expect(inputs.map((input) => input.value)).toEqual([
-      '',
-      'Manchester United',
-      '2025',
-      'Premier League',
-      '',
-    ]);
+    expect(openSpy).toHaveBeenCalledWith({
+      pageTitle: 'League table row',
+      sourcePath: '/tables season 2025 tier1',
+      clubName: 'Manchester United',
+      season: 2025,
+      competition: 'Premier League',
+    });
   });
 });

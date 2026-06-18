@@ -1,3 +1,4 @@
+@if (mode() === 'trigger') {
 <button
   type="button"
   class="report-trigger"
@@ -6,8 +7,7 @@
 >
   {{ triggerLabel() }}
 </button>
-
-@if (isOpen()) {
+} @if (mode() === 'host' && isOpen()) {
 <div class="report-backdrop" role="presentation" (click)="close()"></div>
 <section class="report-dialog" role="dialog" aria-modal="true" aria-labelledby="data-report-title">
   <header class="report-head">

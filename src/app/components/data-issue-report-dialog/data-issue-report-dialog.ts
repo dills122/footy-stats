@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, HostListener, computed, effect, inject, input, signal } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { environment } from '@env/environment';
+import { DataIssueReportDialogService } from './data-issue-report-dialog.service';
 import {
   buildDataIssueWeb3FormsPayload,
   DATA_ISSUE_WEB3FORMS_ENDPOINT,
@@ -32,6 +33,7 @@ type ReportField =
   styleUrl: './data-issue-report-dialog.scss',
 })
 export class DataIssueReportDialog {
+  mode = input<'trigger' | 'host'>('trigger');
   triggerLabel = input('Report data issue');
   triggerStyle = input<'button' | 'link'>('button');
   context = input<DataIssueReportContext>({});
@@ -39,6 +41,7 @@ export class DataIssueReportDialog {
 
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly dialogService = inject(DataIssueReportDialogService);
 
   protected readonly isOpen = signal(false);
   protected readonly form = signal<DataIssueReportForm>(this.buildInitialForm());
@@ -83,7 +86,31 @@ export class DataIssueReportDialog {
   });
 
   open() {
-    this.form.set(this.buildInitialForm());
+    if (this.mode() === 'trigger') {
+      this.dialogService.open(this.context());
+      return;
+    }
+
+    this.openHost(this.context());
+  }
+
+  constructor() {
+    effect(() => {
+      if (this.mode() !== 'host') {
+        return;
+      }
+
+      const request = this.dialogService.openRequest();
+      if (!request) {
+        return;
+      }
+
+      this.openHost(request.context);
+    });
+  }
+
+  private openHost(context: DataIssueReportContext) {
+    this.form.set(this.buildInitialForm(context));
     this.submitState.set(this.isConfigured() ? 'idle' : 'missing-key');
     this.errorMessage.set('');
     this.isOpen.set(true);
@@ -91,6 +118,16 @@ export class DataIssueReportDialog {
 
   close() {
     this.isOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  protected handleEscape(event: Event) {
+    if (!this.isOpen()) {
+      return;
+    }
+
+    event.preventDefault();
+    this.close();
   }
 
   updateField(field: ReportField, value: string) {
@@ -157,8 +194,7 @@ export class DataIssueReportDialog {
     this.submit();
   }
 
-  private buildInitialForm(): DataIssueReportForm {
-    const context = this.context();
+  private buildInitialForm(context = this.context()): DataIssueReportForm {
     return {
       issueType: 'Data looks wrong',
       reporterName: '',
