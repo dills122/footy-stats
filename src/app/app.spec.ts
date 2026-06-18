@@ -80,6 +80,11 @@ describe('App', () => {
     expect(element.querySelector('a[href="/leagues/tier1/deep-stats"]')?.textContent).toContain(
       'Top flight stats'
     );
+    expect(
+      Array.from(element.querySelectorAll<HTMLAnchorElement>('a[href="/system"]')).some((link) =>
+        link.textContent?.includes('League system')
+      )
+    ).toBe(true);
   });
 
   it('shows the scroll-to-top button after scrolling down', () => {

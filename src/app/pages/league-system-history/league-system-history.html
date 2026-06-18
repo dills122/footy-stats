@@ -1,0 +1,97 @@
+<section class="league-system-page app-surface app-page-shell">
+  <header class="system-header app-page-header">
+    <div>
+      <p class="app-page-eyebrow">League System History</p>
+      <h1 class="app-page-title">English football tiers by era</h1>
+      <p class="app-page-lede">
+        Follow how the archive moves from a single Football League table into the modern pyramid,
+        including regional divisions that run in parallel rather than as separate levels.
+      </p>
+    </div>
+    <app-data-export-menu
+      title="League system history"
+      filename="footy-stats-league-system-history"
+      [summary]="exportSummary()"
+      [rows]="exportRows()"
+      [data]="eras"
+    />
+  </header>
+
+  <section class="era-strip app-panel" aria-label="Choose a football tier era">
+    @for (era of eras; track era.id) {
+    <button
+      type="button"
+      class="era-button"
+      [class.is-active]="activeEra().id === era.id"
+      [attr.aria-pressed]="activeEra().id === era.id"
+      (click)="selectEra(era.id)"
+    >
+      <span>{{ era.label }}</span>
+      <small>{{ era.headline }}</small>
+    </button>
+    }
+  </section>
+
+  <section class="infographic-shell" aria-labelledby="active-era-title">
+    <article class="era-card app-panel">
+      <div class="era-card-head">
+        <div>
+          <p class="app-page-eyebrow">{{ eraRangeLabel(activeEra()) }}</p>
+          <h2 id="active-era-title">{{ activeEra().headline }}</h2>
+        </div>
+        <a class="table-link" routerLink="/tables">
+          <mat-icon aria-hidden="true">table_chart</mat-icon>
+          <span>Open tables</span>
+        </a>
+      </div>
+      <p class="era-summary">{{ activeEra().summary }}</p>
+
+      <div class="pyramid" aria-label="Tier structure for selected era">
+        @for (tier of activeEra().tiers; track tier.label + tier.leagues.join('-')) {
+        <section class="tier-band" [class.tier-band--parallel]="tier.kind === 'parallel'">
+          <div class="tier-level">
+            <span>{{ tier.label }}</span>
+            <strong>{{ tierKeyLabel(tier) }}</strong>
+          </div>
+          <div class="tier-leagues">
+            @for (league of tier.leagues; track $index) {
+            <div class="league-node">
+              <strong>{{ league }}</strong>
+            </div>
+            }
+          </div>
+          @if (tier.note) {
+          <p>{{ tier.note }}</p>
+          }
+        </section>
+        }
+      </div>
+    </article>
+
+    <aside class="era-notes">
+      <section class="note-panel app-panel">
+        <div class="note-head">
+          <mat-icon aria-hidden="true">timeline</mat-icon>
+          <h2>What changed</h2>
+        </div>
+        <ul>
+          @for (change of activeEra().changes; track $index) {
+          <li>{{ change }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="note-panel app-panel">
+        <div class="note-head">
+          <mat-icon aria-hidden="true">info</mat-icon>
+          <h2>Archive reading notes</h2>
+        </div>
+        <ul>
+          @for (note of activeEra().archiveNotes; track $index) {
+          <li>{{ note }}</li>
+          }
+        </ul>
+      </section>
+    </aside>
+  </section>
+</section>
