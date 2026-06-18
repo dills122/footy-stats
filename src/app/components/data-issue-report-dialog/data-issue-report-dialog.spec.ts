@@ -6,11 +6,13 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { provideRouter } from '@angular/router';
 import { DATA_ISSUE_WEB3FORMS_ENDPOINT } from '@app/utils/data-issue-report';
 import { DataIssueReportDialog } from './data-issue-report-dialog';
+import { DataIssueReportDialogService } from './data-issue-report-dialog.service';
 
 describe('DataIssueReportDialog', () => {
   let component: DataIssueReportDialog;
   let fixture: ComponentFixture<DataIssueReportDialog>;
   let httpMock: HttpTestingController;
+  let dialogService: DataIssueReportDialogService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -19,9 +21,11 @@ describe('DataIssueReportDialog', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataIssueReportDialog);
+    fixture.componentRef.setInput('mode', 'host');
     fixture.componentRef.setInput('accessKey', 'test-access-key');
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
+    dialogService = TestBed.inject(DataIssueReportDialogService);
     fixture.detectChanges();
   });
 
@@ -29,11 +33,19 @@ describe('DataIssueReportDialog', () => {
     httpMock.verify();
   });
 
-  it('opens the report form from the trigger', () => {
-    fixture.nativeElement.querySelector('.report-trigger').click();
+  it('opens the hosted report form from a global request', () => {
+    dialogService.open({
+      pageTitle: 'Club profile',
+      sourcePath: '/teams/example-fc',
+      clubName: 'Example FC',
+    });
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeTruthy();
+    const inputs = Array.from(
+      fixture.nativeElement.querySelectorAll('input')
+    ) as HTMLInputElement[];
+    expect(inputs.map((input) => input.value)).toEqual(['', 'Example FC', '', '', '']);
   });
 
   it('explains why the report button is disabled', () => {
@@ -47,6 +59,16 @@ describe('DataIssueReportDialog', () => {
     expect(sendButton.disabled).toBe(true);
     expect(tooltip.message).toBe('Add a short description of what should be fixed.');
     expect(tooltip.disabled).toBe(false);
+  });
+
+  it('closes the report form with Escape', () => {
+    component.open();
+    fixture.detectChanges();
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeFalsy();
   });
 
   it('submits a data report through Web3Forms with current page context', () => {
