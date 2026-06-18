@@ -227,7 +227,7 @@
           <span>{{ relationshipLabel(relationship.relationship, relationship.direction) }}</span>
           <strong>
             @if (relationship.relatedClubId) {
-            <a [routerLink]="['/teams', relationship.relatedClubId]">
+            <a class="app-club-link" [routerLink]="['/teams', relationship.relatedClubId]">
               {{ relationship.relatedName }}
             </a>
             } @else { {{ relationship.relatedName }} }
@@ -274,7 +274,13 @@
       @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
       <div class="recent-row">
         <span data-label="Season">{{ entry.season }}</span>
-        <span data-label="Name">{{ entry.teamName }}</span>
+        <span data-label="Name">
+          @if (entry.clubId) {
+          <a class="app-club-link recent-team-link" [routerLink]="['/teams', entry.clubId]">
+            {{ entry.teamName }}
+          </a>
+          } @else { {{ entry.teamName }} }
+        </span>
         <span data-label="Tier">{{ tierLabel(entry.tier) }}</span>
         <span data-label="Position">{{ ordinal(entry.pos) }}</span>
         <span data-label="Record">{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
@@ -294,7 +300,13 @@
       <article class="mobile-recent-card">
         <div class="mobile-recent-main">
           <strong>{{ entry.season }}</strong>
+          @if (entry.clubId) {
+          <a class="app-club-link recent-team-link" [routerLink]="['/teams', entry.clubId]">
+            {{ entry.teamName }}
+          </a>
+          } @else {
           <span>{{ entry.teamName }}</span>
+          }
         </div>
         <div class="mobile-recent-facts">
           <span>{{ tierLabel(entry.tier) }} / {{ ordinal(entry.pos) }}</span>

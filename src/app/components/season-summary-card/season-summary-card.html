@@ -5,15 +5,33 @@
   <dl class="facts">
     <div class="fact">
       <dt>Champion</dt>
-      <dd>{{ champion }}</dd>
+      <dd>
+        @if (champion?.clubId) {
+        <a class="app-club-link" [routerLink]="['/teams', champion!.clubId]">
+          {{ champion!.name }}
+        </a>
+        } @else { {{ champion?.name }} }
+      </dd>
     </div>
     <div class="fact">
       <dt>Top Scoring Team</dt>
-      <dd>{{ topScoringTeam }}</dd>
+      <dd>
+        @if (topScoringTeam?.clubId) {
+        <a class="app-club-link" [routerLink]="['/teams', topScoringTeam!.clubId]">
+          {{ topScoringTeam!.name }}
+        </a>
+        } @else { {{ topScoringTeam?.name }} }
+      </dd>
     </div>
     <div class="fact">
       <dt>Best Defense</dt>
-      <dd>{{ bestDefense }}</dd>
+      <dd>
+        @if (bestDefense?.clubId) {
+        <a class="app-club-link" [routerLink]="['/teams', bestDefense!.clubId]">
+          {{ bestDefense!.name }}
+        </a>
+        } @else { {{ bestDefense?.name }} }
+      </dd>
     </div>
     <div class="fact">
       <dt>Avg Goals per Game</dt>
@@ -24,9 +42,13 @@
       <dt>Promoted</dt>
       <dd>
         <div class="chip-group">
-          @for (team of promotedTeams; track team) {
-          <span class="chip chip-up">{{ team }}</span>
-          }
+          @for (team of promotedTeams; track team) { @if (team.clubId) {
+          <a class="chip chip-up app-club-link" [routerLink]="['/teams', team.clubId]">
+            {{ team.name }}
+          </a>
+          } @else {
+          <span class="chip chip-up">{{ team.name }}</span>
+          } }
         </div>
       </dd>
     </div>
@@ -35,9 +57,13 @@
       <dt>Relegated</dt>
       <dd>
         <div class="chip-group">
-          @for (team of relegatedTeams; track team) {
-          <span class="chip chip-down">{{ team }}</span>
-          }
+          @for (team of relegatedTeams; track team) { @if (team.clubId) {
+          <a class="chip chip-down app-club-link" [routerLink]="['/teams', team.clubId]">
+            {{ team.name }}
+          </a>
+          } @else {
+          <span class="chip chip-down">{{ team.name }}</span>
+          } }
         </div>
       </dd>
     </div>

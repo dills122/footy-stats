@@ -323,17 +323,6 @@
   font-size: 0.95rem;
 }
 
-.relationship-list a {
-  color: inherit;
-  text-decoration: none;
-  text-underline-offset: 3px;
-}
-
-.relationship-list a:hover {
-  color: #fde68a;
-  text-decoration: underline;
-}
-
 .historical-status {
   gap: 9px;
   border: 1px solid var(--app-border);

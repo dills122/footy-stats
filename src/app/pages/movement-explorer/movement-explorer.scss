@@ -245,7 +245,9 @@
 .quick-pick-tab,
 .team-option,
 .preset-btn,
-.chip,
+.selected-chip,
+.selected-chip button,
+.chart-focus-button,
 .clear-btn {
   border: 1px solid var(--app-border);
   border-radius: 6px;
@@ -266,7 +268,9 @@
 .team-option:hover:not(:disabled),
 .preset-btn:hover,
 .clear-btn:hover,
-.chip:hover {
+.selected-chip:hover,
+.selected-chip button:hover,
+.chart-focus-button:hover {
   border-color: rgba(148, 163, 184, 0.42);
   color: var(--app-text-strong);
 }
@@ -354,7 +358,7 @@
   text-transform: uppercase;
 }
 
-.chip {
+.selected-chip {
   padding: 7px 9px 7px 10px;
   display: inline-flex;
   align-items: center;
@@ -363,9 +367,18 @@
   color: var(--app-text-strong);
 }
 
-.chip span {
-  color: var(--app-text-muted);
-  font-weight: 800;
+.selected-chip button {
+  min-width: 22px;
+  min-height: 22px;
+  padding: 0 5px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 5px;
+}
+
+.selected-chip button:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
 }
 
 .clear-btn {
@@ -484,33 +497,41 @@
   gap: 8px;
 }
 
-.chart-context-clubs button {
+.chart-context-club {
   border: 1px solid var(--app-border);
   border-radius: 6px;
-  padding: 5px 8px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   background: rgba(7, 10, 19, 0.18);
   color: var(--app-text-subtle);
   font-size: 0.84rem;
   font-weight: 650;
   line-height: 1.2;
-  cursor: pointer;
-  transition:
-    border-color 140ms ease,
-    background 140ms ease,
-    color 140ms ease;
 }
 
-.chart-context-clubs button:hover,
-.chart-context-clubs button:focus-visible {
+.chart-context-club:hover {
   border-color: rgba(245, 158, 11, 0.52);
   background: rgba(217, 119, 6, 0.12);
   color: var(--app-text-strong);
 }
 
-.chart-context-clubs button.is-focused {
+.chart-context-club.is-focused {
   border-color: rgba(245, 158, 11, 0.72);
   background: rgba(217, 119, 6, 0.22);
   color: #fde68a;
+}
+
+.chart-focus-button {
+  min-height: 24px;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.chart-focus-button:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
 }
 
 .empty {
@@ -681,7 +702,7 @@
 
   .team-option,
   .preset-btn,
-  .chip,
+  .selected-chip,
   .clear-btn {
     min-height: 38px;
     justify-content: center;

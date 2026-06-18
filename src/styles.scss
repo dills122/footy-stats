@@ -210,6 +210,23 @@ body {
   box-shadow: none;
 }
 
+.app-club-link {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+
+.app-club-link:hover {
+  color: #fde68a;
+  text-decoration: underline;
+}
+
+.app-club-link:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .app-data-shell {
   border-radius: 10px;
   overflow: auto;
