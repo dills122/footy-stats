@@ -595,6 +595,20 @@
     gap: 6px;
   }
 
+  .milestone-panel .panel-head {
+    flex-direction: row;
+  }
+
+  .milestone-panel--collapsed {
+    max-height: 258px;
+  }
+
+  .panel-toggle {
+    border: 1px solid rgba(245, 158, 11, 0.42);
+    border-radius: 6px;
+    padding: 5px 8px;
+  }
+
   .stat-grid {
     grid-template-columns: 1fr;
   }
