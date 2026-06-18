@@ -101,15 +101,14 @@
 }
 
 .metric-placeholder {
-  display: inline-block;
-  width: 3.2ch;
-  height: clamp(1.25rem, 2vw, 1.65rem);
-  border-radius: 6px;
   background: transparent;
+  color: transparent;
+  text-shadow: none;
 }
 
 .metric-placeholder--visible {
   background: rgba(148, 163, 184, 0.22);
+  border-color: rgba(148, 163, 184, 0.24);
 }
 
 .sr-only {
@@ -265,6 +264,6 @@
   }
 
   .metric-placeholder {
-    height: 1.25rem;
+    color: transparent;
   }
 }

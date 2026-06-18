@@ -34,10 +34,12 @@
         <span class="sr-only">{{ stat.value }}</span>
         } @else {
         <strong
-          class="metric-placeholder"
+          class="ticker-number metric-placeholder"
           [class.metric-placeholder--visible]="showArchiveLoading()"
           aria-hidden="true"
-        ></strong>
+        >
+          000
+        </strong>
         @if (showArchiveLoading()) {
         <span class="sr-only">Loading {{ stat.label }}</span>
         } } {{ stat.label }}

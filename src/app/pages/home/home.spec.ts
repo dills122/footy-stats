@@ -65,6 +65,7 @@ describe('Home', () => {
     expect(component.archiveLoaded()).toBe(false);
     expect(element.querySelector('h1')?.textContent).toContain('Explore English football history.');
     expect(element.querySelectorAll('.metric-placeholder')).toHaveLength(3);
+    expect(element.querySelectorAll('.metric-placeholder.ticker-number')).toHaveLength(3);
     expect(element.querySelectorAll('.metric-placeholder--visible')).toHaveLength(0);
     expect(element.querySelector('[role="status"]')).toBeNull();
   });
