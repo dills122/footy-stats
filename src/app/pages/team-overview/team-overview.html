@@ -28,12 +28,15 @@
     <a class="back-link" routerLink="/teams" [queryParams]="backToTeamsQueryParams()">
       Back to clubs
     </a>
-    <app-data-issue-report-dialog
-      class="header-report"
-      triggerLabel="Flag club data"
-      triggerStyle="link"
-      [context]="dataIssueContext()"
-    />
+    <div class="profile-action-links">
+      <a mat-button [routerLink]="['/teams', clubId(), 'deep-stats']">Deep stats</a>
+      <app-data-issue-report-dialog
+        class="header-report"
+        triggerLabel="Flag club data"
+        triggerStyle="link"
+        [context]="dataIssueContext()"
+      />
+    </div>
   </div>
 
   <header class="profile-header">

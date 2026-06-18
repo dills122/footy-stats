@@ -231,7 +231,7 @@
 @media print {
   .table-container {
     overflow: visible;
-    border: 1px solid #cbd5e1;
+    border: 0;
     background: #ffffff;
   }
 
@@ -240,21 +240,21 @@
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
-    font-size: 8.2pt;
+    font-size: 7.2pt;
   }
 
   .head,
   .cell {
     position: static;
-    padding: 5px 4px;
-    border-bottom: 1px solid #d1d5db;
+    padding: 3px 3px;
+    border-bottom: 1px solid #d9d9d9;
     background: #ffffff !important;
-    color: #111827 !important;
+    color: #000000 !important;
   }
 
   .head {
-    border-bottom: 2px solid #94a3b8;
-    font-size: 7pt;
+    border-bottom: 1px solid #000000;
+    font-size: 6.4pt;
   }
 
   .position-col {
@@ -279,7 +279,7 @@
     height: auto;
     border: 0;
     background: transparent;
-    color: #111827;
+    color: #000000;
     font-size: inherit;
   }
 

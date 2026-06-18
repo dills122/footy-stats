@@ -625,20 +625,21 @@
 
 @media print {
   .tier-profile {
-    gap: 12px;
+    gap: 6pt;
   }
 
   .profile-header {
-    padding-bottom: 10px;
-    border-bottom: 2px solid #111827;
+    padding-bottom: 5pt;
+    border-bottom: 1px solid #000000;
   }
 
   .stat-grid,
   .profile-grid,
   .profile-feature-grid,
   .dominance-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7pt 10pt !important;
   }
 
   .profile-panel,
@@ -649,12 +650,19 @@
   .race-row,
   .mark-row,
   .churn-list a {
-    border-color: #cbd5e1;
+    border-color: #dddddd;
     background: #ffffff;
   }
 
+  .leader-list,
+  .race-list,
+  .mark-list,
+  .churn-list {
+    gap: 0;
+  }
+
   .profile-panel {
-    padding: 10px;
+    padding: 0;
   }
 
   .profile-panel::before,
@@ -664,12 +672,12 @@
   }
 
   .panel-head {
-    margin-bottom: 8px;
-    padding-bottom: 6px;
+    margin-bottom: 4pt;
+    padding-bottom: 2pt;
   }
 
   .race-section {
-    border-color: #cbd5e1;
+    border: 0;
     background: #ffffff;
   }
 
@@ -688,8 +696,8 @@
 
   .race-list em,
   .churn-list em {
-    border-color: #cbd5e1;
+    border-color: transparent;
     background: #ffffff;
-    color: #111827;
+    color: #333333;
   }
 }

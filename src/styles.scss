@@ -287,7 +287,7 @@ button:focus-visible,
 
 @media print {
   @page {
-    margin: 0.45in;
+    margin: 0.25in;
   }
 
   :root {
@@ -297,11 +297,11 @@ button:focus-visible,
     --app-bg-spot-2: none;
     --app-bg-spot-3: none;
     --app-surface-bg: #ffffff;
-    --app-border: #cbd5e1;
-    --app-surface-border: 1px solid #cbd5e1;
-    --app-text-strong: #111827;
-    --app-text-subtle: #374151;
-    --app-text-muted: #4b5563;
+    --app-border: #d4d4d4;
+    --app-surface-border: 0;
+    --app-text-strong: #000000;
+    --app-text-subtle: #222222;
+    --app-text-muted: #555555;
   }
 
   html,
@@ -310,8 +310,10 @@ button:focus-visible,
     height: auto;
     overflow: visible !important;
     background: #ffffff !important;
-    color: #111827 !important;
-    font-size: 10pt;
+    color: #000000 !important;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 8.5pt;
+    line-height: 1.22;
   }
 
   *,
@@ -355,40 +357,232 @@ button:focus-visible,
     border: 0 !important;
     border-radius: 0 !important;
     background: #ffffff !important;
-    color: #111827 !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
   }
 
-  .app-panel,
-  .stat-grid,
-  .profile-panel,
-  .summary,
-  .table-result-shell {
-    break-inside: avoid;
+  .app-page-header,
+  .profile-header,
+  .record-header {
+    margin: 0 0 8pt !important;
+    padding: 0 0 5pt !important;
+    border: 0 !important;
+    border-bottom: 1px solid #000000 !important;
+    border-radius: 0 !important;
   }
 
   .app-page-title {
-    color: #111827 !important;
+    margin: 0 0 4pt !important;
+    color: #000000 !important;
+    font-size: 17pt !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0 !important;
   }
 
   .app-page-eyebrow,
   .app-page-lede {
-    color: #374151 !important;
+    color: #222222 !important;
+  }
+
+  .app-page-eyebrow {
+    margin: 0 0 3pt !important;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt !important;
+    font-weight: 700;
+    letter-spacing: 0.04em !important;
+  }
+
+  .app-page-lede {
+    max-width: none !important;
+    margin: 0 !important;
+    font-size: 8.5pt !important;
+    line-height: 1.22 !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  th,
+  .data-head,
+  .panel-head,
+  .stat-cell span {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  h2 {
+    margin: 0 0 4pt !important;
+    font-size: 10.5pt !important;
+  }
+
+  h3 {
+    margin: 0 0 3pt !important;
+    font-size: 8.5pt !important;
+  }
+
+  p {
+    margin: 0 0 4pt;
+  }
+
+  .stat-grid,
+  .profile-grid,
+  .profile-feature-grid,
+  .deep-grid,
+  .leaderboard-grid,
+  .race-table-grid,
+  .mark-grid,
+  .band-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8pt 12pt !important;
+    align-items: start;
+  }
+
+  .stat-grid {
+    margin: 0 0 7pt !important;
+    padding: 4pt 0 !important;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 4pt 8pt !important;
+  }
+
+  .stat-cell {
+    min-height: 0 !important;
+    margin: 0 0 5pt !important;
+    padding: 0 !important;
+    display: block !important;
+    break-inside: avoid;
+  }
+
+  .stat-cell span,
+  .stat-cell strong {
+    display: inline !important;
+    color: #000000 !important;
+    font-size: 8pt !important;
+    line-height: 1.2 !important;
+  }
+
+  .stat-cell span {
+    margin-right: 4pt;
+    font-weight: 700;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  .stat-cell span::after {
+    content: ':';
+  }
+
+  .profile-panel,
+  .deep-panel,
+  .summary,
+  .data-notice {
+    margin: 0 0 7pt !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .profile-panel::before,
+  .deep-panel::before,
+  .stat-cell::before,
+  .data-notice::before {
+    display: none !important;
+  }
+
+  .panel-head {
+    margin: 0 0 4pt !important;
+    padding: 0 0 2pt !important;
+    display: block !important;
+    border: 0 !important;
+    border-bottom: 1px solid #999999 !important;
+  }
+
+  .panel-head span {
+    display: block;
+    margin-top: 2pt;
+    color: #555555 !important;
+    font-size: 7pt !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+
+  .leader-list > div,
+  .rank-list div,
+  .race-row,
+  .mark-row,
+  .churn-list a,
+  .churn-table a,
+  .deep-table a,
+  .movement-list a,
+  .mark-grid a,
+  .band-grid div,
+  .tier-row,
+  .relationship-list > div,
+  .gap-list > div,
+  .period-list > div,
+  .milestone-list > div,
+  .historical-status,
+  .compact-snapshot-summary > div,
+  .data-row {
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 1.8pt 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid #dddddd !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .leader-list,
+  .rank-list,
+  .race-list,
+  .mark-list,
+  .churn-list,
+  .churn-table,
+  .deep-table,
+  .movement-list,
+  .mark-grid,
+  .band-grid {
+    gap: 0 !important;
+  }
+
+  em,
+  small,
+  .race-list em,
+  .churn-list em,
+  .churn-table em,
+  .deep-table em,
+  .movement-list em {
+    border: 0 !important;
+    background: transparent !important;
+    color: #333333 !important;
+    font-style: normal !important;
+  }
+
+  .data-notice {
+    border-left: 3pt solid #666666 !important;
+    padding-left: 6pt !important;
   }
 
   .team-overview {
-    gap: 12px;
+    gap: 6pt;
   }
 
   .team-overview .profile-header {
-    padding-bottom: 10px;
-    border-bottom: 2px solid #111827;
+    padding-bottom: 5pt;
+    border-bottom: 1px solid #000000;
   }
 
   .team-overview .stat-grid,
   .team-overview .profile-feature-grid,
   .team-overview .profile-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8pt 12pt !important;
   }
 
   .team-overview .profile-panel,
@@ -400,12 +594,12 @@ button:focus-visible,
   .team-overview .milestone-list > div,
   .team-overview .historical-status,
   .team-overview .compact-snapshot-summary > div {
-    border-color: #cbd5e1;
+    border-color: #dddddd;
     background: #ffffff;
   }
 
   .team-overview .profile-panel {
-    padding: 10px;
+    padding: 0;
   }
 
   .team-overview .profile-panel::before,
@@ -427,13 +621,13 @@ button:focus-visible,
 
   .team-overview .recent-panel {
     overflow: visible;
-    break-before: page;
+    break-before: auto;
   }
 
   .team-overview .recent-table {
     min-width: 0;
     display: grid;
-    border-color: #cbd5e1;
+    border-color: #dddddd;
     background: #ffffff;
     font-size: 8pt;
   }
@@ -444,7 +638,7 @@ button:focus-visible,
 
   .team-overview .recent-row span {
     padding: 5px 4px;
-    color: #111827;
+    color: #000000;
     background: #ffffff !important;
   }
 

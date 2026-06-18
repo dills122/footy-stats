@@ -83,6 +83,13 @@ describe('TierProfile', () => {
     expect(latestTableLink?.getAttribute('href')).toContain('/tables?season=2021&tier=tier1');
   });
 
+  it('links to the deep stats route for the selected tier', () => {
+    const links = Array.from(fixture.nativeElement.querySelectorAll<HTMLAnchorElement>('a'));
+    const deepStatsLink = links.find((link) => link.textContent?.includes('Deep stats'));
+
+    expect(deepStatsLink?.getAttribute('href')).toBe('/leagues/tier1/deep-stats');
+  });
+
   it('collapses secondary close season sections by default', () => {
     const element: HTMLElement = fixture.nativeElement;
     const survivalToggle = Array.from(element.querySelectorAll<HTMLButtonElement>('button')).find(

@@ -1,4 +1,6 @@
 import { signal, type WritableSignal } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { provideRouter } from '@angular/router';
@@ -60,6 +62,8 @@ describe('TeamOverview', () => {
             loadData: loadDataSpy,
           },
         },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         provideRouter([]),
       ],
     }).compileComponents();
@@ -107,6 +111,33 @@ describe('TeamOverview', () => {
     component.teamsReturnFilter.set('top-flight');
 
     expect(component.backToTeamsQueryParams()).toEqual({ letter: 'A', filter: 'top-flight' });
+  });
+
+  it('links to the club deep stats route', () => {
+    component.club = (() => ({
+      clubId: 'alpha fc',
+      canonicalName: 'Alpha FC',
+      derived: {
+        source: 'football-data-output',
+        aliases: ['Alpha FC'],
+        observedNames: [],
+        observedNamePeriods: [],
+        firstSeenSeason: 2020,
+        lastSeenSeason: 2025,
+        seasonsSeen: [],
+        totalSeasonsSeen: 1,
+        tiersSeen: [],
+        tierSeasons: [],
+      },
+    })) as unknown as typeof component.club;
+    component.metadataLoaded = (() => true) as typeof component.metadataLoaded;
+    component.clubId = (() => 'alpha fc') as typeof component.clubId;
+    fixture.detectChanges();
+
+    const links = Array.from(fixture.nativeElement.querySelectorAll<HTMLAnchorElement>('a'));
+    const deepStatsLink = links.find((link) => link.textContent?.includes('Deep stats'));
+
+    expect(deepStatsLink?.getAttribute('href')).toBe('/teams/alpha%20fc/deep-stats');
   });
 
   it('labels identity periods ending in the latest tracked season as current', () => {

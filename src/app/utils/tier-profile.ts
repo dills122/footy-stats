@@ -68,6 +68,13 @@ export interface TierProfileData {
 
 type TeamLookup = (teamId: number) => Team | undefined;
 
+export interface TierProfileBuildOptions {
+  leaderLimit?: number;
+  raceLimit?: number;
+  runLimit?: number;
+  churnLimit?: number;
+}
+
 interface RaceTieBreaker {
   gap: number | null;
   label: string;
@@ -77,7 +84,8 @@ interface RaceTieBreaker {
 export function buildTierProfileData(
   entries: readonly LeagueTableEntry[],
   tier: string,
-  getTeamById: TeamLookup
+  getTeamById: TeamLookup,
+  options: TierProfileBuildOptions = {}
 ): TierProfileData {
   const targetEntries = entries.filter((entry) => entry.tier === tier);
   const sourceTier = adjacentLowerTier(tier);
@@ -86,6 +94,10 @@ export function buildTierProfileData(
   const sourceSeasonTables = groupSeasonTables(sourceEntries);
   const seasons = Array.from(seasonTables.keys()).sort((a, b) => a - b);
   const clubKeys = new Set(targetEntries.map((entry) => clubKey(entry)));
+  const leaderLimit = options.leaderLimit ?? 8;
+  const raceLimit = options.raceLimit ?? 6;
+  const runLimit = options.runLimit ?? 6;
+  const churnLimit = options.churnLimit ?? 6;
 
   return {
     tier,
@@ -95,30 +107,44 @@ export function buildTierProfileData(
     totalRows: targetEntries.length,
     promotionInCount: sourceEntries.filter((entry) => entry.wasPromoted).length,
     relegationOutCount: targetEntries.filter((entry) => entry.wasRelegated).length,
-    mostSeasons: rankClubTotals(targetEntries, getTeamById, () => true, 'seasons'),
-    mostTitles: rankClubTotals(targetEntries, getTeamById, (entry) => entry.pos === 1, 'titles'),
+    mostSeasons: rankClubTotals(targetEntries, getTeamById, () => true, 'seasons', leaderLimit),
+    mostTitles: rankClubTotals(
+      targetEntries,
+      getTeamById,
+      (entry) => entry.pos === 1,
+      'titles',
+      leaderLimit
+    ),
     mostTopThreeFinishes: rankClubTotals(
       targetEntries,
       getTeamById,
       (entry) => entry.pos <= 3,
-      'top-three finishes'
+      'top-three finishes',
+      leaderLimit
     ),
-    longestStays: longestContinuousStays(targetEntries, seasons, getTeamById, false),
-    longestActiveStays: longestContinuousStays(targetEntries, seasons, getTeamById, true),
+    longestStays: longestContinuousStays(targetEntries, seasons, getTeamById, false, runLimit),
+    longestActiveStays: longestContinuousStays(targetEntries, seasons, getTeamById, true, runLimit),
     mostPromotionsIn: sourceTier
-      ? rankClubTotals(sourceEntries, getTeamById, (entry) => entry.wasPromoted, 'promotions')
+      ? rankClubTotals(
+          sourceEntries,
+          getTeamById,
+          (entry) => entry.wasPromoted,
+          'promotions',
+          leaderLimit
+        )
       : [],
     mostRelegationsOut: rankClubTotals(
       targetEntries,
       getTeamById,
       (entry) => entry.wasRelegated,
-      'relegations'
+      'relegations',
+      leaderLimit
     ),
-    closeTitleRaces: closeTitleRaces(seasonTables, getTeamById),
-    closeSurvivalRaces: closeSurvivalRaces(seasonTables, getTeamById),
-    closePromotionRaces: closePromotionRaces(sourceSeasonTables, getTeamById),
+    closeTitleRaces: closeTitleRaces(seasonTables, getTeamById, raceLimit),
+    closeSurvivalRaces: closeSurvivalRaces(seasonTables, getTeamById, raceLimit),
+    closePromotionRaces: closePromotionRaces(sourceSeasonTables, getTeamById, raceLimit),
     notableSeasons: notableSeasons(seasonTables, getTeamById),
-    churnSeasons: churnSeasons(seasonTables, sourceSeasonTables),
+    churnSeasons: churnSeasons(seasonTables, sourceSeasonTables, churnLimit),
   };
 }
 
@@ -126,7 +152,8 @@ function rankClubTotals(
   entries: readonly LeagueTableEntry[],
   getTeamById: TeamLookup,
   include: (entry: LeagueTableEntry) => boolean,
-  noun: string
+  noun: string,
+  limit: number
 ): TierClubTotal[] {
   const counts = new Map<string, { entry: LeagueTableEntry; count: number }>();
 
@@ -148,7 +175,7 @@ function rankClubTotals(
       detail: `${count} ${count === 1 ? singularNoun(noun) : noun}`,
     }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
-    .slice(0, 8);
+    .slice(0, limit);
 }
 
 function singularNoun(noun: string): string {
@@ -159,7 +186,8 @@ function longestContinuousStays(
   entries: readonly LeagueTableEntry[],
   seasons: readonly number[],
   getTeamById: TeamLookup,
-  activeOnly: boolean
+  activeOnly: boolean,
+  limit: number
 ): TierDominanceRun[] {
   const latestSeason = seasons.at(-1);
   const entriesByClub = new Map<string, LeagueTableEntry[]>();
@@ -205,7 +233,7 @@ function longestContinuousStays(
         a.startSeason - b.startSeason ||
         a.name.localeCompare(b.name)
     )
-    .slice(0, 6);
+    .slice(0, limit);
 }
 
 function uniqueSeasonEntries(entries: readonly LeagueTableEntry[]): LeagueTableEntry[] {
@@ -252,7 +280,8 @@ function seasonRange(startSeason: number, endSeason: number): string {
 
 function closeTitleRaces(
   seasonTables: ReadonlyMap<number, LeagueTableEntry[]>,
-  getTeamById: TeamLookup
+  getTeamById: TeamLookup,
+  limit: number
 ): TierRaceRow[] {
   return Array.from(seasonTables.entries())
     .flatMap(([season, table]) => {
@@ -266,12 +295,13 @@ function closeTitleRaces(
       return [raceRow(season, champion, runnerUp, champion.points - runnerUp.points, getTeamById)];
     })
     .sort(byClosestRace)
-    .slice(0, 6);
+    .slice(0, limit);
 }
 
 function closeSurvivalRaces(
   seasonTables: ReadonlyMap<number, LeagueTableEntry[]>,
-  getTeamById: TeamLookup
+  getTeamById: TeamLookup,
+  limit: number
 ): TierRaceRow[] {
   return Array.from(seasonTables.entries())
     .flatMap(([season, table]) => {
@@ -297,12 +327,13 @@ function closeSurvivalRaces(
       ];
     })
     .sort(byClosestRace)
-    .slice(0, 6);
+    .slice(0, limit);
 }
 
 function closePromotionRaces(
   sourceSeasonTables: ReadonlyMap<number, LeagueTableEntry[]>,
-  getTeamById: TeamLookup
+  getTeamById: TeamLookup,
+  limit: number
 ): TierRaceRow[] {
   return Array.from(sourceSeasonTables.entries())
     .flatMap(([season, table]) => {
@@ -329,7 +360,7 @@ function closePromotionRaces(
       ];
     })
     .sort(byClosestRace)
-    .slice(0, 6);
+    .slice(0, limit);
 }
 
 function notableSeasons(
@@ -392,7 +423,8 @@ function notableSeasons(
 
 function churnSeasons(
   seasonTables: ReadonlyMap<number, LeagueTableEntry[]>,
-  sourceSeasonTables: ReadonlyMap<number, LeagueTableEntry[]>
+  sourceSeasonTables: ReadonlyMap<number, LeagueTableEntry[]>,
+  limit: number
 ): TierSeasonChurn[] {
   return Array.from(seasonTables.entries())
     .map(([season, table]) => {
@@ -409,7 +441,7 @@ function churnSeasons(
       };
     })
     .sort((a, b) => b.totalMovement - a.totalMovement || b.season - a.season)
-    .slice(0, 6);
+    .slice(0, limit);
 }
 
 function groupSeasonTables(entries: readonly LeagueTableEntry[]): Map<number, LeagueTableEntry[]> {

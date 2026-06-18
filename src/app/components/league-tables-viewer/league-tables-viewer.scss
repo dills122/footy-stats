@@ -456,22 +456,22 @@ app-season-summary-card {
 
 @media print {
   .table-record {
-    gap: 14px;
+    gap: 7pt;
   }
 
   .record-header {
-    padding-bottom: 10px;
+    padding-bottom: 5pt;
     display: block;
-    border-bottom: 2px solid #111827;
+    border-bottom: 1px solid #000000;
   }
 
   .record-selection {
-    color: #374151;
+    color: #222222;
     font-weight: 800;
   }
 
   .data-notice {
-    border-color: #cbd5e1;
+    border-color: #666666;
     background: #ffffff;
   }
 
@@ -481,7 +481,7 @@ app-season-summary-card {
   }
 
   .table-result {
-    gap: 12px;
+    gap: 6pt;
     opacity: 1;
     transform: none;
   }

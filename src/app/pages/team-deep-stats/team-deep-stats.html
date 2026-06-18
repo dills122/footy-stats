@@ -1,0 +1,182 @@
+@if (!metadataLoaded()) { @if (loadFailed()) {
+<div class="loading loading--error app-page-shell" role="alert">
+  <p>Club deep stats could not load.</p>
+  <button type="button" mat-button (click)="retryArchiveLoad()">Retry</button>
+</div>
+} @else if (showLoadingState()) {
+<div class="loading app-page-shell" role="status" aria-live="polite">Loading deep stats...</div>
+} } @else if (!club()) {
+<section class="deep-stats app-surface app-page-shell">
+  <nav class="profile-top-actions" aria-label="Club deep stats actions">
+    <a class="back-link" routerLink="/teams">Back to clubs</a>
+  </nav>
+  <div class="empty-state app-panel">
+    <p class="app-page-eyebrow">Deep Stats</p>
+    <h1>Club not found</h1>
+    <p>The requested club identity is not available in the current metadata release.</p>
+  </div>
+</section>
+} @else {
+<section class="deep-stats app-surface app-page-shell">
+  <nav class="profile-top-actions" aria-label="Club deep stats actions">
+    <a class="back-link" [routerLink]="['/teams', clubId()]">Back to overview</a>
+    <div class="profile-action-links">
+      <button type="button" mat-button (click)="printPage()">Print</button>
+      <a mat-stroked-button routerLink="/teams">Club index</a>
+    </div>
+  </nav>
+
+  <header class="profile-header">
+    <p class="app-page-eyebrow">Deep Stats</p>
+    <h1 class="app-page-title">{{ club()!.canonicalName }}</h1>
+    <p class="app-page-lede">
+      Dense archive view for {{ deepStats().totals.seasons }} tracked table rows.
+    </p>
+  </header>
+
+  <section class="stat-grid" aria-label="Deep club summary">
+    <div class="stat-cell">
+      <span>Record</span>
+      <strong>
+        {{ deepStats().totals.won }}-{{ deepStats().totals.drawn }}-{{ deepStats().totals.lost }}
+      </strong>
+    </div>
+    <div class="stat-cell">
+      <span>Total Points</span>
+      <strong>{{ deepStats().totals.points }}</strong>
+    </div>
+    <div class="stat-cell">
+      <span>Goal Difference</span>
+      <strong>{{ signedNumber(deepStats().totals.goalDifference) }}</strong>
+    </div>
+    <div class="stat-cell">
+      <span>Points Per Game</span>
+      <strong>{{ formatDecimal(deepStats().totals.pointsPerGame) }}</strong>
+    </div>
+  </section>
+
+  <div class="deep-grid">
+    <section class="deep-panel app-panel">
+      <div class="panel-head">
+        <h2>Record Marks</h2>
+        <span>{{ deepStats().recordMarks.length }} marks</span>
+      </div>
+      <div class="mark-grid">
+        @for (mark of deepStats().recordMarks; track mark.label) {
+        <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(mark.season, mark.tier)">
+          <span>{{ mark.label }}</span>
+          <strong>{{ mark.value }}</strong>
+          <small>{{ mark.detail }}</small>
+        </a>
+        }
+      </div>
+    </section>
+
+    <section class="deep-panel app-panel">
+      <div class="panel-head">
+        <h2>Position Bands</h2>
+        <span>archive share</span>
+      </div>
+      <div class="band-grid">
+        @for (band of deepStats().positionBands; track band.label) {
+        <div>
+          <span>{{ band.label }}</span>
+          <strong>{{ band.count }}</strong>
+          <small>{{ band.detail }}</small>
+        </div>
+        }
+      </div>
+    </section>
+  </div>
+
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>Tier Breakdown</h2>
+      <span>{{ deepStats().tierRows.length }} tiers</span>
+    </div>
+    <div class="data-table tier-table" role="table" aria-label="Club tier breakdown">
+      <div class="data-row data-head" role="row">
+        <span role="columnheader">Tier</span>
+        <span role="columnheader">Seasons</span>
+        <span role="columnheader">Range</span>
+        <span role="columnheader">Best</span>
+        <span role="columnheader">Avg Pos</span>
+        <span role="columnheader">Points</span>
+        <span role="columnheader">Moves</span>
+      </div>
+      @for (row of deepStats().tierRows; track row.tier) {
+      <div class="data-row" role="row">
+        <span role="cell">
+          <a class="app-club-link" [routerLink]="['/leagues', row.tier]">{{ row.tierLabel }}</a>
+        </span>
+        <span role="cell">{{ row.seasons }}</span>
+        <span role="cell">{{ row.firstSeason }}-{{ row.lastSeason }}</span>
+        <span role="cell">{{ ordinal(row.bestPosition) }} / {{ row.bestSeason }}</span>
+        <span role="cell">{{ formatDecimal(row.averagePosition) }}</span>
+        <span role="cell">{{ row.points }}</span>
+        <span role="cell">{{ row.movementEvents }}</span>
+      </div>
+      }
+    </div>
+  </section>
+
+  @if (deepStats().movementRows.length) {
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>Movement Seasons</h2>
+      <span>{{ deepStats().movementRows.length }} markers</span>
+    </div>
+    <div class="movement-list">
+      @for (row of deepStats().movementRows; track row.season + row.tier) {
+      <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season, row.tier)">
+        <strong>{{ row.season }}</strong>
+        <span>{{ row.movementLabel }}</span>
+        <span>{{ row.tierLabel }} / {{ ordinal(row.position) }}</span>
+        <em>{{ row.points }} pts</em>
+      </a>
+      }
+    </div>
+  </section>
+  }
+
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>Season Rows</h2>
+      <span>{{ deepStats().seasonRows.length }} rows</span>
+    </div>
+    <div class="data-table season-table" role="table" aria-label="Club season rows">
+      <div class="data-row data-head" role="row">
+        <span role="columnheader">Season</span>
+        <span role="columnheader">Name</span>
+        <span role="columnheader">Tier</span>
+        <span role="columnheader">Pos</span>
+        <span role="columnheader">P</span>
+        <span role="columnheader">W-D-L</span>
+        <span role="columnheader">GF-GA</span>
+        <span role="columnheader">GD</span>
+        <span role="columnheader">Pts</span>
+        <span role="columnheader">PPG</span>
+      </div>
+      @for (row of deepStats().seasonRows; track row.season + row.tier + row.teamName) {
+      <a
+        class="data-row"
+        role="row"
+        [routerLink]="['/tables']"
+        [queryParams]="tableQueryParams(row.season, row.tier)"
+      >
+        <span role="cell">{{ row.season }}</span>
+        <span role="cell">{{ row.teamName }}</span>
+        <span role="cell">{{ row.tierLabel }}</span>
+        <span role="cell">{{ ordinal(row.position) }}</span>
+        <span role="cell">{{ row.played }}</span>
+        <span role="cell">{{ row.won }}-{{ row.drawn }}-{{ row.lost }}</span>
+        <span role="cell">{{ row.goalsFor }}-{{ row.goalsAgainst }}</span>
+        <span role="cell">{{ signedNumber(row.goalDifference) }}</span>
+        <span role="cell">{{ row.points }}</span>
+        <span role="cell">{{ formatDecimal(row.pointsPerGame) }}</span>
+      </a>
+      }
+    </div>
+  </section>
+</section>
+}

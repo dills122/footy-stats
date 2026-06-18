@@ -1,0 +1,366 @@
+:host {
+  display: block;
+}
+
+.loading,
+.empty-state {
+  color: var(--app-text-muted);
+}
+
+.deep-stats {
+  display: grid;
+  gap: 20px;
+}
+
+.profile-top-actions,
+.profile-action-links,
+.panel-head,
+.movement-list a {
+  display: flex;
+  align-items: center;
+}
+
+.profile-top-actions,
+.panel-head {
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.profile-action-links {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.back-link {
+  width: fit-content;
+  color: var(--app-text-muted);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--app-text-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.profile-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.profile-header .app-page-title {
+  margin: 8px 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.stat-grid,
+.deep-grid,
+.mark-grid,
+.band-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.stat-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.deep-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mark-grid,
+.band-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stat-cell,
+.deep-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.06), transparent 90px),
+    color-mix(in srgb, var(--app-surface-bg) 86%, transparent);
+}
+
+.stat-cell {
+  min-height: 72px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 11px 12px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+}
+
+.deep-panel {
+  padding: 16px;
+}
+
+.stat-cell::before,
+.deep-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: rgba(217, 119, 6, 0.74);
+}
+
+.stat-cell:nth-child(2)::before,
+.deep-panel:nth-of-type(2)::before {
+  background: rgba(96, 165, 250, 0.72);
+}
+
+.stat-cell:nth-child(3)::before {
+  background: rgba(34, 197, 94, 0.72);
+}
+
+.stat-cell:nth-child(4)::before {
+  background: rgba(20, 184, 166, 0.72);
+}
+
+.stat-cell span,
+.panel-head span {
+  color: var(--app-text-muted);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stat-cell strong {
+  color: var(--app-text-strong);
+  font-size: 1.05rem;
+}
+
+.panel-head {
+  margin-bottom: 14px;
+  padding: 0 0 11px 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.26);
+}
+
+.panel-head h2 {
+  margin: 0;
+  color: var(--app-text-strong);
+  font-size: 1.02rem;
+}
+
+.mark-grid a,
+.band-grid div,
+.movement-list a,
+.data-row {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 7px;
+  background: rgba(7, 10, 19, 0.2);
+}
+
+.mark-grid a,
+.band-grid div {
+  min-height: 82px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 10px 11px;
+}
+
+.mark-grid a,
+.movement-list a,
+.season-table a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mark-grid a:hover,
+.mark-grid a:focus-visible,
+.movement-list a:hover,
+.movement-list a:focus-visible,
+.season-table a:hover,
+.season-table a:focus-visible {
+  border-color: rgba(245, 158, 11, 0.48);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.mark-grid span,
+.band-grid span {
+  color: var(--app-text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.mark-grid strong,
+.band-grid strong,
+.movement-list em {
+  color: var(--app-text-strong);
+  font-size: 1.05rem;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.mark-grid small,
+.band-grid small {
+  color: var(--app-text-muted);
+}
+
+.data-table,
+.movement-list {
+  display: grid;
+  gap: 7px;
+}
+
+.data-row {
+  display: grid;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 8px 10px;
+  color: var(--app-text-subtle);
+}
+
+.tier-table .data-row {
+  grid-template-columns: minmax(150px, 1fr) 78px 120px 112px 84px 82px 72px;
+}
+
+.season-table .data-row {
+  grid-template-columns: 74px minmax(150px, 1.1fr) minmax(
+      132px,
+      0.9fr
+    ) 64px 52px 86px 76px 58px 60px 60px;
+}
+
+.data-head {
+  min-height: 34px;
+  color: var(--app-text-muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(7, 10, 19, 0.38);
+}
+
+.movement-list a {
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 42px;
+  padding: 8px 10px;
+  color: var(--app-text-subtle);
+}
+
+@media (max-width: 980px) {
+  .profile-top-actions,
+  .panel-head,
+  .movement-list a {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-action-links {
+    justify-content: flex-start;
+  }
+
+  .stat-grid,
+  .deep-grid,
+  .mark-grid,
+  .band-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .data-table {
+    gap: 10px;
+  }
+
+  .data-head {
+    display: none;
+  }
+
+  .tier-table .data-row,
+  .season-table .data-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media print {
+  .deep-stats {
+    gap: 6pt;
+  }
+
+  .profile-top-actions {
+    display: none;
+  }
+
+  .deep-grid,
+  .mark-grid,
+  .band-grid,
+  .stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7pt 10pt !important;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .data-table {
+    gap: 0;
+    font-size: 7.2pt;
+  }
+
+  .data-head {
+    display: grid !important;
+    border-bottom: 1px solid #000000 !important;
+    color: #000000;
+    font-size: 6.5pt;
+    letter-spacing: 0;
+  }
+
+  .tier-table .data-row {
+    grid-template-columns: minmax(84pt, 1.2fr) 34pt 58pt 58pt 42pt 42pt 34pt !important;
+  }
+
+  .season-table .data-row {
+    grid-template-columns: 34pt minmax(72pt, 1.3fr) minmax(
+        58pt,
+        0.9fr
+      ) 28pt 24pt 40pt 38pt 28pt 30pt 30pt !important;
+  }
+
+  .mark-grid a,
+  .band-grid div {
+    min-height: 0;
+    padding: 2pt 0 !important;
+  }
+
+  .movement-list a {
+    min-height: 0;
+    display: grid !important;
+    grid-template-columns: 34pt 52pt minmax(0, 1fr) 36pt !important;
+    align-items: center !important;
+    gap: 6pt !important;
+    padding: 2pt 0 !important;
+  }
+
+  .deep-panel,
+  .stat-cell,
+  .mark-grid a,
+  .band-grid div,
+  .movement-list a,
+  .data-row {
+    border-color: #dddddd;
+    background: #ffffff;
+  }
+
+  .deep-panel {
+    padding: 0;
+  }
+
+  .deep-panel::before,
+  .stat-cell::before {
+    display: none;
+  }
+}

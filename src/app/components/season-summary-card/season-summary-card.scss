@@ -174,19 +174,18 @@ a.chip:focus-visible,
 @media print {
   .summary {
     display: block;
-    padding: 8px 0;
-    border-color: #cbd5e1;
-    break-inside: avoid;
+    padding: 4pt 0;
+    border: 0;
   }
 
   .summary-header {
-    margin-bottom: 8px;
+    margin-bottom: 4pt;
   }
 
   .facts {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px 14px;
+    gap: 2pt 10pt;
   }
 
   .fact,
@@ -206,12 +205,12 @@ a.chip:focus-visible,
   }
 
   .print-movement-list {
-    margin-top: 4px;
+    margin-top: 2pt;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 8px;
-    font-size: 0.82rem;
-    line-height: 1.35;
+    gap: 1pt 5pt;
+    font-size: 7.4pt;
+    line-height: 1.2;
   }
 
   .print-movement-list span:not(:last-child)::after {
