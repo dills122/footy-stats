@@ -3,7 +3,7 @@
 FootyStats is an English football archive for exploring historical league tables,
 club records, tier movement, and long-range promotion/relegation patterns.
 
-Running site: [FootyStats](https://dills122.github.io/footy-stats/dashboard)
+Running site: [FootyStats](https://footy.dsteele.dev/)
 
 ## What You Can Explore
 

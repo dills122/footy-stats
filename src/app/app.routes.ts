@@ -10,7 +10,7 @@ import { Teams } from './pages/teams/teams';
 import { TierProfile } from './pages/tier-profile/tier-profile';
 
 export const routes: Routes = [
-  { path: 'dashboard', component: Home },
+  { path: '', component: Home, pathMatch: 'full' },
   { path: 'tables', component: LeagueTableHistoric },
   { path: 'system', component: LeagueSystemHistory },
   { path: 'movement', component: MovementExplorer },
@@ -22,9 +22,6 @@ export const routes: Routes = [
   //   { path: 'matches', component: MatchesComponent },
   //   { path: 'rankings', component: RankingsComponent },
 
-  // optional redirect so "/" goes to dashboard
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-
   // catch-all route
-  { path: '**', redirectTo: '/dashboard' },
+  { path: '**', redirectTo: '' },
 ];
