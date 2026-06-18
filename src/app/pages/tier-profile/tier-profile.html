@@ -99,6 +99,90 @@
     </div>
   </section>
 
+  <section class="profile-panel app-panel dominance-panel">
+    <div class="panel-head">
+      <h2>Dominance</h2>
+      <span>Titles, podiums, and stays</span>
+    </div>
+    <div class="dominance-grid">
+      <section aria-label="Most titles in this tier">
+        <h3>Most titles</h3>
+        @if (topRow(profile()!.mostTitles); as row) {
+        <div class="dominance-card">
+          <span>
+            @if (row.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+            } @else { {{ row.name }} }
+          </span>
+          <strong>{{ row.detail }}</strong>
+          @if (previewNames(profile()!.mostTitles); as nextNames) {
+          <small>Next: {{ nextNames }}</small>
+          }
+        </div>
+        } @else {
+        <p class="empty-copy">No title leaders are available for this view.</p>
+        }
+      </section>
+
+      <section aria-label="Most top-three finishes in this tier">
+        <h3>Top-three finishes</h3>
+        @if (topRow(profile()!.mostTopThreeFinishes); as row) {
+        <div class="dominance-card">
+          <span>
+            @if (row.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+            } @else { {{ row.name }} }
+          </span>
+          <strong>{{ row.detail }}</strong>
+          @if (previewNames(profile()!.mostTopThreeFinishes); as nextNames) {
+          <small>Next: {{ nextNames }}</small>
+          }
+        </div>
+        } @else {
+        <p class="empty-copy">No top-three leaders are available for this view.</p>
+        }
+      </section>
+
+      <section aria-label="Longest continuous stay in this tier">
+        <h3>Longest stay</h3>
+        @if (topRow(profile()!.longestStays); as row) {
+        <div class="dominance-card">
+          <span>
+            @if (row.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+            } @else { {{ row.name }} }
+          </span>
+          <strong>{{ row.detail }}</strong>
+          @if (previewNames(profile()!.longestStays); as nextNames) {
+          <small>Next: {{ nextNames }}</small>
+          }
+        </div>
+        } @else {
+        <p class="empty-copy">No continuous stay data is available for this view.</p>
+        }
+      </section>
+
+      <section aria-label="Longest active stay in this tier">
+        <h3>Active stay</h3>
+        @if (topRow(profile()!.longestActiveStays); as row) {
+        <div class="dominance-card">
+          <span>
+            @if (row.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+            } @else { {{ row.name }} }
+          </span>
+          <strong>{{ row.detail }}</strong>
+          @if (previewNames(profile()!.longestActiveStays); as nextNames) {
+          <small>Next: {{ nextNames }}</small>
+          }
+        </div>
+        } @else {
+        <p class="empty-copy">No active stay data is available for this view.</p>
+        }
+      </section>
+    </div>
+  </section>
+
   <div class="profile-feature-grid">
     <section class="profile-panel app-panel movement-panel">
       <div class="panel-head">
@@ -154,105 +238,150 @@
         <span>Smallest points gaps</span>
       </div>
       <div class="race-groups">
-        <section>
-          <h3>Title races</h3>
-          <div class="race-list">
-            @for (row of raceRows(profile()!.closeTitleRaces); track row.season) {
-            <div class="race-row">
-              <a
-                class="race-season-link"
-                [routerLink]="['/tables']"
-                [queryParams]="tableQueryParams(row.season)"
-              >
-                {{ row.season }}
-              </a>
-              <span class="race-matchup">
-                @if (row.primaryClubId) {
-                <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
-                  {{ row.primaryName }}
+        <section class="race-section">
+          <button
+            type="button"
+            class="race-section-toggle"
+            aria-controls="title-race-list"
+            [attr.aria-expanded]="isRaceSectionExpanded('title')"
+            (click)="toggleRaceSection('title')"
+          >
+            <span>Title races</span>
+            <em>{{ raceRows(profile()!.closeTitleRaces).length }} shown</em>
+          </button>
+          <div
+            id="title-race-list"
+            class="race-section-body"
+            [hidden]="!isRaceSectionExpanded('title')"
+          >
+            <div class="race-list">
+              @for (row of raceRows(profile()!.closeTitleRaces); track row.season) {
+              <div class="race-row">
+                <a
+                  class="race-season-link"
+                  [routerLink]="['/tables']"
+                  [queryParams]="tableQueryParams(row.season)"
+                >
+                  {{ row.season }}
                 </a>
-                } @else { {{ row.primaryName }} }
-                <span>over</span>
-                @if (row.secondaryClubId) {
-                <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
-                  {{ row.secondaryName }}
-                </a>
-                } @else { {{ row.secondaryName }} }
-              </span>
-              <em>{{ row.detail }}</em>
+                <span class="race-matchup">
+                  @if (row.primaryClubId) {
+                  <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                    {{ row.primaryName }}
+                  </a>
+                  } @else { {{ row.primaryName }} }
+                  <span>over</span>
+                  @if (row.secondaryClubId) {
+                  <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                    {{ row.secondaryName }}
+                  </a>
+                  } @else { {{ row.secondaryName }} }
+                </span>
+                <em>{{ row.detail }}</em>
+              </div>
+              }
             </div>
+          </div>
+        </section>
+
+        <section class="race-section">
+          <button
+            type="button"
+            class="race-section-toggle"
+            aria-controls="survival-race-list"
+            [attr.aria-expanded]="isRaceSectionExpanded('survival')"
+            (click)="toggleRaceSection('survival')"
+          >
+            <span>Survival races</span>
+            <em>{{ raceRows(profile()!.closeSurvivalRaces).length }} shown</em>
+          </button>
+          <div
+            id="survival-race-list"
+            class="race-section-body"
+            [hidden]="!isRaceSectionExpanded('survival')"
+          >
+            @if (raceRows(profile()!.closeSurvivalRaces).length) {
+            <div class="race-list">
+              @for (row of raceRows(profile()!.closeSurvivalRaces); track row.season) {
+              <div class="race-row">
+                <a
+                  class="race-season-link"
+                  [routerLink]="['/tables']"
+                  [queryParams]="tableQueryParams(row.season)"
+                >
+                  {{ row.season }}
+                </a>
+                <span class="race-matchup">
+                  @if (row.primaryClubId) {
+                  <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                    {{ row.primaryName }}
+                  </a>
+                  } @else { {{ row.primaryName }} }
+                  <span>above</span>
+                  @if (row.secondaryClubId) {
+                  <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                    {{ row.secondaryName }}
+                  </a>
+                  } @else { {{ row.secondaryName }} }
+                </span>
+                <em>{{ row.detail }}</em>
+              </div>
+              }
+            </div>
+            } @else {
+            <p class="empty-copy">No relegation line could be calculated.</p>
             }
           </div>
         </section>
 
-        <section>
-          <h3>Survival races</h3>
-          @if (raceRows(profile()!.closeSurvivalRaces).length) {
-          <div class="race-list">
-            @for (row of raceRows(profile()!.closeSurvivalRaces); track row.season) {
-            <div class="race-row">
-              <a
-                class="race-season-link"
-                [routerLink]="['/tables']"
-                [queryParams]="tableQueryParams(row.season)"
-              >
-                {{ row.season }}
-              </a>
-              <span class="race-matchup">
-                @if (row.primaryClubId) {
-                <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
-                  {{ row.primaryName }}
+        <section class="race-section">
+          <button
+            type="button"
+            class="race-section-toggle"
+            aria-controls="promotion-race-list"
+            [attr.aria-expanded]="isRaceSectionExpanded('promotion')"
+            (click)="toggleRaceSection('promotion')"
+          >
+            <span>Promotion races into {{ tierLabel() }}</span>
+            <em>{{ raceRows(profile()!.closePromotionRaces).length }} shown</em>
+          </button>
+          <div
+            id="promotion-race-list"
+            class="race-section-body"
+            [hidden]="!isRaceSectionExpanded('promotion')"
+          >
+            @if (raceRows(profile()!.closePromotionRaces).length) {
+            <div class="race-list">
+              @for (row of raceRows(profile()!.closePromotionRaces); track row.season) {
+              <div class="race-row">
+                <a
+                  class="race-season-link"
+                  [routerLink]="['/tables']"
+                  [queryParams]="sourceTableQueryParams(row.season)"
+                >
+                  {{ row.season }}
                 </a>
-                } @else { {{ row.primaryName }} }
-                <span>above</span>
-                @if (row.secondaryClubId) {
-                <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
-                  {{ row.secondaryName }}
-                </a>
-                } @else { {{ row.secondaryName }} }
-              </span>
-              <em>{{ row.detail }}</em>
+                <span class="race-matchup">
+                  @if (row.primaryClubId) {
+                  <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                    {{ row.primaryName }}
+                  </a>
+                  } @else { {{ row.primaryName }} }
+                  <span>over</span>
+                  @if (row.secondaryClubId) {
+                  <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                    {{ row.secondaryName }}
+                  </a>
+                  } @else { {{ row.secondaryName }} }
+                </span>
+                <em>{{ row.detail }}</em>
+              </div>
+              }
             </div>
+            } @else {
+            <p class="empty-copy">No promotion line could be calculated from the tier below.</p>
             }
           </div>
-          } @else {
-          <p class="empty-copy">No relegation line could be calculated.</p>
-          }
-        </section>
-
-        <section>
-          <h3>Promotion races into {{ tierLabel() }}</h3>
-          @if (raceRows(profile()!.closePromotionRaces).length) {
-          <div class="race-list">
-            @for (row of raceRows(profile()!.closePromotionRaces); track row.season) {
-            <div class="race-row">
-              <a
-                class="race-season-link"
-                [routerLink]="['/tables']"
-                [queryParams]="sourceTableQueryParams(row.season)"
-              >
-                {{ row.season }}
-              </a>
-              <span class="race-matchup">
-                @if (row.primaryClubId) {
-                <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
-                  {{ row.primaryName }}
-                </a>
-                } @else { {{ row.primaryName }} }
-                <span>over</span>
-                @if (row.secondaryClubId) {
-                <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
-                  {{ row.secondaryName }}
-                </a>
-                } @else { {{ row.secondaryName }} }
-              </span>
-              <em>{{ row.detail }}</em>
-            </div>
-            }
-          </div>
-          } @else {
-          <p class="empty-copy">No promotion line could be calculated from the tier below.</p>
-          }
         </section>
       </div>
     </section>

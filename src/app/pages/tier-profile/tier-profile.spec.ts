@@ -61,6 +61,11 @@ describe('TierProfile', () => {
     expect(element.textContent).toContain('Most relegated from Premier League');
     expect(element.textContent).toContain('Close Seasons');
     expect(element.textContent).toContain('Era View');
+    expect(element.textContent).toContain('Dominance');
+    expect(element.textContent).toContain('Most titles');
+    expect(element.textContent).toContain('Top-three finishes');
+    expect(element.textContent).toContain('2 titles');
+    expect(element.textContent).toContain('2 seasons (2020-2021)');
     expect(element.textContent).not.toContain('Regional Third Division data');
   });
 
@@ -76,6 +81,26 @@ describe('TierProfile', () => {
     const latestTableLink = links.find((link) => link.textContent?.includes('View latest table'));
 
     expect(latestTableLink?.getAttribute('href')).toContain('/tables?season=2021&tier=tier1');
+  });
+
+  it('collapses secondary close season sections by default', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const survivalToggle = Array.from(element.querySelectorAll<HTMLButtonElement>('button')).find(
+      (button) => button.textContent?.includes('Survival races')
+    );
+    const survivalList = element.querySelector<HTMLElement>('#survival-race-list');
+
+    expect(component.isRaceSectionExpanded('title')).toBe(true);
+    expect(component.isRaceSectionExpanded('survival')).toBe(false);
+    expect(survivalToggle?.getAttribute('aria-expanded')).toBe('false');
+    expect(survivalList?.hidden).toBe(true);
+
+    survivalToggle?.click();
+    fixture.detectChanges();
+
+    expect(component.isRaceSectionExpanded('survival')).toBe(true);
+    expect(survivalToggle?.getAttribute('aria-expanded')).toBe('true');
+    expect(survivalList?.hidden).toBe(false);
   });
 
   it('filters profile data by the selected era query param', () => {

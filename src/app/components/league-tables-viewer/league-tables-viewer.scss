@@ -453,3 +453,36 @@ app-season-summary-card {
     animation: none;
   }
 }
+
+@media print {
+  .table-record {
+    gap: 14px;
+  }
+
+  .record-header {
+    padding-bottom: 10px;
+    display: block;
+    border-bottom: 2px solid #111827;
+  }
+
+  .record-selection {
+    color: #374151;
+    font-weight: 800;
+  }
+
+  .data-notice {
+    border-color: #cbd5e1;
+    background: #ffffff;
+  }
+
+  .table-result-shell {
+    min-height: 0;
+    scroll-margin-top: 0;
+  }
+
+  .table-result {
+    gap: 12px;
+    opacity: 1;
+    transform: none;
+  }
+}

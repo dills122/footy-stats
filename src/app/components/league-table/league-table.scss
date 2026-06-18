@@ -227,3 +227,63 @@
     animation: none;
   }
 }
+
+@media print {
+  .table-container {
+    overflow: visible;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+  }
+
+  .footy-table {
+    min-width: 0;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 8.2pt;
+  }
+
+  .head,
+  .cell {
+    position: static;
+    padding: 5px 4px;
+    border-bottom: 1px solid #d1d5db;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  .head {
+    border-bottom: 2px solid #94a3b8;
+    font-size: 7pt;
+  }
+
+  .position-col {
+    width: 28px;
+    min-width: 0;
+  }
+
+  .team-col {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .team-link {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .rank {
+    width: auto;
+    height: auto;
+    border: 0;
+    background: transparent;
+    color: #111827;
+    font-size: inherit;
+  }
+
+  .report {
+    display: none;
+  }
+}

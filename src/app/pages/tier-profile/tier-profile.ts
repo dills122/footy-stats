@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -9,6 +9,7 @@ import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import {
   buildTierProfileData,
   type TierClubTotal,
+  type TierDominanceRun,
   type TierRaceRow,
 } from '@app/utils/tier-profile';
 
@@ -40,6 +41,8 @@ interface TierDataNotice {
   detail: string;
   seasonsLabel: string;
 }
+
+type RaceSectionId = 'title' | 'survival' | 'promotion';
 
 const ERA_FILTERS: EraFilter[] = [
   {
@@ -122,6 +125,11 @@ export class TierProfile {
   });
 
   tierId = computed(() => this.paramMap().get('tier') ?? '');
+  expandedRaceSections = signal<Record<RaceSectionId, boolean>>({
+    title: true,
+    survival: false,
+    promotion: false,
+  });
   hasArchiveData = computed(() => this.store.getFullTable().length > 0);
   showLoadingState = computed(() => !this.hasArchiveData() && this.dataLoader.showLoadingState());
   loadFailed = computed(() => !this.hasArchiveData() && this.dataLoader.loadStatus() === 'error');
@@ -261,6 +269,32 @@ export class TierProfile {
 
   raceRows(rows: TierRaceRow[]): TierRaceRow[] {
     return rows.slice(0, 5);
+  }
+
+  isRaceSectionExpanded(sectionId: RaceSectionId): boolean {
+    return this.expandedRaceSections()[sectionId];
+  }
+
+  toggleRaceSection(sectionId: RaceSectionId) {
+    this.expandedRaceSections.update((sections) => ({
+      ...sections,
+      [sectionId]: !sections[sectionId],
+    }));
+  }
+
+  runRows(rows: TierDominanceRun[]): TierDominanceRun[] {
+    return rows.slice(0, 5);
+  }
+
+  topRow<T>(rows: readonly T[]): T | null {
+    return rows[0] ?? null;
+  }
+
+  previewNames(rows: readonly { name: string }[]): string {
+    return rows
+      .slice(1, 3)
+      .map((row) => row.name)
+      .join(' / ');
   }
 
   eraQueryParams(filterId: string): { era: string | null } {

@@ -34,6 +34,16 @@ export interface TierSeasonChurn {
   totalMovement: number;
 }
 
+export interface TierDominanceRun {
+  key: string;
+  name: string;
+  clubId: string | null;
+  count: number;
+  startSeason: number;
+  endSeason: number;
+  detail: string;
+}
+
 export interface TierProfileData {
   tier: string;
   seasons: number[];
@@ -43,6 +53,10 @@ export interface TierProfileData {
   promotionInCount: number;
   relegationOutCount: number;
   mostSeasons: TierClubTotal[];
+  mostTitles: TierClubTotal[];
+  mostTopThreeFinishes: TierClubTotal[];
+  longestStays: TierDominanceRun[];
+  longestActiveStays: TierDominanceRun[];
   mostPromotionsIn: TierClubTotal[];
   mostRelegationsOut: TierClubTotal[];
   closeTitleRaces: TierRaceRow[];
@@ -82,6 +96,15 @@ export function buildTierProfileData(
     promotionInCount: sourceEntries.filter((entry) => entry.wasPromoted).length,
     relegationOutCount: targetEntries.filter((entry) => entry.wasRelegated).length,
     mostSeasons: rankClubTotals(targetEntries, getTeamById, () => true, 'seasons'),
+    mostTitles: rankClubTotals(targetEntries, getTeamById, (entry) => entry.pos === 1, 'titles'),
+    mostTopThreeFinishes: rankClubTotals(
+      targetEntries,
+      getTeamById,
+      (entry) => entry.pos <= 3,
+      'top-three finishes'
+    ),
+    longestStays: longestContinuousStays(targetEntries, seasons, getTeamById, false),
+    longestActiveStays: longestContinuousStays(targetEntries, seasons, getTeamById, true),
     mostPromotionsIn: sourceTier
       ? rankClubTotals(sourceEntries, getTeamById, (entry) => entry.wasPromoted, 'promotions')
       : [],
@@ -122,10 +145,109 @@ function rankClubTotals(
       name: getTeamById(entry.teamId)?.name ?? 'Unknown',
       clubId: entry.clubId,
       count,
-      detail: `${count} ${count === 1 ? noun.replace(/s$/, '') : noun}`,
+      detail: `${count} ${count === 1 ? singularNoun(noun) : noun}`,
     }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
     .slice(0, 8);
+}
+
+function singularNoun(noun: string): string {
+  return noun.endsWith('finishes') ? noun.replace(/finishes$/, 'finish') : noun.replace(/s$/, '');
+}
+
+function longestContinuousStays(
+  entries: readonly LeagueTableEntry[],
+  seasons: readonly number[],
+  getTeamById: TeamLookup,
+  activeOnly: boolean
+): TierDominanceRun[] {
+  const latestSeason = seasons.at(-1);
+  const entriesByClub = new Map<string, LeagueTableEntry[]>();
+
+  entries.forEach((entry) => {
+    const key = clubKey(entry);
+    entriesByClub.set(key, [...(entriesByClub.get(key) ?? []), entry]);
+  });
+
+  return Array.from(entriesByClub.values())
+    .flatMap((clubEntries) => {
+      const uniqueEntries = uniqueSeasonEntries(clubEntries).sort((a, b) => a.season - b.season);
+      const runs: TierDominanceRun[] = [];
+      let runStart = uniqueEntries[0];
+      let previous = uniqueEntries[0];
+      let count = uniqueEntries[0] ? 1 : 0;
+
+      uniqueEntries.slice(1).forEach((entry) => {
+        if (isContinuousSeason(previous.season, entry.season)) {
+          previous = entry;
+          count += 1;
+          return;
+        }
+
+        if (runStart && previous) {
+          runs.push(dominanceRun(runStart, previous, count, getTeamById));
+        }
+        runStart = entry;
+        previous = entry;
+        count = 1;
+      });
+
+      if (runStart && previous) {
+        runs.push(dominanceRun(runStart, previous, count, getTeamById));
+      }
+
+      return activeOnly ? runs.filter((run) => run.endSeason === latestSeason) : runs;
+    })
+    .sort(
+      (a, b) =>
+        b.count - a.count ||
+        b.endSeason - a.endSeason ||
+        a.startSeason - b.startSeason ||
+        a.name.localeCompare(b.name)
+    )
+    .slice(0, 6);
+}
+
+function uniqueSeasonEntries(entries: readonly LeagueTableEntry[]): LeagueTableEntry[] {
+  return Array.from(
+    entries
+      .slice()
+      .sort(byPosition)
+      .reduce(
+        (bySeason, entry) => bySeason.set(entry.season, entry),
+        new Map<number, LeagueTableEntry>()
+      )
+      .values()
+  );
+}
+
+function isContinuousSeason(previousSeason: number, currentSeason: number): boolean {
+  return (
+    currentSeason === previousSeason + 1 ||
+    (previousSeason === 1914 && currentSeason === 1919) ||
+    (previousSeason === 1938 && currentSeason === 1946)
+  );
+}
+
+function dominanceRun(
+  startEntry: LeagueTableEntry,
+  endEntry: LeagueTableEntry,
+  count: number,
+  getTeamById: TeamLookup
+): TierDominanceRun {
+  return {
+    key: `${clubKey(startEntry)}:${startEntry.season}:${endEntry.season}`,
+    name: getTeamById(endEntry.teamId)?.name ?? 'Unknown',
+    clubId: endEntry.clubId,
+    count,
+    startSeason: startEntry.season,
+    endSeason: endEntry.season,
+    detail: `${count} ${count === 1 ? 'season' : 'seasons'} (${seasonRange(startEntry.season, endEntry.season)})`,
+  };
+}
+
+function seasonRange(startSeason: number, endSeason: number): string {
+  return startSeason === endSeason ? String(startSeason) : `${startSeason}-${endSeason}`;
 }
 
 function closeTitleRaces(

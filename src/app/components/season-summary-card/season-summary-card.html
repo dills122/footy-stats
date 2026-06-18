@@ -61,6 +61,11 @@
           </button>
           }
         </div>
+        <div class="print-movement-list">
+          @for (team of promotedTeams; track team) {
+          <span>{{ team.name }}</span>
+          }
+        </div>
       </dd>
     </div>
     } @if (relegatedTeams.length) {
@@ -85,6 +90,11 @@
             {{ relegatedExpanded ? 'Show fewer' : '+' + movementOverflowTeams(relegatedTeams).length
             + ' more' }}
           </button>
+          }
+        </div>
+        <div class="print-movement-list">
+          @for (team of relegatedTeams; track team) {
+          <span>{{ team.name }}</span>
           }
         </div>
       </dd>

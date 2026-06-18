@@ -284,3 +284,173 @@ button:focus-visible,
   outline-offset: 2px;
   border-radius: 8px;
 }
+
+@media print {
+  @page {
+    margin: 0.45in;
+  }
+
+  :root {
+    color-scheme: light;
+    --app-bg-gradient: #ffffff;
+    --app-bg-spot-1: none;
+    --app-bg-spot-2: none;
+    --app-bg-spot-3: none;
+    --app-surface-bg: #ffffff;
+    --app-border: #cbd5e1;
+    --app-surface-border: 1px solid #cbd5e1;
+    --app-text-strong: #111827;
+    --app-text-subtle: #374151;
+    --app-text-muted: #4b5563;
+  }
+
+  html,
+  body {
+    width: auto;
+    height: auto;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10pt;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  .app-header,
+  .app-footer,
+  .profile-top-actions,
+  .record-control-row,
+  .record-header-action,
+  .preset-panel,
+  .era-filter-panel,
+  .panel-actions,
+  .panel-toggle,
+  .control-action,
+  .chip-toggle,
+  app-data-issue-report-dialog {
+    display: none !important;
+  }
+
+  .app-page-shell {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-surface,
+  .app-panel,
+  .app-data-shell {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  .app-panel,
+  .stat-grid,
+  .profile-panel,
+  .summary,
+  .table-result-shell {
+    break-inside: avoid;
+  }
+
+  .app-page-title {
+    color: #111827 !important;
+  }
+
+  .app-page-eyebrow,
+  .app-page-lede {
+    color: #374151 !important;
+  }
+
+  .team-overview {
+    gap: 12px;
+  }
+
+  .team-overview .profile-header {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #111827;
+  }
+
+  .team-overview .stat-grid,
+  .team-overview .profile-feature-grid,
+  .team-overview .profile-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .team-overview .profile-panel,
+  .team-overview .stat-cell,
+  .team-overview .tier-row,
+  .team-overview .relationship-list > div,
+  .team-overview .gap-list > div,
+  .team-overview .period-list > div,
+  .team-overview .milestone-list > div,
+  .team-overview .historical-status,
+  .team-overview .compact-snapshot-summary > div {
+    border-color: #cbd5e1;
+    background: #ffffff;
+  }
+
+  .team-overview .profile-panel {
+    padding: 10px;
+  }
+
+  .team-overview .profile-panel::before,
+  .team-overview .stat-cell::before,
+  .team-overview .milestone-panel--collapsed::after,
+  .team-overview .status-block {
+    display: none;
+  }
+
+  .team-overview .milestone-panel--collapsed,
+  .team-overview .milestone-panel--expanded {
+    max-height: none;
+  }
+
+  .team-overview .path-chart,
+  .team-overview .path-chart--small {
+    display: none;
+  }
+
+  .team-overview .recent-panel {
+    overflow: visible;
+    break-before: page;
+  }
+
+  .team-overview .recent-table {
+    min-width: 0;
+    display: grid;
+    border-color: #cbd5e1;
+    background: #ffffff;
+    font-size: 8pt;
+  }
+
+  .team-overview .recent-row {
+    grid-template-columns: 0.55fr 1.15fr 1fr 0.52fr 0.62fr 0.54fr;
+  }
+
+  .team-overview .recent-row span {
+    padding: 5px 4px;
+    color: #111827;
+    background: #ffffff !important;
+  }
+
+  .team-overview .recent-row span:last-child,
+  .team-overview .recent-report,
+  .team-overview .mobile-recent-list {
+    display: none;
+  }
+}

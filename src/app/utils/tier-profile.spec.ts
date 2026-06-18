@@ -68,6 +68,33 @@ describe('buildTierProfileData', () => {
       detail: 'level on points / +6 GD',
     });
   });
+
+  it('builds dominance leaders for titles, top-three finishes, and continuous stays', () => {
+    const profile = buildTierProfileData(fixtureEntries(), 'tier1', (teamId) => teams[teamId]);
+
+    expect(profile.mostTitles.map((row) => [row.name, row.count, row.detail])).toEqual([
+      ['Alpha FC', 3, '3 titles'],
+      ['Bravo Town', 1, '1 title'],
+    ]);
+    expect(profile.mostTopThreeFinishes.slice(0, 3).map((row) => [row.name, row.detail])).toEqual([
+      ['Alpha FC', '4 top-three finishes'],
+      ['Bravo Town', '4 top-three finishes'],
+      ['Charlie City', '1 top-three finish'],
+    ]);
+    expect(profile.longestStays[0]).toMatchObject({
+      name: 'Alpha FC',
+      count: 3,
+      startSeason: 2020,
+      endSeason: 2022,
+      detail: '3 seasons (2020-2022)',
+    });
+    expect(profile.longestActiveStays[0]).toMatchObject({
+      name: 'Alpha FC',
+      count: 3,
+      startSeason: 2020,
+      endSeason: 2022,
+    });
+  });
 });
 
 function fixtureEntries(): LeagueTableEntry[] {

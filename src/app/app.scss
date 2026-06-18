@@ -182,3 +182,20 @@
     font-size: 0.78rem;
   }
 }
+
+@media print {
+  :host,
+  .app-shell {
+    min-height: auto;
+    display: block;
+  }
+
+  .app-content {
+    padding: 0;
+  }
+
+  .app-header,
+  .app-footer {
+    display: none;
+  }
+}
