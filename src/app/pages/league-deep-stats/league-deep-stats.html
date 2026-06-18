@@ -21,6 +21,13 @@
   <nav class="profile-top-actions" aria-label="League deep stats actions">
     <a class="back-link" [routerLink]="['/leagues', tierId()]">Back to overview</a>
     <div class="profile-action-links">
+      <app-data-export-menu
+        [title]="'League deep stats ' + tierLabel()"
+        [filename]="exportFilename()"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+        [data]="profile()"
+      />
       <button type="button" mat-button (click)="printPage()">Print</button>
       <a mat-stroked-button routerLink="/tables">Open tables</a>
     </div>

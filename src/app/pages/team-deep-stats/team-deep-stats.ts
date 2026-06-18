@@ -3,15 +3,17 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { LeagueTierToStringyPipe } from '@app/pipes/league-tier-to-stringy-pipe';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
 import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { buildTeamDeepStatsData } from '@app/utils/team-deep-stats';
+import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 
 @Component({
   selector: 'app-team-deep-stats',
-  imports: [CommonModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, RouterLink, DataExportMenu],
   providers: [LeagueTierToStringyPipe],
   templateUrl: './team-deep-stats.html',
   styleUrl: './team-deep-stats.scss',
@@ -44,6 +46,33 @@ export class TeamDeepStats {
       (tier) => this.tierLabel(tier)
     )
   );
+  exportSummary = computed<ExportSummary>(() => ({
+    page: 'Club Deep Stats',
+    clubId: this.clubId(),
+    clubName: this.club()?.canonicalName ?? '',
+    ...this.deepStats().totals,
+  }));
+  exportRows = computed<ExportRow[]>(() =>
+    this.deepStats().seasonRows.map((row) => ({
+      season: row.season,
+      tier: row.tier,
+      tierLabel: row.tierLabel,
+      teamName: row.teamName,
+      clubId: row.clubId,
+      position: row.position,
+      played: row.played,
+      won: row.won,
+      drawn: row.drawn,
+      lost: row.lost,
+      goalsFor: row.goalsFor,
+      goalsAgainst: row.goalsAgainst,
+      goalDifference: row.goalDifference,
+      points: row.points,
+      pointsPerGame: row.pointsPerGame,
+      movementLabel: row.movementLabel,
+    }))
+  );
+  exportFilename = computed(() => `footy-stats-club-deep-stats-${this.clubId() || 'unknown'}`);
 
   retryArchiveLoad() {
     void this.dataLoader.loadData();

@@ -21,6 +21,13 @@
   <nav class="profile-top-actions" aria-label="Tier profile actions">
     <a class="back-link" routerLink="/tables">Back to tables</a>
     <div class="profile-action-links">
+      <app-data-export-menu
+        [title]="'Tier profile ' + tierLabel()"
+        [filename]="exportFilename()"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+        [data]="profile()"
+      />
       <a mat-button [routerLink]="['/leagues', tierId(), 'deep-stats']">Deep stats</a>
       @if (latestTableQueryParams(); as latestTableParams) {
       <a mat-stroked-button routerLink="/tables" [queryParams]="latestTableParams">

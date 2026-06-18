@@ -1,0 +1,17 @@
+<div class="export-menu" aria-label="Export data">
+  <span class="export-label">Export</span>
+  <div class="export-actions">
+    @for (option of exportOptions; track option.format) {
+    <button
+      type="button"
+      class="export-button"
+      [disabled]="!hasExportData()"
+      [attr.aria-label]="'Export ' + title() + ' as ' + option.label"
+      (click)="download(option.format)"
+    >
+      <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
+      <span>{{ option.label }}</span>
+    </button>
+    }
+  </div>
+</div>

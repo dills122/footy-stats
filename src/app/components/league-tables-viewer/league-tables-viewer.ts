@@ -6,9 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
 import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/data-issue-report-dialog';
+import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { LeagueTierToStringyPipe } from '@app/pipes/league-tier-to-stringy-pipe';
 import { LeagueStore } from '@app/store/league.store';
 import { LeagueTableView } from '@app/types';
+import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 import type { DataIssueReportContext } from '@app/utils/data-issue-report';
 import { LeagueTableComponent } from '../league-table/league-table';
 import { SeasonSummaryCardComponent } from '../season-summary-card/season-summary-card';
@@ -70,6 +72,7 @@ const TABLE_DATA_NOTICES: TableDataNoticeDefinition[] = [
     LeagueTierToStringyPipe,
     SeasonSummaryCardComponent,
     DataIssueReportDialog,
+    DataExportMenu,
   ],
   providers: [LeagueTierToStringyPipe],
 })
@@ -161,6 +164,10 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   currentLeagueLabel = computed(() => {
     const league = this.selectedLeague();
     return league ?? '';
+  });
+  currentCompetitionName = computed(() => {
+    const league = this.selectedLeague();
+    return league ? this.leagueLabelPipe.transform(league) || league : '';
   });
 
   tableControlsReady = computed(() =>
@@ -273,6 +280,42 @@ export class LeagueTablesViewerComponent implements OnDestroy {
       competition: league ? this.leagueLabelPipe.transform(league) || league : undefined,
     };
   });
+  exportSummary = computed<ExportSummary>(() => ({
+    page: 'League Tables',
+    season: this.selectedYear() ?? '',
+    competition: this.currentCompetitionName(),
+    rows: this.currentTable()?.length ?? 0,
+  }));
+  exportRows = computed<ExportRow[]>(() =>
+    (this.currentTable() ?? [])
+      .slice()
+      .sort((a, b) => b.points - a.points || (b.goalDifference ?? 0) - (a.goalDifference ?? 0))
+      .map((row, index) => ({
+        position: index + 1,
+        season: row.season,
+        tier: row.tier,
+        competition: this.currentCompetitionName(),
+        teamName: row.teamName,
+        clubId: row.clubId,
+        played: row.played,
+        won: row.won,
+        drawn: row.drawn,
+        lost: row.lost,
+        goalsFor: row.goalsFor,
+        goalsAgainst: row.goalsAgainst,
+        goalDifference: row.goalDifference,
+        goalAverage: row.goalAverage,
+        points: row.points,
+        wasPromoted: row.wasPromoted,
+        wasRelegated: row.wasRelegated,
+        wasReElected: row.wasReElected,
+        wasReprieved: row.wasReprieved,
+        notes: row.notes,
+      }))
+  );
+  exportFilename = computed(
+    () => `footy-stats-table-${this.selectedYear() ?? 'season'}-${this.selectedLeague() ?? 'tier'}`
+  );
 
   onYearChange(year: number) {
     this.selectTable(year);

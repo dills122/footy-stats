@@ -18,6 +18,7 @@ import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
+import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/data-issue-report-dialog';
 import type { LeagueTableEntry } from '@app/store/league.models';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
@@ -33,6 +34,7 @@ import {
 import { buildClubPerformanceMilestones } from '@app/utils/club-performance-milestones';
 import { buildWikipediaLinks } from '@app/utils/link-builders';
 import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
+import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 
 const TIER_LABELS: Record<string, string> = {
   tier1: 'Premier League',
@@ -107,7 +109,14 @@ echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, Canv
 
 @Component({
   selector: 'app-team-overview',
-  imports: [CommonModule, MatButtonModule, RouterLink, NgxEchartsDirective, DataIssueReportDialog],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    RouterLink,
+    NgxEchartsDirective,
+    DataIssueReportDialog,
+    DataExportMenu,
+  ],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './team-overview.html',
   styleUrl: './team-overview.scss',
@@ -255,6 +264,50 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
       teamName: this.leagueStore.getTeamNameById(entry.teamId),
     }))
   );
+  exportSummary = computed<ExportSummary>(() => ({
+    page: 'Club Profile',
+    clubId: this.clubId(),
+    clubName: this.club()?.canonicalName ?? '',
+    status: this.statusLabel(),
+    trackedSeasons: this.club()?.derived.totalSeasonsSeen ?? this.entries().length,
+    seasonRange: this.club() ? this.trackedSeasonRangeLabel() : '',
+    aliases: this.club()?.derived.aliases ?? [],
+  }));
+  exportRows = computed<ExportRow[]>(() =>
+    this.entries().map((entry) => ({
+      season: entry.season,
+      tier: entry.tier,
+      tierLabel: this.tierLabel(entry.tier),
+      teamName: this.leagueStore.getTeamNameById(entry.teamId),
+      clubId: entry.clubId,
+      position: entry.pos,
+      played: entry.played,
+      won: entry.won,
+      drawn: entry.drawn,
+      lost: entry.lost,
+      goalsFor: entry.goalsFor,
+      goalsAgainst: entry.goalsAgainst,
+      goalDifference: entry.goalDifference,
+      goalAverage: entry.goalAverage,
+      points: entry.points,
+      wasPromoted: entry.wasPromoted,
+      wasRelegated: entry.wasRelegated,
+      wasReElected: entry.wasReElected,
+      wasReprieved: entry.wasReprieved,
+      notes: entry.notes,
+    }))
+  );
+  exportData = computed(() => ({
+    club: this.club(),
+    teamNames: this.teamNames(),
+    tierSummary: this.tierSummary(),
+    movementSummary: this.movementSummary(),
+    relationships: this.relationshipRows(),
+    displayNamePeriods: this.displayNamePeriods(),
+    gaps: this.gapRows(),
+    milestones: this.performanceMilestones(),
+  }));
+  exportFilename = computed(() => `footy-stats-club-${this.clubId() || 'unknown'}`);
 
   dataIssueContextForSeason(entry: RecentSeasonRow): DataIssueReportContext {
     return {

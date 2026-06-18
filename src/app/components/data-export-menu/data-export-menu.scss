@@ -1,0 +1,75 @@
+:host {
+  display: inline-block;
+}
+
+.export-menu {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--app-text-muted);
+}
+
+.export-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.export-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.export-button {
+  min-height: 34px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(7, 10, 19, 0.18);
+  color: var(--app-text-strong);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.export-button:hover:not(:disabled) {
+  border-color: rgba(148, 163, 184, 0.44);
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.export-button:disabled {
+  color: var(--app-text-subtle);
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.export-button mat-icon {
+  width: 17px;
+  height: 17px;
+  font-size: 17px;
+  line-height: 17px;
+}
+
+@media (max-width: 640px) {
+  .export-menu {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .export-actions {
+    width: 100%;
+  }
+
+  .export-button {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+}
