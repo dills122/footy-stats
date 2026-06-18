@@ -145,15 +145,20 @@
         <div class="selected-label">Selected clubs</div>
         <div class="selected-chips">
           @for (team of selectedTeams(); track team.id) {
-          <button
-            class="chip"
-            type="button"
-            (click)="removeTeam(team.id)"
-            [attr.aria-label]="'Remove ' + team.name"
-          >
-            {{ team.name }}
-            <span aria-hidden="true">x</span>
-          </button>
+          <span class="selected-chip">
+            @if (primaryClubId(team); as clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', clubId]">{{ team.name }}</a>
+            } @else {
+            <span class="selected-club-name">{{ team.name }}</span>
+            }
+            <button
+              type="button"
+              (click)="removeTeam(team.id)"
+              [attr.aria-label]="'Remove ' + team.name"
+            >
+              <span aria-hidden="true">x</span>
+            </button>
+          </span>
           }
         </div>
         <button class="clear-btn" type="button" (click)="clearSelectedTeams()">Clear clubs</button>
@@ -233,14 +238,23 @@
         </div>
         <div class="chart-context-clubs" aria-label="Selected clubs">
           @for (team of selectedTeams(); track team.id) {
-          <button
-            type="button"
-            [class.is-focused]="focusedTeamId() === team.id"
-            [attr.aria-pressed]="focusedTeamId() === team.id"
-            (click)="toggleFocusedTeam(team.id)"
-          >
-            {{ team.name }}
-          </button>
+          <span class="chart-context-club" [class.is-focused]="focusedTeamId() === team.id">
+            @if (primaryClubId(team); as clubId) {
+            <a class="app-club-link chart-club-link" [routerLink]="['/teams', clubId]">
+              {{ team.name }}
+            </a>
+            } @else {
+            <span class="chart-club-name">{{ team.name }}</span>
+            }
+            <button
+              type="button"
+              class="chart-focus-button"
+              [attr.aria-pressed]="focusedTeamId() === team.id"
+              (click)="toggleFocusedTeam(team.id)"
+            >
+              {{ focusedTeamId() === team.id ? 'Clear' : 'Focus' }}
+            </button>
+          </span>
           }
         </div>
       </section>

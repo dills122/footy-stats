@@ -2,9 +2,23 @@
   <header class="app-header">
     <app-main-toolbar />
   </header>
+  <app-data-update-banner />
   <main class="app-content">
     <router-outlet />
   </main>
+
+  @if (showScrollTop()) {
+  <button
+    type="button"
+    class="scroll-top-button"
+    aria-label="Scroll to top"
+    title="Scroll to top"
+    (click)="scrollToTop()"
+  >
+    <mat-icon aria-hidden="true">keyboard_arrow_up</mat-icon>
+  </button>
+  }
+
   <footer class="app-footer">
     <div class="footer-inner">
       <section class="footer-brand" aria-label="FootyStats project">
@@ -29,9 +43,50 @@
       <nav class="footer-nav" aria-label="Footer">
         <div class="footer-link-group">
           <p>Explore</p>
+          <a routerLink="/dashboard">Archive home</a>
           <a routerLink="/tables">Tables</a>
           <a routerLink="/movement">Movement</a>
           <a routerLink="/teams">Clubs</a>
+        </div>
+        <div class="footer-link-group">
+          <p>Profiles</p>
+          <a routerLink="/leagues/tier1">Top flight</a>
+          <a routerLink="/leagues/tier2">Second tier</a>
+          <a routerLink="/leagues/tier3">Third tier</a>
+          <a routerLink="/leagues/tier4">Fourth tier</a>
+        </div>
+        <div class="footer-link-group">
+          <p>Deep Data</p>
+          <a routerLink="/leagues/tier1/deep-stats">Top flight stats</a>
+          <a routerLink="/leagues/tier2/deep-stats">Second tier stats</a>
+          <a routerLink="/leagues/tier3/deep-stats">Third tier stats</a>
+          <a routerLink="/leagues/tier4/deep-stats">Fourth tier stats</a>
+        </div>
+        <div class="footer-link-group footer-link-group--source">
+          <p>Source</p>
+          <a
+            class="footer-icon-link"
+            href="https://github.com/dills122/footy-stats"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon aria-hidden="true">code</mat-icon>
+            GitHub repo
+          </a>
+          <a
+            class="footer-icon-link"
+            href="https://github.com/dills122/footy-stats/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <mat-icon aria-hidden="true">bug_report</mat-icon>
+            GitHub issues
+          </a>
+          <app-data-issue-report-dialog
+            triggerLabel="Report data issue"
+            triggerStyle="link"
+            [context]="footerIssueContext"
+          />
         </div>
         <div class="footer-link-group">
           <p>Studio</p>
@@ -45,18 +100,6 @@
           <a href="https://shwimp.studio/" target="_blank" rel="noopener noreferrer">
             Shwimp Studios
           </a>
-          <a
-            href="https://github.com/dills122/footy-stats"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Source
-          </a>
-          <app-data-issue-report-dialog
-            triggerLabel="Report data issue"
-            triggerStyle="link"
-            [context]="footerIssueContext"
-          />
         </div>
       </nav>
     </div>

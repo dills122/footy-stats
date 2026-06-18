@@ -6,6 +6,8 @@ const tierToStringy: Record<string, string> = {
   tier3: 'League One',
   tier4: 'League Two',
   tier5: 'National League',
+  tier6: 'National League North',
+  tier7: 'National League South',
 };
 
 @Pipe({

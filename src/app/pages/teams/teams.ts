@@ -1,9 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeamList } from '@app/components/team-list/team-list';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
 import { LeagueStore } from '@app/store/league.store';
+import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import {
   isTeamDirectoryFilter,
   type TeamDirectoryCategory,
@@ -13,13 +15,14 @@ import {
 
 @Component({
   selector: 'app-teams',
-  imports: [TeamList],
+  imports: [MatButtonModule, TeamList],
   templateUrl: './teams.html',
   styleUrl: './teams.scss',
 })
 export class Teams {
   private store = inject(LeagueStore);
   private clubMetadataStore = inject(ClubMetadataStore);
+  private dataLoader = inject(DataLoaderService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -85,6 +88,8 @@ export class Teams {
     const filter = this.queryParamMap().get('filter') ?? 'all';
     return isTeamDirectoryFilter(filter) ? filter : 'all';
   });
+  showLoadingState = computed(() => !this.teams().length && this.dataLoader.showLoadingState());
+  loadFailed = computed(() => !this.teams().length && this.dataLoader.loadStatus() === 'error');
 
   onLetterSelected(letter: string) {
     void this.router.navigate([], {
@@ -111,5 +116,9 @@ export class Teams {
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
+  }
+
+  retryArchiveLoad() {
+    void this.dataLoader.loadData();
   }
 }

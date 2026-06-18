@@ -1,6 +1,10 @@
+import { signal, type WritableSignal } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { convertToParamMap, ActivatedRoute } from '@angular/router';
 import { provideRouter } from '@angular/router';
+import { DataLoaderService, type DataLoadStatus } from '@app/store/services/hydrate-store-json';
 import { of } from 'rxjs';
 import { TeamOverview } from './team-overview';
 
@@ -28,8 +32,15 @@ jest.mock('ngx-echarts', () => {
 describe('TeamOverview', () => {
   let component: TeamOverview;
   let fixture: ComponentFixture<TeamOverview>;
+  let loadStatus: WritableSignal<DataLoadStatus>;
+  let showLoadingState: WritableSignal<boolean>;
+  let loadDataSpy: jest.Mock;
 
   beforeEach(async () => {
+    loadStatus = signal<DataLoadStatus>('idle');
+    showLoadingState = signal(false);
+    loadDataSpy = jest.fn().mockResolvedValue(undefined);
+
     await TestBed.configureTestingModule({
       imports: [TeamOverview],
       providers: [
@@ -42,6 +53,17 @@ describe('TeamOverview', () => {
             },
           },
         },
+        {
+          provide: DataLoaderService,
+          useValue: {
+            loadStatus,
+            loadError: signal(null),
+            showLoadingState,
+            loadData: loadDataSpy,
+          },
+        },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         provideRouter([]),
       ],
     }).compileComponents();
@@ -55,11 +77,67 @@ describe('TeamOverview', () => {
     expect(component).toBeTruthy();
   });
 
+  it('does not show a profile loading banner until the loader discloses slow loading', () => {
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('.loading')).toBeNull();
+
+    loadStatus.set('loading');
+    showLoadingState.set(true);
+    fixture.detectChanges();
+
+    expect(element.querySelector('[role="status"]')?.textContent).toContain(
+      'Loading club profile...'
+    );
+  });
+
+  it('shows a retryable error state when profile data fails to load', () => {
+    loadStatus.set('error');
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('[role="alert"]')?.textContent).toContain(
+      'Club profile data could not load.'
+    );
+
+    element.querySelector<HTMLButtonElement>('button')?.click();
+
+    expect(loadDataSpy).toHaveBeenCalledTimes(1);
+  });
+
   it('builds a teams back link query param from hidden navigation state', () => {
     component.teamsReturnLetter.set('A');
     component.teamsReturnFilter.set('top-flight');
 
     expect(component.backToTeamsQueryParams()).toEqual({ letter: 'A', filter: 'top-flight' });
+  });
+
+  it('links to the club deep stats route', () => {
+    component.club = (() => ({
+      clubId: 'alpha fc',
+      canonicalName: 'Alpha FC',
+      derived: {
+        source: 'football-data-output',
+        aliases: ['Alpha FC'],
+        observedNames: [],
+        observedNamePeriods: [],
+        firstSeenSeason: 2020,
+        lastSeenSeason: 2025,
+        seasonsSeen: [],
+        totalSeasonsSeen: 1,
+        tiersSeen: [],
+        tierSeasons: [],
+      },
+    })) as unknown as typeof component.club;
+    component.metadataLoaded = (() => true) as typeof component.metadataLoaded;
+    component.clubId = (() => 'alpha fc') as typeof component.clubId;
+    fixture.detectChanges();
+
+    const links = Array.from(fixture.nativeElement.querySelectorAll<HTMLAnchorElement>('a'));
+    const deepStatsLink = links.find((link) => link.textContent?.includes('Deep stats'));
+
+    expect(deepStatsLink?.getAttribute('href')).toBe('/teams/alpha%20fc/deep-stats');
   });
 
   it('labels identity periods ending in the latest tracked season as current', () => {

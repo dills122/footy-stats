@@ -1,0 +1,46 @@
+@if (shouldShow()) {
+<section
+  class="data-update-banner"
+  [class.data-update-banner--active]="dataUpdates.hasLocalOverride()"
+  [class.data-update-banner--error]="
+    dataUpdates.checkStatus() === 'error' || dataUpdates.installStatus() === 'error'
+  "
+  aria-live="polite"
+>
+  <div class="data-update-copy">
+    @if (dataUpdates.updateAvailable()) {
+    <strong>New data set available</strong>
+    <span>Ready to refresh the archive?</span>
+    } @else if (dataUpdates.installStatus() === 'installed') {
+    <strong>Data refreshed</strong>
+    <span>The latest archive is now active.</span>
+    } @else {
+    <strong>Update check failed</strong>
+    <span>
+      {{ dataUpdates.statusMessage() || 'The site could not check for newer tables right now.' }}
+    </span>
+    }
+  </div>
+
+  <div class="data-update-actions">
+    @if (dataUpdates.updateAvailable()) {
+    <button type="button" class="primary-action" [disabled]="isBusy()" (click)="installUpdate()">
+      @if (currentStatus() === 'downloading') { Downloading } @else if (currentStatus() ===
+      'verifying') { Verifying } @else { Refresh data }
+    </button>
+    <button
+      type="button"
+      class="quiet-action"
+      [disabled]="isBusy()"
+      (click)="dataUpdates.dismissAvailableUpdate()"
+    >
+      Not now
+    </button>
+    } @else if (dataUpdates.hasLocalOverride()) {
+    <button type="button" class="quiet-action" [disabled]="isBusy()" (click)="clearOverride()">
+      Use original data
+    </button>
+    }
+  </div>
+</section>
+}

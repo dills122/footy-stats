@@ -10,6 +10,15 @@
   color: var(--app-text-muted);
 }
 
+.loading p {
+  margin: 0;
+}
+
+.loading button {
+  margin-top: 10px;
+  --mdc-text-button-label-text-color: var(--app-text-strong);
+}
+
 .teams-archive {
   margin-top: 6px;
 }

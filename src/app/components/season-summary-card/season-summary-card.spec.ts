@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { SeasonSummaryCardComponent } from './season-summary-card';
 
 describe('SeasonSummaryCard', () => {
@@ -8,6 +9,7 @@ describe('SeasonSummaryCard', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SeasonSummaryCardComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SeasonSummaryCardComponent);
@@ -18,4 +20,83 @@ describe('SeasonSummaryCard', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('links summary club names when club metadata ids are available', () => {
+    component.tableData = [
+      tableRow('Alpha FC', 'alpha fc', 82, 74, 28),
+      tableRow('Bravo Town', 'bravo town', 76, 81, 34),
+    ];
+
+    component.ngOnChanges();
+    fixture.detectChanges();
+
+    const links = Array.from(
+      fixture.nativeElement.querySelectorAll<HTMLAnchorElement>('.app-club-link')
+    );
+
+    expect(links.map((link) => link.textContent?.trim())).toEqual([
+      'Alpha FC',
+      'Bravo Town',
+      'Alpha FC',
+    ]);
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '/teams/alpha%20fc',
+      '/teams/bravo%20town',
+      '/teams/alpha%20fc',
+    ]);
+  });
+
+  it('limits movement chip previews before showing overflow teams', () => {
+    const teams = [
+      { name: 'One', clubId: 'one' },
+      { name: 'Two', clubId: 'two' },
+      { name: 'Three', clubId: 'three' },
+      { name: 'Four', clubId: 'four' },
+      { name: 'Five', clubId: 'five' },
+      { name: 'Six', clubId: 'six' },
+    ];
+
+    expect(component.movementPreviewTeams(teams).map((team) => team.name)).toEqual([
+      'One',
+      'Two',
+      'Three',
+      'Four',
+    ]);
+    expect(component.movementOverflowTeams(teams).map((team) => team.name)).toEqual([
+      'Five',
+      'Six',
+    ]);
+  });
 });
+
+function tableRow(
+  teamName: string,
+  clubId: string | null,
+  points: number,
+  goalsFor: number,
+  goalsAgainst: number
+) {
+  return {
+    season: 2025,
+    tier: 'tier1',
+    teamId: 1,
+    clubId,
+    teamName,
+    pos: 1,
+    played: 38,
+    won: 24,
+    drawn: 10,
+    lost: 4,
+    goalsFor,
+    goalsAgainst,
+    goalDifference: goalsFor - goalsAgainst,
+    goalAverage: null,
+    points,
+    notes: null,
+    wasRelegated: false,
+    wasPromoted: false,
+    isExpansionTeam: false,
+    wasReElected: false,
+    wasReprieved: false,
+  };
+}

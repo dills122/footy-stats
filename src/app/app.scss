@@ -20,6 +20,39 @@
   padding: 28px clamp(12px, 2vw, 24px) 28px;
 }
 
+.scroll-top-button {
+  position: fixed;
+  right: clamp(18px, calc((100vw - 1160px) / 2 - 72px), 96px);
+  bottom: 22px;
+  z-index: 25;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(196, 181, 253, 0.44);
+  border-radius: 8px;
+  display: inline-grid;
+  place-items: center;
+  color: var(--app-text-strong);
+  background: rgba(15, 23, 42, 0.92);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+}
+
+.scroll-top-button:hover {
+  border-color: rgba(216, 180, 254, 0.72);
+  background: rgba(30, 41, 59, 0.96);
+}
+
+.scroll-top-button:focus-visible {
+  outline: 3px solid rgba(196, 181, 253, 0.5);
+  outline-offset: 3px;
+}
+
+.scroll-top-button mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
 .app-footer {
   padding: 24px clamp(12px, 2vw, 24px) 30px;
 }
@@ -30,8 +63,9 @@
   padding-top: 24px;
   border-top: 1px solid var(--app-border);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 1.4fr);
   gap: 32px;
+  align-items: start;
 }
 
 .footer-brand {
@@ -87,8 +121,8 @@
 
 .footer-nav {
   display: grid;
-  grid-template-columns: repeat(2, minmax(120px, auto));
-  gap: 32px;
+  grid-template-columns: repeat(5, minmax(112px, 1fr));
+  gap: 20px;
 }
 
 .footer-link-group p {
@@ -101,7 +135,9 @@
 }
 
 .footer-link-group a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 7px;
   color: var(--app-text-muted);
   text-decoration: none;
   font-size: 0.94rem;
@@ -111,6 +147,19 @@
 
 .footer-link-group app-data-issue-report-dialog {
   display: block;
+  margin-top: 2px;
+}
+
+.footer-icon-link mat-icon {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  font-size: 17px;
+  color: #c4b5fd;
+}
+
+.footer-link-group--source {
+  min-width: 140px;
 }
 
 .footer-link-group a:hover {
@@ -134,6 +183,13 @@
 @media (max-width: 700px) {
   .app-content {
     padding: 14px 0 22px;
+  }
+
+  .scroll-top-button {
+    right: 12px;
+    bottom: 14px;
+    width: 42px;
+    height: 42px;
   }
 
   .app-footer {
@@ -166,7 +222,7 @@
   .footer-nav {
     padding-top: 16px;
     border-top: 1px solid rgba(148, 163, 184, 0.12);
-    grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
 
@@ -180,5 +236,23 @@
     flex-direction: column;
     gap: 6px;
     font-size: 0.78rem;
+  }
+}
+
+@media print {
+  :host,
+  .app-shell {
+    min-height: auto;
+    display: block;
+  }
+
+  .app-content {
+    padding: 0;
+  }
+
+  .app-header,
+  .app-footer,
+  .scroll-top-button {
+    display: none;
   }
 }

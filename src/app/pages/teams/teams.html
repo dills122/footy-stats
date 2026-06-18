@@ -1,6 +1,11 @@
-@if (!teams().length) {
-<div class="loading">Loading teams...</div>
-} @else {
+@if (!teams().length) { @if (loadFailed()) {
+<div class="loading loading--error app-page-shell" role="alert">
+  <p>Club directory could not load.</p>
+  <button type="button" mat-button (click)="retryArchiveLoad()">Retry</button>
+</div>
+} @else if (showLoadingState()) {
+<div class="loading app-page-shell" role="status" aria-live="polite">Loading teams...</div>
+} } @else {
 <section class="teams-archive app-surface app-page-shell">
   <header class="app-page-header">
     <p class="app-page-eyebrow">Club Directory</p>

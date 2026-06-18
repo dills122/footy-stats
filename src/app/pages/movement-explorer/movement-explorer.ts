@@ -14,7 +14,7 @@ import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
 import { buildClubIdentityTeamIndex } from '@app/utils/club-aliases';
 import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
@@ -275,7 +275,7 @@ echarts.use([
 
 @Component({
   selector: 'app-movement-explorer',
-  imports: [CommonModule, NgxEchartsDirective],
+  imports: [CommonModule, RouterLink, NgxEchartsDirective],
   templateUrl: './movement-explorer.html',
   styleUrl: './movement-explorer.scss',
   providers: [provideEchartsCore({ echarts })],
@@ -836,6 +836,10 @@ export class MovementExplorer {
     this.selectedTeamIds.set([]);
     this.focusedTeamId.set(null);
     this.activeChartSetupId.set('');
+  }
+
+  primaryClubId(team: { clubIds?: string[] }): string | null {
+    return team.clubIds?.[0] ?? null;
   }
 
   onClubSearchInput(value: string) {

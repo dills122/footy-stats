@@ -1,5 +1,7 @@
+import { signal, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router, provideRouter } from '@angular/router';
+import { DataLoaderService, type DataLoadStatus } from '@app/store/services/hydrate-store-json';
 import { of } from 'rxjs';
 
 import { Teams } from './teams';
@@ -8,8 +10,15 @@ describe('Teams', () => {
   let component: Teams;
   let fixture: ComponentFixture<Teams>;
   let router: Router;
+  let loadStatus: WritableSignal<DataLoadStatus>;
+  let showLoadingState: WritableSignal<boolean>;
+  let loadDataSpy: jest.Mock;
 
   beforeEach(async () => {
+    loadStatus = signal<DataLoadStatus>('idle');
+    showLoadingState = signal(false);
+    loadDataSpy = jest.fn().mockResolvedValue(undefined);
+
     await TestBed.configureTestingModule({
       imports: [Teams],
       providers: [
@@ -19,6 +28,15 @@ describe('Teams', () => {
           useValue: {
             queryParamMap: of(convertToParamMap({ letter: 'm', filter: 'historical' })),
             snapshot: { queryParamMap: convertToParamMap({ letter: 'm', filter: 'historical' }) },
+          },
+        },
+        {
+          provide: DataLoaderService,
+          useValue: {
+            loadStatus,
+            loadError: signal(null),
+            showLoadingState,
+            loadData: loadDataSpy,
           },
         },
       ],
@@ -92,5 +110,32 @@ describe('Teams', () => {
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
+  });
+
+  it('does not show a loading banner until the loader discloses slow loading', () => {
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('.loading')).toBeNull();
+
+    loadStatus.set('loading');
+    showLoadingState.set(true);
+    fixture.detectChanges();
+
+    expect(element.querySelector('[role="status"]')?.textContent).toContain('Loading teams...');
+  });
+
+  it('shows a retryable error state when the club directory fails to load', () => {
+    loadStatus.set('error');
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.querySelector('[role="alert"]')?.textContent).toContain(
+      'Club directory could not load.'
+    );
+
+    element.querySelector<HTMLButtonElement>('button')?.click();
+
+    expect(loadDataSpy).toHaveBeenCalledTimes(1);
   });
 });

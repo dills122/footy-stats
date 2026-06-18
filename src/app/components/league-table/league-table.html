@@ -97,6 +97,7 @@
       *matRowDef="let row; columns: displayedColumns; let i = index"
       class="app-data-row"
       [class.row-top]="i < 4"
+      [style.--row-index]="i"
     ></tr>
   </table>
 </div>

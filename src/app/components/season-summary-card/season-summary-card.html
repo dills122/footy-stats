@@ -5,38 +5,96 @@
   <dl class="facts">
     <div class="fact">
       <dt>Champion</dt>
-      <dd>{{ champion }}</dd>
+      <dd>
+        @if (champion?.clubId) {
+        <a class="app-club-link" [routerLink]="['/teams', champion!.clubId]">
+          {{ champion!.name }}
+        </a>
+        } @else { {{ champion?.name }} }
+      </dd>
     </div>
     <div class="fact">
       <dt>Top Scoring Team</dt>
-      <dd>{{ topScoringTeam }}</dd>
+      <dd>
+        @if (topScoringTeam?.clubId) {
+        <a class="app-club-link" [routerLink]="['/teams', topScoringTeam!.clubId]">
+          {{ topScoringTeam!.name }}
+        </a>
+        } @else { {{ topScoringTeam?.name }} }
+      </dd>
     </div>
     <div class="fact">
       <dt>Best Defense</dt>
-      <dd>{{ bestDefense }}</dd>
+      <dd>
+        @if (bestDefense?.clubId) {
+        <a class="app-club-link" [routerLink]="['/teams', bestDefense!.clubId]">
+          {{ bestDefense!.name }}
+        </a>
+        } @else { {{ bestDefense?.name }} }
+      </dd>
     </div>
     <div class="fact">
       <dt>Avg Goals per Game</dt>
       <dd>{{ avgGoalsPerGame }}</dd>
     </div>
     @if (promotedTeams.length) {
-    <div class="fact">
+    <div class="fact fact--movement">
       <dt>Promoted</dt>
       <dd>
         <div class="chip-group">
+          @for (team of visibleMovementTeams(promotedTeams, promotedExpanded); track team) { @if
+          (team.clubId) {
+          <a class="chip chip-up app-club-link" [routerLink]="['/teams', team.clubId]">
+            {{ team.name }}
+          </a>
+          } @else {
+          <span class="chip chip-up">{{ team.name }}</span>
+          } } @if (movementOverflowTeams(promotedTeams).length) {
+          <button
+            type="button"
+            class="chip-toggle"
+            [attr.aria-expanded]="promotedExpanded"
+            (click)="togglePromotedExpanded()"
+          >
+            {{ promotedExpanded ? 'Show fewer' : '+' + movementOverflowTeams(promotedTeams).length +
+            ' more' }}
+          </button>
+          }
+        </div>
+        <div class="print-movement-list">
           @for (team of promotedTeams; track team) {
-          <span class="chip chip-up">{{ team }}</span>
+          <span>{{ team.name }}</span>
           }
         </div>
       </dd>
     </div>
     } @if (relegatedTeams.length) {
-    <div class="fact">
+    <div class="fact fact--movement">
       <dt>Relegated</dt>
       <dd>
         <div class="chip-group">
+          @for (team of visibleMovementTeams(relegatedTeams, relegatedExpanded); track team) { @if
+          (team.clubId) {
+          <a class="chip chip-down app-club-link" [routerLink]="['/teams', team.clubId]">
+            {{ team.name }}
+          </a>
+          } @else {
+          <span class="chip chip-down">{{ team.name }}</span>
+          } } @if (movementOverflowTeams(relegatedTeams).length) {
+          <button
+            type="button"
+            class="chip-toggle"
+            [attr.aria-expanded]="relegatedExpanded"
+            (click)="toggleRelegatedExpanded()"
+          >
+            {{ relegatedExpanded ? 'Show fewer' : '+' + movementOverflowTeams(relegatedTeams).length
+            + ' more' }}
+          </button>
+          }
+        </div>
+        <div class="print-movement-list">
           @for (team of relegatedTeams; track team) {
-          <span class="chip chip-down">{{ team }}</span>
+          <span>{{ team.name }}</span>
           }
         </div>
       </dd>

@@ -1,0 +1,292 @@
+@if (!hasArchiveData()) { @if (loadFailed()) {
+<div class="loading loading--error app-page-shell" role="alert">
+  <p>League deep stats could not load.</p>
+  <button type="button" mat-button (click)="retryArchiveLoad()">Retry</button>
+</div>
+} @else if (showLoadingState()) {
+<div class="loading app-page-shell" role="status" aria-live="polite">Loading deep stats...</div>
+} } @else if (!profile()) {
+<section class="deep-stats app-surface app-page-shell">
+  <nav class="profile-top-actions" aria-label="League deep stats actions">
+    <a class="back-link" routerLink="/tables">Back to tables</a>
+  </nav>
+  <div class="empty-state app-panel">
+    <p class="app-page-eyebrow">Deep Stats</p>
+    <h1>League not found</h1>
+    <p>The requested league tier is not available in the current archive data.</p>
+  </div>
+</section>
+} @else {
+<section class="deep-stats app-surface app-page-shell">
+  <nav class="profile-top-actions" aria-label="League deep stats actions">
+    <a class="back-link" [routerLink]="['/leagues', tierId()]">Back to overview</a>
+    <div class="profile-action-links">
+      <button type="button" mat-button (click)="printPage()">Print</button>
+      <a mat-stroked-button routerLink="/tables">Open tables</a>
+    </div>
+  </nav>
+
+  <header class="profile-header">
+    <p class="app-page-eyebrow">Deep Stats</p>
+    <h1 class="app-page-title">{{ tierLabel() }}</h1>
+    <p class="app-page-lede">
+      Dense archive view across {{ profile()!.seasons.length }} tracked seasons from {{
+      seasonRangeLabel() }}.
+    </p>
+  </header>
+
+  <section class="stat-grid" aria-label="Deep league summary">
+    <div class="stat-cell">
+      <span>Rows</span>
+      <strong>{{ profile()!.totalRows }}</strong>
+    </div>
+    <div class="stat-cell">
+      <span>Clubs</span>
+      <strong>{{ profile()!.uniqueClubCount }}</strong>
+    </div>
+    <div class="stat-cell">
+      <span>Promoted In</span>
+      <strong>{{ profile()!.promotionInCount }}</strong>
+    </div>
+    <div class="stat-cell">
+      <span>Relegated Out</span>
+      <strong>{{ profile()!.relegationOutCount }}</strong>
+    </div>
+  </section>
+
+  <div class="deep-grid">
+    <section class="deep-panel app-panel">
+      <div class="panel-head">
+        <h2>Club Leaderboards</h2>
+        <span>top archive totals</span>
+      </div>
+      <div class="leaderboard-grid">
+        <section>
+          <h3>Most seasons</h3>
+          <div class="rank-list">
+            @for (row of leaderRows(profile()!.mostSeasons); track row.key) {
+            <div>
+              <span>
+                @if (row.clubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+                } @else { {{ row.name }} }
+              </span>
+              <strong>{{ row.detail }}</strong>
+            </div>
+            }
+          </div>
+        </section>
+
+        <section>
+          <h3>Most titles</h3>
+          <div class="rank-list">
+            @for (row of leaderRows(profile()!.mostTitles); track row.key) {
+            <div>
+              <span>
+                @if (row.clubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+                } @else { {{ row.name }} }
+              </span>
+              <strong>{{ row.detail }}</strong>
+            </div>
+            }
+          </div>
+        </section>
+
+        <section>
+          <h3>Top-three finishes</h3>
+          <div class="rank-list">
+            @for (row of leaderRows(profile()!.mostTopThreeFinishes); track row.key) {
+            <div>
+              <span>
+                @if (row.clubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+                } @else { {{ row.name }} }
+              </span>
+              <strong>{{ row.detail }}</strong>
+            </div>
+            }
+          </div>
+        </section>
+
+        <section>
+          <h3>Longest stays</h3>
+          <div class="rank-list">
+            @for (row of topRows(profile()!.longestStays); track row.key) {
+            <div>
+              <span>
+                @if (row.clubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+                } @else { {{ row.name }} }
+              </span>
+              <strong>{{ row.detail }}</strong>
+            </div>
+            }
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="deep-panel app-panel">
+      <div class="panel-head">
+        <h2>Movement</h2>
+        <span>{{ sourceTierLabel() }}</span>
+      </div>
+      <div class="leaderboard-grid">
+        <section>
+          <h3>Promoted into {{ tierLabel() }}</h3>
+          <div class="rank-list">
+            @for (row of leaderRows(profile()!.mostPromotionsIn); track row.key) {
+            <div>
+              <span>
+                @if (row.clubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+                } @else { {{ row.name }} }
+              </span>
+              <strong>{{ row.detail }}</strong>
+            </div>
+            }
+          </div>
+        </section>
+        <section>
+          <h3>Relegated from {{ tierLabel() }}</h3>
+          <div class="rank-list">
+            @for (row of leaderRows(profile()!.mostRelegationsOut); track row.key) {
+            <div>
+              <span>
+                @if (row.clubId) {
+                <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.name }}</a>
+                } @else { {{ row.name }} }
+              </span>
+              <strong>{{ row.detail }}</strong>
+            </div>
+            }
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>Close Seasons</h2>
+      <span>expanded race lists</span>
+    </div>
+    <div class="race-table-grid">
+      <section>
+        <h3>Title races</h3>
+        <div class="deep-table">
+          @for (row of raceRows(profile()!.closeTitleRaces); track row.season) {
+          <div class="race-row">
+            <strong>
+              <a
+                class="table-row-link"
+                [routerLink]="['/tables']"
+                [queryParams]="tableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+            </strong>
+            <span>
+              @if (row.primaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                {{ row.primaryName }}
+              </a>
+              } @else { {{ row.primaryName }} }
+              <span>over</span>
+              @if (row.secondaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                {{ row.secondaryName }}
+              </a>
+              } @else { {{ row.secondaryName }} }
+            </span>
+            <em>{{ row.detail }}</em>
+          </div>
+          }
+        </div>
+      </section>
+      <section>
+        <h3>Survival races</h3>
+        <div class="deep-table">
+          @for (row of raceRows(profile()!.closeSurvivalRaces); track row.season) {
+          <div class="race-row">
+            <strong>
+              <a
+                class="table-row-link"
+                [routerLink]="['/tables']"
+                [queryParams]="tableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+            </strong>
+            <span>
+              @if (row.primaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                {{ row.primaryName }}
+              </a>
+              } @else { {{ row.primaryName }} }
+              <span>above</span>
+              @if (row.secondaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                {{ row.secondaryName }}
+              </a>
+              } @else { {{ row.secondaryName }} }
+            </span>
+            <em>{{ row.detail }}</em>
+          </div>
+          }
+        </div>
+      </section>
+      <section>
+        <h3>Promotion races</h3>
+        <div class="deep-table">
+          @for (row of raceRows(profile()!.closePromotionRaces); track row.season) {
+          <div class="race-row">
+            <strong>
+              <a
+                class="table-row-link"
+                [routerLink]="['/tables']"
+                [queryParams]="sourceTableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+            </strong>
+            <span>
+              @if (row.primaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                {{ row.primaryName }}
+              </a>
+              } @else { {{ row.primaryName }} }
+              <span>over</span>
+              @if (row.secondaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                {{ row.secondaryName }}
+              </a>
+              } @else { {{ row.secondaryName }} }
+            </span>
+            <em>{{ row.detail }}</em>
+          </div>
+          }
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>High-Churn Seasons</h2>
+      <span>top movement seasons</span>
+    </div>
+    <div class="churn-table">
+      @for (row of topRows(profile()!.churnSeasons, 16); track row.season) {
+      <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season)">
+        <strong>{{ row.season }}</strong>
+        <span>{{ row.promotedIn }} promoted in</span>
+        <span>{{ row.relegatedOut }} relegated out</span>
+        <em>{{ row.totalMovement }} total</em>
+      </a>
+      }
+    </div>
+  </section>
+</section>
+}

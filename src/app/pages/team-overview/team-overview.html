@@ -1,6 +1,11 @@
-@if (!metadataLoaded()) {
-<div class="loading app-page-shell">Loading club profile...</div>
-} @else if (!club()) {
+@if (!metadataLoaded()) { @if (loadFailed()) {
+<div class="loading loading--error app-page-shell" role="alert">
+  <p>Club profile data could not load.</p>
+  <button type="button" mat-button (click)="retryArchiveLoad()">Retry</button>
+</div>
+} @else if (showLoadingState()) {
+<div class="loading app-page-shell" role="status" aria-live="polite">Loading club profile...</div>
+} } @else if (!club()) {
 <section class="team-overview app-surface app-page-shell">
   <div class="profile-top-actions">
     <a class="back-link" routerLink="/teams" [queryParams]="backToTeamsQueryParams()">
@@ -23,12 +28,15 @@
     <a class="back-link" routerLink="/teams" [queryParams]="backToTeamsQueryParams()">
       Back to clubs
     </a>
-    <app-data-issue-report-dialog
-      class="header-report"
-      triggerLabel="Flag club data"
-      triggerStyle="link"
-      [context]="dataIssueContext()"
-    />
+    <div class="profile-action-links">
+      <a mat-button [routerLink]="['/teams', clubId(), 'deep-stats']">Deep stats</a>
+      <app-data-issue-report-dialog
+        class="header-report"
+        triggerLabel="Flag club data"
+        triggerStyle="link"
+        [context]="dataIssueContext()"
+      />
+    </div>
   </div>
 
   <header class="profile-header">
@@ -84,7 +92,9 @@
         @for (row of compactSeasonRows(); track row.season + row.tierLabel) {
         <div>
           <strong>{{ row.season }}</strong>
-          <span>{{ row.tierLabel }}</span>
+          <span>
+            <a class="app-club-link" [routerLink]="['/leagues', row.tier]">{{ row.tierLabel }}</a>
+          </span>
           <span>{{ row.positionLabel }}</span>
           <span>{{ row.recordLabel }}</span>
           @if (row.movementLabel) {
@@ -158,7 +168,9 @@
       <div class="tier-list">
         @for (tier of tierSummary(); track tier.tier) {
         <div class="tier-row">
-          <span>{{ tier.label }}</span>
+          <span>
+            <a class="app-club-link" [routerLink]="['/leagues', tier.tier]">{{ tier.label }}</a>
+          </span>
           <strong>{{ tier.count }}</strong>
         </div>
         }
@@ -222,7 +234,7 @@
           <span>{{ relationshipLabel(relationship.relationship, relationship.direction) }}</span>
           <strong>
             @if (relationship.relatedClubId) {
-            <a [routerLink]="['/teams', relationship.relatedClubId]">
+            <a class="app-club-link" [routerLink]="['/teams', relationship.relatedClubId]">
               {{ relationship.relatedName }}
             </a>
             } @else { {{ relationship.relatedName }} }
@@ -269,8 +281,18 @@
       @for (entry of recentSeasonRows(); track entry.season + entry.tier + entry.teamName) {
       <div class="recent-row">
         <span data-label="Season">{{ entry.season }}</span>
-        <span data-label="Name">{{ entry.teamName }}</span>
-        <span data-label="Tier">{{ tierLabel(entry.tier) }}</span>
+        <span data-label="Name">
+          @if (entry.clubId) {
+          <a class="app-club-link recent-team-link" [routerLink]="['/teams', entry.clubId]">
+            {{ entry.teamName }}
+          </a>
+          } @else { {{ entry.teamName }} }
+        </span>
+        <span data-label="Tier">
+          <a class="app-club-link" [routerLink]="['/leagues', entry.tier]">
+            {{ tierLabel(entry.tier) }}
+          </a>
+        </span>
         <span data-label="Position">{{ ordinal(entry.pos) }}</span>
         <span data-label="Record">{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
         <span data-label="Points">{{ entry.points }}</span>
@@ -289,10 +311,21 @@
       <article class="mobile-recent-card">
         <div class="mobile-recent-main">
           <strong>{{ entry.season }}</strong>
+          @if (entry.clubId) {
+          <a class="app-club-link recent-team-link" [routerLink]="['/teams', entry.clubId]">
+            {{ entry.teamName }}
+          </a>
+          } @else {
           <span>{{ entry.teamName }}</span>
+          }
         </div>
         <div class="mobile-recent-facts">
-          <span>{{ tierLabel(entry.tier) }} / {{ ordinal(entry.pos) }}</span>
+          <span>
+            <a class="app-club-link" [routerLink]="['/leagues', entry.tier]">
+              {{ tierLabel(entry.tier) }}
+            </a>
+            / {{ ordinal(entry.pos) }}
+          </span>
           <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }} / {{ entry.points }} pts</span>
         </div>
         <app-data-issue-report-dialog

@@ -7,7 +7,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['**/*.spec.ts'],
+    ignores: ['**/*.spec.ts', 'dist/**', 'out-tsc/**', '.angular/**'],
   },
   {
     files: ['**/*.ts'],

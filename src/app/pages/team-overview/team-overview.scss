@@ -19,6 +19,14 @@
   gap: 16px;
 }
 
+.profile-action-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .back-link {
   width: fit-content;
   color: var(--app-text-muted);
@@ -321,17 +329,6 @@
 .milestone-list strong {
   color: var(--app-text-strong);
   font-size: 0.95rem;
-}
-
-.relationship-list a {
-  color: inherit;
-  text-decoration: none;
-  text-underline-offset: 3px;
-}
-
-.relationship-list a:hover {
-  color: #fde68a;
-  text-decoration: underline;
 }
 
 .historical-status {
