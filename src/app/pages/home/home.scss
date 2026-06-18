@@ -103,3 +103,30 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 560px) {
+  .home {
+    gap: 28px;
+  }
+
+  .archive-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .archive-meta span {
+    border-top: 1px solid var(--app-border);
+    padding-top: 8px;
+    display: grid;
+    gap: 3px;
+  }
+
+  .cta-row {
+    display: grid;
+  }
+
+  .cta-row a {
+    width: 100%;
+  }
+}

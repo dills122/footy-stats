@@ -72,6 +72,7 @@
   border-radius: 8px;
   background: transparent;
   color: var(--app-text-subtle);
+  min-width: 0;
   min-height: 36px;
   padding-inline: 11px;
   box-shadow: none;
@@ -89,17 +90,55 @@
 }
 
 @media (max-width: 720px) {
+  .main-toolbar {
+    padding: 0;
+  }
+
   .toolbar-inner {
-    width: min(calc(100vw - 24px), 1160px);
-    padding: 10px 0;
-    gap: 10px;
-    flex-direction: column;
-    align-items: flex-start;
+    width: 100%;
+    padding: 8px 12px 9px;
+    gap: 8px;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .brand {
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .eyebrow {
+    display: none;
+  }
+
+  .brand-copy {
+    display: none;
   }
 
   .nav-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    gap: 4px;
+    overflow: visible;
+  }
+
+  .nav-links a,
+  .nav-links button {
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
+    min-height: 32px;
+    padding-inline: 4px;
+    justify-content: center;
+    color: #cbd5e1;
+    font-size: 0.78rem;
+    line-height: 1.1;
   }
 }

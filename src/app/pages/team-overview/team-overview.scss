@@ -513,6 +513,10 @@
   background: rgba(7, 10, 19, 0.18);
 }
 
+.mobile-recent-list {
+  display: none;
+}
+
 .recent-row {
   display: grid;
   grid-template-columns: 0.7fr 1.35fr 1.25fr 0.8fr 0.9fr 0.7fr 0.82fr;
@@ -569,26 +573,138 @@
   .profile-top-actions {
     align-items: flex-start;
     flex-direction: column;
+    gap: 10px;
+  }
+
+  .team-overview {
+    gap: 16px;
+  }
+
+  .profile-header .app-page-title {
+    font-size: clamp(1.85rem, 11vw, 2.45rem);
+  }
+
+  .profile-panel {
+    padding: 14px;
+  }
+
+  .panel-head,
+  .panel-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .milestone-panel .panel-head {
+    flex-direction: row;
+  }
+
+  .milestone-panel--collapsed {
+    max-height: 258px;
+  }
+
+  .panel-toggle {
+    border: 1px solid rgba(245, 158, 11, 0.42);
+    border-radius: 6px;
+    padding: 5px 8px;
   }
 
   .stat-grid {
     grid-template-columns: 1fr;
   }
 
+  .stat-cell {
+    overflow: visible;
+  }
+
   .compact-snapshot-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .tier-row,
   .relationship-list > div,
   .gap-list > div,
-  .period-list > div,
-  .season-snapshot-list > div {
+  .period-list > div {
     align-items: flex-start;
     flex-direction: column;
   }
 
+  .season-snapshot-list {
+    gap: 6px;
+  }
+
   .season-snapshot-list > div {
+    min-height: 0;
+    padding: 8px 9px;
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .season-snapshot-list strong {
+    font-size: 0.92rem;
+  }
+
+  .season-snapshot-list span {
+    font-size: 0.78rem;
+    line-height: 1.25;
+  }
+
+  .season-snapshot-list em {
+    grid-column: 1 / -1;
+    margin-top: 2px;
+  }
+
+  .recent-panel {
+    overflow: visible;
+  }
+
+  .recent-table {
+    display: none;
+  }
+
+  .mobile-recent-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .mobile-recent-card {
+    border: 1px solid var(--app-border);
+    border-radius: 8px;
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(7, 10, 19, 0.22);
+  }
+
+  .mobile-recent-main,
+  .mobile-recent-facts {
     display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .mobile-recent-main {
+    align-items: baseline;
+    color: var(--app-text-strong);
+    font-weight: 760;
+  }
+
+  .mobile-recent-main span,
+  .mobile-recent-facts {
+    min-width: 0;
+  }
+
+  .mobile-recent-main span {
+    text-align: right;
+  }
+
+  .mobile-recent-facts {
+    border-top: 1px solid rgba(148, 163, 184, 0.16);
+    padding-top: 8px;
+    color: var(--app-text-muted);
+    font-size: 0.84rem;
+    font-weight: 650;
   }
 }
