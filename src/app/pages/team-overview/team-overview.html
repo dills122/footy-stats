@@ -89,7 +89,9 @@
         @for (row of compactSeasonRows(); track row.season + row.tierLabel) {
         <div>
           <strong>{{ row.season }}</strong>
-          <span>{{ row.tierLabel }}</span>
+          <span>
+            <a class="app-club-link" [routerLink]="['/leagues', row.tier]">{{ row.tierLabel }}</a>
+          </span>
           <span>{{ row.positionLabel }}</span>
           <span>{{ row.recordLabel }}</span>
           @if (row.movementLabel) {
@@ -163,7 +165,9 @@
       <div class="tier-list">
         @for (tier of tierSummary(); track tier.tier) {
         <div class="tier-row">
-          <span>{{ tier.label }}</span>
+          <span>
+            <a class="app-club-link" [routerLink]="['/leagues', tier.tier]">{{ tier.label }}</a>
+          </span>
           <strong>{{ tier.count }}</strong>
         </div>
         }
@@ -281,7 +285,11 @@
           </a>
           } @else { {{ entry.teamName }} }
         </span>
-        <span data-label="Tier">{{ tierLabel(entry.tier) }}</span>
+        <span data-label="Tier">
+          <a class="app-club-link" [routerLink]="['/leagues', entry.tier]">
+            {{ tierLabel(entry.tier) }}
+          </a>
+        </span>
         <span data-label="Position">{{ ordinal(entry.pos) }}</span>
         <span data-label="Record">{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }}</span>
         <span data-label="Points">{{ entry.points }}</span>
@@ -309,7 +317,12 @@
           }
         </div>
         <div class="mobile-recent-facts">
-          <span>{{ tierLabel(entry.tier) }} / {{ ordinal(entry.pos) }}</span>
+          <span>
+            <a class="app-club-link" [routerLink]="['/leagues', entry.tier]">
+              {{ tierLabel(entry.tier) }}
+            </a>
+            / {{ ordinal(entry.pos) }}
+          </span>
           <span>{{ entry.won }}-{{ entry.drawn }}-{{ entry.lost }} / {{ entry.points }} pts</span>
         </div>
         <app-data-issue-report-dialog

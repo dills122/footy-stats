@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, OnDestroy, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { ActivatedRoute } from '@angular/router';
 import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/data-issue-report-dialog';
 import { LeagueTierToStringyPipe } from '@app/pipes/league-tier-to-stringy-pipe';
 import { LeagueStore } from '@app/store/league.store';
@@ -38,6 +40,10 @@ interface TablePreset {
 export class LeagueTablesViewerComponent implements OnDestroy {
   store = inject(LeagueStore);
   private leagueLabelPipe = inject(LeagueTierToStringyPipe);
+  private route = inject(ActivatedRoute);
+  private queryParamMapSignal = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
+  });
   private tableRevealTimer: ReturnType<typeof setTimeout> | null = null;
 
   years: number[] = [];
@@ -51,10 +57,29 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   constructor() {
     effect(() => {
       const seasonTiers = this.getCompetitionSeasonTiers();
+      const queryParams = this.queryParamMapSignal();
       this.years = seasonTiers.map((st) => st.season).sort((a, b) => b - a);
 
-      if (this.years.length > 0 && !this.selectedYear()) {
-        this.onYearChange(this.years[0]);
+      if (!this.years.length) {
+        return;
+      }
+
+      const requestedSeason = Number(queryParams.get('season'));
+      const requestedTier = queryParams.get('tier') ?? undefined;
+      const requestedSeasonTiers = Number.isInteger(requestedSeason)
+        ? seasonTiers.find((seasonTier) => seasonTier.season === requestedSeason)
+        : undefined;
+
+      if (
+        requestedSeasonTiers &&
+        (!requestedTier || requestedSeasonTiers.tiers.includes(requestedTier))
+      ) {
+        this.selectTable(requestedSeason, requestedTier ?? requestedSeasonTiers.tiers[0]);
+        return;
+      }
+
+      if (!this.selectedYear()) {
+        this.selectTable(this.years[0]);
       }
     });
 
@@ -196,13 +221,7 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   });
 
   onYearChange(year: number) {
-    this.selectedYear.set(year);
-    this.selectedLeague.set(undefined);
-
-    const seasonTiers = this.getCompetitionSeasonTiers();
-    const currentSeasonsAvailableTiers = seasonTiers.find((st) => st.season === year);
-    this.leaguesForYear = currentSeasonsAvailableTiers?.tiers ?? [];
-    this.selectedLeague.set(this.leaguesForYear[0]);
+    this.selectTable(year);
   }
 
   onLeagueChange(league: string) {
@@ -229,6 +248,17 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   private hasSeasonTier(season: number, tier: string): boolean {
     return this.getCompetitionSeasonTiers().some(
       (seasonTier) => seasonTier.season === season && seasonTier.tiers.includes(tier)
+    );
+  }
+
+  private selectTable(year: number, tier?: string) {
+    const seasonTiers = this.getCompetitionSeasonTiers();
+    const currentSeasonsAvailableTiers = seasonTiers.find((st) => st.season === year);
+    this.leaguesForYear = currentSeasonsAvailableTiers?.tiers ?? [];
+
+    this.selectedYear.set(year);
+    this.selectedLeague.set(
+      tier && this.leaguesForYear.includes(tier) ? tier : this.leaguesForYear[0]
     );
   }
 

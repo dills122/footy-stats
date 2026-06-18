@@ -76,6 +76,7 @@ interface SnapshotFact {
 
 interface CompactSeasonRow {
   season: number;
+  tier: string;
   tierLabel: string;
   positionLabel: string;
   recordLabel: string;
@@ -385,6 +386,7 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
   compactSeasonRows = computed<CompactSeasonRow[]>(() =>
     this.entriesAscending().map((entry) => ({
       season: entry.season,
+      tier: entry.tier,
       tierLabel: this.tierLabel(entry.tier),
       positionLabel: this.ordinal(entry.pos),
       recordLabel: `${entry.won}-${entry.drawn}-${entry.lost}`,

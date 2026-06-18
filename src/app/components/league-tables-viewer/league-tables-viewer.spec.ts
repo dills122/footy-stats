@@ -1,17 +1,35 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { convertToParamMap, ActivatedRoute, ParamMap, provideRouter } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
+import { BehaviorSubject } from 'rxjs';
 import { LeagueTablesViewerComponent } from './league-tables-viewer';
 
 describe('LeagueTablesViewer', () => {
   let component: LeagueTablesViewerComponent;
   let fixture: ComponentFixture<LeagueTablesViewerComponent>;
   let store: InstanceType<typeof LeagueStore>;
+  let queryParamMap$: BehaviorSubject<ParamMap>;
 
   beforeEach(async () => {
+    queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
+
     await TestBed.configureTestingModule({
       imports: [LeagueTablesViewerComponent],
-      providers: [LeagueStore, provideHttpClient()],
+      providers: [
+        LeagueStore,
+        provideHttpClient(),
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParamMap: queryParamMap$.asObservable(),
+            snapshot: {
+              queryParamMap: convertToParamMap({}),
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     store = TestBed.inject(LeagueStore);
@@ -92,6 +110,15 @@ describe('LeagueTablesViewer', () => {
     expect(component.selectedYear()).toBe(1992);
     expect(component.selectedLeague()).toBe('tier1');
     expect(component.activePresetId()).toBe('premier-league-launch');
+  });
+
+  it('selects a linked season table from route query params', () => {
+    queryParamMap$.next(convertToParamMap({ season: '1992', tier: 'tier2' }));
+    store.hydrate(tableArchiveFixture());
+    fixture.detectChanges();
+
+    expect(component.selectedYear()).toBe(1992);
+    expect(component.selectedLeague()).toBe('tier2');
   });
 
   it('collapses and expands the preset strip from the control row', () => {

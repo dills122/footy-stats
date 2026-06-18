@@ -4,11 +4,13 @@ import { LeagueTableHistoric } from './pages/league-table-historic/league-table-
 import { MovementExplorer } from './pages/movement-explorer/movement-explorer';
 import { TeamOverview } from './pages/team-overview/team-overview';
 import { Teams } from './pages/teams/teams';
+import { TierProfile } from './pages/tier-profile/tier-profile';
 
 export const routes: Routes = [
   { path: 'dashboard', component: Home },
   { path: 'tables', component: LeagueTableHistoric },
   { path: 'movement', component: MovementExplorer },
+  { path: 'leagues/:tier', component: TierProfile },
   { path: 'teams/:clubId', component: TeamOverview },
   { path: 'teams', component: Teams },
   //   { path: 'matches', component: MatchesComponent },
