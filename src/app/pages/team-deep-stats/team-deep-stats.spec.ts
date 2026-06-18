@@ -62,6 +62,12 @@ describe('TeamDeepStats', () => {
       link.textContent?.includes('2021')
     );
     expect(tableLink?.getAttribute('href')).toContain('/tables?season=2021&tier=tier1');
+
+    const clubLink = Array.from(element.querySelectorAll<HTMLAnchorElement>('a')).find(
+      (link) =>
+        link.textContent?.trim() === 'Alpha FC' && link.getAttribute('href')?.includes('/teams/')
+    );
+    expect(clubLink?.getAttribute('href')).toBe('/teams/alpha%20fc');
   });
 });
 

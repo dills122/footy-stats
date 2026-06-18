@@ -1,0 +1,53 @@
+@if (shouldShow()) {
+<section
+  class="data-update-banner"
+  [class.data-update-banner--active]="dataUpdates.hasLocalOverride()"
+  [class.data-update-banner--error]="
+    dataUpdates.checkStatus() === 'error' || dataUpdates.installStatus() === 'error'
+  "
+  aria-live="polite"
+>
+  <div class="data-update-copy">
+    @if (dataUpdates.updateAvailable() && dataUpdates.latestManifest(); as manifest) {
+    <strong>New archive data available</strong>
+    <span>
+      {{ manifest.version }} generated {{ manifest.generatedAt | date: 'mediumDate' }} can replace
+      the shipped data locally.
+    </span>
+    } @else if (dataUpdates.hasLocalOverride() && dataUpdates.activeDataInfo(); as activeData) {
+    <strong>Using local archive data</strong>
+    <span>
+      {{ activeData.version }} installed {{ activeData.installedAt | date: 'mediumDate' }} from the
+      verified data bundle.
+    </span>
+    } @else if (dataUpdates.installStatus() === 'installed') {
+    <strong>Archive data updated</strong>
+    <span>The newest verified data bundle is now active in this browser.</span>
+    } @else {
+    <strong>Data update unavailable</strong>
+    <span>{{ dataUpdates.statusMessage() || 'Could not check for a newer data bundle.' }}</span>
+    }
+  </div>
+
+  <div class="data-update-actions">
+    @if (dataUpdates.updateAvailable()) {
+    <button type="button" class="primary-action" [disabled]="isBusy()" (click)="installUpdate()">
+      @if (currentStatus() === 'downloading') { Downloading } @else if (currentStatus() ===
+      'verifying') { Verifying } @else { Update data }
+    </button>
+    <button
+      type="button"
+      class="quiet-action"
+      [disabled]="isBusy()"
+      (click)="dataUpdates.dismissAvailableUpdate()"
+    >
+      Not now
+    </button>
+    } @else if (dataUpdates.hasLocalOverride()) {
+    <button type="button" class="quiet-action" [disabled]="isBusy()" (click)="clearOverride()">
+      Use shipped data
+    </button>
+    }
+  </div>
+</section>
+}

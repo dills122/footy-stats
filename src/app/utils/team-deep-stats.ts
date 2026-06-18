@@ -33,6 +33,7 @@ export interface TeamDeepSeasonRow {
   tier: string;
   tierLabel: string;
   teamName: string;
+  clubId: string | null;
   position: number;
   played: number;
   won: number;
@@ -272,6 +273,7 @@ function seasonRow(
     tier: entry.tier,
     tierLabel: formatTierLabel(entry.tier),
     teamName: getTeamName(entry.teamId),
+    clubId: entry.clubId,
     position: entry.pos,
     played: entry.played,
     won: entry.won,

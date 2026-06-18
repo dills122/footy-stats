@@ -33,7 +33,13 @@ describe('buildTeamDeepStatsData', () => {
     expect(data.movementRows).toHaveLength(1);
     expect(data.movementRows[0]).toMatchObject({
       season: 2022,
+      clubId: 'alpha fc',
       movementLabel: 'Promoted',
+    });
+    expect(data.seasonRows[0]).toMatchObject({
+      season: 2022,
+      teamName: 'Alpha FC',
+      clubId: 'alpha fc',
     });
   });
 });

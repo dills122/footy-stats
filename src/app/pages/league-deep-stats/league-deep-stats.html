@@ -177,11 +177,31 @@
         <h3>Title races</h3>
         <div class="deep-table">
           @for (row of raceRows(profile()!.closeTitleRaces); track row.season) {
-          <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season)">
-            <strong>{{ row.season }}</strong>
-            <span>{{ row.primaryName }} over {{ row.secondaryName }}</span>
+          <div class="race-row">
+            <strong>
+              <a
+                class="table-row-link"
+                [routerLink]="['/tables']"
+                [queryParams]="tableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+            </strong>
+            <span>
+              @if (row.primaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                {{ row.primaryName }}
+              </a>
+              } @else { {{ row.primaryName }} }
+              <span>over</span>
+              @if (row.secondaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                {{ row.secondaryName }}
+              </a>
+              } @else { {{ row.secondaryName }} }
+            </span>
             <em>{{ row.detail }}</em>
-          </a>
+          </div>
           }
         </div>
       </section>
@@ -189,11 +209,31 @@
         <h3>Survival races</h3>
         <div class="deep-table">
           @for (row of raceRows(profile()!.closeSurvivalRaces); track row.season) {
-          <a [routerLink]="['/tables']" [queryParams]="tableQueryParams(row.season)">
-            <strong>{{ row.season }}</strong>
-            <span>{{ row.primaryName }} above {{ row.secondaryName }}</span>
+          <div class="race-row">
+            <strong>
+              <a
+                class="table-row-link"
+                [routerLink]="['/tables']"
+                [queryParams]="tableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+            </strong>
+            <span>
+              @if (row.primaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                {{ row.primaryName }}
+              </a>
+              } @else { {{ row.primaryName }} }
+              <span>above</span>
+              @if (row.secondaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                {{ row.secondaryName }}
+              </a>
+              } @else { {{ row.secondaryName }} }
+            </span>
             <em>{{ row.detail }}</em>
-          </a>
+          </div>
           }
         </div>
       </section>
@@ -201,11 +241,31 @@
         <h3>Promotion races</h3>
         <div class="deep-table">
           @for (row of raceRows(profile()!.closePromotionRaces); track row.season) {
-          <a [routerLink]="['/tables']" [queryParams]="sourceTableQueryParams(row.season)">
-            <strong>{{ row.season }}</strong>
-            <span>{{ row.primaryName }} over {{ row.secondaryName }}</span>
+          <div class="race-row">
+            <strong>
+              <a
+                class="table-row-link"
+                [routerLink]="['/tables']"
+                [queryParams]="sourceTableQueryParams(row.season)"
+              >
+                {{ row.season }}
+              </a>
+            </strong>
+            <span>
+              @if (row.primaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.primaryClubId]">
+                {{ row.primaryName }}
+              </a>
+              } @else { {{ row.primaryName }} }
+              <span>over</span>
+              @if (row.secondaryClubId) {
+              <a class="app-club-link" [routerLink]="['/teams', row.secondaryClubId]">
+                {{ row.secondaryName }}
+              </a>
+              } @else { {{ row.secondaryName }} }
+            </span>
             <em>{{ row.detail }}</em>
-          </a>
+          </div>
           }
         </div>
       </section>

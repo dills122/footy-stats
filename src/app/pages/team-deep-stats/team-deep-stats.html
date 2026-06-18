@@ -158,14 +158,21 @@
         <span role="columnheader">PPG</span>
       </div>
       @for (row of deepStats().seasonRows; track row.season + row.tier + row.teamName) {
-      <a
-        class="data-row"
-        role="row"
-        [routerLink]="['/tables']"
-        [queryParams]="tableQueryParams(row.season, row.tier)"
-      >
-        <span role="cell">{{ row.season }}</span>
-        <span role="cell">{{ row.teamName }}</span>
+      <div class="data-row" role="row">
+        <span role="cell">
+          <a
+            class="table-row-link"
+            [routerLink]="['/tables']"
+            [queryParams]="tableQueryParams(row.season, row.tier)"
+          >
+            {{ row.season }}
+          </a>
+        </span>
+        <span role="cell">
+          @if (row.clubId) {
+          <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.teamName }}</a>
+          } @else { {{ row.teamName }} }
+        </span>
         <span role="cell">{{ row.tierLabel }}</span>
         <span role="cell">{{ ordinal(row.position) }}</span>
         <span role="cell">{{ row.played }}</span>
@@ -174,7 +181,7 @@
         <span role="cell">{{ signedNumber(row.goalDifference) }}</span>
         <span role="cell">{{ row.points }}</span>
         <span role="cell">{{ formatDecimal(row.pointsPerGame) }}</span>
-      </a>
+      </div>
       }
     </div>
   </section>

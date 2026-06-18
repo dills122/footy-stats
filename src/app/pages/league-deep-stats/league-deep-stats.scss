@@ -172,7 +172,7 @@
 }
 
 .rank-list div,
-.deep-table a,
+.deep-table .race-row,
 .churn-table a {
   min-height: 42px;
   border: 1px solid rgba(148, 163, 184, 0.2);
@@ -198,13 +198,13 @@
   text-align: right;
 }
 
-.deep-table a,
+.deep-table .table-row-link,
 .churn-table a {
   color: inherit;
   text-decoration: none;
 }
 
-.deep-table a {
+.deep-table .race-row {
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr) auto;
   align-items: center;
@@ -212,8 +212,8 @@
   padding: 8px 10px;
 }
 
-.deep-table a:hover,
-.deep-table a:focus-visible,
+.deep-table .race-row:hover,
+.deep-table .race-row:focus-within,
 .churn-table a:hover,
 .churn-table a:focus-visible {
   border-color: rgba(245, 158, 11, 0.48);
@@ -245,7 +245,7 @@
     grid-template-columns: 1fr;
   }
 
-  .deep-table a {
+  .deep-table .race-row {
     grid-template-columns: 1fr;
   }
 }
@@ -279,20 +279,20 @@
   }
 
   .rank-list div,
-  .deep-table a,
+  .deep-table .race-row,
   .churn-table a {
     min-height: 0;
     padding: 2pt 0 !important;
   }
 
-  .deep-table a {
+  .deep-table .race-row {
     grid-template-columns: 34pt minmax(0, 1fr) auto !important;
   }
 
   .deep-panel,
   .stat-cell,
   .rank-list div,
-  .deep-table a,
+  .deep-table .race-row,
   .churn-table a {
     border-color: #dddddd;
     background: #ffffff;
