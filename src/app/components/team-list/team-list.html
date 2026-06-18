@@ -4,6 +4,22 @@
     <span>{{ filteredTeams().length }} clubs</span>
   </div>
 
+  <nav class="category-filter" aria-label="Filter clubs by status or archive category">
+    @for (filter of filterOptions(); track filter.id) {
+    <button
+      (click)="selectFilter(filter.id)"
+      type="button"
+      class="filter-button"
+      [class.filter-button--selected]="selectedFilterSignal() === filter.id"
+      [attr.aria-pressed]="selectedFilterSignal() === filter.id"
+      [attr.title]="filter.description"
+    >
+      <span>{{ filter.label }}</span>
+      <small>{{ filter.count }}</small>
+    </button>
+    }
+  </nav>
+
   <nav class="alphabet-filter" aria-label="Filter clubs by letter">
     <button
       (click)="selectLetter('')"
@@ -27,6 +43,12 @@
   </nav>
 
   <!-- Teams table -->
+  @if (!filteredTeams().length) {
+  <div class="empty-filter-state" role="status">
+    <strong>No clubs match these filters.</strong>
+    <span>Try another archive category or clear the selected letter.</span>
+  </div>
+  } @else {
   <div class="table-wrap">
     <div class="team-container app-data-shell">
       <table mat-table [dataSource]="filteredTeams()" class="team-table">
@@ -52,6 +74,47 @@
             } @else {
             <span class="team-name" matTooltip="No club metadata available">{{ team.name }}</span>
             }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            scope="col"
+            class="team-header status-col app-data-head"
+          >
+            Status
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let team"
+            class="team-cell status-col app-data-cell"
+            data-label="Status"
+          >
+            <span class="status-pill" [class.status-pill--active]="team.status === 'active'">
+              {{ statusLabel(team) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="span">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            scope="col"
+            class="team-header span-col app-data-head"
+          >
+            Archive Span
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let team"
+            class="team-cell span-col app-data-cell"
+            data-label="Archive span"
+          >
+            <span class="span-label">{{ seasonSpanLabel(team) }}</span>
+            <small>{{ seasonCountLabel(team) }}</small>
           </td>
         </ng-container>
 
@@ -91,10 +154,14 @@
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['team', 'ext']" class="team-head-row"></tr>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="['team', 'status', 'span', 'ext']"
+          class="team-head-row"
+        ></tr>
         <tr
           mat-row
-          *matRowDef="let row; columns: ['team', 'ext']"
+          *matRowDef="let row; columns: ['team', 'status', 'span', 'ext']"
           class="team-row app-data-row"
         ></tr>
       </table>
@@ -112,6 +179,13 @@
         } @else {
         <span class="team-name" matTooltip="No club metadata available">{{ team.name }}</span>
         }
+        <div class="mobile-team-meta">
+          <span class="status-pill" [class.status-pill--active]="team.status === 'active'">
+            {{ statusLabel(team) }}
+          </span>
+          <span>{{ seasonSpanLabel(team) }}</span>
+          <span>{{ seasonCountLabel(team) }}</span>
+        </div>
       </div>
 
       <details class="mobile-links">
@@ -129,4 +203,5 @@
     </article>
     }
   </div>
+  }
 </div>

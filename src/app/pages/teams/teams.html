@@ -13,7 +13,9 @@
   <app-team-list
     [teams]="teams()"
     [selectedLetter]="selectedLetter()"
+    [selectedFilter]="selectedFilter()"
     (letterSelected)="onLetterSelected($event)"
+    (filterSelected)="onFilterSelected($event)"
   />
 </section>
 }
