@@ -228,12 +228,16 @@ body {
 }
 
 .app-data-shell {
+  max-width: 100%;
+  min-width: 0;
   border-radius: 10px;
   overflow: auto;
+  overscroll-behavior-inline: contain;
   border: 1px solid var(--app-border);
   background: rgba(7, 10, 19, 0.48);
   box-shadow: none;
   backdrop-filter: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .app-data-head {

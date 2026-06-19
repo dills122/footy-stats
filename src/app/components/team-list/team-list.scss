@@ -157,6 +157,8 @@
   margin-top: 2px;
   max-width: 100%;
   overflow: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .empty-filter-state {
@@ -181,6 +183,8 @@
   width: 100%;
   max-width: 100%;
   overflow: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .team-table {
@@ -415,6 +419,7 @@
   }
 
   .mobile-team-card {
+    min-width: 0;
     overflow: hidden;
     border: 1px solid var(--app-border);
     border-radius: 8px;
@@ -475,5 +480,21 @@
   .mobile-links a:hover {
     border-color: rgba(148, 163, 184, 0.42);
     color: var(--app-text-strong);
+  }
+}
+
+@media (max-width: 380px) {
+  .category-filter {
+    grid-template-columns: 1fr;
+  }
+
+  .index-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .clear-filters-button {
+    width: 100%;
   }
 }

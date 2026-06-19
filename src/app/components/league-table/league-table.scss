@@ -3,7 +3,9 @@
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior-inline: contain;
   isolation: isolate;
+  -webkit-overflow-scrolling: touch;
   --league-table-sticky-head-bg: #d9dde3;
   --league-table-sticky-row-bg: #d2d6dc;
   --league-table-sticky-row-alt-bg: #c8cdd4;
@@ -179,7 +181,7 @@
 
 @media (max-width: 760px) {
   .table-container {
-    border-radius: var(--app-radius-lg);
+    border-radius: 8px;
   }
 
   .footy-table {
@@ -219,6 +221,17 @@
 
   .team {
     font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .footy-table {
+    min-width: 640px;
+  }
+
+  .head,
+  .cell {
+    padding: 9px 7px;
   }
 }
 

@@ -54,6 +54,7 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px 18px;
   align-items: start;
+  min-width: 0;
 }
 
 .record-tools {
@@ -62,12 +63,14 @@
   gap: 12px;
   align-items: flex-start;
   max-width: 760px;
+  min-width: 0;
 }
 
 .record-control-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+  min-width: 0;
 }
 
 .control-action {
@@ -285,6 +288,7 @@ app-season-summary-card {
   min-height: clamp(520px, 68vh, 820px);
   scroll-margin-top: 96px;
   display: block;
+  min-width: 0;
 }
 
 .table-result {
@@ -394,7 +398,12 @@ app-season-summary-card {
 
   .record-header-action {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: stretch;
+  }
+
+  .record-header-action > * {
+    flex: 1 1 160px;
+    min-width: 0;
   }
 
   .preset-panel {
@@ -410,9 +419,12 @@ app-season-summary-card {
   .preset-placeholder-list {
     display: flex;
     gap: 10px;
+    max-width: 100%;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     padding-bottom: 4px;
     scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
   }
 
   .preset-chip,
@@ -442,6 +454,21 @@ app-season-summary-card {
   .table-placeholder {
     min-height: 340px;
     padding: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .record-control-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .control-action {
+    min-height: 44px;
+  }
+
+  .record-header-action {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 
