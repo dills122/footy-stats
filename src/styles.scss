@@ -257,7 +257,7 @@ body {
 
 @media (max-width: 640px) {
   .app-page-shell {
-    width: min(100%, calc(100vw - 16px));
+    width: 100%;
     margin: 10px auto 28px;
     padding: 14px;
   }
