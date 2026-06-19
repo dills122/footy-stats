@@ -162,7 +162,7 @@ body {
 }
 
 .app-page-shell {
-  width: min(1160px, calc(100vw - 24px));
+  width: min(1160px, 100%);
   margin: 22px auto 40px;
   padding: clamp(16px, 2.4vw, 26px);
 }
