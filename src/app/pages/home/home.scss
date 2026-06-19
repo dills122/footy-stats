@@ -206,7 +206,11 @@
 
 @media (max-width: 900px) {
   .archive-sections {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .archive-section h2 {
+    max-width: none;
   }
 }
 
@@ -246,6 +250,10 @@
 
   .cta-row a {
     width: 100%;
+  }
+
+  .archive-sections {
+    grid-template-columns: 1fr;
   }
 }
 
