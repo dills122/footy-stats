@@ -3,6 +3,28 @@ import { provideRouter } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
 import { RivalryComparison } from './rivalry-comparison';
 
+jest.mock('echarts/charts', () => ({ LineChart: {} }));
+jest.mock('echarts/components', () => ({
+  DataZoomComponent: {},
+  GridComponent: {},
+  LegendComponent: {},
+  TooltipComponent: {},
+}));
+jest.mock('echarts/core', () => ({ use: jest.fn() }));
+jest.mock('echarts/renderers', () => ({ CanvasRenderer: {} }));
+jest.mock('ngx-echarts', () => {
+  const core = jest.requireActual('@angular/core');
+  class MockNgxEchartsDirective {}
+  core.Directive({ selector: '[echarts]' })(MockNgxEchartsDirective);
+  core.Input()(MockNgxEchartsDirective.prototype, 'options');
+  core.Input()(MockNgxEchartsDirective.prototype, 'autoResize');
+
+  return {
+    NgxEchartsDirective: MockNgxEchartsDirective,
+    provideEchartsCore: () => [],
+  };
+});
+
 describe('RivalryComparison', () => {
   let component: RivalryComparison;
   let fixture: ComponentFixture<RivalryComparison>;
@@ -25,6 +47,12 @@ describe('RivalryComparison', () => {
     const element: HTMLElement = fixture.nativeElement;
 
     expect(element.textContent).toContain('Rivalry Comparison');
+    expect(element.textContent).toContain('Known Rivalries');
+    expect(component.availablePresets().map((preset) => preset.id)).toContain('north-london');
+    expect(component.activePresetId()).toBe('north-london');
+    const selects = element.querySelectorAll<HTMLSelectElement>('select');
+    expect(selects[0].selectedOptions[0]?.textContent?.trim()).toBe('Arsenal');
+    expect(selects[1].selectedOptions[0]?.textContent?.trim()).toBe('Tottenham Hotspur');
     expect(element.textContent).toContain('Shared Season Rows');
     expect(component.scorecard()).toMatchObject({
       sharedSeasons: 3,
@@ -37,6 +65,51 @@ describe('RivalryComparison', () => {
       link.textContent?.includes('2022')
     );
     expect(tableLink?.getAttribute('href')).toContain('/tables?season=2022');
+    expect(element.querySelector('.rivalry-chart')?.getAttribute('aria-label')).toBe(
+      'Relative standing by shared season'
+    );
+  });
+
+  it('builds relative standing, same-tier points gap, and tier path charts', () => {
+    expect(component.chartRows().map((row) => row.season)).toEqual([2020, 2021, 2022]);
+    expect(component.relativeStandingChartOptions()).toMatchObject({
+      xAxis: {
+        data: ['2020', '2021', '2022'],
+      },
+      series: [
+        {
+          name: 'Relative standing',
+          type: 'line',
+          data: [1, -98, -1],
+        },
+      ],
+    });
+    expect(component.pointsGapChartOptions()).toMatchObject({
+      xAxis: {
+        data: ['2020', '2022'],
+      },
+      series: [
+        {
+          name: 'Points gap',
+          type: 'line',
+          data: [2, -4],
+        },
+      ],
+    });
+    expect(component.tierPathChartOptions()).toMatchObject({
+      series: [
+        {
+          name: 'Arsenal',
+          type: 'line',
+          data: [1, 2, 1],
+        },
+        {
+          name: 'Tottenham Hotspur',
+          type: 'line',
+          data: [1, 1, 1],
+        },
+      ],
+    });
   });
 
   it('switches selected clubs from the selector handlers', () => {
@@ -53,14 +126,14 @@ function rivalryFixture() {
   return {
     seasons: {
       2020: {
-        tier1: [row('Alpha FC', 1, 82), row('Bravo Town', 2, 80)],
+        tier1: [row('Arsenal', 1, 82), row('Tottenham Hotspur', 2, 80)],
       },
       2021: {
-        tier1: [row('Bravo Town', 3, 66), row('Charlie City', 4, 61)],
-        tier2: [row('Alpha FC', 1, 91)],
+        tier1: [row('Tottenham Hotspur', 3, 66), row('Charlie City', 4, 61)],
+        tier2: [row('Arsenal', 1, 91)],
       },
       2022: {
-        tier1: [row('Bravo Town', 1, 88), row('Alpha FC', 2, 84)],
+        tier1: [row('Tottenham Hotspur', 1, 88), row('Arsenal', 2, 84)],
       },
     },
   };
