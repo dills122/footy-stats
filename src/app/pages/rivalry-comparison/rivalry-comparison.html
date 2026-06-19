@@ -1,0 +1,181 @@
+<section class="rivalry-page app-surface app-page-shell">
+  <header class="app-page-header">
+    <p class="app-page-eyebrow">Rivalry Comparison</p>
+    <h1 class="app-page-title">Club Comparison Workbench</h1>
+    <p class="app-page-lede">
+      Compare shared seasons, table position, and tier standing for two selected clubs.
+    </p>
+  </header>
+
+  @if (teams().length < 2) {
+  <div class="empty-state app-panel">At least two clubs are needed for a rivalry comparison.</div>
+  } @else {
+  <section class="comparison-controls app-panel" aria-label="Rivalry controls">
+    @if (availablePresets().length) {
+    <div class="preset-panel" aria-label="Known rivalry presets">
+      <div class="panel-head panel-head--compact">
+        <h2>Known Rivalries</h2>
+        <span>{{ availablePresets().length }} presets</span>
+      </div>
+      <div class="preset-grid">
+        @for (preset of availablePresets(); track preset.id) {
+        <button
+          type="button"
+          class="preset-card"
+          [class.is-active]="activePresetId() === preset.id"
+          (click)="applyPreset(preset.id)"
+        >
+          <span>{{ preset.region }}</span>
+          <strong>{{ preset.label }}</strong>
+          <small>{{ preset.teamNames[0] }} / {{ preset.teamNames[1] }}</small>
+        </button>
+        }
+      </div>
+    </div>
+    }
+
+    <div class="selector-panel" aria-label="Club selectors">
+      <label>
+        <span>First club</span>
+        <select [ngModel]="firstTeamId()" (ngModelChange)="onFirstTeamChange($event)">
+          @for (team of teams(); track team.id) {
+          <option [ngValue]="team.id">{{ team.name }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        <span>Second club</span>
+        <select [ngModel]="secondTeamId()" (ngModelChange)="onSecondTeamChange($event)">
+          @for (team of teams(); track team.id) {
+          <option [ngValue]="team.id">{{ team.name }}</option>
+          }
+        </select>
+      </label>
+    </div>
+  </section>
+
+  @if (selectedTeams().first && selectedTeams().second) {
+  <section class="score-grid" aria-label="Rivalry scorecard">
+    <div class="score-cell">
+      <span>Shared Seasons</span>
+      <strong>{{ scorecard().sharedSeasons }}</strong>
+    </div>
+    <div class="score-cell">
+      <span>{{ selectedTeams().first!.name }} Higher</span>
+      <strong>{{ scorecard().firstHigher }}</strong>
+    </div>
+    <div class="score-cell">
+      <span>{{ selectedTeams().second!.name }} Higher</span>
+      <strong>{{ scorecard().secondHigher }}</strong>
+    </div>
+    <div class="score-cell">
+      <span>Same Tier</span>
+      <strong>{{ scorecard().sameTier }}</strong>
+    </div>
+  </section>
+
+  <section class="chart-grid" aria-label="Rivalry visualizations">
+    <section class="rivalry-panel app-panel">
+      <div class="panel-head">
+        <h2>Relative Standing</h2>
+        <span>higher / lower</span>
+      </div>
+      <div
+        echarts
+        class="rivalry-chart"
+        [options]="relativeStandingChartOptions()"
+        [autoResize]="true"
+        aria-label="Relative standing by shared season"
+      ></div>
+    </section>
+
+    <section class="rivalry-panel app-panel">
+      <div class="panel-head">
+        <h2>Same-Tier Points Gap</h2>
+        <span>{{ sameTierChartRows().length }} seasons</span>
+      </div>
+      @if (sameTierChartRows().length) {
+      <div
+        echarts
+        class="rivalry-chart"
+        [options]="pointsGapChartOptions()"
+        [autoResize]="true"
+        aria-label="Same-tier points gap by season"
+      ></div>
+      } @else {
+      <div class="empty-state">No same-tier shared seasons for this pair.</div>
+      }
+    </section>
+
+    <section class="rivalry-panel app-panel chart-grid-wide">
+      <div class="panel-head">
+        <h2>Tier Paths</h2>
+        <span>shared seasons</span>
+      </div>
+      <div
+        echarts
+        class="rivalry-chart"
+        [options]="tierPathChartOptions()"
+        [autoResize]="true"
+        aria-label="Tier path comparison by shared season"
+      ></div>
+    </section>
+  </section>
+
+  <div class="rivalry-grid">
+    <section class="rivalry-panel app-panel">
+      <div class="panel-head">
+        <h2>Shared Season Rows</h2>
+        <span>{{ comparisonRows().length }} seasons</span>
+      </div>
+      @if (recentRows().length) {
+      <div class="comparison-table" role="table" aria-label="Shared season comparison">
+        <div class="comparison-row comparison-head" role="row">
+          <span role="columnheader">Season</span>
+          <span role="columnheader">{{ selectedTeams().first!.name }}</span>
+          <span role="columnheader">{{ selectedTeams().second!.name }}</span>
+          <span role="columnheader">Leader</span>
+        </div>
+        @for (row of recentRows(); track row.season) {
+        <div class="comparison-row" role="row">
+          <span role="cell">
+            <a class="table-link" [routerLink]="['/tables']" [queryParams]="{ season: row.season }">
+              {{ row.season }}
+            </a>
+          </span>
+          <span role="cell">
+            @if (row.first.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.first.clubId]">
+              {{ row.first.teamName }}
+            </a>
+            } @else { {{ row.first.teamName }} }
+            <small>
+              {{ row.first.tierLabel }} / {{ ordinal(row.first.position) }} / {{ row.first.points }}
+              pts
+            </small>
+          </span>
+          <span role="cell">
+            @if (row.second.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.second.clubId]">
+              {{ row.second.teamName }}
+            </a>
+            } @else { {{ row.second.teamName }} }
+            <small>
+              {{ row.second.tierLabel }} / {{ ordinal(row.second.position) }} / {{ row.second.points
+              }} pts
+            </small>
+          </span>
+          <span role="cell">
+            <strong [class.is-level]="row.leader === 'level'">{{ row.leaderLabel }}</strong>
+          </span>
+        </div>
+        }
+      </div>
+      } @else {
+      <div class="empty-state">No shared seasons found for this pair.</div>
+      }
+    </section>
+  </div>
+  } }
+</section>

@@ -6,8 +6,31 @@ import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { of } from 'rxjs';
 import { LeagueDeepStats } from './league-deep-stats';
 
+jest.mock('echarts/charts', () => ({ BarChart: {}, LineChart: {} }));
+jest.mock('echarts/components', () => ({
+  DataZoomComponent: {},
+  GridComponent: {},
+  LegendComponent: {},
+  TooltipComponent: {},
+}));
+jest.mock('echarts/core', () => ({ use: jest.fn() }));
+jest.mock('echarts/renderers', () => ({ CanvasRenderer: {} }));
+jest.mock('ngx-echarts', () => {
+  const core = jest.requireActual('@angular/core');
+  class MockNgxEchartsDirective {}
+  core.Directive({ selector: '[echarts]' })(MockNgxEchartsDirective);
+  core.Input()(MockNgxEchartsDirective.prototype, 'options');
+  core.Input()(MockNgxEchartsDirective.prototype, 'autoResize');
+
+  return {
+    NgxEchartsDirective: MockNgxEchartsDirective,
+    provideEchartsCore: () => [],
+  };
+});
+
 describe('LeagueDeepStats', () => {
   let fixture: ComponentFixture<LeagueDeepStats>;
+  let component: LeagueDeepStats;
   let store: InstanceType<typeof LeagueStore>;
 
   beforeEach(async () => {
@@ -40,6 +63,7 @@ describe('LeagueDeepStats', () => {
     store = TestBed.inject(LeagueStore);
     store.hydrate(deepStatsFixture(), (teamName: string) => `${teamName.toLowerCase()} id`);
     fixture = TestBed.createComponent(LeagueDeepStats);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -61,6 +85,57 @@ describe('LeagueDeepStats', () => {
         link.textContent?.trim() === 'Alpha FC' && link.getAttribute('href')?.includes('/teams/')
     );
     expect(clubLink?.getAttribute('href')).toBe('/teams/alpha%20fc%20id');
+
+    expect(element.textContent).toContain('Season Competitiveness');
+    expect(element.querySelector('.competitiveness-chart')?.getAttribute('aria-label')).toBe(
+      'Title gap and table compression by season'
+    );
+    expect(element.textContent).toContain('Unique Clubs by Decade');
+    expect(element.querySelector('.decade-chart')?.getAttribute('aria-label')).toBe(
+      'Unique clubs by decade'
+    );
+  });
+
+  it('builds a season competitiveness chart from title and table gaps', () => {
+    expect(component.competitivenessChartRows().map((row) => row.season)).toEqual([2020, 2021]);
+    expect(component.competitivenessChartOptions()).toMatchObject({
+      xAxis: {
+        data: ['2020', '2021'],
+      },
+      series: [
+        {
+          name: 'Title gap',
+          type: 'line',
+          data: [1, 3],
+        },
+        {
+          name: 'Champion to middle',
+          type: 'line',
+          data: [1, 3],
+        },
+        {
+          name: 'Champion to last',
+          type: 'line',
+          data: [45, 45],
+        },
+      ],
+    });
+  });
+
+  it('builds a unique clubs by decade chart', () => {
+    expect(component.uniqueClubsChartRows().map((row) => row.label)).toEqual(['2020s']);
+    expect(component.uniqueClubsChartOptions()).toMatchObject({
+      xAxis: {
+        data: ['2020s'],
+      },
+      series: [
+        {
+          name: 'Unique clubs',
+          type: 'bar',
+          data: [4],
+        },
+      ],
+    });
   });
 });
 

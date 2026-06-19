@@ -7,7 +7,30 @@ import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { of } from 'rxjs';
 import { TeamDeepStats } from './team-deep-stats';
 
+jest.mock('echarts/charts', () => ({ LineChart: {} }));
+jest.mock('echarts/components', () => ({
+  DataZoomComponent: {},
+  GridComponent: {},
+  LegendComponent: {},
+  TooltipComponent: {},
+}));
+jest.mock('echarts/core', () => ({ use: jest.fn() }));
+jest.mock('echarts/renderers', () => ({ CanvasRenderer: {} }));
+jest.mock('ngx-echarts', () => {
+  const core = jest.requireActual('@angular/core');
+  class MockNgxEchartsDirective {}
+  core.Directive({ selector: '[echarts]' })(MockNgxEchartsDirective);
+  core.Input()(MockNgxEchartsDirective.prototype, 'options');
+  core.Input()(MockNgxEchartsDirective.prototype, 'autoResize');
+
+  return {
+    NgxEchartsDirective: MockNgxEchartsDirective,
+    provideEchartsCore: () => [],
+  };
+});
+
 describe('TeamDeepStats', () => {
+  let component: TeamDeepStats;
   let fixture: ComponentFixture<TeamDeepStats>;
   let leagueStore: InstanceType<typeof LeagueStore>;
   let clubMetadataStore: InstanceType<typeof ClubMetadataStore>;
@@ -47,6 +70,7 @@ describe('TeamDeepStats', () => {
       teamName === 'Alpha FC' ? 'alpha fc' : null
     );
     fixture = TestBed.createComponent(TeamDeepStats);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
@@ -68,6 +92,39 @@ describe('TeamDeepStats', () => {
         link.textContent?.trim() === 'Alpha FC' && link.getAttribute('href')?.includes('/teams/')
     );
     expect(clubLink?.getAttribute('href')).toBe('/teams/alpha%20fc');
+
+    expect(element.textContent).toContain('Points Trend');
+    expect(element.querySelector('.points-chart')?.getAttribute('aria-label')).toBe(
+      'Club points over time'
+    );
+  });
+
+  it('builds a points trend chart with points and points-per-game modes', () => {
+    expect(component.pointsChartRows().map((row) => row.season)).toEqual([2020, 2021]);
+    expect(component.pointsChartOptions()).toMatchObject({
+      xAxis: {
+        data: ['2020', '2021'],
+      },
+      series: [
+        {
+          name: 'Points',
+          type: 'line',
+          data: [80, 91],
+        },
+      ],
+    });
+
+    component.setPointsChartMode('ppg');
+
+    expect(component.pointsChartOptions()).toMatchObject({
+      series: [
+        {
+          name: 'Points per game',
+          type: 'line',
+          data: [80 / 38, 91 / 38],
+        },
+      ],
+    });
   });
 });
 

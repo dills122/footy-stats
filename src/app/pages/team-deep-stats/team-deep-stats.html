@@ -62,6 +62,31 @@
     </div>
   </section>
 
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>Points Trend</h2>
+      <div class="chart-tools" aria-label="Points chart mode">
+        @for (mode of pointsChartModes; track mode.id) {
+        <button
+          type="button"
+          [class.is-active]="pointsChartMode() === mode.id"
+          [attr.aria-pressed]="pointsChartMode() === mode.id"
+          (click)="setPointsChartMode(mode.id)"
+        >
+          {{ mode.label }}
+        </button>
+        }
+      </div>
+    </div>
+    <div
+      echarts
+      class="points-chart"
+      [options]="pointsChartOptions()"
+      [autoResize]="true"
+      aria-label="Club points over time"
+    ></div>
+  </section>
+
   <div class="deep-grid">
     <section class="deep-panel app-panel">
       <div class="panel-head">

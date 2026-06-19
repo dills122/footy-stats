@@ -281,6 +281,34 @@
 
   <section class="deep-panel app-panel">
     <div class="panel-head">
+      <h2>Season Competitiveness</h2>
+      <span>points gaps by season</span>
+    </div>
+    <div
+      echarts
+      class="competitiveness-chart"
+      [options]="competitivenessChartOptions()"
+      [autoResize]="true"
+      aria-label="Title gap and table compression by season"
+    ></div>
+  </section>
+
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
+      <h2>Unique Clubs by Decade</h2>
+      <span>tier variety</span>
+    </div>
+    <div
+      echarts
+      class="decade-chart"
+      [options]="uniqueClubsChartOptions()"
+      [autoResize]="true"
+      aria-label="Unique clubs by decade"
+    ></div>
+  </section>
+
+  <section class="deep-panel app-panel">
+    <div class="panel-head">
       <h2>High-Churn Seasons</h2>
       <span>top movement seasons</span>
     </div>

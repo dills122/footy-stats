@@ -82,6 +82,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.leaderboard-grid section {
+  container-type: inline-size;
+}
+
 .stat-cell,
 .deep-panel {
   position: relative;
@@ -171,6 +175,12 @@
   gap: 7px;
 }
 
+.competitiveness-chart,
+.decade-chart {
+  min-height: 280px;
+  margin: 2px 0 14px;
+}
+
 .rank-list div,
 .deep-table .race-row,
 .churn-table a {
@@ -183,10 +193,19 @@
 
 .rank-list div {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) minmax(7rem, fit-content(58%));
+  align-items: start;
+  gap: 5px 12px;
   padding: 8px 10px;
+}
+
+.rank-list span,
+.rank-list strong,
+.rank-list .app-club-link {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
 }
 
 .rank-list strong,
@@ -196,6 +215,10 @@
   font-style: normal;
   font-weight: 850;
   text-align: right;
+}
+
+.rank-list strong {
+  justify-self: end;
 }
 
 .deep-table .table-row-link,
@@ -250,6 +273,17 @@
   }
 }
 
+@container (max-width: 320px) {
+  .rank-list div {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-list strong {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
 @media print {
   .deep-stats {
     gap: 6pt;
@@ -276,6 +310,11 @@
   .deep-table,
   .churn-table {
     gap: 0;
+  }
+
+  .competitiveness-chart,
+  .decade-chart {
+    display: none;
   }
 
   .rank-list div,
