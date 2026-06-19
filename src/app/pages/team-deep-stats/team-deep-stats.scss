@@ -15,6 +15,7 @@
 .profile-top-actions,
 .profile-action-links,
 .panel-head,
+.chart-tools,
 .movement-list a {
   display: flex;
   align-items: center;
@@ -212,6 +213,42 @@
   gap: 7px;
 }
 
+.points-chart {
+  min-height: 300px;
+}
+
+.chart-tools {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.chart-tools button {
+  min-height: 30px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: rgba(7, 10, 19, 0.22);
+  color: var(--app-text-muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.chart-tools button:hover,
+.chart-tools button:focus-visible,
+.chart-tools button.is-active {
+  border-color: rgba(245, 158, 11, 0.55);
+  background: rgba(245, 158, 11, 0.14);
+  color: #fde68a;
+}
+
+.chart-tools button:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
 .data-row {
   display: grid;
   align-items: center;
@@ -308,6 +345,11 @@
   .data-table {
     gap: 0;
     font-size: 7.2pt;
+  }
+
+  .points-chart,
+  .chart-tools {
+    display: none;
   }
 
   .data-head {

@@ -4,6 +4,7 @@ import { LeagueDeepStats } from './pages/league-deep-stats/league-deep-stats';
 import { LeagueSystemHistory } from './pages/league-system-history/league-system-history';
 import { LeagueTableHistoric } from './pages/league-table-historic/league-table-historic';
 import { MovementExplorer } from './pages/movement-explorer/movement-explorer';
+import { RivalryComparison } from './pages/rivalry-comparison/rivalry-comparison';
 import { TeamDeepStats } from './pages/team-deep-stats/team-deep-stats';
 import { TeamOverview } from './pages/team-overview/team-overview';
 import { Teams } from './pages/teams/teams';
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'tables', component: LeagueTableHistoric },
   { path: 'system', component: LeagueSystemHistory },
   { path: 'movement', component: MovementExplorer },
+  { path: 'rivalries', component: RivalryComparison },
   { path: 'leagues/:tier/deep-stats', component: LeagueDeepStats },
   { path: 'leagues/:tier', component: TierProfile },
   { path: 'teams/:clubId/deep-stats', component: TeamDeepStats },

@@ -95,6 +95,73 @@ describe('buildTierProfileData', () => {
       endSeason: 2022,
     });
   });
+
+  it('builds season competitiveness gaps in chronological order', () => {
+    const profile = buildTierProfileData(fixtureEntries(), 'tier1', (teamId) => teams[teamId]);
+
+    expect(
+      profile.seasonCompetitiveness.map((row) => ({
+        season: row.season,
+        championName: row.championName,
+        runnerUpName: row.runnerUpName,
+        titleGap: row.titleGap,
+        midTableGap: row.midTableGap,
+        fullTableSpread: row.fullTableSpread,
+      }))
+    ).toEqual([
+      {
+        season: 1975,
+        championName: 'Alpha FC',
+        runnerUpName: 'Bravo Town',
+        titleGap: 0,
+        midTableGap: 0,
+        fullTableSpread: 0,
+      },
+      {
+        season: 2020,
+        championName: 'Alpha FC',
+        runnerUpName: 'Bravo Town',
+        titleGap: 0,
+        midTableGap: 44,
+        fullTableSpread: 44,
+      },
+      {
+        season: 2021,
+        championName: 'Bravo Town',
+        runnerUpName: 'Alpha FC',
+        titleGap: 7,
+        midTableGap: 7,
+        fullTableSpread: 46,
+      },
+      {
+        season: 2022,
+        championName: 'Alpha FC',
+        runnerUpName: 'Bravo Town',
+        titleGap: 0,
+        midTableGap: 0,
+        fullTableSpread: 0,
+      },
+    ]);
+  });
+
+  it('counts unique clubs by decade in the selected tier', () => {
+    const profile = buildTierProfileData(fixtureEntries(), 'tier1', (teamId) => teams[teamId]);
+
+    expect(profile.uniqueClubsByDecade).toEqual([
+      {
+        decade: 1970,
+        label: '1970s',
+        uniqueClubCount: 2,
+        seasons: 1,
+      },
+      {
+        decade: 2020,
+        label: '2020s',
+        uniqueClubCount: 5,
+        seasons: 3,
+      },
+    ]);
+  });
 });
 
 function fixtureEntries(): LeagueTableEntry[] {

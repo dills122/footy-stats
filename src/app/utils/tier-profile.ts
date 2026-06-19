@@ -34,6 +34,29 @@ export interface TierSeasonChurn {
   totalMovement: number;
 }
 
+export interface TierSeasonCompetitiveness {
+  season: number;
+  teamCount: number;
+  championName: string;
+  championClubId: string | null;
+  runnerUpName: string;
+  runnerUpClubId: string | null;
+  medianName: string;
+  medianClubId: string | null;
+  lastName: string;
+  lastClubId: string | null;
+  titleGap: number;
+  midTableGap: number;
+  fullTableSpread: number;
+}
+
+export interface TierDecadeClubCount {
+  decade: number;
+  label: string;
+  uniqueClubCount: number;
+  seasons: number;
+}
+
 export interface TierDominanceRun {
   key: string;
   name: string;
@@ -63,6 +86,8 @@ export interface TierProfileData {
   closeSurvivalRaces: TierRaceRow[];
   closePromotionRaces: TierRaceRow[];
   notableSeasons: TierNotableSeason[];
+  seasonCompetitiveness: TierSeasonCompetitiveness[];
+  uniqueClubsByDecade: TierDecadeClubCount[];
   churnSeasons: TierSeasonChurn[];
 }
 
@@ -144,6 +169,8 @@ export function buildTierProfileData(
     closeSurvivalRaces: closeSurvivalRaces(seasonTables, getTeamById, raceLimit),
     closePromotionRaces: closePromotionRaces(sourceSeasonTables, getTeamById, raceLimit),
     notableSeasons: notableSeasons(seasonTables, getTeamById),
+    seasonCompetitiveness: seasonCompetitiveness(seasonTables, getTeamById),
+    uniqueClubsByDecade: uniqueClubsByDecade(targetEntries),
     churnSeasons: churnSeasons(seasonTables, sourceSeasonTables, churnLimit),
   };
 }
@@ -442,6 +469,64 @@ function churnSeasons(
     })
     .sort((a, b) => b.totalMovement - a.totalMovement || b.season - a.season)
     .slice(0, limit);
+}
+
+function seasonCompetitiveness(
+  seasonTables: ReadonlyMap<number, LeagueTableEntry[]>,
+  getTeamById: TeamLookup
+): TierSeasonCompetitiveness[] {
+  return Array.from(seasonTables.entries())
+    .flatMap(([season, table]) => {
+      const sorted = sortTable(table);
+      const champion = sorted[0];
+      const runnerUp = sorted[1];
+      const median = sorted[Math.floor(sorted.length / 2)];
+      const last = sorted.at(-1);
+
+      if (!champion || !runnerUp || !median || !last) {
+        return [];
+      }
+
+      return [
+        {
+          season,
+          teamCount: sorted.length,
+          championName: getTeamById(champion.teamId)?.name ?? 'Unknown',
+          championClubId: champion.clubId,
+          runnerUpName: getTeamById(runnerUp.teamId)?.name ?? 'Unknown',
+          runnerUpClubId: runnerUp.clubId,
+          medianName: getTeamById(median.teamId)?.name ?? 'Unknown',
+          medianClubId: median.clubId,
+          lastName: getTeamById(last.teamId)?.name ?? 'Unknown',
+          lastClubId: last.clubId,
+          titleGap: Math.max(0, champion.points - runnerUp.points),
+          midTableGap: Math.max(0, champion.points - median.points),
+          fullTableSpread: Math.max(0, champion.points - last.points),
+        },
+      ];
+    })
+    .sort((a, b) => a.season - b.season);
+}
+
+function uniqueClubsByDecade(entries: readonly LeagueTableEntry[]): TierDecadeClubCount[] {
+  const byDecade = new Map<number, { seasons: Set<number>; clubs: Set<string> }>();
+
+  entries.forEach((entry) => {
+    const decade = Math.floor(entry.season / 10) * 10;
+    const group = byDecade.get(decade) ?? { seasons: new Set<number>(), clubs: new Set<string>() };
+    group.seasons.add(entry.season);
+    group.clubs.add(clubKey(entry));
+    byDecade.set(decade, group);
+  });
+
+  return Array.from(byDecade.entries())
+    .map(([decade, group]) => ({
+      decade,
+      label: `${decade}s`,
+      uniqueClubCount: group.clubs.size,
+      seasons: group.seasons.size,
+    }))
+    .sort((a, b) => a.decade - b.decade);
 }
 
 function groupSeasonTables(entries: readonly LeagueTableEntry[]): Map<number, LeagueTableEntry[]> {

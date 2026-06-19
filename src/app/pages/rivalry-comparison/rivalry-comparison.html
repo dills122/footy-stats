@@ -1,0 +1,129 @@
+<section class="rivalry-page app-surface app-page-shell">
+  <header class="app-page-header">
+    <p class="app-page-eyebrow">Rivalry Comparison</p>
+    <h1 class="app-page-title">Club Comparison Workbench</h1>
+    <p class="app-page-lede">
+      Compare shared seasons, table position, and tier standing for two selected clubs.
+    </p>
+  </header>
+
+  @if (teams().length < 2) {
+  <div class="empty-state app-panel">At least two clubs are needed for a rivalry comparison.</div>
+  } @else {
+  <section class="selector-panel app-panel" aria-label="Club selectors">
+    <label>
+      <span>First club</span>
+      <select [value]="firstTeamId()" (change)="onFirstTeamChange($any($event.target).value)">
+        @for (team of teams(); track team.id) {
+        <option [value]="team.id">{{ team.name }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      <span>Second club</span>
+      <select [value]="secondTeamId()" (change)="onSecondTeamChange($any($event.target).value)">
+        @for (team of teams(); track team.id) {
+        <option [value]="team.id">{{ team.name }}</option>
+        }
+      </select>
+    </label>
+  </section>
+
+  @if (selectedTeams().first && selectedTeams().second) {
+  <section class="score-grid" aria-label="Rivalry scorecard">
+    <div class="score-cell">
+      <span>Shared Seasons</span>
+      <strong>{{ scorecard().sharedSeasons }}</strong>
+    </div>
+    <div class="score-cell">
+      <span>{{ selectedTeams().first!.name }} Higher</span>
+      <strong>{{ scorecard().firstHigher }}</strong>
+    </div>
+    <div class="score-cell">
+      <span>{{ selectedTeams().second!.name }} Higher</span>
+      <strong>{{ scorecard().secondHigher }}</strong>
+    </div>
+    <div class="score-cell">
+      <span>Same Tier</span>
+      <strong>{{ scorecard().sameTier }}</strong>
+    </div>
+  </section>
+
+  <div class="rivalry-grid">
+    <section class="rivalry-panel app-panel">
+      <div class="panel-head">
+        <h2>Shared Season Rows</h2>
+        <span>{{ comparisonRows().length }} seasons</span>
+      </div>
+      @if (recentRows().length) {
+      <div class="comparison-table" role="table" aria-label="Shared season comparison">
+        <div class="comparison-row comparison-head" role="row">
+          <span role="columnheader">Season</span>
+          <span role="columnheader">{{ selectedTeams().first!.name }}</span>
+          <span role="columnheader">{{ selectedTeams().second!.name }}</span>
+          <span role="columnheader">Leader</span>
+        </div>
+        @for (row of recentRows(); track row.season) {
+        <div class="comparison-row" role="row">
+          <span role="cell">
+            <a class="table-link" [routerLink]="['/tables']" [queryParams]="{ season: row.season }">
+              {{ row.season }}
+            </a>
+          </span>
+          <span role="cell">
+            @if (row.first.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.first.clubId]">
+              {{ row.first.teamName }}
+            </a>
+            } @else { {{ row.first.teamName }} }
+            <small>
+              {{ row.first.tierLabel }} / {{ ordinal(row.first.position) }} / {{ row.first.points }}
+              pts
+            </small>
+          </span>
+          <span role="cell">
+            @if (row.second.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.second.clubId]">
+              {{ row.second.teamName }}
+            </a>
+            } @else { {{ row.second.teamName }} }
+            <small>
+              {{ row.second.tierLabel }} / {{ ordinal(row.second.position) }} / {{ row.second.points
+              }} pts
+            </small>
+          </span>
+          <span role="cell">
+            <strong [class.is-level]="row.leader === 'level'">{{ row.leaderLabel }}</strong>
+          </span>
+        </div>
+        }
+      </div>
+      } @else {
+      <div class="empty-state">No shared seasons found for this pair.</div>
+      }
+    </section>
+
+    <section class="rivalry-panel app-panel">
+      <div class="panel-head">
+        <h2>Visualization Slots</h2>
+        <span>next pass</span>
+      </div>
+      <div class="slot-list">
+        <div>
+          <strong>Points Gap</strong>
+          <span>Shared-season points delta for same-tier seasons.</span>
+        </div>
+        <div>
+          <strong>Position Gap</strong>
+          <span>Relative finish by season, using tier as the first ordering.</span>
+        </div>
+        <div>
+          <strong>Tier Paths</strong>
+          <span>Side-by-side pyramid movement for the selected pair.</span>
+        </div>
+      </div>
+    </section>
+  </div>
+  } }
+</section>
