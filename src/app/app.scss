@@ -8,16 +8,19 @@
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  min-width: 0;
 }
 
 .app-header {
   position: sticky;
   top: 0;
   z-index: 30;
+  min-width: 0;
 }
 
 .app-content {
   padding: 28px clamp(12px, 2vw, 24px) 28px;
+  min-width: 0;
 }
 
 .scroll-top-button {
@@ -55,10 +58,11 @@
 
 .app-footer {
   padding: 24px clamp(12px, 2vw, 24px) 30px;
+  min-width: 0;
 }
 
 .footer-inner {
-  width: min(1160px, calc(100vw - 24px));
+  width: min(1160px, 100%);
   margin: 0 auto;
   padding-top: 24px;
   border-top: 1px solid var(--app-border);
@@ -121,8 +125,9 @@
 
 .footer-nav {
   display: grid;
-  grid-template-columns: repeat(5, minmax(112px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
   gap: 20px;
+  min-width: 0;
 }
 
 .footer-link-group p {
@@ -169,7 +174,7 @@
 }
 
 .footer-bottom {
-  width: min(1160px, calc(100vw - 24px));
+  width: min(1160px, 100%);
   margin: 22px auto 0;
   padding-top: 14px;
   border-top: 1px solid rgba(148, 163, 184, 0.12);
@@ -197,7 +202,6 @@
   }
 
   .footer-inner {
-    width: min(100%, calc(100vw - 16px));
     padding-top: 18px;
     grid-template-columns: 1fr;
     gap: 18px;
@@ -231,7 +235,6 @@
   }
 
   .footer-bottom {
-    width: min(100%, calc(100vw - 16px));
     margin-top: 18px;
     flex-direction: column;
     gap: 6px;

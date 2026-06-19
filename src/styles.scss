@@ -228,12 +228,16 @@ body {
 }
 
 .app-data-shell {
+  max-width: 100%;
+  min-width: 0;
   border-radius: 10px;
   overflow: auto;
+  overscroll-behavior-inline: contain;
   border: 1px solid var(--app-border);
   background: rgba(7, 10, 19, 0.48);
   box-shadow: none;
   backdrop-filter: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .app-data-head {
@@ -257,7 +261,7 @@ body {
 
 @media (max-width: 640px) {
   .app-page-shell {
-    width: min(100%, calc(100vw - 16px));
+    width: 100%;
     margin: 10px auto 28px;
     padding: 14px;
   }
@@ -274,6 +278,48 @@ body {
 
   .app-data-shell {
     border-radius: 8px;
+  }
+
+  .team-overview,
+  .team-overview * {
+    min-width: 0;
+  }
+
+  .team-overview .recent-panel {
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .team-overview .profile-action-links {
+    width: 100%;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .team-overview .profile-action-links > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .team-overview .compact-snapshot-summary,
+  .team-overview .season-snapshot-list > div {
+    grid-template-columns: 1fr;
+  }
+
+  .team-overview .season-snapshot-list em {
+    grid-column: auto;
+  }
+
+  .team-overview .mobile-recent-main,
+  .team-overview .mobile-recent-facts {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .team-overview .mobile-recent-main span {
+    text-align: left;
   }
 }
 

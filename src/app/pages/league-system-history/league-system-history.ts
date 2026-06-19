@@ -20,6 +20,7 @@ import {
 export class LeagueSystemHistory {
   readonly eras = LEAGUE_SYSTEM_ERAS;
   readonly activeEraId = signal(this.eras.at(-1)?.id ?? '');
+  readonly eraSelectorCollapsed = signal(true);
 
   activeEra = computed<LeagueSystemEra>(() => {
     const activeId = this.activeEraId();
@@ -36,7 +37,12 @@ export class LeagueSystemHistory {
   selectEra(eraId: string) {
     if (this.eras.some((era) => era.id === eraId)) {
       this.activeEraId.set(eraId);
+      this.eraSelectorCollapsed.set(true);
     }
+  }
+
+  toggleEraSelector() {
+    this.eraSelectorCollapsed.update((collapsed) => !collapsed);
   }
 
   eraRangeLabel(era: LeagueSystemEra): string {

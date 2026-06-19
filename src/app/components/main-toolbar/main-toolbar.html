@@ -35,7 +35,13 @@
       <mat-icon aria-hidden="true">menu</mat-icon>
     </button>
 
-    <mat-menu #mobileNavMenu="matMenu" xPosition="before" class="mobile-nav-menu">
+    <mat-menu
+      #mobileNavMenu="matMenu"
+      xPosition="before"
+      yPosition="below"
+      [overlapTrigger]="false"
+      class="mobile-nav-menu"
+    >
       <a
         mat-menu-item
         routerLink="/"
