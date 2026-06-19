@@ -282,6 +282,8 @@
 app-league-table,
 app-season-summary-card {
   display: block;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .table-result-shell {
@@ -292,6 +294,8 @@ app-season-summary-card {
 }
 
 .table-result {
+  min-width: 0;
+  max-width: 100%;
   display: grid;
   gap: clamp(18px, 3vw, 28px);
   opacity: 0;

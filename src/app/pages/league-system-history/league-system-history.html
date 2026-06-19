@@ -17,19 +17,44 @@
     />
   </header>
 
-  <section class="era-strip app-panel" aria-label="Choose a football tier era">
-    @for (era of eras; track era.id) {
-    <button
-      type="button"
-      class="era-button"
-      [class.is-active]="activeEra().id === era.id"
-      [attr.aria-pressed]="activeEra().id === era.id"
-      (click)="selectEra(era.id)"
-    >
-      <span>{{ era.label }}</span>
-      <small>{{ era.headline }}</small>
-    </button>
-    }
+  <section
+    class="era-selector app-panel"
+    [class.is-collapsed]="eraSelectorCollapsed()"
+    aria-labelledby="era-selector-title"
+  >
+    <div class="era-selector-head">
+      <div>
+        <h2 id="era-selector-title">Era selector</h2>
+        <p>{{ eraRangeLabel(activeEra()) }} / {{ activeEra().headline }}</p>
+      </div>
+      <button
+        type="button"
+        class="era-selector-toggle"
+        aria-controls="era-options"
+        [attr.aria-expanded]="!eraSelectorCollapsed()"
+        (click)="toggleEraSelector()"
+      >
+        <mat-icon aria-hidden="true">
+          {{ eraSelectorCollapsed() ? 'expand_more' : 'expand_less' }}
+        </mat-icon>
+        <span>{{ eraSelectorCollapsed() ? 'Show eras' : 'Hide eras' }}</span>
+      </button>
+    </div>
+
+    <div id="era-options" class="era-strip" aria-label="Choose a football tier era">
+      @for (era of eras; track era.id) {
+      <button
+        type="button"
+        class="era-button"
+        [class.is-active]="activeEra().id === era.id"
+        [attr.aria-pressed]="activeEra().id === era.id"
+        (click)="selectEra(era.id)"
+      >
+        <span>{{ era.label }}</span>
+        <small>{{ era.headline }}</small>
+      </button>
+      }
+    </div>
   </section>
 
   <section class="infographic-shell" aria-labelledby="active-era-title">

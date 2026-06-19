@@ -37,6 +37,27 @@ describe('LeagueSystemHistory', () => {
     expect(element.textContent).toContain('Both regional sections represent pyramid level 3');
   });
 
+  it('toggles the compact era selector and collapses it after choosing an era', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const toggle = element.querySelector<HTMLButtonElement>('.era-selector-toggle');
+
+    expect(component.eraSelectorCollapsed()).toBe(true);
+    expect(element.querySelector('.era-selector')?.classList).toContain('is-collapsed');
+    expect(toggle?.getAttribute('aria-expanded')).toBe('false');
+
+    toggle?.click();
+    fixture.detectChanges();
+
+    expect(component.eraSelectorCollapsed()).toBe(false);
+    expect(element.querySelector('.era-selector')?.classList).not.toContain('is-collapsed');
+
+    component.selectEra('regional-third');
+    fixture.detectChanges();
+
+    expect(component.eraSelectorCollapsed()).toBe(true);
+    expect(component.activeEra().id).toBe('regional-third');
+  });
+
   it('offers txt, csv, and json export actions', () => {
     const buttons = Array.from(
       fixture.nativeElement.querySelectorAll<HTMLButtonElement>('.export-button')
