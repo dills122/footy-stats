@@ -44,4 +44,12 @@ describe('MainToolbar', () => {
       '/'
     );
   });
+
+  it('provides a mobile navigation menu trigger', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const trigger = element.querySelector<HTMLButtonElement>('.mobile-menu-trigger');
+
+    expect(trigger).toBeTruthy();
+    expect(trigger?.getAttribute('aria-label')).toBe('Open site navigation');
+  });
 });

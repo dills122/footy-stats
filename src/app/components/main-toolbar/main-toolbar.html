@@ -24,5 +24,30 @@
       <a mat-button routerLink="/movement" routerLinkActive="is-active">Movement</a>
       <a mat-button routerLink="/teams" routerLinkActive="is-active">Clubs</a>
     </nav>
+
+    <button
+      type="button"
+      class="mobile-menu-trigger"
+      mat-icon-button
+      [matMenuTriggerFor]="mobileNavMenu"
+      aria-label="Open site navigation"
+    >
+      <mat-icon aria-hidden="true">menu</mat-icon>
+    </button>
+
+    <mat-menu #mobileNavMenu="matMenu" xPosition="before" class="mobile-nav-menu">
+      <a
+        mat-menu-item
+        routerLink="/"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Archive
+      </a>
+      <a mat-menu-item routerLink="/tables" routerLinkActive="is-active">Tables</a>
+      <a mat-menu-item routerLink="/system" routerLinkActive="is-active">System</a>
+      <a mat-menu-item routerLink="/movement" routerLinkActive="is-active">Movement</a>
+      <a mat-menu-item routerLink="/teams" routerLinkActive="is-active">Clubs</a>
+    </mat-menu>
   </div>
 </mat-toolbar>
