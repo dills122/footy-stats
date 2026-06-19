@@ -190,6 +190,58 @@ describe('TeamOverview', () => {
     });
   });
 
+  it('prefers explicit club status reasons for historical status copy', () => {
+    component.statusLabel = (() => 'defunct') as typeof component.statusLabel;
+    component.relationshipRows = (() => []) as unknown as typeof component.relationshipRows;
+    component.club = (() => ({
+      clubId: 'example fc',
+      canonicalName: 'Example FC',
+      status: {
+        current: 'defunct',
+        trackedFromSeason: 1890,
+        trackedToSeason: 1900,
+        hasUnexplainedGaps: false,
+        reason: 'dissolved',
+        reasonLabel: 'Dissolved after leaving the Football League.',
+        sourceRefs: [
+          {
+            type: 'club-page',
+            sourceUrl: 'https://example.com/example-fc',
+            notes: 'Used for dissolution context.',
+          },
+        ],
+      },
+      derived: {
+        source: 'football-data-output',
+        aliases: ['Example FC'],
+        identitySources: [
+          {
+            type: 'former-clubs-list',
+            sourceUrl: 'https://example.com/former-clubs',
+            notes: 'Former clubs list distinguishes this historical record.',
+          },
+        ],
+        observedNames: [],
+        observedNamePeriods: [],
+        firstSeenSeason: 1890,
+        lastSeenSeason: 1900,
+        seasonsSeen: [],
+        totalSeasonsSeen: 1,
+        tiersSeen: [],
+        tierSeasons: [],
+      },
+    })) as unknown as typeof component.club;
+
+    expect(component.historicalStatusSummary()).toEqual({
+      label: 'defunct',
+      summary: 'Historical in this archive after 1900.',
+      detail: 'Dissolved after leaving the Football League.',
+      sourceUrl: 'https://example.com/example-fc',
+      sourceLabel: 'Status source',
+      sourceNote: 'Used for dissolution context.',
+    });
+  });
+
   it('labels the tracked season range as current when it reaches the latest season', () => {
     component.latestDataSeason = (() => 2025) as typeof component.latestDataSeason;
     component.club = (() => ({
