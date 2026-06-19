@@ -228,9 +228,18 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
     const source = this.primaryClubSource();
     const lastSeenSeason = club.derived.lastSeenSeason;
     const relationship = this.relationshipRows()[0];
-    const relationshipDetail = relationship
-      ? `${this.relationshipLabel(relationship.relationship, relationship.direction)} ${relationship.relatedName}.`
-      : 'No explicit fold, merger, or exit reason is recorded in metadata yet.';
+    const latestLifecycleEvent = club.history?.lifecycleEvents
+      .slice()
+      .reverse()
+      .find((event) => event.label);
+    const exitReasonDetail = club.status?.reasonLabel ?? latestLifecycleEvent?.label;
+    let relationshipDetail =
+      'No explicit fold, merger, or exit reason is recorded in metadata yet.';
+    if (exitReasonDetail) {
+      relationshipDetail = exitReasonDetail;
+    } else if (relationship) {
+      relationshipDetail = `${this.relationshipLabel(relationship.relationship, relationship.direction)} ${relationship.relatedName}.`;
+    }
 
     return {
       label: this.statusLabel(),
@@ -342,6 +351,15 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
 
   private primaryClubSource(): { url: string; label: string; note: string | null } {
     const club = this.club();
+    const statusSource = club?.status?.sourceRefs?.find((source) => source.sourceUrl);
+    if (statusSource?.sourceUrl) {
+      return {
+        url: statusSource.sourceUrl,
+        label: 'Status source',
+        note: statusSource.notes ?? null,
+      };
+    }
+
     const identitySource = club?.derived.identitySources?.find((source) => source.sourceUrl);
     if (identitySource?.sourceUrl) {
       return {

@@ -7,11 +7,20 @@ export interface DataAssetMetadata {
   buildOptions?: Record<string, unknown>;
 }
 
+export interface ClubMetadataSourceRef {
+  type: string;
+  sourceUrl?: string;
+  notes?: string;
+}
+
 export interface ClubMetadataStatus {
   current: 'active' | 'unknown' | string;
   trackedFromSeason: number | null;
   trackedToSeason: number | null;
   hasUnexplainedGaps: boolean;
+  reason?: string;
+  reasonLabel?: string;
+  sourceRefs?: ClubMetadataSourceRef[];
 }
 
 export interface ClubMetadataSeasonRange {
@@ -26,7 +35,7 @@ export interface ClubMetadataRelationship {
   clubKey: string;
   relationship: string;
   direction: string;
-  sourceRefs?: { type: string; sourceUrl?: string; notes?: string }[];
+  sourceRefs?: ClubMetadataSourceRef[];
 }
 
 export interface ClubMetadataObservedName {
@@ -43,7 +52,7 @@ export interface ClubMetadataRecord {
   status?: ClubMetadataStatus;
   history?: {
     nameHistory: unknown[];
-    lifecycleEvents: unknown[];
+    lifecycleEvents: { type?: string; season?: number; date?: string; label?: string }[];
     trackedMembership: ClubMetadataSeasonRange[];
     absenceExplanations: ClubMetadataSeasonRange[];
   };
@@ -51,7 +60,7 @@ export interface ClubMetadataRecord {
     source: string;
     aliases: string[];
     relationships?: ClubMetadataRelationship[];
-    identitySources?: { type: string; sourceUrl?: string; notes?: string }[];
+    identitySources?: ClubMetadataSourceRef[];
     observedNames: ClubMetadataObservedName[];
     observedNamePeriods: { name: string; startSeason: number; endSeason: number }[];
     firstSeenSeason: number;
