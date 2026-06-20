@@ -1,0 +1,144 @@
+name: Data Update
+
+on:
+  schedule:
+    - cron: '23 9 * * 1,4'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Optional footy-data-kit release tag to import'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: footy-data-kit-data-update
+  cancel-in-progress: false
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify PR token
+        env:
+          DATA_UPDATE_PR_TOKEN: ${{ secrets.DATA_UPDATE_PR_TOKEN }}
+        run: |
+          if [ -z "${DATA_UPDATE_PR_TOKEN}" ]; then
+            echo "::error::Missing DATA_UPDATE_PR_TOKEN secret. Add a token with contents and pull request write access."
+            exit 1
+          fi
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Update shipped data
+        id: update
+        run: pnpm data:update
+        env:
+          FOOTY_DATA_KIT_TOKEN: ${{ secrets.FOOTY_DATA_KIT_TOKEN }}
+          FOOTY_DATA_KIT_RELEASE_TAG: ${{ inputs.release_tag }}
+
+      - name: Lint
+        if: steps.update.outputs.changed == 'true'
+        run: pnpm lint
+
+      - name: Test
+        if: steps.update.outputs.changed == 'true'
+        run: pnpm test
+
+      - name: Build
+        if: steps.update.outputs.changed == 'true'
+        run: pnpm build
+
+      - name: Commit data update
+        if: steps.update.outputs.changed == 'true'
+        id: commit
+        env:
+          DATA_UPDATE_PR_TOKEN: ${{ secrets.DATA_UPDATE_PR_TOKEN }}
+          DATA_VERSION: ${{ steps.update.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          safe_version="$(printf '%s' "${DATA_VERSION}" | tr -c 'A-Za-z0-9._-' '-')"
+          branch="codex/data-update-${safe_version}"
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git fetch origin "${branch}:refs/remotes/origin/${branch}" || true
+          git switch -C "${branch}"
+          git add src/assets/seasons.json src/assets/club-metadata.json
+          git commit -m "chore: update footy data to ${DATA_VERSION}"
+          git remote set-url origin "https://x-access-token:${DATA_UPDATE_PR_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force-with-lease origin "${branch}"
+
+          echo "branch=${branch}" >> "${GITHUB_OUTPUT}"
+
+      - name: Open or update pull request
+        if: steps.update.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DATA_UPDATE_PR_TOKEN }}
+          DATA_VERSION: ${{ steps.update.outputs.version }}
+          DATA_GENERATED_AT: ${{ steps.update.outputs.generated_at }}
+          DATA_GIT_SHA: ${{ steps.update.outputs.data_git_sha }}
+          DATA_RELEASE_URL: ${{ steps.update.outputs.release_url }}
+          DATA_SEASONS_SOURCE: ${{ steps.update.outputs.seasons_source }}
+          DATA_CLUB_METADATA_SOURCE: ${{ steps.update.outputs.club_metadata_source }}
+          DATA_CHANGED_FILES: ${{ steps.update.outputs.changed_files }}
+          UPDATE_BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          set -euo pipefail
+
+          title="chore: update footy data to ${DATA_VERSION}"
+          body_file="$(mktemp)"
+          cat > "${body_file}" <<EOF
+          ## Summary
+
+          Updates shipped Footy Stats data from footy-data-kit ${DATA_VERSION}.
+
+          - Release: ${DATA_RELEASE_URL}
+          - Generated at: ${DATA_GENERATED_AT}
+          - Data git SHA: ${DATA_GIT_SHA}
+          - Changed files: ${DATA_CHANGED_FILES}
+
+          ## Sources
+
+          - Seasons: ${DATA_SEASONS_SOURCE}
+          - Club metadata: ${DATA_CLUB_METADATA_SOURCE}
+
+          ## Verification
+
+          - pnpm lint
+          - pnpm test
+          - pnpm build
+          EOF
+
+          if gh pr view "${UPDATE_BRANCH}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            gh pr edit "${UPDATE_BRANCH}" --repo "${GITHUB_REPOSITORY}" --title "${title}" --body-file "${body_file}"
+          else
+            gh pr create \
+              --repo "${GITHUB_REPOSITORY}" \
+              --base main \
+              --head "${UPDATE_BRANCH}" \
+              --title "${title}" \
+              --body-file "${body_file}"
+          fi

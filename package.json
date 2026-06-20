@@ -17,6 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "codex:links": "node scripts/dev/setup-codex-links.mjs",
+    "data:update": "node scripts/data/update-from-footy-data-kit.mjs",
     "hooks:setup": "npx lefthook install",
     "lint": "eslint . --ext .ts,.js,.html,.json",
     "lint:fix": "eslint . --ext .ts,.js,.html,.json --fix"
