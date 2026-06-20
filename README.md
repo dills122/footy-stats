@@ -31,6 +31,29 @@ When newer data is available, the app can refresh the archive in the browser:
 This keeps the site static-host friendly while still allowing newer verified data to be used
 without redeploying the app.
 
+Shipped data is also refreshed by the `Data Update` GitHub Actions workflow. It runs on
+Monday and Thursday, can be started manually, and opens or updates a review PR when
+`footy-data-kit` publishes data that changes `src/assets/seasons.json` or
+`src/assets/club-metadata.json`.
+
+The workflow expects a repository secret named `DATA_UPDATE_PR_TOKEN`. Use a fine-grained
+token for this repository with contents read/write and pull request read/write access so
+the generated branch and PR behave like a normal contributor update and trigger regular CI.
+If unauthenticated upstream API limits become a problem, add `FOOTY_DATA_KIT_TOKEN` as a
+separate optional token for reading `footy-data-kit` releases.
+
+Run the importer locally with:
+
+```bash
+pnpm data:update
+```
+
+To import a specific upstream release locally:
+
+```bash
+FOOTY_DATA_KIT_RELEASE_TAG=v0.8.2 pnpm data:update
+```
+
 ## Getting Started
 
 ```bash
