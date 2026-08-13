@@ -7,7 +7,7 @@
   border-radius: 7px;
   padding: 8px 11px;
   background: rgba(245, 158, 11, 0.1);
-  color: #fde68a;
+  color: var(--app-accent-hover);
   font: inherit;
   font-size: 0.9rem;
   font-weight: 750;
@@ -54,8 +54,8 @@
   padding: 16px;
   overflow: auto;
   transform: translate(-50%, -50%);
-  background: #0f172a;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.46);
+  background: var(--app-surface-solid);
+  box-shadow: var(--app-dialog-shadow);
 }
 
 .report-head {
@@ -88,7 +88,7 @@
   height: 32px;
   border: 1px solid var(--app-border);
   border-radius: 7px;
-  background: rgba(7, 10, 19, 0.32);
+  background: var(--app-control-bg);
   color: var(--app-text-muted);
   font: inherit;
   font-weight: 800;
@@ -142,7 +142,7 @@ textarea {
   border: 1px solid var(--app-border);
   border-radius: 8px;
   padding: 9px 10px;
-  background: rgba(7, 10, 19, 0.32);
+  background: var(--app-surface-solid);
   color: var(--app-text-strong);
   font: inherit;
   font-size: 0.94rem;
@@ -185,7 +185,7 @@ textarea:focus {
   border-radius: 7px;
   padding: 8px 11px;
   background: rgba(34, 197, 94, 0.1);
-  color: #bbf7d0;
+  color: var(--app-success);
   font: inherit;
   font-weight: 800;
   text-decoration: none;

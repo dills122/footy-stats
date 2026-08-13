@@ -30,23 +30,23 @@
   z-index: 25;
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(196, 181, 253, 0.44);
+  border: 1px solid var(--app-border);
   border-radius: 8px;
   display: inline-grid;
   place-items: center;
   color: var(--app-text-strong);
-  background: rgba(15, 23, 42, 0.92);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  background: var(--app-surface-solid);
+  box-shadow: var(--app-elevation-2);
   cursor: pointer;
 }
 
 .scroll-top-button:hover {
-  border-color: rgba(216, 180, 254, 0.72);
-  background: rgba(30, 41, 59, 0.96);
+  border-color: var(--app-accent);
+  background: var(--app-accent-soft);
 }
 
 .scroll-top-button:focus-visible {
-  outline: 3px solid rgba(196, 181, 253, 0.5);
+  outline: 3px solid color-mix(in srgb, var(--app-focus-ring) 50%, transparent);
   outline-offset: 3px;
 }
 
@@ -87,7 +87,7 @@
   display: inline-grid;
   place-items: center;
   color: var(--app-text-strong);
-  background: rgba(15, 23, 42, 0.72);
+  background: var(--app-surface-solid);
   border-radius: 6px;
   font-size: 0.72rem;
   font-weight: 800;
@@ -96,8 +96,8 @@
 }
 
 .footer-mark:hover {
-  border-color: rgba(248, 250, 252, 0.42);
-  color: #fff;
+  border-color: var(--app-accent);
+  color: var(--app-accent);
 }
 
 .footer-kicker {
@@ -160,7 +160,7 @@
   width: 17px;
   height: 17px;
   font-size: 17px;
-  color: #c4b5fd;
+  color: var(--app-accent);
 }
 
 .footer-link-group--source {

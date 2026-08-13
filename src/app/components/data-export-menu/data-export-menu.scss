@@ -31,7 +31,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: rgba(7, 10, 19, 0.18);
+  background: var(--app-surface-solid);
   color: var(--app-text-strong);
   font: inherit;
   font-size: 0.78rem;

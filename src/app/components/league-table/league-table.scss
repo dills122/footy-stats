@@ -13,17 +13,17 @@
   overscroll-behavior-inline: contain;
   isolation: isolate;
   -webkit-overflow-scrolling: touch;
-  --league-table-sticky-head-bg: #d9dde3;
-  --league-table-sticky-row-bg: #d2d6dc;
-  --league-table-sticky-row-alt-bg: #c8cdd4;
-  --league-table-sticky-row-top-bg: #ead8b8;
+  --league-table-sticky-head-bg: var(--app-table-head);
+  --league-table-sticky-row-bg: var(--app-table-row);
+  --league-table-sticky-row-alt-bg: var(--app-table-row-alt);
+  --league-table-sticky-row-top-bg: var(--app-table-row-top);
 }
 
 .footy-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: 820px;
+  min-width: 840px;
   background: transparent;
 }
 
@@ -59,9 +59,9 @@
 
 .team-col {
   left: 46px;
-  width: 190px;
-  min-width: 190px;
-  max-width: 190px;
+  width: 210px;
+  min-width: 210px;
+  max-width: 210px;
   box-shadow: 1px 0 0 rgba(148, 163, 184, 0.16);
 }
 
@@ -118,7 +118,7 @@
 }
 
 .team-link:hover {
-  color: #fde68a;
+  color: var(--app-accent);
   text-decoration: underline;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .rank-top {
-  color: #fde68a;
+  color: var(--app-accent-hover);
   border-color: rgba(245, 158, 11, 0.42);
   background: rgba(245, 158, 11, 0.12);
 }
@@ -177,22 +177,13 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .table-container {
-    --league-table-sticky-head-bg: #0b1220;
-    --league-table-sticky-row-bg: #101827;
-    --league-table-sticky-row-alt-bg: #142033;
-    --league-table-sticky-row-top-bg: #221a10;
-  }
-}
-
 @media (max-width: 760px) {
   .table-container {
     border-radius: 8px;
   }
 
   .footy-table {
-    min-width: 680px;
+    min-width: 740px;
   }
 
   .head,
@@ -209,9 +200,9 @@
 
   .team-col {
     left: 34px;
-    width: 128px;
-    min-width: 128px;
-    max-width: 128px;
+    width: 190px;
+    min-width: 190px;
+    max-width: 190px;
     padding-inline: 7px;
   }
 

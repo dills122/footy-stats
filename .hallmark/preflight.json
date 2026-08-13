@@ -1,0 +1,21 @@
+{
+  "scanned_at": "2026-08-13",
+  "framework": "Angular 20 standalone application",
+  "styling": ["Angular Material", "Tailwind CSS 4", "SCSS"],
+  "font_stack": ["Roboto", "Roboto Mono", "Material Icons"],
+  "palette": "Light warm-neutral application palette with amber accent and legacy dark-mode overrides",
+  "motion": "CSS transitions and small data-reveal animations; no motion library",
+  "spacing": "Existing 4px --app-space scale",
+  "preserve": [
+    "Existing routes and component ownership",
+    "Existing page composition and content hierarchy",
+    "Roboto family and Material controls",
+    "Amber accent and 4px spacing foundation"
+  ],
+  "refine": [
+    "Light-first palette",
+    "Roboto Condensed heading role",
+    "Neutral control surfaces",
+    "Responsive overflow and truncation fixes"
+  ]
+}

@@ -8,19 +8,21 @@
 } } @else {
 <section class="teams-archive app-surface app-page-shell">
   <header class="app-page-header">
-    <div>
+    <div class="app-page-header-copy">
       <p class="app-page-eyebrow">Club Directory</p>
       <h1 class="app-page-title">Teams Archive</h1>
       <p class="app-page-lede">
         Browse clubs that have featured in English football tiers across eras.
       </p>
     </div>
-    <app-data-export-menu
-      title="Teams archive"
-      [filename]="exportFilename()"
-      [summary]="exportSummary()"
-      [rows]="exportRows()"
-    />
+    <div class="app-page-header-actions">
+      <app-data-export-menu
+        title="Teams archive"
+        [filename]="exportFilename()"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+      />
+    </div>
   </header>
 
   <app-team-list

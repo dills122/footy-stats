@@ -1,0 +1,11 @@
+[
+  {
+    "date": "2026-08-13",
+    "scope": "app",
+    "macrostructure": "preserved",
+    "theme": "existing-refined",
+    "theme_axes": "light / condensed-sans / warm-amber",
+    "enrichment": "none",
+    "brief": "Lighten and refine the existing FootyStats design without restructuring it"
+  }
+]

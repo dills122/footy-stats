@@ -1,8 +1,8 @@
 :host {
   display: block;
-  background: rgba(11, 18, 32, 0.92);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
-  backdrop-filter: blur(12px);
+  background: var(--app-header-bg);
+  border-bottom: 1px solid var(--app-border);
+  backdrop-filter: blur(10px);
   overflow-x: clip;
 }
 
@@ -39,9 +39,9 @@
   border-radius: 9px;
   display: grid;
   place-items: center;
-  color: #fde68a;
-  background: rgba(217, 119, 6, 0.14);
-  border: 1px solid rgba(217, 119, 6, 0.32);
+  color: var(--app-accent-hover);
+  background: var(--app-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--app-accent) 28%, transparent);
   box-shadow: none;
 }
 
@@ -88,9 +88,9 @@
 }
 
 .nav-links .is-active {
-  color: #fde68a;
-  background: rgba(217, 119, 6, 0.12);
-  box-shadow: inset 0 -2px 0 rgba(217, 119, 6, 0.52);
+  color: var(--app-accent-hover);
+  background: var(--app-accent-soft);
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--app-accent) 55%, transparent);
 }
 
 .mobile-menu-trigger {
@@ -98,7 +98,7 @@
   border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 8px;
   color: var(--app-text-strong);
-  background: rgba(15, 23, 42, 0.48);
+  background: var(--app-surface-solid);
 }
 
 @media (max-width: 760px) {

@@ -48,7 +48,7 @@
   overflow: hidden;
   background: rgba(15, 23, 42, 0.08);
   color: var(--app-text-strong);
-  font-family: 'Roboto Mono', 'SFMono-Regular', Consolas, monospace;
+  font-family: var(--app-font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;
 }
@@ -56,9 +56,9 @@
 .ticker-number--running {
   animation: ticker-board-rattle 760ms steps(8, end);
   border-color: rgba(217, 119, 6, 0.42);
-  background: rgba(15, 23, 42, 0.86);
-  color: #fde68a;
-  text-shadow: 0 0 8px rgba(251, 191, 36, 0.32);
+  background: var(--app-accent-soft);
+  color: var(--app-accent-hover);
+  text-shadow: none;
 }
 
 .ticker-number--running::after {
@@ -154,12 +154,10 @@
   min-height: 44px;
   border-radius: 8px;
   justify-content: center;
-  --mdc-filled-button-container-color: #d97706;
-  --mdc-filled-button-label-text-color: #111827;
-  --mdc-outlined-button-label-text-color: var(--app-text-strong);
-  --mdc-outlined-button-outline-color: var(--app-border);
-  --mat-outlined-button-state-layer-color: var(--app-text-strong);
-  --mat-filled-button-state-layer-color: #111827;
+  --mat-button-filled-container-color: var(--app-accent);
+  --mat-button-filled-label-text-color: var(--app-text-inverse);
+  --mat-button-outlined-label-text-color: var(--app-accent);
+  --mat-button-outlined-outline-color: var(--app-border);
 }
 
 .archive-sections {
@@ -207,7 +205,7 @@
 }
 
 .archive-section a:hover {
-  color: #fde68a;
+  color: var(--app-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

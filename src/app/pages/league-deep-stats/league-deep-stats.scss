@@ -45,17 +45,6 @@
   text-underline-offset: 3px;
 }
 
-.profile-header {
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-}
-
-.profile-header .app-page-title {
-  margin: 8px 0;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.05;
-}
-
 .stat-grid,
 .deep-grid,
 .leaderboard-grid,
@@ -187,7 +176,7 @@
   min-height: 42px;
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 7px;
-  background: rgba(7, 10, 19, 0.2);
+  background: var(--app-control-bg);
   color: var(--app-text-subtle);
 }
 
