@@ -19,12 +19,6 @@
 
 .record-header {
   margin-bottom: 0;
-  padding-bottom: clamp(16px, 2.4vw, 26px);
-  border-bottom: 1px solid var(--app-border);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  align-items: start;
 }
 
 .record-header-copy {
@@ -81,7 +75,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(7, 10, 19, 0.18);
+  background: var(--app-surface-solid);
   color: var(--app-text-strong);
   font: inherit;
   font-size: 0.88rem;
@@ -97,7 +91,7 @@
 .control-action:focus-visible,
 .preset-chip:focus-visible,
 .table-result-shell:focus-visible {
-  outline: 2px solid rgba(226, 232, 240, 0.76);
+  outline: 2px solid var(--app-focus-ring);
   outline-offset: 3px;
 }
 
@@ -110,12 +104,12 @@
 
 .field {
   width: min(100%, 280px);
-  --mdc-filled-text-field-container-color: rgba(7, 10, 19, 0.3);
+  --mdc-filled-text-field-container-color: var(--app-surface-solid);
   --mdc-filled-text-field-container-shape: 8px;
   --mdc-filled-text-field-active-indicator-color: transparent;
   --mdc-filled-text-field-focus-active-indicator-color: transparent;
   --mdc-filled-text-field-hover-active-indicator-color: transparent;
-  --mat-select-panel-background-color: #111827;
+  --mat-select-panel-background-color: var(--app-surface-solid);
 }
 
 .field-placeholder {
@@ -127,7 +121,7 @@
   display: grid;
   align-content: center;
   gap: 7px;
-  background: rgba(7, 10, 19, 0.28);
+  background: var(--app-surface-solid);
 }
 
 .field-placeholder span,
@@ -198,7 +192,7 @@
   gap: 5px;
   align-content: center;
   text-align: left;
-  background: rgba(7, 10, 19, 0.18);
+  background: var(--app-surface-solid);
   color: var(--app-text-strong);
   font: inherit;
   cursor: pointer;
@@ -210,8 +204,8 @@
 }
 
 .preset-chip.is-active {
-  border-color: rgba(217, 119, 6, 0.54);
-  background: rgba(217, 119, 6, 0.12);
+  border-color: color-mix(in srgb, var(--app-accent) 48%, transparent);
+  background: var(--app-accent-soft);
 }
 
 .preset-chip span {
@@ -261,7 +255,7 @@
 
 :host ::ng-deep .field .mdc-text-field--filled {
   border: 1px solid var(--app-border);
-  background: rgba(7, 10, 19, 0.28);
+  background: var(--app-surface-solid);
   box-shadow: none;
 }
 
@@ -393,11 +387,6 @@ app-season-summary-card {
 
   .control-action {
     justify-content: center;
-  }
-
-  .record-header {
-    grid-template-columns: 1fr;
-    gap: 12px;
   }
 
   .record-header-action {

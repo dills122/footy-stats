@@ -3,6 +3,7 @@ import { Component, computed, effect, HostListener, inject, signal } from '@angu
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LineChart } from 'echarts/charts';
 import {
+  AriaComponent,
   DataZoomComponent,
   GridComponent,
   LegendComponent,
@@ -16,6 +17,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
+import { AppTheme, ThemeService } from '@app/services/theme.service';
 import { LeagueStore } from '@app/store/league.store';
 import { buildClubIdentityTeamIndex } from '@app/utils/club-aliases';
 import type { ExportRow, ExportSummary } from '@app/utils/data-export';
@@ -58,19 +60,120 @@ interface MovementChartSetup {
 
 type ChartDetailMode = 'path' | 'events';
 
-const TEAM_COLOR_POOL = [
-  '#d97706',
-  '#059669',
-  '#2563eb',
-  '#0891b2',
-  '#be123c',
-  '#65a30d',
-  '#4f46e5',
-  '#b45309',
-  '#7c3aed',
-  '#0f766e',
-  '#64748b',
-];
+const TEAM_COLOR_POOLS: Record<AppTheme, string[]> = {
+  terrace: [
+    '#b45309',
+    '#047857',
+    '#1d4ed8',
+    '#0e7490',
+    '#be123c',
+    '#4d7c0f',
+    '#6d28d9',
+    '#9a3412',
+    '#7e22ce',
+    '#0f766e',
+    '#475569',
+  ],
+  clubhouse: [
+    '#a24120',
+    '#23704f',
+    '#2852a5',
+    '#176b82',
+    '#a82545',
+    '#567517',
+    '#6332a8',
+    '#8d4318',
+    '#78277e',
+    '#176b62',
+    '#515a66',
+  ],
+  floodlights: [
+    '#f6b44f',
+    '#4fd1a4',
+    '#7aa2ff',
+    '#55c2d9',
+    '#f26d86',
+    '#a3cf62',
+    '#a78bfa',
+    '#f59e5b',
+    '#c084fc',
+    '#5eead4',
+    '#cbd5e1',
+  ],
+};
+
+const MOVEMENT_CHART_THEME: Record<
+  AppTheme,
+  {
+    textStrong: string;
+    textSubtle: string;
+    inactive: string;
+    axis: string;
+    grid: string;
+    tooltipBackground: string;
+    tooltipBorder: string;
+    tooltipText: string;
+    zoomBackground: string;
+    zoomFiller: string;
+    zoomBorder: string;
+    zoomHandle: string;
+    zoomHandleBorder: string;
+    zoomDataLine: string;
+    zoomDataArea: string;
+  }
+> = {
+  terrace: {
+    textStrong: '#17362b',
+    textSubtle: '#3b554a',
+    inactive: '#68766e',
+    axis: '#9d9273',
+    grid: 'rgba(23, 54, 43, 0.16)',
+    tooltipBackground: 'rgba(20, 50, 39, 0.97)',
+    tooltipBorder: '#c9bea0',
+    tooltipText: '#fff9e8',
+    zoomBackground: '#e8dfc7',
+    zoomFiller: 'rgba(180, 83, 9, 0.2)',
+    zoomBorder: '#aa9e7d',
+    zoomHandle: '#9b4b0b',
+    zoomHandleBorder: '#fff9e8',
+    zoomDataLine: '#5d6e64',
+    zoomDataArea: 'rgba(59, 85, 74, 0.16)',
+  },
+  clubhouse: {
+    textStrong: '#35251f',
+    textSubtle: '#5a453c',
+    inactive: '#6f625a',
+    axis: '#ab8d75',
+    grid: 'rgba(53, 37, 31, 0.15)',
+    tooltipBackground: 'rgba(82, 25, 32, 0.97)',
+    tooltipBorder: '#d2b69b',
+    tooltipText: '#fff6e5',
+    zoomBackground: '#eadcc8',
+    zoomFiller: 'rgba(141, 47, 59, 0.19)',
+    zoomBorder: '#b99b80',
+    zoomHandle: '#8d2f3b',
+    zoomHandleBorder: '#fff6e5',
+    zoomDataLine: '#756157',
+    zoomDataArea: 'rgba(90, 69, 60, 0.15)',
+  },
+  floodlights: {
+    textStrong: '#f2ecd8',
+    textSubtle: '#c6d0c5',
+    inactive: '#8fa097',
+    axis: '#536a60',
+    grid: 'rgba(198, 208, 197, 0.17)',
+    tooltipBackground: 'rgba(5, 14, 11, 0.97)',
+    tooltipBorder: '#355045',
+    tooltipText: '#f2ecd8',
+    zoomBackground: '#1b3028',
+    zoomFiller: 'rgba(132, 213, 117, 0.2)',
+    zoomBorder: '#48685b',
+    zoomHandle: '#84d575',
+    zoomHandleBorder: '#14231d',
+    zoomDataLine: '#9eaea2',
+    zoomDataArea: 'rgba(158, 174, 162, 0.16)',
+  },
+};
 
 const TIER_LABELS: Record<number, string> = {
   1: 'Premier League',
@@ -266,6 +369,7 @@ const CLUB_QUICK_PICK_GROUPS: ClubQuickPickGroup[] = [
 
 echarts.use([
   LineChart,
+  AriaComponent,
   GridComponent,
   TooltipComponent,
   LegendComponent,
@@ -286,6 +390,7 @@ export class MovementExplorer {
   private store = inject(LeagueStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private themeService = inject(ThemeService);
 
   readonly maxSelectedTeams = 10;
   readonly availablePresets = [
@@ -475,6 +580,7 @@ export class MovementExplorer {
   teamSeries = computed<TeamSeries[]>(() => {
     const selected = this.selectedTeamIds();
     const range = new Set(this.selectedRange());
+    const teamColorPool = TEAM_COLOR_POOLS[this.themeService.activeTheme()];
     if (!selected.length || !range.size) {
       return [];
     }
@@ -517,7 +623,7 @@ export class MovementExplorer {
         return {
           teamId,
           teamName: team.name,
-          color: TEAM_COLOR_POOL[idx % TEAM_COLOR_POOL.length],
+          color: teamColorPool[idx % teamColorPool.length],
           points,
         };
       })
@@ -562,9 +668,18 @@ export class MovementExplorer {
     const isCompactViewport = this.isCompactViewport();
     const isDenseComparison = series.length >= 5 || seasons.length >= 45;
     const showWartimeLabels = !isDenseComparison && seasons.length <= 60;
-    const pathOpacity = isDenseComparison ? 0.52 : 0.88;
-    const pathWidth = isDenseComparison ? 1.8 : 2.4;
+    const chartTheme = MOVEMENT_CHART_THEME[this.themeService.activeTheme()];
+    const pathOpacity = isDenseComparison ? 0.88 : 0.94;
+    const pathWidth = isDenseComparison ? 2.4 : 2.7;
     const focusedTeamId = this.focusedTeamId();
+    const chartTeamNames = new Intl.ListFormat('en', {
+      style: 'long',
+      type: 'conjunction',
+    }).format(series.map((team) => team.teamName));
+    const chartSeasonRange =
+      seasons.length === 1
+        ? `in ${seasons[0]}`
+        : `from ${seasons[0]} to ${seasons[seasons.length - 1]}`;
     const wartimeMarkAreas = wartimeSuspensionRanges.map((range) => [
       {
         name: range.label,
@@ -675,31 +790,42 @@ export class MovementExplorer {
 
     return {
       animation: false,
+      aria: {
+        enabled: true,
+        description: `Club movement by tier ${chartSeasonRange} for ${chartTeamNames}.`,
+      },
       backgroundColor: 'transparent',
       grid: {
         left: isCompactViewport ? 58 : 184,
         right: isCompactViewport ? 14 : 40,
         top: isCompactViewport ? 16 : 60,
-        bottom: isCompactViewport ? 48 : 88,
+        bottom: isCompactViewport ? 62 : 84,
         containLabel: false,
       },
       legend: {
         show: !isCompactViewport,
         top: 14,
         left: 18,
+        icon: 'roundRect',
+        itemWidth: 24,
+        itemHeight: 8,
+        itemGap: 18,
+        inactiveColor: chartTheme.inactive,
+        inactiveBorderColor: chartTheme.inactive,
+        inactiveBorderWidth: 2,
         textStyle: {
-          color: '#d7deeb',
+          color: chartTheme.textStrong,
           fontSize: 14,
-          fontWeight: 600,
+          fontWeight: 700,
         },
       },
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'line' },
-        backgroundColor: 'rgba(7, 10, 19, 0.94)',
-        borderColor: 'rgba(148, 163, 184, 0.28)',
+        backgroundColor: chartTheme.tooltipBackground,
+        borderColor: chartTheme.tooltipBorder,
         textStyle: {
-          color: '#d7deeb',
+          color: chartTheme.tooltipText,
         },
       },
       xAxis: {
@@ -707,13 +833,13 @@ export class MovementExplorer {
         data: seasons.map((season) => String(season)),
         boundaryGap: false,
         axisLabel: {
-          color: '#c5d0e4',
+          color: chartTheme.textSubtle,
           fontSize: isCompactViewport ? 10 : 13,
           margin: isCompactViewport ? 9 : 16,
           hideOverlap: true,
         },
         axisLine: {
-          lineStyle: { color: 'rgba(148, 163, 184, 0.5)' },
+          lineStyle: { color: chartTheme.axis },
         },
         axisTick: { show: false },
       },
@@ -724,7 +850,7 @@ export class MovementExplorer {
         interval: 1,
         inverse: true,
         axisLabel: {
-          color: '#c5d0e4',
+          color: chartTheme.textStrong,
           fontSize: isCompactViewport ? 10 : 13,
           fontWeight: 700,
           margin: isCompactViewport ? 7 : 12,
@@ -733,7 +859,7 @@ export class MovementExplorer {
         },
         axisLine: { show: false },
         splitLine: {
-          lineStyle: { color: 'rgba(148, 163, 184, 0.22)' },
+          lineStyle: { color: chartTheme.grid },
         },
       },
       dataZoom: [
@@ -741,17 +867,25 @@ export class MovementExplorer {
           type: 'slider',
           xAxisIndex: 0,
           height: isCompactViewport ? 18 : 24,
-          bottom: isCompactViewport ? 14 : 48,
+          bottom: isCompactViewport ? 8 : 12,
           filterMode: 'none',
-          backgroundColor: 'rgba(15, 23, 42, 0.75)',
-          fillerColor: 'rgba(217, 119, 6, 0.24)',
-          borderColor: 'rgba(148, 163, 184, 0.42)',
+          backgroundColor: chartTheme.zoomBackground,
+          fillerColor: chartTheme.zoomFiller,
+          borderColor: chartTheme.zoomBorder,
+          dataBackground: {
+            lineStyle: { color: chartTheme.zoomDataLine, opacity: 0.55 },
+            areaStyle: { color: chartTheme.zoomDataArea, opacity: 1 },
+          },
+          selectedDataBackground: {
+            lineStyle: { color: chartTheme.textSubtle, opacity: 0.8 },
+            areaStyle: { color: chartTheme.zoomFiller, opacity: 1 },
+          },
           handleStyle: {
-            color: '#d97706',
-            borderColor: '#f59e0b',
+            color: chartTheme.zoomHandle,
+            borderColor: chartTheme.zoomHandleBorder,
           },
           textStyle: {
-            color: '#d7deeb',
+            color: chartTheme.textSubtle,
             fontSize: isCompactViewport ? 10 : 12,
           },
         },

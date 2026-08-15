@@ -7,16 +7,6 @@
   gap: 18px;
 }
 
-.system-header {
-  margin-bottom: 0;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--app-border);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
-  align-items: start;
-}
-
 .era-selector {
   padding: 10px;
   display: grid;
@@ -52,7 +42,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: rgba(7, 10, 19, 0.18);
+  background: var(--app-control-bg);
   color: var(--app-text-strong);
   font: inherit;
   font-size: 0.84rem;
@@ -85,7 +75,7 @@
   display: grid;
   align-content: start;
   gap: 5px;
-  background: rgba(7, 10, 19, 0.16);
+  background: var(--app-control-bg);
   color: var(--app-text-muted);
   font: inherit;
   text-align: left;
@@ -186,7 +176,7 @@
   grid-template-columns: 92px minmax(0, 1fr);
   gap: 10px;
   align-items: stretch;
-  background: rgba(7, 10, 19, 0.2);
+  background: var(--app-control-bg);
 }
 
 .tier-band:nth-child(1) {
@@ -222,7 +212,7 @@
 }
 
 .tier-level span {
-  color: #fde68a;
+  color: var(--app-accent);
   font-size: 0.74rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -284,7 +274,7 @@
 .note-head mat-icon {
   width: 20px;
   height: 20px;
-  color: #fde68a;
+  color: var(--app-accent);
   font-size: 20px;
 }
 
@@ -304,7 +294,6 @@
 }
 
 @media (max-width: 980px) {
-  .system-header,
   .infographic-shell {
     grid-template-columns: 1fr;
   }

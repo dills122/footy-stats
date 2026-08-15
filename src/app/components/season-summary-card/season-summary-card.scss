@@ -132,13 +132,13 @@ a.chip:focus-visible,
 
 .chip-up {
   border-color: rgba(52, 211, 153, 0.36);
-  color: #bbf7d0;
+  color: var(--app-success);
   background: rgba(16, 185, 129, 0.1);
 }
 
 .chip-down {
   border-color: rgba(220, 38, 38, 0.36);
-  color: #fecaca;
+  color: var(--app-danger);
   background: rgba(220, 38, 38, 0.1);
 }
 

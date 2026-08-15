@@ -23,32 +23,6 @@
   margin-top: 6px;
 }
 
-.app-page-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
-  align-items: start;
-}
-
-.eyebrow {
-  margin: 0;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--app-text-muted);
-}
-
-h1 {
-  margin: 5px 0 0;
-}
-
-.lede {
-  margin: 8px 0 14px;
-  color: var(--app-text-subtle);
-}
-
-@media (max-width: 760px) {
-  .app-page-header {
-    grid-template-columns: 1fr;
-  }
+.teams-archive .app-page-header {
+  margin-bottom: 20px;
 }

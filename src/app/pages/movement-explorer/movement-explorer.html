@@ -1,10 +1,22 @@
 <section class="movement-page app-surface app-page-shell">
   <header class="app-page-header">
-    <p class="app-page-eyebrow">Club Movement Explorer</p>
-    <h1 class="app-page-title">Promotion / Relegation by Club</h1>
-    <p class="app-page-lede">
-      Pick up to 10 clubs and a season window to compare how they move through the English pyramid.
-    </p>
+    <div class="app-page-header-copy">
+      <p class="app-page-eyebrow">Club Movement Explorer</p>
+      <h1 class="app-page-title">Promotion / Relegation by Club</h1>
+      <p class="app-page-lede">
+        Pick up to 10 clubs and a season window to compare how they move through the English
+        pyramid.
+      </p>
+    </div>
+    <div class="app-page-header-actions">
+      <app-data-export-menu
+        [title]="'Movement explorer ' + selectedSeasonRangeLabel()"
+        [filename]="exportFilename()"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+        [data]="exportData()"
+      />
+    </div>
   </header>
   <section class="research-note" aria-label="Data coverage note">
     <strong>Research note</strong>
@@ -15,13 +27,6 @@
   </section>
 
   <div class="config-toolbar">
-    <app-data-export-menu
-      [title]="'Movement explorer ' + selectedSeasonRangeLabel()"
-      [filename]="exportFilename()"
-      [summary]="exportSummary()"
-      [rows]="exportRows()"
-      [data]="exportData()"
-    />
     <button
       type="button"
       class="config-toggle"
@@ -280,7 +285,7 @@
         </div>
         <div class="legend-item movement-keys" aria-label="Chart legend">
           <span class="dot plain"></span>
-          <span>Club path</span>
+          <span>Club paths · select a club name below to show or hide it</span>
           @if (chartDetailMode() === 'events') {
           <span class="dot promoted"></span>
           <span>Promoted</span>

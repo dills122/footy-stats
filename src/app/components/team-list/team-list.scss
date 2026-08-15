@@ -33,7 +33,7 @@
   min-height: 30px;
   border: 1px solid var(--app-border);
   border-radius: 6px;
-  background: rgba(7, 10, 19, 0.18);
+  background: var(--app-control-bg);
   color: var(--app-text-subtle);
   padding: 4px 9px;
   font: inherit;
@@ -62,7 +62,7 @@
 
 .category-filter {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
   gap: 8px;
 }
 
@@ -75,7 +75,7 @@
   gap: 8px;
   border: 1px solid var(--app-border);
   border-radius: 8px;
-  background: rgba(7, 10, 19, 0.16);
+  background: var(--app-control-bg);
   color: var(--app-text-subtle);
   padding: 8px 10px;
   font: inherit;
@@ -112,11 +112,11 @@
 .filter-button--selected {
   border-color: rgba(217, 119, 6, 0.56);
   background: rgba(217, 119, 6, 0.12);
-  color: #fde68a;
+  color: var(--app-accent-hover);
 }
 
 .filter-button--selected small {
-  color: color-mix(in srgb, #fde68a 82%, var(--app-text-muted) 18%);
+  color: color-mix(in srgb, var(--app-accent) 82%, var(--app-text-muted) 18%);
 }
 
 .alphabet-filter {
@@ -148,7 +148,7 @@
 }
 
 .letter-button--selected {
-  color: #fde68a;
+  color: var(--app-accent-hover);
   background: rgba(217, 119, 6, 0.12);
   box-shadow: inset 0 -2px 0 rgba(217, 119, 6, 0.58);
 }
@@ -166,7 +166,7 @@
   gap: 4px;
   border: 1px solid var(--app-border);
   border-radius: 8px;
-  background: rgba(7, 10, 19, 0.18);
+  background: var(--app-control-bg);
   padding: 18px;
   color: var(--app-text-subtle);
 }
@@ -270,7 +270,7 @@
 .status-pill--active {
   border-color: rgba(34, 197, 94, 0.38);
   background: rgba(34, 197, 94, 0.12);
-  color: #bbf7d0;
+  color: var(--app-success);
 }
 
 .span-label {
@@ -401,7 +401,7 @@
     min-height: 32px;
     border: 1px solid var(--app-border);
     padding: 4px 6px;
-    background: rgba(7, 10, 19, 0.14);
+    background: var(--app-control-bg);
     text-align: center;
   }
 
@@ -423,7 +423,7 @@
     overflow: hidden;
     border: 1px solid var(--app-border);
     border-radius: 8px;
-    background: rgba(7, 10, 19, 0.22);
+    background: var(--app-control-bg);
   }
 
   .mobile-team-main {
