@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { provideRouter } from '@angular/router';
+import { APP_THEME_STORAGE_KEY } from '../../services/theme.service';
 import { MainToolbar } from './main-toolbar';
 
 describe('MainToolbar', () => {
@@ -14,6 +15,9 @@ describe('MainToolbar', () => {
   let fixture: ComponentFixture<MainToolbar>;
 
   beforeEach(async () => {
+    window.localStorage.removeItem(APP_THEME_STORAGE_KEY);
+    document.documentElement.removeAttribute('data-theme');
+
     await TestBed.configureTestingModule({
       imports: [
         MainToolbar,
@@ -30,6 +34,11 @@ describe('MainToolbar', () => {
     fixture = TestBed.createComponent(MainToolbar);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    window.localStorage.removeItem(APP_THEME_STORAGE_KEY);
+    document.documentElement.removeAttribute('data-theme');
   });
 
   it('should create', () => {
@@ -51,5 +60,30 @@ describe('MainToolbar', () => {
 
     expect(trigger).toBeTruthy();
     expect(trigger?.getAttribute('aria-label')).toBe('Open site navigation');
+  });
+
+  it('provides the three named colour themes in an accessible selector', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const select = element.querySelector<HTMLSelectElement>('.theme-select');
+
+    expect(select?.getAttribute('aria-label')).toBe('Colour theme');
+    expect(Array.from(select?.options ?? []).map((option) => option.textContent?.trim())).toEqual([
+      'Terrace',
+      'Clubhouse',
+      'Floodlights',
+    ]);
+  });
+
+  it('changes the active document theme from the selector', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const select = element.querySelector<HTMLSelectElement>('.theme-select');
+
+    expect(select).toBeTruthy();
+    select!.value = 'clubhouse';
+    select!.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    expect(document.documentElement.dataset['theme']).toBe('clubhouse');
+    expect(window.localStorage.getItem(APP_THEME_STORAGE_KEY)).toBe('clubhouse');
   });
 });

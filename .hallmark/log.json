@@ -1,5 +1,14 @@
 [
   {
+    "date": "2026-08-15",
+    "scope": "app-theme",
+    "macrostructure": "preserved",
+    "theme": "palette-switcher",
+    "theme_axes": "warm heritage-green / cream oxblood / dark floodlight-green",
+    "enrichment": "none",
+    "brief": "Compare richer FootyStats palettes with a persisted toolbar theme selector"
+  },
+  {
     "date": "2026-08-13",
     "scope": "app",
     "macrostructure": "preserved",

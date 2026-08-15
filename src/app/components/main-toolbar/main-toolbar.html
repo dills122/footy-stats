@@ -26,6 +26,21 @@
       <a mat-button routerLink="/teams" routerLinkActive="is-active">Clubs</a>
     </nav>
 
+    <label class="theme-switcher">
+      <span class="theme-swatch" aria-hidden="true"></span>
+      <span class="theme-switcher-label">Theme</span>
+      <select
+        class="theme-select"
+        aria-label="Colour theme"
+        [value]="themeService.activeTheme()"
+        (change)="onThemeChange($event)"
+      >
+        @for (theme of themeService.themes; track theme.id) {
+        <option [value]="theme.id">{{ theme.label }}</option>
+        }
+      </select>
+    </label>
+
     <button
       type="button"
       class="mobile-menu-trigger"
