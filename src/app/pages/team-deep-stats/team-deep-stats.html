@@ -129,29 +129,31 @@
       <h2>Tier Breakdown</h2>
       <span>{{ deepStats().tierRows.length }} tiers</span>
     </div>
-    <div class="data-table tier-table" role="table" aria-label="Club tier breakdown">
-      <div class="data-row data-head" role="row">
-        <span role="columnheader">Tier</span>
-        <span role="columnheader">Seasons</span>
-        <span role="columnheader">Range</span>
-        <span role="columnheader">Best</span>
-        <span role="columnheader">Avg Pos</span>
-        <span role="columnheader">Points</span>
-        <span role="columnheader">Moves</span>
+    <div class="data-window" role="region" aria-label="Tier breakdown scroll area" tabindex="0">
+      <div class="data-table tier-table" role="table" aria-label="Club tier breakdown">
+        <div class="data-row data-head" role="row">
+          <span role="columnheader">Tier</span>
+          <span role="columnheader">Seasons</span>
+          <span role="columnheader">Range</span>
+          <span role="columnheader">Best</span>
+          <span role="columnheader">Avg Pos</span>
+          <span role="columnheader">Points</span>
+          <span role="columnheader">Moves</span>
+        </div>
+        @for (row of deepStats().tierRows; track row.tier) {
+        <div class="data-row" role="row">
+          <span role="cell">
+            <a class="app-club-link" [routerLink]="['/leagues', row.tier]">{{ row.tierLabel }}</a>
+          </span>
+          <span role="cell">{{ row.seasons }}</span>
+          <span role="cell">{{ row.firstSeason }}-{{ row.lastSeason }}</span>
+          <span role="cell">{{ ordinal(row.bestPosition) }} / {{ row.bestSeason }}</span>
+          <span role="cell">{{ formatDecimal(row.averagePosition) }}</span>
+          <span role="cell">{{ row.points }}</span>
+          <span role="cell">{{ row.movementEvents }}</span>
+        </div>
+        }
       </div>
-      @for (row of deepStats().tierRows; track row.tier) {
-      <div class="data-row" role="row">
-        <span role="cell">
-          <a class="app-club-link" [routerLink]="['/leagues', row.tier]">{{ row.tierLabel }}</a>
-        </span>
-        <span role="cell">{{ row.seasons }}</span>
-        <span role="cell">{{ row.firstSeason }}-{{ row.lastSeason }}</span>
-        <span role="cell">{{ ordinal(row.bestPosition) }} / {{ row.bestSeason }}</span>
-        <span role="cell">{{ formatDecimal(row.averagePosition) }}</span>
-        <span role="cell">{{ row.points }}</span>
-        <span role="cell">{{ row.movementEvents }}</span>
-      </div>
-      }
     </div>
   </section>
 
@@ -179,45 +181,47 @@
       <h2>Season Rows</h2>
       <span>{{ deepStats().seasonRows.length }} rows</span>
     </div>
-    <div class="data-table season-table" role="table" aria-label="Club season rows">
-      <div class="data-row data-head" role="row">
-        <span role="columnheader">Season</span>
-        <span role="columnheader">Name</span>
-        <span role="columnheader">Tier</span>
-        <span role="columnheader">Pos</span>
-        <span role="columnheader">P</span>
-        <span role="columnheader">W-D-L</span>
-        <span role="columnheader">GF-GA</span>
-        <span role="columnheader">GD</span>
-        <span role="columnheader">Pts</span>
-        <span role="columnheader">PPG</span>
+    <div class="data-window" role="region" aria-label="Season rows scroll area" tabindex="0">
+      <div class="data-table season-table" role="table" aria-label="Club season rows">
+        <div class="data-row data-head" role="row">
+          <span role="columnheader">Season</span>
+          <span role="columnheader">Name</span>
+          <span role="columnheader">Tier</span>
+          <span role="columnheader">Pos</span>
+          <span role="columnheader">P</span>
+          <span role="columnheader">W-D-L</span>
+          <span role="columnheader">GF-GA</span>
+          <span role="columnheader">GD</span>
+          <span role="columnheader">Pts</span>
+          <span role="columnheader">PPG</span>
+        </div>
+        @for (row of deepStats().seasonRows; track row.season + row.tier + row.teamName) {
+        <div class="data-row" role="row">
+          <span role="cell">
+            <a
+              class="table-row-link"
+              [routerLink]="['/tables']"
+              [queryParams]="tableQueryParams(row.season, row.tier)"
+            >
+              {{ row.season }}
+            </a>
+          </span>
+          <span role="cell">
+            @if (row.clubId) {
+            <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.teamName }}</a>
+            } @else { {{ row.teamName }} }
+          </span>
+          <span role="cell">{{ row.tierLabel }}</span>
+          <span role="cell">{{ ordinal(row.position) }}</span>
+          <span role="cell">{{ row.played }}</span>
+          <span role="cell">{{ row.won }}-{{ row.drawn }}-{{ row.lost }}</span>
+          <span role="cell">{{ row.goalsFor }}-{{ row.goalsAgainst }}</span>
+          <span role="cell">{{ signedNumber(row.goalDifference) }}</span>
+          <span role="cell">{{ row.points }}</span>
+          <span role="cell">{{ formatDecimal(row.pointsPerGame) }}</span>
+        </div>
+        }
       </div>
-      @for (row of deepStats().seasonRows; track row.season + row.tier + row.teamName) {
-      <div class="data-row" role="row">
-        <span role="cell">
-          <a
-            class="table-row-link"
-            [routerLink]="['/tables']"
-            [queryParams]="tableQueryParams(row.season, row.tier)"
-          >
-            {{ row.season }}
-          </a>
-        </span>
-        <span role="cell">
-          @if (row.clubId) {
-          <a class="app-club-link" [routerLink]="['/teams', row.clubId]">{{ row.teamName }}</a>
-          } @else { {{ row.teamName }} }
-        </span>
-        <span role="cell">{{ row.tierLabel }}</span>
-        <span role="cell">{{ ordinal(row.position) }}</span>
-        <span role="cell">{{ row.played }}</span>
-        <span role="cell">{{ row.won }}-{{ row.drawn }}-{{ row.lost }}</span>
-        <span role="cell">{{ row.goalsFor }}-{{ row.goalsAgainst }}</span>
-        <span role="cell">{{ signedNumber(row.goalDifference) }}</span>
-        <span role="cell">{{ row.points }}</span>
-        <span role="cell">{{ formatDecimal(row.pointsPerGame) }}</span>
-      </div>
-      }
     </div>
   </section>
 </section>

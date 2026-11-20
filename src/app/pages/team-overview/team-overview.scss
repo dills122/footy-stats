@@ -655,38 +655,39 @@
     border: 1px solid var(--app-border);
     border-radius: 8px;
     display: grid;
-    gap: 8px;
-    padding: 10px;
+    gap: 6px;
+    padding: 8px 10px;
     background: var(--app-control-bg);
   }
 
   .mobile-recent-main,
   .mobile-recent-facts {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     gap: 10px;
   }
 
   .mobile-recent-main {
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: baseline;
     color: var(--app-text-strong);
     font-weight: 760;
   }
 
-  .mobile-recent-main span,
-  .mobile-recent-facts {
-    min-width: 0;
-  }
-
-  .mobile-recent-main span {
+  .mobile-recent-main > :last-child {
     text-align: right;
+    overflow-wrap: anywhere;
   }
 
   .mobile-recent-facts {
+    grid-template-columns: minmax(0, 1fr) auto;
     border-top: 1px solid rgba(148, 163, 184, 0.16);
-    padding-top: 8px;
+    padding-top: 6px;
     color: var(--app-text-muted);
     font-size: 0.84rem;
     font-weight: 650;
+  }
+
+  .mobile-recent-facts > :last-child {
+    white-space: nowrap;
   }
 }

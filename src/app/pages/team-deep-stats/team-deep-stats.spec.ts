@@ -82,6 +82,16 @@ describe('TeamDeepStats', () => {
     expect(element.textContent).toContain('Tier Breakdown');
     expect(element.textContent).toContain('Season Rows');
 
+    const scrollAreas = Array.from(element.querySelectorAll('.data-window'));
+    expect(scrollAreas.map((area) => area.getAttribute('aria-label'))).toEqual([
+      'Tier breakdown scroll area',
+      'Season rows scroll area',
+    ]);
+    expect(scrollAreas.map((area) => area.getAttribute('tabindex'))).toEqual(['0', '0']);
+    expect(
+      scrollAreas.map((area) => area.querySelector('[role="columnheader"]')?.textContent?.trim())
+    ).toEqual(['Tier', 'Season']);
+
     const tableLink = Array.from(element.querySelectorAll<HTMLAnchorElement>('a')).find((link) =>
       link.textContent?.includes('2021')
     );

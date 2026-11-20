@@ -520,17 +520,6 @@ h3 {
   .team-overview .season-snapshot-list em {
     grid-column: auto;
   }
-
-  .team-overview .mobile-recent-main,
-  .team-overview .mobile-recent-facts {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .team-overview .mobile-recent-main span {
-    text-align: left;
-  }
 }
 
 a:focus-visible,
