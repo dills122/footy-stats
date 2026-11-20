@@ -14,21 +14,15 @@
       </div>
       <div class="record-header-action app-page-header-actions">
         @if (tableControlsReady()) {
-        <details class="app-disclosure">
-          <summary>Table tools</summary>
-          <div class="table-tools">
-            <app-data-export-menu
-              [title]="'League table ' + selectedYear() + ' ' + currentCompetitionName()"
-              [filename]="exportFilename()"
-              [summary]="exportSummary()"
-              [rows]="exportRows()"
-            />
-            <app-data-issue-report-dialog
-              triggerLabel="Report table issue"
-              [context]="dataIssueContext()"
-            />
-          </div>
-        </details>
+        <app-data-export-menu
+          menuLabel="Table tools"
+          reportLabel="Report table issue"
+          [title]="'League table ' + selectedYear() + ' ' + currentCompetitionName()"
+          [filename]="exportFilename()"
+          [summary]="exportSummary()"
+          [rows]="exportRows()"
+          [reportContext]="dataIssueContext()"
+        />
         } @else if (loadStatus() !== 'error') {
         <span class="report-action-placeholder" aria-hidden="true"></span>
         }

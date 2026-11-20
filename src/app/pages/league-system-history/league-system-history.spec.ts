@@ -1,3 +1,4 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { LeagueSystemHistory } from './league-system-history';
@@ -62,15 +63,16 @@ describe('LeagueSystemHistory', () => {
   });
 
   it('offers txt, csv, and json export actions', () => {
-    const buttons = Array.from(
-      fixture.nativeElement.querySelectorAll<HTMLButtonElement>('.export-button')
-    );
+    const root: HTMLElement = fixture.nativeElement;
+    const overlay = TestBed.inject(OverlayContainer).getContainerElement();
+    root.querySelector<HTMLButtonElement>('app-data-export-menu button')!.click();
+    fixture.detectChanges();
 
-    expect(buttons.map((button) => button.querySelector('span')?.textContent?.trim())).toEqual([
-      'TXT',
-      'CSV',
-      'JSON',
+    const items = Array.from(overlay.querySelectorAll('[role="menuitem"]:enabled'));
+    expect(items.map((item) => item.querySelector('span')?.textContent?.trim())).toEqual([
+      'Export TXT',
+      'Export CSV',
+      'Export JSON',
     ]);
-    expect(buttons.every((button) => !button.disabled)).toBe(true);
   });
 });

@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArchiveLoadState } from '@app/components/archive-load-state/archive-load-state';
-import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/data-issue-report-dialog';
 import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { LeagueStore } from '@app/store/league.store';
 import { DataLoaderService } from '@app/store/services/hydrate-store-json';
@@ -71,7 +70,6 @@ const TABLE_DATA_NOTICES: TableDataNoticeDefinition[] = [
     CommonModule,
     MatIconModule,
     SeasonSummaryCardComponent,
-    DataIssueReportDialog,
     DataExportMenu,
     ArchiveLoadState,
   ],

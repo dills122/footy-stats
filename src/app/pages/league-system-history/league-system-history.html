@@ -7,16 +7,14 @@
       </p>
     </div>
     <div class="app-page-header-actions">
-      <details class="app-disclosure">
-        <summary>Export data</summary>
-        <app-data-export-menu
-          title="League system history"
-          filename="footy-stats-league-system-history"
-          [summary]="exportSummary()"
-          [rows]="exportRows()"
-          [data]="eras"
-        />
-      </details>
+      <app-data-export-menu
+        menuLabel="Export data"
+        title="League system history"
+        filename="footy-stats-league-system-history"
+        [summary]="exportSummary()"
+        [rows]="exportRows()"
+        [data]="eras"
+      />
     </div>
   </header>
 

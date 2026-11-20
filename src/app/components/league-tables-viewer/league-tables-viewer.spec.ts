@@ -84,8 +84,8 @@ describe('LeagueTablesViewer', () => {
     expect(component.tableControlsReady()).toBe(true);
     expect(component.tableResultKey()).toBe('2025:tier1');
     expect(element.querySelectorAll('.field-placeholder')).toHaveLength(0);
-    expect(element.querySelector('.record-header-action .report-trigger')?.textContent).toContain(
-      'Report table issue'
+    expect(element.querySelector('.record-header-action button')?.textContent).toContain(
+      'Table tools'
     );
     expect(element.querySelector('.table-result-placeholder')).toBeNull();
     expect(element.querySelector('.table-result')).toBeTruthy();
