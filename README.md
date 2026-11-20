@@ -7,11 +7,16 @@ Running site: [FootyStats](https://footy.dsteele.dev/)
 
 ## What You Can Explore
 
-- Historical league tables by season and tier.
+- Historical standings by season and competition. On mobile, open **Show presets** for shortcuts
+  and **Season overview** for the summary. The page URL remembers the selected table.
+- Search the club directory by name, with optional letter and category filters.
 - Club overview pages with season history, movement, and performance milestones.
 - League/tier overview pages with movement leaders, close seasons, notable marks, and churn.
 - Deep-stat views for clubs and tiers.
-- Movement explorer presets for comparing club paths through the pyramid.
+- Movement explorer presets for comparing club paths through the pyramid, with a **Season data**
+  view for the chart records.
+- Rivalry comparisons with searchable club pickers, a scorecard, and expandable shared season
+  records. Share the page URL to reopen the same pair.
 - Print-friendly table, club, league, and deep-stat views.
 - In-app data issue reporting for specific pages, clubs, seasons, or tables.
 
@@ -27,6 +32,8 @@ When newer data is available, the app can refresh the archive in the browser:
 - downloaded files are verified against Git blob checksums from the release tag;
 - verified data is stored locally as a browser override;
 - the shipped JSON remains the fallback.
+
+**Not now** remembers the dismissed release in this browser. A newer release will prompt again.
 
 This keeps the site static-host friendly while still allowing newer verified data to be used
 without redeploying the app.
@@ -72,7 +79,19 @@ pnpm test         # Jest test suite
 pnpm test:watch   # Jest watch mode
 pnpm lint         # ESLint
 pnpm build        # production build
+pnpm build:review # PR preview build using the bundled archive
 ```
+
+## Pull request previews
+
+Production is deployed to GitHub Pages. The Render static site in `render.yaml` is for review
+only. Once the Blueprint is connected, apply the `render-preview` label to a PR and open
+**View deployment** on GitHub. New pushes update the same preview, and closing or merging the PR
+removes it.
+
+Review builds use the bundled archive and disable data-report submissions. Use
+`/review-build.json` on the preview URL to verify which commit is deployed. The Render rewrite
+lets reviewers reload deep links such as `/tables?season=1888&tier=tier1`.
 
 ## AI Central Context
 

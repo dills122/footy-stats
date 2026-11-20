@@ -62,6 +62,14 @@
               "outputHashing": "all",
               "baseHref": "/footy-stats/"
             },
+            "review": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/deployment.ts",
+                  "with": "src/environments/deployment.review.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
