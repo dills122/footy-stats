@@ -8,7 +8,8 @@ Running site: [FootyStats](https://footy.dsteele.dev/)
 ## What You Can Explore
 
 - Historical standings by season and competition. On mobile, open **Show presets** for shortcuts
-  and **Season overview** for the summary. The page URL remembers the selected table.
+  and **Season overview** for the summary. Report issues from **Table tools** and include the
+  club for a row-specific issue. The page URL remembers the selected table.
 - Search the club directory by name, with optional letter and category filters.
 - Club overview pages with season history, movement, and performance milestones.
 - League/tier overview pages with movement leaders, close seasons, notable marks, and churn.
@@ -79,6 +80,7 @@ pnpm test         # Jest test suite
 pnpm test:watch   # Jest watch mode
 pnpm lint         # ESLint
 pnpm build        # production build
+pnpm build:pages  # production build with GitHub Pages entry points
 pnpm build:review # PR preview build using the bundled archive
 ```
 
@@ -88,6 +90,12 @@ Production is deployed to GitHub Pages. The Render static site in `render.yaml` 
 only. Once the Blueprint is connected, apply the `render-preview` label to a PR and open
 **View deployment** on GitHub. New pushes update the same preview, and closing or merging the PR
 removes it.
+
+The Pages build publishes Angular entry points for the archive routes and the bundled club and
+league profiles. Direct links such as `/tables/?season=1888&tier=tier1` load over HTTP 200.
+GitHub Pages redirects the slashless form to the same path with a trailing slash and keeps the
+query string. A profile that exists only in a browser-local data override gets an entry point
+when its archive data ships in a Pages build.
 
 Review builds use the bundled archive and disable data-report submissions. Use
 `/review-build.json` on the preview URL to verify which commit is deployed. The Render rewrite

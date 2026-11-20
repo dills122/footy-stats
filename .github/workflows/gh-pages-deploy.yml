@@ -36,7 +36,7 @@ jobs:
         run: pnpm test
 
       - name: Build
-        run: pnpm build
+        run: pnpm build:pages
 
       - name: Configure Git user
         run: |
@@ -46,7 +46,7 @@ jobs:
       - name: Deploy to GitHub Pages
         run: |
           cname="${CNAME:-footy.dsteele.dev}"
-          pnpm ng deploy --cname="${cname}"
+          pnpm ng deploy --no-build --cname="${cname}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CNAME: ${{ env.CNAME }}

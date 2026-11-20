@@ -13,6 +13,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:pages": "pnpm build && node scripts/dev/write-pages-routes.mjs",
     "build:review": "ng build --configuration production,review && node scripts/dev/write-review-build.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "jest",

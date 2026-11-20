@@ -248,18 +248,47 @@
   }
 }
 
-@media (max-width: 420px) {
+@media screen and (max-width: 640px) {
   .footy-table {
-    min-width: 640px;
+    min-width: 370px;
+    table-layout: fixed;
   }
 
   .head,
   .cell {
-    padding: 9px 7px;
+    padding: 9px 4px;
   }
 
   .position-col {
-    padding-inline: 5px;
+    width: 28px;
+    min-width: 28px;
+    max-width: 28px;
+    padding-inline: 2px;
+  }
+
+  .team-col {
+    left: 28px;
+    width: 96px;
+    min-width: 96px;
+    max-width: 96px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .team {
+    line-height: 1.25;
+  }
+
+  .head.center {
+    width: 30px;
+  }
+
+  .head.points {
+    width: 36px;
+  }
+
+  .report {
+    display: none;
   }
 }
 

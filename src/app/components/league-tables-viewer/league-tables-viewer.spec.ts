@@ -1,3 +1,4 @@
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { provideHttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -8,6 +9,7 @@ import {
   provideRouter,
   Router,
 } from '@angular/router';
+import { DataIssueReportDialogService } from '@app/components/data-issue-report-dialog/data-issue-report-dialog.service';
 import { LeagueStore } from '@app/store/league.store';
 import { DataLoaderService, type DataLoadStatus } from '@app/store/services/hydrate-store-json';
 import { BehaviorSubject } from 'rxjs';
@@ -96,6 +98,26 @@ describe('LeagueTablesViewer', () => {
 
     expect(component.tableRevealActive()).toBe(true);
     expect(element.querySelector('.table-result--revealed')).toBeTruthy();
+  });
+
+  it('opens a report from Table tools with the selected season and competition', () => {
+    queryParamMap$.next(convertToParamMap({ season: '2025', tier: 'tier2' }));
+    store.hydrate(tableArchiveFixture());
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+    element.querySelector<HTMLButtonElement>('.record-header-action button')!.click();
+    fixture.detectChanges();
+
+    const overlay = TestBed.inject(OverlayContainer).getContainerElement();
+    const actions = Array.from(overlay.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'));
+    actions.find((action) => action.textContent?.includes('Report table issue'))!.click();
+
+    const dialog = TestBed.inject(DataIssueReportDialogService);
+    expect(dialog.openRequest()?.context).toMatchObject({
+      season: 2025,
+      competition: 'Championship',
+    });
   });
 
   it('renders valid notable table presets and applies a selected preset', () => {
