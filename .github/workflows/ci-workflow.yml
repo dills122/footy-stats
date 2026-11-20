@@ -40,4 +40,4 @@ jobs:
 
       # Build
       - name: Build
-        run: pnpm build
+        run: pnpm build:pages
