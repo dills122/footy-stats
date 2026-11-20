@@ -5,13 +5,12 @@ services:
     branch: main
     previews:
       generation: manual
-    buildCommand: >-
+    buildCommand: |-
       if [ "$IS_PULL_REQUEST" = "true" ]; then
         corepack enable && pnpm install --frozen-lockfile && pnpm build:review;
       else
         mkdir -p dist/footy-stats/browser &&
-        printf '%s\n' '<title>FootyStats review</title><h1>FootyStats pull request previews</h1>'
-        > dist/footy-stats/browser/index.html;
+        printf '%s\n' '<title>FootyStats review</title><h1>FootyStats pull request previews</h1>' > dist/footy-stats/browser/index.html
       fi
     staticPublishPath: ./dist/footy-stats/browser
     envVars:
