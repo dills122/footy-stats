@@ -248,9 +248,9 @@
   }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 640px) {
   .footy-table {
-    min-width: 428px;
+    min-width: 370px;
     table-layout: fixed;
   }
 
@@ -287,8 +287,8 @@
     width: 36px;
   }
 
-  .head.report {
-    width: 58px;
+  .report {
+    display: none;
   }
 }
 

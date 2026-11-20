@@ -8,7 +8,8 @@ Running site: [FootyStats](https://footy.dsteele.dev/)
 ## What You Can Explore
 
 - Historical standings by season and competition. On mobile, open **Show presets** for shortcuts
-  and **Season overview** for the summary. The page URL remembers the selected table.
+  and **Season overview** for the summary. Report issues from **Table tools** and include the
+  club for a row-specific issue. The page URL remembers the selected table.
 - Search the club directory by name, with optional letter and category filters.
 - Club overview pages with season history, movement, and performance milestones.
 - League/tier overview pages with movement leaders, close seasons, notable marks, and churn.
