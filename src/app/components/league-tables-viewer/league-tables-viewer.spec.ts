@@ -1,7 +1,15 @@
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { convertToParamMap, ActivatedRoute, ParamMap, provideRouter } from '@angular/router';
+import {
+  convertToParamMap,
+  ActivatedRoute,
+  ParamMap,
+  provideRouter,
+  Router,
+} from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
+import { DataLoaderService, type DataLoadStatus } from '@app/store/services/hydrate-store-json';
 import { BehaviorSubject } from 'rxjs';
 import { LeagueTablesViewerComponent } from './league-tables-viewer';
 
@@ -10,9 +18,13 @@ describe('LeagueTablesViewer', () => {
   let fixture: ComponentFixture<LeagueTablesViewerComponent>;
   let store: InstanceType<typeof LeagueStore>;
   let queryParamMap$: BehaviorSubject<ParamMap>;
+  let loadStatus: ReturnType<typeof signal<DataLoadStatus>>;
+  let loadData: jest.Mock;
 
   beforeEach(async () => {
     queryParamMap$ = new BehaviorSubject(convertToParamMap({}));
+    loadStatus = signal<DataLoadStatus>('idle');
+    loadData = jest.fn().mockResolvedValue(undefined);
 
     await TestBed.configureTestingModule({
       imports: [LeagueTablesViewerComponent],
@@ -20,6 +32,7 @@ describe('LeagueTablesViewer', () => {
         LeagueStore,
         provideHttpClient(),
         provideRouter([]),
+        { provide: DataLoaderService, useValue: { loadStatus, loadData } },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -104,7 +117,17 @@ describe('LeagueTablesViewer', () => {
 
     expect(premierLeagueLaunch).toBeTruthy();
 
+    const navigate = jest.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     component.applyPreset(premierLeagueLaunch!);
+    expect(navigate).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { season: 1992, tier: 'tier1' },
+        queryParamsHandling: 'merge',
+      })
+    );
+
+    queryParamMap$.next(convertToParamMap({ season: '1992', tier: 'tier1' }));
     fixture.detectChanges();
 
     expect(component.selectedYear()).toBe(1992);
@@ -119,6 +142,72 @@ describe('LeagueTablesViewer', () => {
 
     expect(component.selectedYear()).toBe(1992);
     expect(component.selectedLeague()).toBe('tier2');
+  });
+
+  it('retains an available competition when changing seasons and restores earlier URL state', () => {
+    store.hydrate(tableArchiveFixture());
+    queryParamMap$.next(convertToParamMap({ season: '2025', tier: 'tier2' }));
+    fixture.detectChanges();
+    const navigate = jest.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+
+    component.onYearChange(1992);
+    expect(navigate).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { season: 1992, tier: 'tier2' },
+      })
+    );
+
+    queryParamMap$.next(convertToParamMap({ season: '1992', tier: 'tier2' }));
+    fixture.detectChanges();
+    expect(component.selectedYear()).toBe(1992);
+
+    queryParamMap$.next(convertToParamMap({}));
+    fixture.detectChanges();
+    expect(component.selectedYear()).toBe(2025);
+    expect(component.selectedLeague()).toBe('tier1');
+  });
+
+  it('falls back to an available competition without losing a valid linked season', () => {
+    store.hydrate(tableArchiveFixture());
+    queryParamMap$.next(convertToParamMap({ season: '1992', tier: 'tier7' }));
+    fixture.detectChanges();
+    expect(component.selectedYear()).toBe(1992);
+    expect(component.selectedLeague()).toBe('tier1');
+  });
+
+  it('uses the archived competition name for the displayed table, export and report', () => {
+    queryParamMap$.next(convertToParamMap({ season: '1888', tier: 'tier1' }));
+    store.hydrate({
+      seasons: {
+        1888: {
+          tier1: {
+            table: [tableRow('Preston North End')],
+            metadata: { title: 'The Football League' },
+          },
+        },
+      },
+    });
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('.record-selection')?.textContent).toContain(
+      '1888 The Football League'
+    );
+    expect(component.exportSummary()).toMatchObject({ competition: 'The Football League' });
+    expect(component.exportRows()[0]).toMatchObject({ competition: 'The Football League' });
+    expect(component.dataIssueContext()).toMatchObject({ competition: 'The Football League' });
+  });
+
+  it('replaces loading placeholders with a retry action after a failed download', () => {
+    loadStatus.set('error');
+    fixture.detectChanges();
+
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('[role="alert"]')?.textContent).toContain('could not load');
+    expect(element.querySelector('.table-result-placeholder')).toBeNull();
+    element.querySelector<HTMLButtonElement>('app-archive-load-state button')?.click();
+    expect(loadData).toHaveBeenCalledTimes(1);
   });
 
   it('shows a targeted data note for selected regional Third Division tables', () => {

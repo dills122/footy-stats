@@ -11,16 +11,24 @@ import { Teams } from './pages/teams/teams';
 import { TierProfile } from './pages/tier-profile/tier-profile';
 
 export const routes: Routes = [
-  { path: '', component: Home, pathMatch: 'full' },
-  { path: 'tables', component: LeagueTableHistoric },
-  { path: 'system', component: LeagueSystemHistory },
-  { path: 'movement', component: MovementExplorer },
-  { path: 'rivalries', component: RivalryComparison },
-  { path: 'leagues/:tier/deep-stats', component: LeagueDeepStats },
-  { path: 'leagues/:tier', component: TierProfile },
-  { path: 'teams/:clubId/deep-stats', component: TeamDeepStats },
-  { path: 'teams/:clubId', component: TeamOverview },
-  { path: 'teams', component: Teams },
+  { path: '', component: Home, title: 'English Football Archive | FootyStats', pathMatch: 'full' },
+  { path: 'tables', component: LeagueTableHistoric, title: 'League Tables | FootyStats' },
+  { path: 'system', component: LeagueSystemHistory, title: 'League System History | FootyStats' },
+  { path: 'movement', component: MovementExplorer, title: 'Club Movement Explorer | FootyStats' },
+  { path: 'rivalries', component: RivalryComparison, title: 'Club Comparisons | FootyStats' },
+  {
+    path: 'leagues/:tier/deep-stats',
+    component: LeagueDeepStats,
+    title: 'League Deep Stats | FootyStats',
+  },
+  { path: 'leagues/:tier', component: TierProfile, title: 'Tier Profile | FootyStats' },
+  {
+    path: 'teams/:clubId/deep-stats',
+    component: TeamDeepStats,
+    title: 'Club Deep Stats | FootyStats',
+  },
+  { path: 'teams/:clubId', component: TeamOverview, title: 'Club Profile | FootyStats' },
+  { path: 'teams', component: Teams, title: 'Club Directory | FootyStats' },
   //   { path: 'matches', component: MatchesComponent },
   //   { path: 'rankings', component: RankingsComponent },
 

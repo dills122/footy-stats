@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
+import { ThemeService } from '@app/services/theme.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -43,6 +44,7 @@ echarts.use([
   styleUrl: './league-deep-stats.scss',
 })
 export class LeagueDeepStats {
+  private themeService = inject(ThemeService);
   private route = inject(ActivatedRoute);
   private store = inject(LeagueStore);
   private dataLoader = inject(DataLoaderService);
@@ -205,7 +207,7 @@ export class LeagueDeepStats {
         type: 'category',
         data: rows.map((row) => row.label),
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
           hideOverlap: true,
         },
@@ -218,7 +220,7 @@ export class LeagueDeepStats {
         type: 'value',
         minInterval: 1,
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
         },
         axisLine: { show: false },
@@ -256,7 +258,7 @@ export class LeagueDeepStats {
           data: rows.map((row) => row.uniqueClubCount),
           barMaxWidth: 34,
           itemStyle: {
-            color: '#38bdf8',
+            color: this.themeService.chartPalette().secondary,
             borderRadius: [4, 4, 0, 0],
           },
           emphasis: {
@@ -295,7 +297,7 @@ export class LeagueDeepStats {
         itemWidth: 12,
         itemHeight: 8,
         textStyle: {
-          color: '#d7deeb',
+          color: this.themeService.chartPalette().text,
           fontSize: 12,
           fontWeight: 700,
         },
@@ -313,7 +315,7 @@ export class LeagueDeepStats {
         type: 'category',
         data: rows.map((row) => String(row.season)),
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
           hideOverlap: true,
         },
@@ -326,7 +328,7 @@ export class LeagueDeepStats {
         type: 'value',
         minInterval: 1,
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
         },
         axisLine: { show: false },
@@ -366,10 +368,10 @@ export class LeagueDeepStats {
           smooth: true,
           lineStyle: {
             width: 2.4,
-            color: '#f59e0b',
+            color: this.themeService.chartPalette().primary,
           },
           itemStyle: {
-            color: '#f59e0b',
+            color: this.themeService.chartPalette().primary,
           },
           emphasis: {
             focus: 'series',
@@ -383,10 +385,10 @@ export class LeagueDeepStats {
           smooth: true,
           lineStyle: {
             width: 2.1,
-            color: '#38bdf8',
+            color: this.themeService.chartPalette().secondary,
           },
           itemStyle: {
-            color: '#38bdf8',
+            color: this.themeService.chartPalette().secondary,
           },
           emphasis: {
             focus: 'series',

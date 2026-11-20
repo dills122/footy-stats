@@ -20,6 +20,7 @@ const MOVEMENT_TEAM_PREVIEW_LIMIT = 4;
 export class SeasonSummaryCardComponent implements OnChanges {
   store = inject(LeagueStore);
   @Input() tableData: LeagueTableView[] = [];
+  @Input() showHeading = true;
 
   champion?: ClubNameReference;
   topScoringTeam?: ClubNameReference;
@@ -51,10 +52,10 @@ export class SeasonSummaryCardComponent implements OnChanges {
     const bestDef = [...this.tableData].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
     this.bestDefense = this.tableEntryReference(bestDef);
 
-    // Avg Goals per Game = total GF / total P
-    const totalGF = this.tableData.reduce((sum, t) => sum + t.goalsFor, 0);
-    const totalGames = this.tableData.reduce((sum, t) => sum + t.played, 0);
-    this.avgGoalsPerGame = +(totalGF / totalGames).toFixed(2);
+    const totalGoals = this.tableData.reduce((sum, team) => sum + team.goalsFor, 0);
+    // Each fixture appears in both clubs' played totals.
+    const fixtures = this.tableData.reduce((sum, team) => sum + team.played, 0) / 2;
+    this.avgGoalsPerGame = fixtures > 0 ? Number((totalGoals / fixtures).toFixed(2)) : undefined;
 
     // Promotion/Relegation)
     const { promoted, relegated } = this.store.getPromotionRelegationInfo(season, tier);

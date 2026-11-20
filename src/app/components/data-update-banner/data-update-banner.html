@@ -10,7 +10,7 @@
   <div class="data-update-copy">
     @if (dataUpdates.updateAvailable()) {
     <strong>New data set available</strong>
-    <span>Ready to refresh the archive?</span>
+    <span>Release {{ dataUpdates.latestManifest()?.version }}</span>
     } @else if (dataUpdates.installStatus() === 'installed') {
     <strong>Data refreshed</strong>
     <span>The latest archive is now active.</span>

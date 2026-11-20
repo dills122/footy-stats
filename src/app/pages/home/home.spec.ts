@@ -13,10 +13,8 @@ describe('Home', () => {
   let loadStatus: WritableSignal<DataLoadStatus>;
   let showLoadingState: WritableSignal<boolean>;
   let loadDataSpy: jest.Mock;
-  let originalMatchMedia: typeof window.matchMedia | undefined;
 
   beforeEach(async () => {
-    originalMatchMedia = window.matchMedia;
     loadStatus = signal<DataLoadStatus>('idle');
     showLoadingState = signal(false);
     loadDataSpy = jest.fn().mockResolvedValue(undefined);
@@ -47,12 +45,6 @@ describe('Home', () => {
 
   afterEach(() => {
     fixture.destroy();
-    jest.useRealTimers();
-    Object.defineProperty(window, 'matchMedia', {
-      configurable: true,
-      writable: true,
-      value: originalMatchMedia,
-    });
   });
 
   it('should create', () => {
@@ -65,7 +57,7 @@ describe('Home', () => {
     expect(component.archiveLoaded()).toBe(false);
     expect(element.querySelector('h1')?.textContent).toContain('Explore English football history.');
     expect(element.querySelectorAll('.metric-placeholder')).toHaveLength(3);
-    expect(element.querySelectorAll('.metric-placeholder.ticker-number')).toHaveLength(3);
+    expect(element.querySelectorAll('.metric-placeholder.archive-count')).toHaveLength(3);
     expect(element.querySelectorAll('.metric-placeholder--visible')).toHaveLength(0);
     expect(element.querySelector('[role="status"]')).toBeNull();
   });
@@ -125,73 +117,21 @@ describe('Home', () => {
     expect(element.querySelector('.archive-meta')?.textContent).toContain('3 clubs');
   });
 
-  it('reveals archive counts with a short ticker animation', () => {
-    jest.useFakeTimers();
+  it('shows only real counts, including after switching archive bundles', () => {
+    const element: HTMLElement = fixture.nativeElement;
+    const displayedCounts = () =>
+      Array.from(element.querySelectorAll('.archive-count')).map((count) =>
+        count.textContent?.trim()
+      );
 
+    expect(displayedCounts()).toEqual(['', '', '']);
     store.hydrate(archiveFixture());
     fixture.detectChanges();
+    expect(displayedCounts()).toEqual(['2', '3', '3']);
 
-    expect(component.archiveTickerRunning()).toBe(true);
-    expect(component.archiveTickerValues()['clubs']).toBeDefined();
-    expect(fixture.nativeElement.querySelectorAll('.ticker-number--running')).toHaveLength(3);
-
-    jest.advanceTimersByTime(760);
+    store.hydrate({ seasons: { 2025: { tier1: [tableRow('Alpha FC')] } } });
     fixture.detectChanges();
-
-    expect(component.archiveTickerRunning()).toBe(false);
-    expect(component.archiveTickerValues()).toMatchObject({
-      seasons: '2',
-      clubs: '3',
-      'tracked tiers': '3',
-    });
-  });
-
-  it('uses a simple final-value reveal on mobile instead of ticker cycling', () => {
-    jest.useFakeTimers();
-    Object.defineProperty(window, 'matchMedia', {
-      configurable: true,
-      writable: true,
-      value: jest.fn().mockImplementation((query: string) => ({
-        matches: query === '(max-width: 560px)',
-      })),
-    });
-
-    store.hydrate(archiveFixture());
-    fixture.detectChanges();
-
-    expect(component.archiveTickerRunning()).toBe(false);
-    expect(component.archiveSimpleRevealRunning()).toBe(true);
-    expect(component.archiveTickerValues()).toMatchObject({
-      seasons: '2',
-      clubs: '3',
-      'tracked tiers': '3',
-    });
-    expect(fixture.nativeElement.querySelectorAll('.ticker-number--running')).toHaveLength(0);
-    expect(fixture.nativeElement.querySelectorAll('.ticker-number--simple-reveal')).toHaveLength(3);
-
-    jest.advanceTimersByTime(420);
-    fixture.detectChanges();
-
-    expect(component.archiveSimpleRevealRunning()).toBe(false);
-  });
-
-  it('skips ticker motion when reduced motion is preferred', () => {
-    Object.defineProperty(window, 'matchMedia', {
-      configurable: true,
-      writable: true,
-      value: jest.fn().mockReturnValue({ matches: true }),
-    });
-
-    store.hydrate(archiveFixture());
-    fixture.detectChanges();
-
-    expect(component.archiveTickerRunning()).toBe(false);
-    expect(fixture.nativeElement.querySelectorAll('.ticker-number--running')).toHaveLength(0);
-    expect(component.archiveTickerValues()).toMatchObject({
-      seasons: '2',
-      clubs: '3',
-      'tracked tiers': '3',
-    });
+    expect(displayedCounts()).toEqual(['1', '1', '1']);
   });
 });
 

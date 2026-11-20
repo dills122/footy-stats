@@ -21,6 +21,19 @@ describe('SeasonSummaryCard', () => {
     expect(component).toBeTruthy();
   });
 
+  it('counts each fixture once when calculating goals per match', () => {
+    component.tableData = [
+      { ...tableRow('Alpha FC', null, 3, 3, 1), played: 1 },
+      { ...tableRow('Bravo Town', null, 0, 1, 3), played: 1 },
+    ];
+    component.ngOnChanges();
+    expect(component.avgGoalsPerGame).toBe(4);
+
+    component.tableData = component.tableData.map((team) => ({ ...team, played: 0, goalsFor: 0 }));
+    component.ngOnChanges();
+    expect(component.avgGoalsPerGame).toBeUndefined();
+  });
+
   it('links summary club names when club metadata ids are available', () => {
     component.tableData = [
       tableRow('Alpha FC', 'alpha fc', 82, 74, 28),

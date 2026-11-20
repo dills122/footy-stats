@@ -29,15 +29,12 @@
 }
 
 .comparison-controls {
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
 }
 
 .selector-panel {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .preset-grid {
@@ -45,9 +42,19 @@
   gap: 10px;
 }
 
-.preset-panel {
-  display: grid;
-  gap: 12px;
+.preset-panel[open] .preset-grid {
+  margin-top: 4px;
+}
+
+.season-data-toggle {
+  min-height: 44px;
+  margin-bottom: 8px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  padding-inline: 12px;
+  color: var(--app-text-strong);
+  background: var(--app-surface-solid);
+  cursor: pointer;
 }
 
 .preset-card {
@@ -95,12 +102,6 @@
   outline-offset: 2px;
 }
 
-.selector-panel label {
-  display: grid;
-  gap: 6px;
-}
-
-.selector-panel span,
 .score-cell span,
 .panel-head span {
   color: var(--app-text-muted);
@@ -108,24 +109,6 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.selector-panel select {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  min-height: 42px;
-  border: 1px solid rgba(148, 163, 184, 0.28);
-  border-radius: 7px;
-  padding: 8px 10px;
-  background: var(--app-control-bg-strong);
-  color: var(--app-text-strong);
-  font: inherit;
-}
-
-.selector-panel select:focus-visible {
-  outline: 2px solid var(--app-focus-ring);
-  outline-offset: 2px;
 }
 
 .score-grid {
@@ -276,15 +259,12 @@
 }
 
 @media (max-width: 700px) {
-  .comparison-controls,
-  .rivalry-panel {
-    padding: 14px;
+  .rivalry-page {
+    gap: 12px;
   }
 
-  .selector-panel,
-  .preset-grid,
-  .score-grid {
-    grid-template-columns: 1fr;
+  .rivalry-panel {
+    padding: 14px;
   }
 
   .panel-head {
@@ -294,7 +274,11 @@
   }
 
   .comparison-head {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
   }
 
   .comparison-row {
@@ -303,5 +287,12 @@
 
   .rivalry-chart {
     min-height: 240px;
+  }
+}
+
+@media (max-width: 414px) {
+  .selector-panel {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }

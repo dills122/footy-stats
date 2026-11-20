@@ -1,6 +1,18 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter, pairwise } from 'rxjs';
 import { DataIssueReportDialog } from './components/data-issue-report-dialog/data-issue-report-dialog';
 import { DataUpdateBannerComponent } from './components/data-update-banner/data-update-banner';
 import { MainToolbar } from './components/main-toolbar/main-toolbar';
@@ -20,7 +32,6 @@ import { DataLoaderService } from './store/services/hydrate-store-json';
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
-  protected readonly title = signal('Footy Stats - English Football Data');
   protected readonly showScrollTop = signal(false);
   protected readonly footerIssueContext = {
     pageTitle: 'FootyStats',
@@ -28,9 +39,41 @@ export class App implements OnInit {
   };
   private dataLoader = inject(DataLoaderService);
   private dataUpdates = inject(DataUpdateService);
+  private router = inject(Router);
+  private injector = inject(Injector);
+  private mainContent = viewChild.required<ElementRef<HTMLElement>>('mainContent');
+
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        pairwise(),
+        takeUntilDestroyed()
+      )
+      .subscribe(([previous, current]) => {
+        const [previousPath] = previous.urlAfterRedirects.split(/[?#]/, 1);
+        const [currentPath] = current.urlAfterRedirects.split(/[?#]/, 1);
+        // Query changes keep focus on the search or filter the user is operating.
+        if (previousPath === currentPath) return;
+
+        afterNextRender(() => this.focusPage(), { injector: this.injector });
+      });
+  }
 
   ngOnInit() {
     void this.dataLoader.loadData().then(() => this.dataUpdates.checkForUpdates());
+  }
+
+  protected skipToMain(event: MouseEvent) {
+    event.preventDefault();
+    this.mainContent().nativeElement.focus();
+  }
+
+  private focusPage() {
+    const main = this.mainContent().nativeElement;
+    const target = main.querySelector('h1') ?? main;
+    target.tabIndex = -1;
+    target.focus({ preventScroll: true });
   }
 
   @HostListener('window:scroll')

@@ -1,6 +1,14 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  ParamMap,
+  provideRouter,
+  Router,
+} from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
+import { BehaviorSubject } from 'rxjs';
 import { RivalryComparison } from './rivalry-comparison';
 
 jest.mock('echarts/charts', () => ({ LineChart: {} }));
@@ -29,11 +37,21 @@ describe('RivalryComparison', () => {
   let component: RivalryComparison;
   let fixture: ComponentFixture<RivalryComparison>;
   let store: InstanceType<typeof LeagueStore>;
+  let params: BehaviorSubject<ParamMap>;
 
   beforeEach(async () => {
+    params = new BehaviorSubject(convertToParamMap({}));
     await TestBed.configureTestingModule({
       imports: [RivalryComparison],
-      providers: [LeagueStore, provideRouter([])],
+      providers: [
+        LeagueStore,
+        provideHttpClient(),
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: { queryParamMap: params, snapshot: { queryParamMap: params.value } },
+        },
+      ],
     }).compileComponents();
 
     store = TestBed.inject(LeagueStore);
@@ -50,9 +68,9 @@ describe('RivalryComparison', () => {
     expect(element.textContent).toContain('Known Rivalries');
     expect(component.availablePresets().map((preset) => preset.id)).toContain('north-london');
     expect(component.activePresetId()).toBe('north-london');
-    const selects = element.querySelectorAll<HTMLSelectElement>('select');
-    expect(selects[0].selectedOptions[0]?.textContent?.trim()).toBe('Arsenal');
-    expect(selects[1].selectedOptions[0]?.textContent?.trim()).toBe('Tottenham Hotspur');
+    const pickers = element.querySelectorAll<HTMLInputElement>('app-club-picker input');
+    expect(pickers[0].value).toBe('Arsenal');
+    expect(pickers[1].value).toBe('Tottenham Hotspur');
     expect(element.textContent).toContain('Shared Season Rows');
     expect(component.scorecard()).toMatchObject({
       sharedSeasons: 3,
@@ -64,7 +82,7 @@ describe('RivalryComparison', () => {
     const tableLink = Array.from(element.querySelectorAll<HTMLAnchorElement>('a')).find((link) =>
       link.textContent?.includes('2022')
     );
-    expect(tableLink?.getAttribute('href')).toContain('/tables?season=2022');
+    expect(tableLink?.getAttribute('href')).toBe('/tables?season=2022&tier=tier1');
     expect(element.querySelector('.rivalry-chart')?.getAttribute('aria-label')).toBe(
       'Relative standing by shared season'
     );
@@ -112,13 +130,28 @@ describe('RivalryComparison', () => {
     });
   });
 
-  it('switches selected clubs from the selector handlers', () => {
+  it('writes club names to the URL and restores differently linked pairs', () => {
     const charlie = store.getTeams().find((team) => team.name === 'Charlie City')!;
+    const navigate = jest.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
 
-    component.onSecondTeamChange(String(charlie.id));
+    component.selectSecondClub(charlie);
+    expect(navigate).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { first: 'Arsenal', second: 'Charlie City' },
+        queryParamsHandling: 'merge',
+      })
+    );
 
+    params.next(convertToParamMap({ first: 'Arsenal', second: 'Charlie City' }));
+    fixture.detectChanges();
     expect(component.selectedTeams().second?.name).toBe('Charlie City');
     expect(component.comparisonRows().map((row) => row.season)).toEqual([2021]);
+
+    params.next(convertToParamMap({}));
+    fixture.detectChanges();
+    expect(component.selectedTeams().second?.name).toBe('Tottenham Hotspur');
+    expect(component.activePresetId()).toBe('north-london');
   });
 });
 

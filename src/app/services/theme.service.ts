@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Injectable, inject, signal } from '@angular/core';
+import { computed, Injectable, inject, signal } from '@angular/core';
 
 export const APP_THEME_STORAGE_KEY = 'footy-stats-color-theme';
 
@@ -24,6 +24,16 @@ export class ThemeService {
 
   readonly themes = APP_THEMES;
   readonly activeTheme = this.activeThemeState.asReadonly();
+  readonly chartPalette = computed(() => {
+    this.activeTheme();
+    // Canvas charts need resolved colors from the active CSS palette.
+    const style = this.document.defaultView?.getComputedStyle(this.document.documentElement);
+    return {
+      text: style?.getPropertyValue('--app-text-strong').trim() || '#17362b',
+      primary: style?.getPropertyValue('--app-accent').trim() || '#9b4b0b',
+      secondary: style?.getPropertyValue('--app-info').trim() || '#315f85',
+    };
+  });
 
   constructor() {
     this.applyTheme(this.activeThemeState());

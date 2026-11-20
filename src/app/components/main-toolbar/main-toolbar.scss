@@ -94,6 +94,11 @@
   box-shadow: inset 0 -2px 0 var(--app-header-active-text);
 }
 
+.main-toolbar :is(.brand, .nav-links a, .mobile-menu-trigger):focus-visible {
+  outline: 2px solid var(--app-header-active-text);
+  outline-offset: 2px;
+}
+
 .theme-switcher {
   flex: 0 0 auto;
   min-height: 36px;
@@ -112,7 +117,7 @@
 }
 
 .theme-switcher:focus-within {
-  outline: 2px solid var(--app-focus-ring);
+  outline: 2px solid var(--app-header-active-text);
   outline-offset: 2px;
 }
 

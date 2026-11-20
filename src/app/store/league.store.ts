@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { seasonCompetitionName } from '@app/utils/league-system-history';
 import type { LeagueState, LeagueTableEntry, Team } from './league.models';
 
 let nextTeamId = 1;
@@ -16,6 +17,7 @@ export const LeagueStore = signalStore(
   withMethods((store) => {
     let seasonIndex = new Map<number, LeagueTableEntry[]>();
     let seasonTierIndex = new Map<string, LeagueTableEntry[]>();
+    let competitionTitles = new Map<string, string>();
     let teamEntriesIndex = new Map<number, LeagueTableEntry[]>();
     let clubEntriesIndex = new Map<string, LeagueTableEntry[]>();
     let seasonTiersIndex: { season: number; tiers: string[] }[] = [];
@@ -27,6 +29,7 @@ export const LeagueStore = signalStore(
         const clubIdsByTeamId = new Map<number, Set<string>>();
         const tables: LeagueTableEntry[] = [];
         const seasons: number[] = [];
+        const titles = new Map<string, string>();
 
         Object.entries(rawData.seasons).forEach(([yearStr, seasonData]) => {
           const year = +yearStr;
@@ -34,6 +37,10 @@ export const LeagueStore = signalStore(
 
           Object.entries(seasonData as any).forEach(([tierName, tierValue]: [string, any]) => {
             const tableRows: any[] = Array.isArray(tierValue) ? tierValue : tierValue.table;
+            const title: unknown = tierValue.metadata?.title;
+            if (typeof title === 'string') {
+              titles.set(`${year}:${tierName}`, title);
+            }
 
             tableRows.forEach((row) => {
               let teamId = teamsMap[row.team];
@@ -90,6 +97,7 @@ export const LeagueStore = signalStore(
 
         seasonIndex = new Map<number, LeagueTableEntry[]>();
         seasonTierIndex = new Map<string, LeagueTableEntry[]>();
+        competitionTitles = titles;
         teamEntriesIndex = new Map<number, LeagueTableEntry[]>();
         clubEntriesIndex = new Map<string, LeagueTableEntry[]>();
         const seasonTiersMap = new Map<number, Set<string>>();
@@ -137,6 +145,10 @@ export const LeagueStore = signalStore(
       },
       getSeasons(): number[] {
         return store.seasons();
+      },
+      getCompetitionName(season: number, tier: string): string {
+        store.tables();
+        return seasonCompetitionName(season, tier, competitionTitles.get(`${season}:${tier}`));
       },
       getFullTable(season?: number, tier?: string): LeagueTableEntry[] {
         store.tables();

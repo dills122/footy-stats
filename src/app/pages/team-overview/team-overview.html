@@ -125,8 +125,12 @@
         [class.path-chart--small]="historyDisplayMode() === 'small-chart'"
         [options]="chartOptions()"
         [autoResize]="true"
+        role="img"
         aria-label="Club league tier path over time"
       ></div>
+      <a class="app-club-link" [routerLink]="['/teams', clubId(), 'deep-stats']">
+        View season-by-season data
+      </a>
       }
     </section>
 

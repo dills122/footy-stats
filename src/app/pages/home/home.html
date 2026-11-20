@@ -25,22 +25,14 @@
       @for (stat of archiveStats(); track stat.label) {
       <span>
         @if (archiveLoaded()) {
-        <strong
-          class="ticker-number"
-          [class.ticker-number--running]="archiveTickerRunning()"
-          [class.ticker-number--simple-reveal]="archiveSimpleRevealRunning()"
-          aria-hidden="true"
-        >
-          {{ archiveStatDisplayValue(stat) }}
-        </strong>
-        <span class="sr-only">{{ stat.value }}</span>
+        <strong class="archive-count">{{ stat.value | number }}</strong>
         } @else {
         <strong
-          class="ticker-number metric-placeholder"
+          class="archive-count metric-placeholder"
           [class.metric-placeholder--visible]="showArchiveLoading()"
           aria-hidden="true"
         >
-          000
+          &nbsp;
         </strong>
         @if (showArchiveLoading()) {
         <span class="sr-only">Loading {{ stat.label }}</span>

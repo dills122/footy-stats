@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, input, Input, Output, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -41,9 +41,13 @@ export class TeamList {
   @Output() letterSelected = new EventEmitter<string>();
   @Output() filterSelected = new EventEmitter<TeamDirectoryFilter>();
   @Output() filtersCleared = new EventEmitter<void>();
+  @Output() searchChanged = new EventEmitter<string>();
+
+  readonly searchQuery = input('');
 
   selectedLetterSignal = signal<string | null>(null);
   selectedFilterSignal = signal<TeamDirectoryFilter>('all');
+  protected readonly compactLayout = globalThis.matchMedia?.('(max-width: 640px)').matches ?? false;
 
   filterOptions = computed(() =>
     TEAM_DIRECTORY_FILTERS.map((filter) => ({
@@ -76,7 +80,9 @@ export class TeamList {
     return letter ? teams.filter((team) => team.name[0].toUpperCase() === letter) : teams;
   });
   hasActiveFilters = computed(
-    () => Boolean(this.selectedLetterSignal()) || this.selectedFilterSignal() !== 'all'
+    () =>
+      Boolean(this.searchQuery().trim() || this.selectedLetterSignal()) ||
+      this.selectedFilterSignal() !== 'all'
   );
 
   selectLetter(letter: string) {
@@ -125,6 +131,7 @@ export class TeamList {
     return {
       ...(letter ? { teamsReturnLetter: letter } : {}),
       ...(filter !== 'all' ? { teamsReturnFilter: filter } : {}),
+      ...(this.searchQuery().trim() ? { teamsReturnQuery: this.searchQuery() } : {}),
     };
   }
 

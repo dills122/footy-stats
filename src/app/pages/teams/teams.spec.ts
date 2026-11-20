@@ -1,8 +1,15 @@
 import { signal, type WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router, provideRouter } from '@angular/router';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  ParamMap,
+  Router,
+  provideRouter,
+} from '@angular/router';
+import { LeagueStore } from '@app/store/league.store';
 import { DataLoaderService, type DataLoadStatus } from '@app/store/services/hydrate-store-json';
-import { of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { Teams } from './teams';
 
@@ -13,11 +20,13 @@ describe('Teams', () => {
   let loadStatus: WritableSignal<DataLoadStatus>;
   let showLoadingState: WritableSignal<boolean>;
   let loadDataSpy: jest.Mock;
+  let params: BehaviorSubject<ParamMap>;
 
   beforeEach(async () => {
     loadStatus = signal<DataLoadStatus>('idle');
     showLoadingState = signal(false);
     loadDataSpy = jest.fn().mockResolvedValue(undefined);
+    params = new BehaviorSubject(convertToParamMap({ letter: 'm', filter: 'historical' }));
 
     await TestBed.configureTestingModule({
       imports: [Teams],
@@ -26,8 +35,8 @@ describe('Teams', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            queryParamMap: of(convertToParamMap({ letter: 'm', filter: 'historical' })),
-            snapshot: { queryParamMap: convertToParamMap({ letter: 'm', filter: 'historical' }) },
+            queryParamMap: params,
+            snapshot: { queryParamMap: params.value },
           },
         },
         {
@@ -99,14 +108,47 @@ describe('Teams', () => {
     });
   });
 
-  it('clears letter and filter query params together', () => {
+  it('writes search input to the query string without pushing a history entry per keystroke', () => {
+    const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+    component.onSearchChanged('Manchester');
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      relativeTo: TestBed.inject(ActivatedRoute),
+      queryParams: { q: 'Manchester' },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+      info: { scrollPosition: [0, 0] },
+    });
+  });
+
+  it('combines a linked name search with category and letter filters for display and export', () => {
+    TestBed.inject(LeagueStore).hydrate({
+      seasons: {
+        1900: { tier1: [{ team: 'Manchester City' }, { team: 'Maidenhead United' }] },
+        2025: { tier1: [{ team: 'Manchester United' }] },
+      },
+    });
+    params.next(convertToParamMap({ q: 'mAnChEsTeR', letter: 'M', filter: 'historical' }));
+    fixture.detectChanges();
+
+    expect(component.matchingTeams().map(({ name }) => name)).toEqual([
+      'Manchester City',
+      'Manchester United',
+    ]);
+    expect(component.exportRows().map((row) => row['name'])).toEqual(['Manchester City']);
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector<HTMLInputElement>('input[type=search]')?.value).toBe('mAnChEsTeR');
+    expect(element.querySelector('.team-name')?.textContent?.trim()).toBe('Manchester City');
+  });
+
+  it('clears search, letter, and filter query params together', () => {
     const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
 
     component.onFiltersCleared();
 
     expect(navigateSpy).toHaveBeenCalledWith([], {
       relativeTo: TestBed.inject(ActivatedRoute),
-      queryParams: { letter: null, filter: null },
+      queryParams: { q: null, letter: null, filter: null },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });

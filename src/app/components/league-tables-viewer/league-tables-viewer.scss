@@ -26,12 +26,18 @@
 }
 
 .record-header-action {
-  min-width: 150px;
-  min-height: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .record-selection {
@@ -368,14 +374,27 @@ app-season-summary-card {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 800px) {
+  .table-record {
+    gap: 14px;
+  }
+
+  .record-header {
+    gap: 8px;
+  }
+
+  .record-header .app-page-lede {
+    display: none;
+  }
+
   .record-control-row {
     grid-template-columns: 1fr;
   }
 
   .record-tools {
     display: grid;
-    gap: 10px;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 8px;
     max-width: none;
   }
 
@@ -395,7 +414,6 @@ app-season-summary-card {
   }
 
   .record-header-action > * {
-    flex: 1 1 160px;
     min-width: 0;
   }
 
@@ -451,17 +469,8 @@ app-season-summary-card {
 }
 
 @media (max-width: 520px) {
-  .record-control-actions {
-    grid-template-columns: 1fr;
-  }
-
   .control-action {
     min-height: 44px;
-  }
-
-  .record-header-action {
-    display: grid;
-    grid-template-columns: 1fr;
   }
 }
 

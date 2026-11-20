@@ -16,21 +16,26 @@
       </p>
     </div>
     <div class="app-page-header-actions">
-      <app-data-export-menu
-        title="Teams archive"
-        [filename]="exportFilename()"
-        [summary]="exportSummary()"
-        [rows]="exportRows()"
-      />
+      <details class="app-disclosure">
+        <summary>Export data</summary>
+        <app-data-export-menu
+          title="Teams archive"
+          [filename]="exportFilename()"
+          [summary]="exportSummary()"
+          [rows]="exportRows()"
+        />
+      </details>
     </div>
   </header>
 
   <app-team-list
-    [teams]="teams()"
+    [teams]="matchingTeams()"
+    [searchQuery]="searchQuery()"
     [selectedLetter]="selectedLetter()"
     [selectedFilter]="selectedFilter()"
     (letterSelected)="onLetterSelected($event)"
     (filterSelected)="onFilterSelected($event)"
+    (searchChanged)="onSearchChanged($event)"
     (filtersCleared)="onFiltersCleared()"
   />
 </section>

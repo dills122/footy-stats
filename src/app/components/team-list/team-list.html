@@ -1,8 +1,20 @@
 <div class="team-list">
+  <label class="club-search app-search-field">
+    <span>Search clubs</span>
+    <input
+      #clubSearch
+      type="search"
+      [value]="searchQuery()"
+      autocomplete="off"
+      (input)="searchChanged.emit(clubSearch.value)"
+    />
+  </label>
   <div class="index-header">
-    <h4 class="filter-title">Club Index</h4>
+    <h2 class="filter-title">Club Index</h2>
     <div class="index-actions">
-      <span>{{ filteredTeams().length }} clubs</span>
+      <span role="status">
+        {{ filteredTeams().length }} {{ filteredTeams().length === 1 ? 'club' : 'clubs' }}
+      </span>
       @if (hasActiveFilters()) {
       <button type="button" class="clear-filters-button" (click)="clearFilters()">
         Clear filters
@@ -11,49 +23,52 @@
     </div>
   </div>
 
-  <nav class="category-filter" aria-label="Filter clubs by status or archive category">
-    @for (filter of filterOptions(); track filter.id) {
-    <button
-      (click)="selectFilter(filter.id)"
-      type="button"
-      class="filter-button"
-      [class.filter-button--selected]="selectedFilterSignal() === filter.id"
-      [attr.aria-pressed]="selectedFilterSignal() === filter.id"
-      [attr.title]="filter.description"
-    >
-      <span>{{ filter.label }}</span>
-      <small>{{ filter.count }}</small>
-    </button>
-    }
-  </nav>
+  <details class="app-disclosure club-filters" [open]="!compactLayout">
+    <summary>Filter clubs</summary>
+    <nav class="category-filter" aria-label="Filter clubs by status or archive category">
+      @for (filter of filterOptions(); track filter.id) {
+      <button
+        (click)="selectFilter(filter.id)"
+        type="button"
+        class="filter-button"
+        [class.filter-button--selected]="selectedFilterSignal() === filter.id"
+        [attr.aria-pressed]="selectedFilterSignal() === filter.id"
+        [attr.title]="filter.description"
+      >
+        <span>{{ filter.label }}</span>
+        <small>{{ filter.count }}</small>
+      </button>
+      }
+    </nav>
 
-  <nav class="alphabet-filter" aria-label="Filter clubs by letter">
-    <button
-      (click)="selectLetter('')"
-      type="button"
-      class="letter-button"
-      [class.letter-button--selected]="!selectedLetterSignal()"
-      [attr.aria-pressed]="!selectedLetterSignal()"
-    >
-      All
-    </button>
-    <button
-      *ngFor="let letter of letters()"
-      (click)="selectLetter(letter)"
-      type="button"
-      class="letter-button"
-      [class.letter-button--selected]="selectedLetterSignal() === letter"
-      [attr.aria-pressed]="selectedLetterSignal() === letter"
-    >
-      {{ letter }}
-    </button>
-  </nav>
+    <nav class="alphabet-filter" aria-label="Filter clubs by letter">
+      <button
+        (click)="selectLetter('')"
+        type="button"
+        class="letter-button"
+        [class.letter-button--selected]="!selectedLetterSignal()"
+        [attr.aria-pressed]="!selectedLetterSignal()"
+      >
+        All
+      </button>
+      <button
+        *ngFor="let letter of letters()"
+        (click)="selectLetter(letter)"
+        type="button"
+        class="letter-button"
+        [class.letter-button--selected]="selectedLetterSignal() === letter"
+        [attr.aria-pressed]="selectedLetterSignal() === letter"
+      >
+        {{ letter }}
+      </button>
+    </nav>
+  </details>
 
   <!-- Teams table -->
   @if (!filteredTeams().length) {
   <div class="empty-filter-state" role="status">
     <strong>No clubs match these filters.</strong>
-    <span>Try another archive category or clear the selected letter.</span>
+    <span>Try another club name or clear the filters.</span>
   </div>
   } @else {
   <div class="table-wrap">

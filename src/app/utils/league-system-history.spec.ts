@@ -2,9 +2,20 @@ import {
   LEAGUE_SYSTEM_ERAS,
   leagueSystemEraForSeason,
   leagueSystemExportRows,
+  seasonCompetitionName,
 } from './league-system-history';
 
 describe('league system history', () => {
+  it('uses archived competition titles and handles regional or generic source headings', () => {
+    expect(seasonCompetitionName(1888, 'tier1', 'The Football League')).toBe('The Football League');
+    expect(seasonCompetitionName(1890, 'tier2')).toBe('Football Alliance');
+    expect(seasonCompetitionName(1920, 'tier3')).toBe('Third Division');
+    expect(seasonCompetitionName(1921, 'tier4')).toBe('Third Division South');
+    expect(seasonCompetitionName(2012, 'tier1', 'League tables')).toBe('Premier League');
+    expect(seasonCompetitionName(2012, 'tier5', 'League tables')).toBe('Conference Premier');
+    expect(seasonCompetitionName(2025, 'tier7', 'South')).toBe('National League South');
+  });
+
   it('maps key seasons to the correct football tier era', () => {
     expect(leagueSystemEraForSeason(1888).id).toBe('founding-league');
     expect(leagueSystemEraForSeason(1892).id).toBe('two-division-league');

@@ -16,9 +16,11 @@ import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ArchiveLoadState } from '@app/components/archive-load-state/archive-load-state';
 import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { AppTheme, ThemeService } from '@app/services/theme.service';
 import { LeagueStore } from '@app/store/league.store';
+import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { buildClubIdentityTeamIndex } from '@app/utils/club-aliases';
 import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 import { getWartimeSuspensionRanges } from '@app/utils/wartime-suspensions';
@@ -381,13 +383,14 @@ echarts.use([
 
 @Component({
   selector: 'app-movement-explorer',
-  imports: [CommonModule, RouterLink, NgxEchartsDirective, DataExportMenu],
+  imports: [CommonModule, RouterLink, NgxEchartsDirective, DataExportMenu, ArchiveLoadState],
   templateUrl: './movement-explorer.html',
   styleUrl: './movement-explorer.scss',
   providers: [provideEchartsCore({ echarts })],
 })
 export class MovementExplorer {
   private store = inject(LeagueStore);
+  protected readonly loadStatus = inject(DataLoaderService).loadStatus;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private themeService = inject(ThemeService);
@@ -416,6 +419,7 @@ export class MovementExplorer {
   chartDetailMode = signal<ChartDetailMode>('path');
   activeChartSetupId = signal<string>(DEFAULT_CHART_SETUP_ID);
   focusedTeamId = signal<number | null>(null);
+  protected readonly seasonDataOpen = signal(false);
   isCompactViewport = signal<boolean>(this.readIsCompactViewport());
   private applyingUrlState = false;
   private lastSyncedQueryState = '';
@@ -658,6 +662,10 @@ export class MovementExplorer {
     series: this.teamSeries(),
   }));
   exportFilename = computed(() => `footy-stats-movement-${this.selectedSeasonRangeLabel()}`);
+
+  protected competitionName(point: TeamSeriesPoint): string {
+    return this.store.getCompetitionName(point.season, `tier${point.tier}`);
+  }
 
   chartOptions = computed<EChartsCoreOption>(() => {
     const seasons = this.selectedRange();

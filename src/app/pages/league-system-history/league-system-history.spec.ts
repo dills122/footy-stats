@@ -35,6 +35,9 @@ describe('LeagueSystemHistory', () => {
     expect(element.textContent).toContain('Third Division North');
     expect(element.textContent).toContain('Third Division South');
     expect(element.textContent).toContain('Both regional sections represent pyramid level 3');
+    expect(element.querySelector('.table-link')?.getAttribute('href')).toBe(
+      '/tables?season=1921&tier=tier1'
+    );
   });
 
   it('toggles the compact era selector and collapses it after choosing an era', () => {

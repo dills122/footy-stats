@@ -9,6 +9,7 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
+import { ThemeService } from '@app/services/theme.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -103,6 +104,7 @@ type HistoryDisplayMode = 'compact' | 'small-chart' | 'full-chart';
 interface TeamsReturnNavigationState {
   teamsReturnLetter?: unknown;
   teamsReturnFilter?: unknown;
+  teamsReturnQuery?: unknown;
 }
 
 echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, CanvasRenderer]);
@@ -122,6 +124,7 @@ echarts.use([LineChart, GridComponent, TooltipComponent, MarkAreaComponent, Canv
   styleUrl: './team-overview.scss',
 })
 export class TeamOverview implements AfterViewInit, OnDestroy {
+  private themeService = inject(ThemeService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private clubMetadataStore = inject(ClubMetadataStore);
@@ -143,12 +146,14 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
   milestoneCollapsedHeight = signal<number | null>(null);
   teamsReturnLetter = signal(this.readTeamsReturnLetter());
   teamsReturnFilter = signal<TeamDirectoryFilter>(this.readTeamsReturnFilter());
+  private teamsReturnQuery = this.readTeamsReturnQuery();
   backToTeamsQueryParams = computed(() => {
     const letter = this.teamsReturnLetter();
     const filter = this.teamsReturnFilter();
     const queryParams = {
       ...(letter ? { letter } : {}),
       ...(filter !== 'all' ? { filter } : {}),
+      ...(this.teamsReturnQuery ? { q: this.teamsReturnQuery } : {}),
     };
 
     return Object.keys(queryParams).length ? queryParams : null;
@@ -430,6 +435,12 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
     return isTeamDirectoryFilter(filter) ? filter : 'all';
   }
 
+  private readTeamsReturnQuery(): string {
+    const state = (this.router.getCurrentNavigation()?.extras.state ??
+      globalThis.history?.state) as TeamsReturnNavigationState | undefined;
+    return typeof state?.teamsReturnQuery === 'string' ? state.teamsReturnQuery : '';
+  }
+
   entriesAscending = computed(() =>
     this.entries()
       .slice()
@@ -603,7 +614,7 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
         data: seasons.map((season) => String(season)),
         boundaryGap: false,
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           hideOverlap: true,
           fontSize: isSmallChart ? 10 : 11,
         },
@@ -619,7 +630,7 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
         max: Math.max(...tierValues) + 0.25,
         interval: 1,
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: isSmallChart ? 10 : 11,
           fontWeight: 700,
           margin: 10,
@@ -640,10 +651,10 @@ export class TeamOverview implements AfterViewInit, OnDestroy {
           symbolSize: 6,
           lineStyle: {
             width: 2.8,
-            color: '#f59e0b',
+            color: this.themeService.chartPalette().primary,
           },
           itemStyle: {
-            color: '#fbbf24',
+            color: this.themeService.chartPalette().primary,
           },
           markArea: {
             silent: false,

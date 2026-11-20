@@ -9,51 +9,25 @@
     </div>
   </header>
 
-  @if (teams().length < 2) {
+  @if (loadStatus() === 'error' || loadStatus() === 'loading') {
+  <app-archive-load-state />
+  } @else if (!selectedTeams().first || !selectedTeams().second) {
   <div class="empty-state app-panel">At least two clubs are needed for a rivalry comparison.</div>
   } @else {
-  <section class="comparison-controls app-panel" aria-label="Rivalry controls">
-    @if (availablePresets().length) {
-    <div class="preset-panel" aria-label="Known rivalry presets">
-      <div class="panel-head panel-head--compact">
-        <h2>Known Rivalries</h2>
-        <span>{{ availablePresets().length }} presets</span>
-      </div>
-      <div class="preset-grid">
-        @for (preset of availablePresets(); track preset.id) {
-        <button
-          type="button"
-          class="preset-card"
-          [class.is-active]="activePresetId() === preset.id"
-          (click)="applyPreset(preset.id)"
-        >
-          <span>{{ preset.region }}</span>
-          <strong>{{ preset.label }}</strong>
-          <small>{{ preset.teamNames[0] }} / {{ preset.teamNames[1] }}</small>
-        </button>
-        }
-      </div>
-    </div>
-    }
-
-    <div class="selector-panel" aria-label="Club selectors">
-      <label>
-        <span>First club</span>
-        <select [ngModel]="firstTeamId()" (ngModelChange)="onFirstTeamChange($event)">
-          @for (team of teams(); track team.id) {
-          <option [ngValue]="team.id">{{ team.name }}</option>
-          }
-        </select>
-      </label>
-
-      <label>
-        <span>Second club</span>
-        <select [ngModel]="secondTeamId()" (ngModelChange)="onSecondTeamChange($event)">
-          @for (team of teams(); track team.id) {
-          <option [ngValue]="team.id">{{ team.name }}</option>
-          }
-        </select>
-      </label>
+  <section class="comparison-controls" aria-label="Rivalry controls">
+    <div class="selector-panel" role="group" aria-label="Club selectors">
+      <app-club-picker
+        label="First club"
+        [clubs]="firstOptions()"
+        [selectedClub]="selectedTeams().first"
+        (clubSelected)="selectFirstClub($event)"
+      />
+      <app-club-picker
+        label="Second club"
+        [clubs]="secondOptions()"
+        [selectedClub]="selectedTeams().second"
+        (clubSelected)="selectSecondClub($event)"
+      />
     </div>
   </section>
 
@@ -77,6 +51,27 @@
     </div>
   </section>
 
+  @if (availablePresets().length) {
+  <details class="preset-panel app-disclosure">
+    <summary>Known Rivalries</summary>
+    <div class="preset-grid">
+      @for (preset of availablePresets(); track preset.id) {
+      <button
+        type="button"
+        class="preset-card"
+        [class.is-active]="activePresetId() === preset.id"
+        [attr.aria-pressed]="activePresetId() === preset.id"
+        (click)="applyPreset(preset.id)"
+      >
+        <span>{{ preset.region }}</span>
+        <strong>{{ preset.label }}</strong>
+        <small>{{ preset.teamNames[0] }} / {{ preset.teamNames[1] }}</small>
+      </button>
+      }
+    </div>
+  </details>
+  }
+
   <section class="chart-grid" aria-label="Rivalry visualizations">
     <section class="rivalry-panel app-panel">
       <div class="panel-head">
@@ -86,6 +81,7 @@
       <div
         echarts
         class="rivalry-chart"
+        role="img"
         [options]="relativeStandingChartOptions()"
         [autoResize]="true"
         aria-label="Relative standing by shared season"
@@ -101,6 +97,7 @@
       <div
         echarts
         class="rivalry-chart"
+        role="img"
         [options]="pointsGapChartOptions()"
         [autoResize]="true"
         aria-label="Same-tier points gap by season"
@@ -118,6 +115,7 @@
       <div
         echarts
         class="rivalry-chart"
+        role="img"
         [options]="tierPathChartOptions()"
         [autoResize]="true"
         aria-label="Tier path comparison by shared season"
@@ -131,18 +129,37 @@
         <h2>Shared Season Rows</h2>
         <span>{{ comparisonRows().length }} seasons</span>
       </div>
-      @if (recentRows().length) {
-      <div class="comparison-table" role="table" aria-label="Shared season comparison">
+      @if (comparisonRows().length > recentRows().length) {
+      <button
+        type="button"
+        class="season-data-toggle"
+        aria-controls="rivalry-season-rows"
+        [attr.aria-expanded]="showAllSeasons()"
+        (click)="showAllSeasons.set(!showAllSeasons())"
+      >
+        {{ showAllSeasons() ? 'Show recent seasons' : 'Show all seasons' }}
+      </button>
+      } @if (recentRows().length) {
+      <div
+        id="rivalry-season-rows"
+        class="comparison-table"
+        role="table"
+        aria-label="Shared season comparison"
+      >
         <div class="comparison-row comparison-head" role="row">
           <span role="columnheader">Season</span>
           <span role="columnheader">{{ selectedTeams().first!.name }}</span>
           <span role="columnheader">{{ selectedTeams().second!.name }}</span>
           <span role="columnheader">Leader</span>
         </div>
-        @for (row of recentRows(); track row.season) {
+        @for (row of showAllSeasons() ? comparisonRows() : recentRows(); track row.season) {
         <div class="comparison-row" role="row">
           <span role="cell">
-            <a class="table-link" [routerLink]="['/tables']" [queryParams]="{ season: row.season }">
+            <a
+              class="table-link"
+              [routerLink]="['/tables']"
+              [queryParams]="{ season: row.season, tier: row.leader === 'second' ? row.second.tier : row.first.tier }"
+            >
               {{ row.season }}
             </a>
           </span>

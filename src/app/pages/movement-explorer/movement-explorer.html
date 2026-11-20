@@ -8,23 +8,10 @@
         pyramid.
       </p>
     </div>
-    <div class="app-page-header-actions">
-      <app-data-export-menu
-        [title]="'Movement explorer ' + selectedSeasonRangeLabel()"
-        [filename]="exportFilename()"
-        [summary]="exportSummary()"
-        [rows]="exportRows()"
-        [data]="exportData()"
-      />
-    </div>
   </header>
-  <section class="research-note" aria-label="Data coverage note">
-    <strong>Research note</strong>
-    <span>
-      Tier 1 and Tier 2 are the most complete. Data for lower tiers becomes much less reliable
-      before the 1990s, so older promotion and relegation paths may be incomplete.
-    </span>
-  </section>
+  @if (loadStatus() === 'error' || loadStatus() === 'loading') {
+  <app-archive-load-state />
+  } @else {
 
   <div class="config-toolbar">
     <button
@@ -248,52 +235,20 @@
             selectedTeamIds().length === 1 ? 'club' : 'clubs' }}
           </p>
         </div>
-        <div class="chart-context-clubs" aria-label="Selected clubs">
-          @for (team of selectedTeams(); track team.id) {
-          <span class="chart-context-club" [class.is-focused]="focusedTeamId() === team.id">
-            @if (primaryClubId(team); as clubId) {
-            <a class="app-club-link chart-club-link" [routerLink]="['/teams', clubId]">
-              {{ team.name }}
-            </a>
-            } @else {
-            <span class="chart-club-name">{{ team.name }}</span>
-            }
-            <button
-              type="button"
-              class="chart-focus-button"
-              [attr.aria-pressed]="focusedTeamId() === team.id"
-              (click)="toggleFocusedTeam(team.id)"
-            >
-              {{ focusedTeamId() === team.id ? 'Clear' : 'Focus' }}
-            </button>
-          </span>
-          }
-        </div>
       </section>
 
       <div class="chart-tools">
-        <div class="detail-toggle" aria-label="Chart detail mode">
+        <div class="detail-toggle" role="group" aria-label="Chart detail mode">
           @for (mode of chartDetailModes; track mode.id) {
           <button
             type="button"
             [class.is-active]="chartDetailMode() === mode.id"
+            [attr.aria-pressed]="chartDetailMode() === mode.id"
             (click)="setChartDetailMode(mode.id)"
           >
             {{ mode.label }}
           </button>
           }
-        </div>
-        <div class="legend-item movement-keys" aria-label="Chart legend">
-          <span class="dot plain"></span>
-          <span>Club paths · select a club name below to show or hide it</span>
-          @if (chartDetailMode() === 'events') {
-          <span class="dot promoted"></span>
-          <span>Promoted</span>
-          <span class="dot relegated"></span>
-          <span>Relegated</span>
-          }
-          <span class="dot wartime"></span>
-          <span>League suspended</span>
         </div>
       </div>
     </div>
@@ -304,8 +259,89 @@
       [style.height.px]="movementChartHeight()"
       [options]="chartOptions()"
       [autoResize]="true"
-      aria-label="Club movement by tier over time"
+      role="img"
+      aria-label="Club movement by tier over time. Open Season data for the underlying records."
     ></div>
+    <div class="chart-context-clubs" role="group" aria-label="Selected clubs">
+      @for (team of selectedTeams(); track team.id) {
+      <span class="chart-context-club" [class.is-focused]="focusedTeamId() === team.id">
+        @if (primaryClubId(team); as clubId) {
+        <a class="app-club-link chart-club-link" [routerLink]="['/teams', clubId]">
+          {{ team.name }}
+        </a>
+        } @else {
+        <span class="chart-club-name">{{ team.name }}</span>
+        }
+        <button
+          type="button"
+          class="chart-focus-button"
+          [attr.aria-pressed]="focusedTeamId() === team.id"
+          [attr.aria-label]="'Focus ' + team.name"
+          (click)="toggleFocusedTeam(team.id)"
+        >
+          Focus
+        </button>
+      </span>
+      }
+    </div>
+    <div class="legend-item movement-keys" role="group" aria-label="Chart legend">
+      <span class="dot plain"></span>
+      <span>Use Focus to highlight a single club path.</span>
+      @if (chartDetailMode() === 'events') {
+      <span class="dot promoted"></span>
+      <span>Promoted</span>
+      <span class="dot relegated"></span>
+      <span>Relegated</span>
+      }
+      <span class="dot wartime"></span>
+      <span>League suspended</span>
+    </div>
+    <details
+      class="app-disclosure movement-data"
+      #seasonData
+      (toggle)="seasonDataOpen.set(seasonData.open)"
+    >
+      <summary>Season data</summary>
+      @if (seasonDataOpen()) { @for (series of teamSeries(); track series.teamId) {
+      <table class="app-chart-data">
+        <caption>{{ series.teamName }}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Season</th>
+            <th scope="col">Competition</th>
+            <th scope="col">Movement</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (point of series.points; track $index) {
+          <tr>
+            <th scope="row">{{ point.season }}</th>
+            <td>{{ competitionName(point) }}</td>
+            <td>
+              @if (point.wasPromoted) { Promoted } @if (point.wasRelegated) { Relegated } @if
+              (!point.wasPromoted && !point.wasRelegated) { — }
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      } }
+    </details>
   </div>
+  }
+  <details class="app-disclosure research-note">
+    <summary>Data coverage</summary>
+    <p>
+      The top two tiers have the fullest coverage. Earlier records for lower tiers may be
+      incomplete, especially before the 1990s.
+    </p>
+  </details>
+  <app-data-export-menu
+    [title]="'Movement explorer ' + selectedSeasonRangeLabel()"
+    [filename]="exportFilename()"
+    [summary]="exportSummary()"
+    [rows]="exportRows()"
+    [data]="exportData()"
+  />
   }
 </section>

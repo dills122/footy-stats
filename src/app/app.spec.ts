@@ -1,11 +1,14 @@
 import { provideHttpClient } from '@angular/common/http';
-import { signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { App } from './app';
 import { DataUpdateService } from './store/services/data-update.service';
 import { DataLoaderService } from './store/services/hydrate-store-json';
+
+@Component({ template: '<h1>Archive page</h1><input aria-label="Filter" />' })
+class NavigationTestPage {}
 
 describe('App', () => {
   let loadDataSpy: jest.Mock;
@@ -19,7 +22,10 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideHttpClient(),
-        provideRouter([]),
+        provideRouter([
+          { path: 'first', component: NavigationTestPage },
+          { path: 'second', component: NavigationTestPage },
+        ]),
         {
           provide: DataLoaderService,
           useValue: {
@@ -52,11 +58,33 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('exposes the initial title signal value', () => {
+  it('allows keyboard users to skip directly to the main content', () => {
     const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    const main = element.querySelector('main');
+    element.querySelector<HTMLAnchorElement>('.skip-link')?.click();
+    expect(document.activeElement).toBe(main);
+  });
 
-    expect(app['title']()).toBe('Footy Stats - English Football Data');
+  it('moves focus on page navigation and keeps it on the active filter for query changes', async () => {
+    const fixture = TestBed.createComponent(App);
+    const router = TestBed.inject(Router);
+    fixture.detectChanges();
+
+    await router.navigateByUrl('/first');
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.nativeElement;
+    const input = element.querySelector('main input')!;
+    input.focus();
+
+    await router.navigateByUrl('/first?filter=historic');
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(input);
+
+    await router.navigateByUrl('/second');
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(element.querySelector('main h1'));
   });
 
   it('loads data on init', async () => {

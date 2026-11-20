@@ -291,8 +291,33 @@
       class="competitiveness-chart"
       [options]="competitivenessChartOptions()"
       [autoResize]="true"
+      role="img"
       aria-label="Title gap and table compression by season"
     ></div>
+    <details class="app-disclosure">
+      <summary>Competitiveness data</summary>
+      <table class="app-chart-data">
+        <caption>Points gaps by season</caption>
+        <thead>
+          <tr>
+            <th scope="col">Season</th>
+            <th scope="col">Title gap</th>
+            <th scope="col">Mid-table gap</th>
+            <th scope="col">Full spread</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of competitivenessChartRows(); track row.season) {
+          <tr>
+            <th scope="row">{{ row.season }}</th>
+            <td>{{ row.titleGap }}</td>
+            <td>{{ row.midTableGap }}</td>
+            <td>{{ row.fullTableSpread }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </details>
   </section>
 
   <section class="deep-panel app-panel">
@@ -305,8 +330,31 @@
       class="decade-chart"
       [options]="uniqueClubsChartOptions()"
       [autoResize]="true"
+      role="img"
       aria-label="Unique clubs by decade"
     ></div>
+    <details class="app-disclosure">
+      <summary>Club counts by decade</summary>
+      <table class="app-chart-data">
+        <caption>Unique clubs by decade</caption>
+        <thead>
+          <tr>
+            <th scope="col">Decade</th>
+            <th scope="col">Unique clubs</th>
+            <th scope="col">Seasons covered</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of uniqueClubsChartRows(); track row.label) {
+          <tr>
+            <th scope="row">{{ row.label }}</th>
+            <td>{{ row.uniqueClubCount }}</td>
+            <td>{{ row.seasons }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </details>
   </section>
 
   <section class="deep-panel app-panel">
