@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { ThemeService } from '@app/services/theme.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -41,6 +42,7 @@ echarts.use([
   styleUrl: './team-deep-stats.scss',
 })
 export class TeamDeepStats {
+  private themeService = inject(ThemeService);
   private route = inject(ActivatedRoute);
   private clubMetadataStore = inject(ClubMetadataStore);
   private leagueStore = inject(LeagueStore);
@@ -143,7 +145,7 @@ export class TeamDeepStats {
         type: 'category',
         data: rows.map((row) => String(row.season)),
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
           hideOverlap: true,
         },
@@ -156,7 +158,7 @@ export class TeamDeepStats {
         type: 'value',
         minInterval: mode === 'points' ? 1 : 0,
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
           formatter: (value: number) => (mode === 'points' ? String(value) : value.toFixed(1)),
         },
@@ -199,10 +201,10 @@ export class TeamDeepStats {
           smooth: true,
           lineStyle: {
             width: 2.4,
-            color: '#f59e0b',
+            color: this.themeService.chartPalette().primary,
           },
           itemStyle: {
-            color: '#f59e0b',
+            color: this.themeService.chartPalette().primary,
           },
           emphasis: {
             focus: 'series',

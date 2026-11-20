@@ -1,3 +1,35 @@
+@if (menuLabel(); as label) {
+<button
+  type="button"
+  class="export-menu-trigger"
+  [matMenuTriggerFor]="actionsMenu"
+  [disabled]="!hasExportData() && !reportContext()"
+>
+  <span>{{ label }}</span>
+  <mat-icon aria-hidden="true">expand_more</mat-icon>
+</button>
+<mat-menu #actionsMenu="matMenu" xPosition="before" [overlapTrigger]="false">
+  <ng-template matMenuContent>
+    @for (option of exportOptions; track option.format) {
+    <button
+      type="button"
+      mat-menu-item
+      [disabled]="!hasExportData()"
+      [attr.aria-label]="'Export ' + title() + ' as ' + option.label"
+      (click)="download(option.format)"
+    >
+      <mat-icon aria-hidden="true">{{ option.icon }}</mat-icon>
+      <span>Export {{ option.label }}</span>
+    </button>
+    } @if (reportContext(); as context) {
+    <button type="button" mat-menu-item (click)="reportIssue(context)">
+      <mat-icon aria-hidden="true">flag</mat-icon>
+      <span>{{ reportLabel() }}</span>
+    </button>
+    }
+  </ng-template>
+</mat-menu>
+} @else {
 <div class="export-menu" aria-label="Export data">
   <span class="export-label">Export</span>
   <div class="export-actions">
@@ -15,3 +47,4 @@
     }
   </div>
 </div>
+}

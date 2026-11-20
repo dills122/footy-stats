@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { computed, Injectable, inject, signal } from '@angular/core';
 import { environment } from '@env/environment';
@@ -18,15 +19,18 @@ import { DataLoaderService } from './hydrate-store-json';
 type UpdateCheckStatus = 'idle' | 'checking' | 'available' | 'up-to-date' | 'error';
 type UpdateInstallStatus = 'idle' | 'downloading' | 'verifying' | 'installed' | 'error';
 
+export const DISMISSED_DATA_RELEASE_KEY = 'footy-stats-dismissed-data-release';
+
 @Injectable({ providedIn: 'root' })
 export class DataUpdateService {
   private http = inject(HttpClient);
   private dataLoader = inject(DataLoaderService);
+  private document = inject(DOCUMENT);
   private checkState = signal<UpdateCheckStatus>('idle');
   private installState = signal<UpdateInstallStatus>('idle');
   private latest = signal<DataBundleManifest | null>(null);
   private message = signal('');
-  private dismissedVersion = signal<string | null>(null);
+  private dismissedVersion = signal(this.readDismissedVersion());
 
   readonly checkStatus = this.checkState.asReadonly();
   readonly installStatus = this.installState.asReadonly();
@@ -72,6 +76,22 @@ export class DataUpdateService {
     const manifest = this.latest();
     if (manifest) {
       this.dismissedVersion.set(manifest.version);
+      try {
+        this.document.defaultView?.localStorage.setItem(
+          DISMISSED_DATA_RELEASE_KEY,
+          manifest.version
+        );
+      } catch {
+        // A blocked storage write still dismisses the banner for this page.
+      }
+    }
+  }
+
+  private readDismissedVersion(): string | null {
+    try {
+      return this.document.defaultView?.localStorage.getItem(DISMISSED_DATA_RELEASE_KEY) ?? null;
+    } catch {
+      return null;
     }
   }
 

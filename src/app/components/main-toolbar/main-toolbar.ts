@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -8,14 +9,17 @@ import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-main-toolbar',
-  imports: [RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
+  imports: [
+    FormsModule,
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+  ],
   templateUrl: './main-toolbar.html',
   styleUrl: './main-toolbar.scss',
 })
 export class MainToolbar {
   protected readonly themeService = inject(ThemeService);
-
-  protected onThemeChange(event: Event): void {
-    this.themeService.setTheme((event.target as HTMLSelectElement).value);
-  }
 }

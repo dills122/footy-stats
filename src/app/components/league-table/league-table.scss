@@ -177,7 +177,12 @@
   }
 }
 
-@media (max-width: 760px) {
+.table-container:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 800px) {
   .table-container {
     border-radius: 8px;
   }
@@ -200,10 +205,31 @@
 
   .team-col {
     left: 34px;
-    width: 190px;
-    min-width: 190px;
-    max-width: 190px;
+    width: 156px;
+    min-width: 156px;
+    max-width: 156px;
     padding-inline: 7px;
+  }
+
+  .points {
+    position: sticky;
+    right: 0;
+    z-index: 3;
+    background: var(--league-table-sticky-row-bg);
+    box-shadow: -1px 0 0 var(--app-border);
+  }
+
+  .app-data-row:nth-child(even) .points {
+    background: var(--league-table-sticky-row-alt-bg);
+  }
+
+  .row-top .points {
+    background: var(--league-table-sticky-row-top-bg);
+  }
+
+  .head.points {
+    z-index: 5;
+    background: var(--league-table-sticky-head-bg);
   }
 
   .head {

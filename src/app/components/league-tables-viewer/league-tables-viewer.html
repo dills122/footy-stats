@@ -2,11 +2,10 @@
   <section class="table-record">
     <header class="record-header app-page-header">
       <div class="record-header-copy app-page-header-copy">
-        <p class="app-page-eyebrow">League Table Archive</p>
         <h1 class="app-page-title">League Tables</h1>
         <p class="record-selection">
-          @if (selectedYear() && currentLeagueLabel()) { {{ selectedYear() }} {{
-          currentLeagueLabel() | leagueTierToStringy }} } @else { &nbsp; }
+          @if (selectedYear() && currentCompetitionName()) { {{ selectedYear() }} {{
+          currentCompetitionName() }} } @else { &nbsp; }
         </p>
         <p class="app-page-lede">
           Read preserved season standings with wins, draws, losses, scoring record, goal difference,
@@ -16,29 +15,33 @@
       <div class="record-header-action app-page-header-actions">
         @if (tableControlsReady()) {
         <app-data-export-menu
+          menuLabel="Table tools"
+          reportLabel="Report table issue"
           [title]="'League table ' + selectedYear() + ' ' + currentCompetitionName()"
           [filename]="exportFilename()"
           [summary]="exportSummary()"
           [rows]="exportRows()"
+          [reportContext]="dataIssueContext()"
         />
-        <app-data-issue-report-dialog
-          triggerLabel="Report table issue"
-          [context]="dataIssueContext()"
-        />
-        } @else {
+        } @else if (loadStatus() !== 'error') {
         <span class="report-action-placeholder" aria-hidden="true"></span>
         }
       </div>
     </header>
 
+    @if (loadStatus() === 'error') {
+    <app-archive-load-state />
+    } @else if (loadStatus() === 'loaded' && !tableControlsReady()) {
+    <p role="status">No league tables are available in this archive.</p>
+    } @else {
     <div class="record-control-row">
       <div class="record-tools" aria-label="Select season table">
         @if (tableControlsReady()) {
-        <mat-form-field class="field" appearance="fill">
+        <mat-form-field class="field" appearance="fill" subscriptSizing="dynamic">
           <mat-label>Season</mat-label>
           <mat-icon matPrefix>calendar_today</mat-icon>
           <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
-            @for (year of years; track year) {
+            @for (year of years(); track year) {
             <mat-option [value]="year">{{ year }}</mat-option>
             } @empty {
             <mat-option disabled>No Seasons Available</mat-option>
@@ -46,12 +49,12 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field class="field" appearance="fill">
+        <mat-form-field class="field" appearance="fill" subscriptSizing="dynamic">
           <mat-label>Competition</mat-label>
           <mat-icon matPrefix>sports_soccer</mat-icon>
           <mat-select [value]="selectedLeague()" (selectionChange)="onLeagueChange($event.value)">
-            @for (league of leaguesForYear; track league) {
-            <mat-option [value]="league">{{ league | leagueTierToStringy }}</mat-option>
+            @for (league of leaguesForYear(); track league) {
+            <mat-option [value]="league">{{ competitionName(league) }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -72,6 +75,7 @@
         <button
           type="button"
           class="control-action"
+          [disabled]="!currentTable()?.length"
           (click)="scrollToTableContent(tableResultShell)"
         >
           <mat-icon aria-hidden="true">south</mat-icon>
@@ -150,7 +154,14 @@
         [class.table-result--revealed]="tableRevealActive()"
         [attr.data-table-key]="tableResultKey()"
       >
+        @if (compactLayout) {
+        <details class="app-disclosure">
+          <summary>Season overview</summary>
+          <app-season-summary-card [tableData]="tableData" [showHeading]="false" />
+        </details>
+        } @else {
         <app-season-summary-card [tableData]="tableData" />
+        }
         <app-league-table [leagueTable]="tableData" />
       </div>
       } @else {
@@ -169,5 +180,6 @@
       <p class="sr-only" role="status">Loading league table.</p>
       }
     </section>
+    }
   </section>
 </div>

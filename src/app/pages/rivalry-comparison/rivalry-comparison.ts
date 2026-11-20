@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { ThemeService } from '@app/services/theme.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ArchiveLoadState } from '@app/components/archive-load-state/archive-load-state';
+import { ClubPicker } from '@app/components/club-picker/club-picker';
 import { LineChart } from 'echarts/charts';
 import {
   DataZoomComponent,
@@ -15,7 +18,12 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import type { LeagueTableEntry, Team } from '@app/store/league.models';
 import { LeagueStore } from '@app/store/league.store';
-import { buildClubIdentityTeamIndex } from '@app/utils/club-aliases';
+import { DataLoaderService } from '@app/store/services/hydrate-store-json';
+import {
+  buildClubIdentityTeamIndex,
+  getClubIdentityNames,
+  normalizeClubSearchText,
+} from '@app/utils/club-aliases';
 
 interface RivalryPreset {
   id: string;
@@ -124,18 +132,23 @@ echarts.use([
 
 @Component({
   selector: 'app-rivalry-comparison',
-  imports: [CommonModule, FormsModule, RouterLink, NgxEchartsDirective],
+  imports: [CommonModule, RouterLink, NgxEchartsDirective, ArchiveLoadState, ClubPicker],
   providers: [provideEchartsCore({ echarts })],
   templateUrl: './rivalry-comparison.html',
   styleUrl: './rivalry-comparison.scss',
 })
 export class RivalryComparison {
+  private themeService = inject(ThemeService);
   private store = inject(LeagueStore);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private queryParams = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
+  });
+  protected readonly loadStatus = inject(DataLoaderService).loadStatus;
 
   readonly rivalryPresets = RIVALRY_PRESETS;
-  firstTeamId = signal<number | null>(null);
-  secondTeamId = signal<number | null>(null);
-  activePresetId = signal<string>('');
+  protected readonly showAllSeasons = signal(false);
 
   teams = computed(() =>
     this.store
@@ -143,14 +156,6 @@ export class RivalryComparison {
       .slice()
       .sort((a, b) => a.name.localeCompare(b.name))
   );
-  selectedTeams = computed(() => {
-    const first = this.teamById(this.firstTeamId());
-    const second = this.teamById(this.secondTeamId());
-    return {
-      first,
-      second,
-    };
-  });
   availablePresets = computed(() =>
     this.rivalryPresets
       .map((preset) => ({
@@ -161,15 +166,55 @@ export class RivalryComparison {
       }))
       .filter((preset) => preset.teamIds.length === 2)
   );
+  selectedTeams = computed(() => {
+    const teams = this.teams();
+    const params = this.queryParams();
+    const findClub = (name: string | null) => {
+      const query = normalizeClubSearchText(name ?? '');
+      return teams.find((team) => normalizeClubSearchText(team.name) === query);
+    };
+    const requestedFirst = findClub(params.get('first'));
+    const requestedSecond = findClub(params.get('second'));
+    const presets = this.availablePresets();
+    const defaultPreset = presets.find(({ id }) => id === 'north-london') ?? presets[0];
+    const defaultFirst = teams.find(({ id }) => id === defaultPreset?.teamIds[0]);
+    const defaultSecond = teams.find(({ id }) => id === defaultPreset?.teamIds[1]);
+    const first =
+      requestedFirst ??
+      [defaultFirst, ...teams].find(
+        (team) => team && this.isDifferentClub(team, requestedSecond)
+      ) ??
+      null;
+    const second =
+      [requestedSecond, defaultSecond, ...teams].find(
+        (team) => team && this.isDifferentClub(team, first)
+      ) ?? null;
+    return { first, second };
+  });
+  activePresetId = computed(() => {
+    const { first, second } = this.selectedTeams();
+    return (
+      this.availablePresets().find(
+        ({ teamIds }) => teamIds[0] === first?.id && teamIds[1] === second?.id
+      )?.id ?? ''
+    );
+  });
+  protected readonly firstOptions = computed(() =>
+    this.teams().filter((team) => this.isDifferentClub(team, this.selectedTeams().second))
+  );
+  protected readonly secondOptions = computed(() =>
+    this.teams().filter((team) => this.isDifferentClub(team, this.selectedTeams().first))
+  );
   comparisonRows = computed<RivalrySeasonRow[]>(() => {
-    const firstTeamId = this.firstTeamId();
-    const secondTeamId = this.secondTeamId();
+    const { first, second } = this.selectedTeams();
     const teams = this.teams();
 
-    if (!firstTeamId || !secondTeamId || firstTeamId === secondTeamId) {
+    if (!first || !second) {
       return [];
     }
 
+    const firstTeamId = first.id;
+    const secondTeamId = second.id;
     const selectedIdByTeamId = buildClubIdentityTeamIndex([firstTeamId, secondTeamId], teams);
     const entriesBySelectedTeam = new Map<number, Map<number, LeagueTableEntry>>();
 
@@ -253,7 +298,7 @@ export class RivalryComparison {
         {
           name: 'Relative standing',
           data: rows.map((row) => row.relativeStanding),
-          color: '#f59e0b',
+          color: this.themeService.chartPalette().primary,
         },
       ],
     });
@@ -267,7 +312,7 @@ export class RivalryComparison {
         {
           name: 'Points gap',
           data: rows.map((row) => row.pointsGap ?? 0),
-          color: '#38bdf8',
+          color: this.themeService.chartPalette().secondary,
         },
       ],
     });
@@ -284,77 +329,47 @@ export class RivalryComparison {
         {
           name: selected.first?.name ?? 'First club',
           data: rows.map((row) => this.tierRank(row.first.tier)),
-          color: '#f59e0b',
+          color: this.themeService.chartPalette().primary,
         },
         {
           name: selected.second?.name ?? 'Second club',
           data: rows.map((row) => this.tierRank(row.second.tier)),
-          color: '#38bdf8',
+          color: this.themeService.chartPalette().secondary,
         },
       ],
     });
   });
 
-  constructor() {
-    effect(() => {
-      const teams = this.teams();
-      if (teams.length < 2 || (this.firstTeamId() && this.secondTeamId())) {
-        return;
-      }
+  applyPreset(presetId: string) {
+    const preset = this.availablePresets().find(({ id }) => id === presetId);
+    if (preset) {
+      this.selectPair(
+        this.store.getTeamById(preset.teamIds[0]),
+        this.store.getTeamById(preset.teamIds[1])
+      );
+    }
+  }
 
-      const defaultPreset =
-        this.availablePresets().find((preset) => preset.id === 'north-london') ??
-        this.availablePresets()[0];
-      if (defaultPreset) {
-        this.applyPreset(defaultPreset.id);
-        return;
-      }
+  selectFirstClub(club: Team) {
+    this.selectPair(club, this.selectedTeams().second);
+  }
 
-      const first = teams.find((team) => team.name === 'Arsenal') ?? teams[0];
-      const second =
-        teams.find((team) => team.name === 'Tottenham Hotspur' && team.id !== first.id) ??
-        teams.find((team) => team.id !== first.id);
+  selectSecondClub(club: Team) {
+    this.selectPair(this.selectedTeams().first, club);
+  }
 
-      this.firstTeamId.set(first.id);
-      this.secondTeamId.set(second?.id ?? null);
+  private selectPair(first: Team | null | undefined, second: Team | null | undefined) {
+    if (!first || !second || !this.isDifferentClub(first, second)) return;
+
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { first: first.name, second: second.name },
+      queryParamsHandling: 'merge',
     });
   }
 
-  applyPreset(presetId: string) {
-    const preset = this.availablePresets().find((candidate) => candidate.id === presetId);
-    if (!preset) {
-      return;
-    }
-
-    this.firstTeamId.set(preset.teamIds[0]);
-    this.secondTeamId.set(preset.teamIds[1]);
-    this.activePresetId.set(preset.id);
-  }
-
-  onFirstTeamChange(value: number | string) {
-    const parsed = Number.parseInt(String(value), 10);
-    if (!Number.isFinite(parsed)) {
-      return;
-    }
-
-    this.firstTeamId.set(parsed);
-    this.activePresetId.set('');
-    if (this.secondTeamId() === parsed) {
-      this.secondTeamId.set(this.teams().find((team) => team.id !== parsed)?.id ?? null);
-    }
-  }
-
-  onSecondTeamChange(value: number | string) {
-    const parsed = Number.parseInt(String(value), 10);
-    if (!Number.isFinite(parsed)) {
-      return;
-    }
-
-    this.secondTeamId.set(parsed);
-    this.activePresetId.set('');
-    if (this.firstTeamId() === parsed) {
-      this.firstTeamId.set(this.teams().find((team) => team.id !== parsed)?.id ?? null);
-    }
+  private isDifferentClub(team: Team, other: Team | null | undefined): boolean {
+    return !other || !getClubIdentityNames(team.name).includes(other.name);
   }
 
   tierLabel(tier: string): string {
@@ -374,10 +389,6 @@ export class RivalryComparison {
       3: 'rd',
     };
     return `${value}${suffixByMod10[value % 10] ?? 'th'}`;
-  }
-
-  private teamById(teamId: number | null): Team | null {
-    return teamId ? (this.store.getTeamById(teamId) ?? null) : null;
   }
 
   private entryView(entry: LeagueTableEntry): RivalryEntryView {
@@ -446,7 +457,7 @@ export class RivalryComparison {
         top: 6,
         right: 10,
         textStyle: {
-          color: '#d7deeb',
+          color: this.themeService.chartPalette().text,
           fontSize: 12,
           fontWeight: 700,
         },
@@ -464,7 +475,7 @@ export class RivalryComparison {
         type: 'category',
         data: rows.map((row) => String(row.season)),
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
           hideOverlap: true,
         },
@@ -479,11 +490,11 @@ export class RivalryComparison {
         inverse: inverseYAxis,
         minInterval: 1,
         nameTextStyle: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
         },
         axisLabel: {
-          color: '#c5d0e4',
+          color: this.themeService.chartPalette().text,
           fontSize: 11,
           formatter: yAxisFormatter,
         },

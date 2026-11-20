@@ -17,6 +17,7 @@
     </div>
     <div class="app-page-header-actions">
       <app-data-export-menu
+        menuLabel="Export data"
         title="Teams archive"
         [filename]="exportFilename()"
         [summary]="exportSummary()"
@@ -26,11 +27,13 @@
   </header>
 
   <app-team-list
-    [teams]="teams()"
+    [teams]="matchingTeams()"
+    [searchQuery]="searchQuery()"
     [selectedLetter]="selectedLetter()"
     [selectedFilter]="selectedFilter()"
     (letterSelected)="onLetterSelected($event)"
     (filterSelected)="onFilterSelected($event)"
+    (searchChanged)="onSearchChanged($event)"
     (filtersCleared)="onFiltersCleared()"
   />
 </section>

@@ -1,7 +1,8 @@
+import { ViewportScroller } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Scroll } from '@angular/router';
 import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
 import { TeamList } from '@app/components/team-list/team-list';
 import { ClubMetadataStore } from '@app/store/club-metadata.store';
@@ -14,6 +15,7 @@ import {
   type TeamDirectoryItem,
 } from '@app/types';
 import type { ExportRow, ExportSummary } from '@app/utils/data-export';
+import { normalizeClubSearchText } from '@app/utils/club-aliases';
 
 @Component({
   selector: 'app-teams',
@@ -27,6 +29,8 @@ export class Teams {
   private dataLoader = inject(DataLoaderService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private viewportScroller = inject(ViewportScroller);
+  private searchNavigation?: { scrollPosition: [number, number] };
 
   private queryParamMap = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -90,10 +94,18 @@ export class Teams {
     const filter = this.queryParamMap().get('filter') ?? 'all';
     return isTeamDirectoryFilter(filter) ? filter : 'all';
   });
+  searchQuery = computed(() => this.queryParamMap().get('q') ?? '');
+  matchingTeams = computed(() => {
+    const query = normalizeClubSearchText(this.searchQuery());
+    return query
+      ? this.teams().filter((team) => normalizeClubSearchText(team.name).includes(query))
+      : this.teams();
+  });
+
   exportTeams = computed(() => {
     const filter = this.selectedFilter();
     const letter = this.selectedLetter();
-    return this.teams().filter(
+    return this.matchingTeams().filter(
       (team) =>
         (filter === 'all' || team.categories.includes(filter)) &&
         (!letter || team.name[0].toUpperCase() === letter)
@@ -103,6 +115,7 @@ export class Teams {
     page: 'Teams Archive',
     filter: this.selectedFilter(),
     letter: this.selectedLetter() || 'all',
+    ...(this.searchQuery().trim() ? { search: this.searchQuery().trim() } : {}),
     rows: this.exportTeams().length,
   }));
   exportRows = computed<ExportRow[]>(() =>
@@ -124,6 +137,22 @@ export class Teams {
   showLoadingState = computed(() => !this.teams().length && this.dataLoader.showLoadingState());
   loadFailed = computed(() => !this.teams().length && this.dataLoader.loadStatus() === 'error');
 
+  constructor() {
+    this.router.events.pipe(takeUntilDestroyed()).subscribe((event) => {
+      if (!(event instanceof Scroll)) return;
+
+      const navigation = this.router.lastSuccessfulNavigation;
+      const search = this.searchNavigation;
+      if (search && event.routerEvent.id === navigation?.id && navigation.extras.info === search) {
+        this.searchNavigation = undefined;
+        // Restore the live search position after the router's default scroll reset.
+        queueMicrotask(() =>
+          this.viewportScroller.scrollToPosition(search.scrollPosition, { behavior: 'instant' })
+        );
+      }
+    });
+  }
+
   onLetterSelected(letter: string) {
     void this.router.navigate([], {
       relativeTo: this.route,
@@ -142,10 +171,21 @@ export class Teams {
     });
   }
 
+  onSearchChanged(query: string) {
+    this.searchNavigation = { scrollPosition: this.viewportScroller.getScrollPosition() };
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { q: query || null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+      info: this.searchNavigation,
+    });
+  }
+
   onFiltersCleared() {
     void this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { letter: null, filter: null },
+      queryParams: { q: null, letter: null, filter: null },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });

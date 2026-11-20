@@ -9,7 +9,14 @@
 </button>
 } @if (mode() === 'host' && isOpen()) {
 <div class="report-backdrop" role="presentation" (click)="close()"></div>
-<section class="report-dialog" role="dialog" aria-modal="true" aria-labelledby="data-report-title">
+<section
+  class="report-dialog"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="data-report-title"
+  cdkTrapFocus
+  [cdkTrapFocusAutoCapture]="true"
+>
   <header class="report-head">
     <div>
       <p>Data report</p>

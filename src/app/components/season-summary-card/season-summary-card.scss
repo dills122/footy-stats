@@ -21,6 +21,10 @@
   white-space: nowrap;
 }
 
+.summary--without-heading {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .facts {
   margin: 0;
   display: flex;

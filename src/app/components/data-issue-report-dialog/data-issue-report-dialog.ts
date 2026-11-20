@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, computed, effect, inject, input, signal } from '@angular/core';
@@ -28,7 +29,7 @@ type ReportField =
 
 @Component({
   selector: 'app-data-issue-report-dialog',
-  imports: [CommonModule, MatTooltipModule],
+  imports: [A11yModule, CommonModule, MatTooltipModule],
   templateUrl: './data-issue-report-dialog.html',
   styleUrl: './data-issue-report-dialog.scss',
 })

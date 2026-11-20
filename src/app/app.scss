@@ -18,9 +18,31 @@
   min-width: 0;
 }
 
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 40;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--app-surface-solid);
+  color: var(--app-text-strong);
+  transform: translateY(calc(-100% - 16px));
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
 .app-content {
   padding: 28px clamp(12px, 2vw, 24px) 28px;
   min-width: 0;
+  scroll-margin-top: 72px;
+}
+
+.app-content:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: -2px;
 }
 
 .scroll-top-button {

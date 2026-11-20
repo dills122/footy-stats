@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { environment } from '@env/environment';
 import type { ClubMetadataDocument } from '../club-metadata.models';
 import type { ActiveDataInfo, DataBundleManifest, SeasonsDocument } from './data-bundle.models';
-import { DataUpdateService } from './data-update.service';
+import { DataUpdateService, DISMISSED_DATA_RELEASE_KEY } from './data-update.service';
 import { DataLoaderService } from './hydrate-store-json';
 
 describe('DataUpdateService', () => {
@@ -20,6 +20,7 @@ describe('DataUpdateService', () => {
   };
 
   beforeEach(() => {
+    localStorage.removeItem(DISMISSED_DATA_RELEASE_KEY);
     originalCrypto = globalThis.crypto;
     Object.defineProperty(globalThis, 'crypto', {
       configurable: true,
@@ -61,6 +62,7 @@ describe('DataUpdateService', () => {
   });
 
   afterEach(() => {
+    localStorage.removeItem(DISMISSED_DATA_RELEASE_KEY);
     http.verify();
     Object.defineProperty(globalThis, 'crypto', {
       configurable: true,
@@ -89,6 +91,34 @@ describe('DataUpdateService', () => {
     expect(service.checkStatus()).toBe('available');
     expect(service.updateAvailable()).toBe(true);
     expect(service.latestManifest()?.version).toBe('data-2026-06-18');
+  });
+
+  it('remembers a dismissal across service instances and offers a different release', async () => {
+    const checkRelease = async (dataUpdates: DataUpdateService, version: string) => {
+      const check = dataUpdates.checkForUpdates();
+      http.expectOne(environment.dataUpdates.githubLatestReleaseApiUrl).flush({
+        assets: [
+          {
+            name: 'footy-stats-data-manifest.json',
+            browser_download_url: 'https://example.com/manifest.json',
+          },
+        ],
+      });
+      await Promise.resolve();
+      http.expectOne('https://example.com/manifest.json').flush({ ...manifest(), version });
+      await check;
+    };
+
+    await checkRelease(service, 'data-2026-06-18');
+    service.dismissAvailableUpdate();
+    expect(service.updateAvailable()).toBe(false);
+    expect(localStorage.getItem(DISMISSED_DATA_RELEASE_KEY)).toBe('data-2026-06-18');
+
+    const reloaded = TestBed.runInInjectionContext(() => new DataUpdateService());
+    await checkRelease(reloaded, 'data-2026-06-18');
+    expect(reloaded.updateAvailable()).toBe(false);
+    await checkRelease(reloaded, 'data-2026-06-19');
+    expect(reloaded.updateAvailable()).toBe(true);
   });
 
   it('builds a verified manifest from footy-data-kit release assets', async () => {

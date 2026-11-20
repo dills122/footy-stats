@@ -61,7 +61,7 @@ $light-theme: m3-theme.$light-theme;
 
   --app-text-strong: #17362b;
   --app-text-subtle: #3b554a;
-  --app-text-muted: #5d6e64;
+  --app-text-muted: #46584e;
   --app-text-inverse: #fff9e8;
   --app-accent: #9b4b0b;
   --app-accent-hover: #713406;
@@ -117,7 +117,7 @@ $light-theme: m3-theme.$light-theme;
   --app-border: #d2b69b;
   --app-text-strong: #35251f;
   --app-text-subtle: #5a453c;
-  --app-text-muted: #756157;
+  --app-text-muted: #5e4a40;
   --app-text-inverse: #fff6e5;
   --app-accent: #8d2f3b;
   --app-accent-hover: #681f2a;
@@ -258,6 +258,74 @@ h3 {
   border: var(--app-surface-border);
   background: color-mix(in srgb, var(--app-surface-bg) 82%, transparent);
   box-shadow: none;
+}
+
+.app-disclosure > summary {
+  box-sizing: border-box;
+  width: fit-content;
+  min-height: 44px;
+  padding: 10px 0;
+  color: var(--app-text-strong);
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.app-disclosure > summary:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.app-search-field {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  color: var(--app-text-strong);
+  font-weight: 700;
+}
+
+.app-search-field input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-surface-solid);
+  color: var(--app-text-strong);
+  font: inherit;
+  font-weight: 400;
+}
+
+.app-search-field input:focus-visible {
+  outline: 2px solid var(--app-focus-ring);
+  outline-offset: 2px;
+}
+
+.app-club-options {
+  --mat-autocomplete-background-color: var(--app-menu-bg);
+  --mat-option-label-text-color: var(--app-text-strong);
+  --mat-option-label-text-font: var(--app-font-body);
+  --mat-option-hover-state-layer-color: var(--app-control-hover);
+  --mat-option-focus-state-layer-color: var(--app-accent-soft);
+}
+
+.app-chart-data {
+  width: 100%;
+  margin-bottom: 16px;
+  border-collapse: collapse;
+}
+
+.app-chart-data caption {
+  padding-block: 8px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.app-chart-data :is(th, td) {
+  border-bottom: 1px solid var(--app-border);
+  padding: 6px 4px;
+  text-align: left;
 }
 
 .app-page-shell {
@@ -467,6 +535,7 @@ h3 {
 
 a:focus-visible,
 button:focus-visible,
+h1[tabindex]:focus-visible,
 [role='button']:focus-visible {
   outline: 2px solid var(--app-focus-ring);
   outline-offset: 2px;

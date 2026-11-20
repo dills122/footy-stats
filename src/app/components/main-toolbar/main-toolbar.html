@@ -15,15 +15,36 @@
         mat-button
         routerLink="/"
         routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
         [routerLinkActiveOptions]="{ exact: true }"
       >
         Archive
       </a>
-      <a mat-button routerLink="/tables" routerLinkActive="is-active">Tables</a>
-      <a mat-button routerLink="/system" routerLinkActive="is-active">System</a>
-      <a mat-button routerLink="/movement" routerLinkActive="is-active">Movement</a>
-      <a mat-button routerLink="/rivalries" routerLinkActive="is-active">Rivalries</a>
-      <a mat-button routerLink="/teams" routerLinkActive="is-active">Clubs</a>
+      <a mat-button routerLink="/tables" routerLinkActive="is-active" ariaCurrentWhenActive="page">
+        Tables
+      </a>
+      <a mat-button routerLink="/system" routerLinkActive="is-active" ariaCurrentWhenActive="page">
+        System
+      </a>
+      <a
+        mat-button
+        routerLink="/movement"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        Movement
+      </a>
+      <a
+        mat-button
+        routerLink="/rivalries"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        Rivalries
+      </a>
+      <a mat-button routerLink="/teams" routerLinkActive="is-active" ariaCurrentWhenActive="page">
+        Clubs
+      </a>
     </nav>
 
     <label class="theme-switcher">
@@ -32,8 +53,8 @@
       <select
         class="theme-select"
         aria-label="Colour theme"
-        [value]="themeService.activeTheme()"
-        (change)="onThemeChange($event)"
+        [ngModel]="themeService.activeTheme()"
+        (ngModelChange)="themeService.setTheme($event)"
       >
         @for (theme of themeService.themes; track theme.id) {
         <option [value]="theme.id">{{ theme.label }}</option>
@@ -62,15 +83,51 @@
         mat-menu-item
         routerLink="/"
         routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
         [routerLinkActiveOptions]="{ exact: true }"
       >
         Archive
       </a>
-      <a mat-menu-item routerLink="/tables" routerLinkActive="is-active">Tables</a>
-      <a mat-menu-item routerLink="/system" routerLinkActive="is-active">System</a>
-      <a mat-menu-item routerLink="/movement" routerLinkActive="is-active">Movement</a>
-      <a mat-menu-item routerLink="/rivalries" routerLinkActive="is-active">Rivalries</a>
-      <a mat-menu-item routerLink="/teams" routerLinkActive="is-active">Clubs</a>
+      <a
+        mat-menu-item
+        routerLink="/tables"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        Tables
+      </a>
+      <a
+        mat-menu-item
+        routerLink="/system"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        System
+      </a>
+      <a
+        mat-menu-item
+        routerLink="/movement"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        Movement
+      </a>
+      <a
+        mat-menu-item
+        routerLink="/rivalries"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        Rivalries
+      </a>
+      <a
+        mat-menu-item
+        routerLink="/teams"
+        routerLinkActive="is-active"
+        ariaCurrentWhenActive="page"
+      >
+        Clubs
+      </a>
     </mat-menu>
   </div>
 </mat-toolbar>

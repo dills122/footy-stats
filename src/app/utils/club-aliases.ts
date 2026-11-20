@@ -9,6 +9,10 @@ export interface ClubIdentityTeam {
   name: string;
 }
 
+export function normalizeClubSearchText(value: string): string {
+  return value.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim().replace(/\s+/g, ' ');
+}
+
 export function getClubIdentityNames(clubName: string): readonly string[] {
   return (
     CLUB_IDENTITY_GROUPS.find((group) => (group as readonly string[]).includes(clubName)) ?? [

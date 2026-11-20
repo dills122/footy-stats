@@ -1,6 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { DataIssueReportDialogService } from '@app/components/data-issue-report-dialog/data-issue-report-dialog.service';
 import {
   buildCsv,
   buildJson,
@@ -10,6 +11,7 @@ import {
   type ExportRow,
   type ExportSummary,
 } from '@app/utils/data-export';
+import type { DataIssueReportContext } from '@app/utils/data-issue-report';
 
 interface ExportOption {
   format: ExportFormat;
@@ -26,7 +28,7 @@ const EXPORT_OPTIONS: readonly ExportOption[] = [
 
 @Component({
   selector: 'app-data-export-menu',
-  imports: [CommonModule, MatIconModule],
+  imports: [MatIconModule, MatMenuModule],
   templateUrl: './data-export-menu.html',
   styleUrl: './data-export-menu.scss',
 })
@@ -36,7 +38,11 @@ export class DataExportMenu {
   summary = input<ExportSummary | null>(null);
   rows = input<readonly ExportRow[]>([]);
   data = input<unknown>(undefined);
+  menuLabel = input<string>();
+  reportContext = input<DataIssueReportContext>();
+  reportLabel = input('Report data issue');
 
+  private readonly reportDialog = inject(DataIssueReportDialogService);
   protected readonly exportOptions = EXPORT_OPTIONS;
   protected readonly hasExportData = computed(
     () =>
@@ -44,6 +50,10 @@ export class DataExportMenu {
       Object.keys(this.summary() ?? {}).length > 0 ||
       this.data() !== undefined
   );
+
+  protected reportIssue(context: DataIssueReportContext) {
+    this.reportDialog.open(context);
+  }
 
   protected download(format: ExportFormat) {
     if (!this.hasExportData()) {

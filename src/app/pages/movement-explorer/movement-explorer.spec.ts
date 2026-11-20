@@ -1,3 +1,4 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { LeagueStore } from '@app/store/league.store';
@@ -41,6 +42,7 @@ describe('MovementExplorer chart presentation', () => {
       imports: [MovementExplorer],
       providers: [
         LeagueStore,
+        provideHttpClient(),
         provideRouter([]),
         {
           provide: ActivatedRoute,

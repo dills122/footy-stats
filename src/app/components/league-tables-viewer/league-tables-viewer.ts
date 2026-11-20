@@ -4,11 +4,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { ActivatedRoute } from '@angular/router';
-import { DataIssueReportDialog } from '@app/components/data-issue-report-dialog/data-issue-report-dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ArchiveLoadState } from '@app/components/archive-load-state/archive-load-state';
 import { DataExportMenu } from '@app/components/data-export-menu/data-export-menu';
-import { LeagueTierToStringyPipe } from '@app/pipes/league-tier-to-stringy-pipe';
 import { LeagueStore } from '@app/store/league.store';
+import { DataLoaderService } from '@app/store/services/hydrate-store-json';
 import { LeagueTableView } from '@app/types';
 import type { ExportRow, ExportSummary } from '@app/utils/data-export';
 import type { DataIssueReportContext } from '@app/utils/data-issue-report';
@@ -69,59 +69,49 @@ const TABLE_DATA_NOTICES: TableDataNoticeDefinition[] = [
     LeagueTableComponent,
     CommonModule,
     MatIconModule,
-    LeagueTierToStringyPipe,
     SeasonSummaryCardComponent,
-    DataIssueReportDialog,
     DataExportMenu,
+    ArchiveLoadState,
   ],
-  providers: [LeagueTierToStringyPipe],
 })
 export class LeagueTablesViewerComponent implements OnDestroy {
   store = inject(LeagueStore);
-  private leagueLabelPipe = inject(LeagueTierToStringyPipe);
+  protected readonly loadStatus = inject(DataLoaderService).loadStatus;
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private queryParamMapSignal = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
   });
   private tableRevealTimer: ReturnType<typeof setTimeout> | null = null;
 
-  years: number[] = [];
-  leaguesForYear: string[] = [];
-
-  selectedYear = signal<number | undefined>(undefined);
-  selectedLeague = signal<string | undefined>(undefined);
+  private competitionSeasons = computed(() =>
+    this.store
+      .getSeasonTiers()
+      .map(({ season, tiers }) => ({
+        season,
+        tiers: tiers.filter((tier) => /^tier\d+$/.test(tier)),
+      }))
+      .filter(({ tiers }) => tiers.length)
+      .sort((a, b) => b.season - a.season)
+  );
+  years = computed(() => this.competitionSeasons().map(({ season }) => season));
+  private selectedSeason = computed(() => {
+    const requested = Number(this.queryParamMapSignal().get('season'));
+    const seasons = this.competitionSeasons();
+    return seasons.find(({ season }) => season === requested) ?? seasons[0];
+  });
+  selectedYear = computed(() => this.selectedSeason()?.season);
+  leaguesForYear = computed(() => this.selectedSeason()?.tiers ?? []);
+  selectedLeague = computed(() => {
+    const requested = this.queryParamMapSignal().get('tier');
+    const tiers = this.leaguesForYear();
+    return requested && tiers.includes(requested) ? requested : tiers[0];
+  });
   tableRevealActive = signal(false);
-  quickFiltersCollapsed = signal(false);
+  protected readonly compactLayout = globalThis.matchMedia?.('(max-width: 800px)').matches ?? false;
+  quickFiltersCollapsed = signal(this.compactLayout);
 
   constructor() {
-    effect(() => {
-      const seasonTiers = this.getCompetitionSeasonTiers();
-      const queryParams = this.queryParamMapSignal();
-      this.years = seasonTiers.map((st) => st.season).sort((a, b) => b - a);
-
-      if (!this.years.length) {
-        return;
-      }
-
-      const requestedSeason = Number(queryParams.get('season'));
-      const requestedTier = queryParams.get('tier') ?? undefined;
-      const requestedSeasonTiers = Number.isInteger(requestedSeason)
-        ? seasonTiers.find((seasonTier) => seasonTier.season === requestedSeason)
-        : undefined;
-
-      if (
-        requestedSeasonTiers &&
-        (!requestedTier || requestedSeasonTiers.tiers.includes(requestedTier))
-      ) {
-        this.selectTable(requestedSeason, requestedTier ?? requestedSeasonTiers.tiers[0]);
-        return;
-      }
-
-      if (!this.selectedYear()) {
-        this.selectTable(this.years[0]);
-      }
-    });
-
     effect(() => {
       const tableKey = this.tableResultKey();
       if (!tableKey) {
@@ -161,24 +151,26 @@ export class LeagueTablesViewerComponent implements OnDestroy {
     }));
   });
 
-  currentLeagueLabel = computed(() => {
-    const league = this.selectedLeague();
-    return league ?? '';
-  });
-  currentCompetitionName = computed(() => {
-    const league = this.selectedLeague();
-    return league ? this.leagueLabelPipe.transform(league) || league : '';
-  });
+  currentCompetitionName = computed(() => this.competitionName(this.selectedLeague()));
+
+  competitionName(tier?: string): string {
+    const season = this.selectedYear();
+    return season && tier ? this.store.getCompetitionName(season, tier) : '';
+  }
 
   tableControlsReady = computed(() =>
-    Boolean(this.selectedYear() && this.selectedLeague() && this.years.length)
+    Boolean(this.selectedYear() && this.selectedLeague() && this.years().length)
   );
 
   tablePresets = computed<TablePreset[]>(() => {
-    const seasonTiers = this.getCompetitionSeasonTiers();
-    const latestSeason = seasonTiers.at(-1)?.season;
-    const earliestTopFlight = seasonTiers.find((season) => season.tiers.includes('tier1'))?.season;
-    const firstSecondTier = seasonTiers.find((season) => season.tiers.includes('tier2'))?.season;
+    const seasonTiers = this.competitionSeasons();
+    const latestSeason = seasonTiers[0]?.season;
+    const earliestTopFlight = seasonTiers
+      .filter((season) => season.tiers.includes('tier1'))
+      .at(-1)?.season;
+    const firstSecondTier = seasonTiers
+      .filter((season) => season.tiers.includes('tier2'))
+      .at(-1)?.season;
     const candidates: TablePreset[] = [
       {
         id: 'latest-top-flight',
@@ -272,12 +264,11 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   });
 
   dataIssueContext = computed<DataIssueReportContext>(() => {
-    const league = this.selectedLeague();
     return {
       pageTitle: 'League table archive',
       sourcePath: '/tables',
       season: this.selectedYear(),
-      competition: league ? this.leagueLabelPipe.transform(league) || league : undefined,
+      competition: this.currentCompetitionName() || undefined,
     };
   });
   exportSummary = computed<ExportSummary>(() => ({
@@ -318,16 +309,18 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   );
 
   onYearChange(year: number) {
-    this.selectTable(year);
+    this.selectTable(year, this.selectedLeague());
   }
 
   onLeagueChange(league: string) {
-    this.selectedLeague.set(league);
+    const year = this.selectedYear();
+    if (year !== undefined) {
+      this.selectTable(year, league);
+    }
   }
 
   applyPreset(preset: TablePreset) {
-    this.onYearChange(preset.season);
-    this.selectedLeague.set(preset.tier);
+    this.selectTable(preset.season, preset.tier);
   }
 
   toggleQuickFilters() {
@@ -343,30 +336,21 @@ export class LeagueTablesViewerComponent implements OnDestroy {
   }
 
   private hasSeasonTier(season: number, tier: string): boolean {
-    return this.getCompetitionSeasonTiers().some(
+    return this.competitionSeasons().some(
       (seasonTier) => seasonTier.season === season && seasonTier.tiers.includes(tier)
     );
   }
 
-  private selectTable(year: number, tier?: string) {
-    const seasonTiers = this.getCompetitionSeasonTiers();
-    const currentSeasonsAvailableTiers = seasonTiers.find((st) => st.season === year);
-    this.leaguesForYear = currentSeasonsAvailableTiers?.tiers ?? [];
+  private selectTable(season: number, preferredTier?: string) {
+    const tiers = this.competitionSeasons().find((entry) => entry.season === season)?.tiers;
+    if (!tiers?.length) return;
 
-    this.selectedYear.set(year);
-    this.selectedLeague.set(
-      tier && this.leaguesForYear.includes(tier) ? tier : this.leaguesForYear[0]
-    );
-  }
-
-  private getCompetitionSeasonTiers(): { season: number; tiers: string[] }[] {
-    return this.store
-      .getSeasonTiers()
-      .map((seasonTier) => ({
-        season: seasonTier.season,
-        tiers: seasonTier.tiers.filter((tier) => /^tier\d+$/.test(tier)),
-      }))
-      .filter((seasonTier) => seasonTier.tiers.length);
+    const tier = preferredTier && tiers.includes(preferredTier) ? preferredTier : tiers[0];
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { season, tier },
+      queryParamsHandling: 'merge',
+    });
   }
 
   private prefersReducedMotion(): boolean {

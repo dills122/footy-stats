@@ -7,22 +7,12 @@
 }
 
 .research-note {
-  margin-top: 18px;
-  border-left: 2px solid rgba(217, 119, 6, 0.62);
-  padding: 10px 0 10px 14px;
-  display: grid;
-  gap: 3px;
-  color: var(--app-text-muted);
-  font-size: 0.92rem;
-  line-height: 1.45;
+  margin-top: 12px;
 }
 
-.research-note strong {
-  color: var(--app-accent);
-  font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.research-note p {
+  margin: 0 0 12px;
+  color: var(--app-text-subtle);
 }
 
 .config-toolbar {
@@ -493,8 +483,9 @@
 .chart-context-clubs {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 8px;
+  margin-block: 12px;
 }
 
 .chart-context-club {
@@ -524,7 +515,7 @@
 }
 
 .chart-focus-button {
-  min-height: 24px;
+  min-height: 32px;
   border-radius: 4px;
   padding: 2px 6px;
 }
@@ -541,7 +532,7 @@
 }
 
 .chart-tools {
-  flex: 0 1 460px;
+  flex: 0 0 auto;
   display: grid;
   justify-items: end;
   align-content: start;
@@ -578,7 +569,7 @@
 
 .detail-toggle button.is-active {
   background: rgba(217, 119, 6, 0.16);
-  color: var(--app-accent);
+  color: var(--app-accent-hover);
 }
 
 .legend-item {
@@ -629,6 +620,11 @@
   display: block;
 }
 
+.movement-data {
+  margin-top: 12px;
+  border-top: 1px solid var(--app-border);
+}
+
 @media (max-width: 900px) {
   .setup-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -661,11 +657,6 @@
 @media (max-width: 560px) {
   .movement-page {
     padding-inline: 12px;
-  }
-
-  .research-note {
-    margin-top: 14px;
-    padding-left: 10px;
   }
 
   .config-toolbar {
@@ -725,7 +716,7 @@
   .detail-toggle {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .detail-toggle button {

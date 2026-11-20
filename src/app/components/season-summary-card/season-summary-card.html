@@ -1,7 +1,13 @@
-<section class="summary" aria-label="Season summary">
+<section
+  class="summary"
+  [class.summary--without-heading]="!showHeading"
+  aria-label="Season summary"
+>
+  @if (showHeading) {
   <header class="summary-header">
     <p>Season Overview</p>
   </header>
+  }
   <dl class="facts">
     <div class="fact">
       <dt>Champion</dt>
@@ -34,8 +40,8 @@
       </dd>
     </div>
     <div class="fact">
-      <dt>Avg Goals per Game</dt>
-      <dd>{{ avgGoalsPerGame }}</dd>
+      <dt>Goals per match</dt>
+      <dd>{{ avgGoalsPerGame ?? '—' }}</dd>
     </div>
     @if (promotedTeams.length) {
     <div class="fact fact--movement">

@@ -316,6 +316,28 @@ export function leagueSystemEraForSeason(season: number): LeagueSystemEra {
   );
 }
 
+export function seasonCompetitionName(season: number, tier: string, archiveTitle?: string): string {
+  // The source sometimes calls both regional tables "National League", "North", or "South".
+  if (season >= 2021 && (tier === 'tier6' || tier === 'tier7')) {
+    return tier === 'tier6' ? 'National League North' : 'National League South';
+  }
+
+  const title = archiveTitle?.trim();
+  if (title && title.toLowerCase() !== 'league tables') return title;
+
+  if (season >= 1890 && season <= 1891 && tier === 'tier2') return 'Football Alliance';
+  if (season === 1920 && tier === 'tier3') return 'Third Division';
+  if (season >= 2012 && season <= 2014 && tier === 'tier5') return 'Conference Premier';
+
+  const era = LEAGUE_SYSTEM_ERAS.find(
+    ({ startSeason, endSeason }) =>
+      (season >= startSeason && (endSeason === null || season <= endSeason)) ||
+      (season === 1920 && endSeason === 1919)
+  );
+  const band = era?.tiers.find(({ tierKeys }) => tierKeys.includes(tier));
+  return band?.leagues[band.tierKeys.indexOf(tier)] ?? tier.replace(/^tier(\d+)$/, 'Tier $1');
+}
+
 export function leagueSystemExportRows(eras = LEAGUE_SYSTEM_ERAS): Record<string, unknown>[] {
   return eras.flatMap((era) =>
     era.tiers.map((tier) => ({

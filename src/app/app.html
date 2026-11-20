@@ -1,9 +1,10 @@
 <div class="app-shell">
+  <a class="skip-link" href="#main-content" (click)="skipToMain($event)">Skip to main content</a>
   <header class="app-header">
     <app-main-toolbar />
   </header>
   <app-data-update-banner />
-  <main class="app-content">
+  <main #mainContent id="main-content" class="app-content" tabindex="-1">
     <router-outlet />
   </main>
 
@@ -27,7 +28,7 @@
           href="https://shwimp.studio/org/wimpy-productions/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Wimpy Productions"
+          aria-label="FS, a Wimpy Productions project"
         >
           FS
         </a>

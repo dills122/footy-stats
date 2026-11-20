@@ -30,11 +30,13 @@ describe('MainToolbar', () => {
       ],
       providers: [provideRouter([])],
     }).compileComponents();
+  });
 
+  function renderToolbar() {
     fixture = TestBed.createComponent(MainToolbar);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }
 
   afterEach(() => {
     window.localStorage.removeItem(APP_THEME_STORAGE_KEY);
@@ -42,10 +44,12 @@ describe('MainToolbar', () => {
   });
 
   it('should create', () => {
+    renderToolbar();
     expect(component).toBeTruthy();
   });
 
   it('links the brand and archive nav item to the root archive page', () => {
+    renderToolbar();
     const element: HTMLElement = fixture.nativeElement;
 
     expect(element.querySelector<HTMLAnchorElement>('.brand')?.getAttribute('href')).toBe('/');
@@ -55,6 +59,7 @@ describe('MainToolbar', () => {
   });
 
   it('provides a mobile navigation menu trigger', () => {
+    renderToolbar();
     const element: HTMLElement = fixture.nativeElement;
     const trigger = element.querySelector<HTMLButtonElement>('.mobile-menu-trigger');
 
@@ -63,6 +68,7 @@ describe('MainToolbar', () => {
   });
 
   it('provides the three named colour themes in an accessible selector', () => {
+    renderToolbar();
     const element: HTMLElement = fixture.nativeElement;
     const select = element.querySelector<HTMLSelectElement>('.theme-select');
 
@@ -75,6 +81,7 @@ describe('MainToolbar', () => {
   });
 
   it('changes the active document theme from the selector', () => {
+    renderToolbar();
     const element: HTMLElement = fixture.nativeElement;
     const select = element.querySelector<HTMLSelectElement>('.theme-select');
 
@@ -86,4 +93,17 @@ describe('MainToolbar', () => {
     expect(document.documentElement.dataset['theme']).toBe('clubhouse');
     expect(window.localStorage.getItem(APP_THEME_STORAGE_KEY)).toBe('clubhouse');
   });
+
+  it.each(['clubhouse', 'floodlights'])(
+    'restores the %s option when the toolbar loads',
+    async (theme) => {
+      window.localStorage.setItem(APP_THEME_STORAGE_KEY, theme);
+      renderToolbar();
+      await fixture.whenStable();
+
+      const element: HTMLElement = fixture.nativeElement;
+      expect(document.documentElement.dataset['theme']).toBe(theme);
+      expect(element.querySelector<HTMLSelectElement>('.theme-select')?.value).toBe(theme);
+    }
+  );
 });

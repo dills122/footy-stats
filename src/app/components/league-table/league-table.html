@@ -1,4 +1,9 @@
-<div class="table-container app-data-shell">
+<div
+  class="table-container app-data-shell"
+  role="region"
+  aria-label="Scrollable standings"
+  tabindex="0"
+>
   <table mat-table [dataSource]="sortedTable" class="footy-table">
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef scope="col" class="head position-col app-data-head">
