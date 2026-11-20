@@ -11,7 +11,8 @@ Running site: [FootyStats](https://footy.dsteele.dev/)
   and **Season overview** for the summary. Report issues from **Table tools** and include the
   club for a row-specific issue. The page URL remembers the selected table.
 - Search the club directory by name, with optional letter and category filters.
-- Club overview pages with season history, movement, and performance milestones.
+- Club overview pages with season history, movement, and performance milestones. On mobile, use
+  **Flag club data** and enter the season to report an issue with a recent record.
 - League/tier overview pages with movement leaders, close seasons, notable marks, and churn.
 - Deep-stat views for clubs and tiers.
 - Movement explorer presets for comparing club paths through the pyramid, with a **Season data**

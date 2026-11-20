@@ -281,8 +281,34 @@
     overflow: hidden;
   }
 
-  .comparison-row {
-    grid-template-columns: 1fr;
+  .comparison-table {
+    gap: 8px;
+  }
+
+  .comparison-row:not(.comparison-head) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'season leader'
+      'first second';
+    align-items: start;
+    gap: 6px 10px;
+    padding: 8px 9px;
+    font-size: 0.88rem;
+  }
+
+  .comparison-row:not(.comparison-head) > :first-child {
+    grid-area: season;
+    font-weight: 750;
+  }
+
+  .comparison-row:not(.comparison-head) > :last-child {
+    grid-area: leader;
+    text-align: right;
+  }
+
+  .comparison-row small {
+    margin-top: 2px;
+    font-size: 0.78rem;
   }
 
   .rivalry-chart {
